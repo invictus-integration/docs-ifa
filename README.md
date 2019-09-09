@@ -2,7 +2,7 @@
 All relevant product documentation for Invictus for Azure can be found here.
 
 ## Architecture 
-The full description of the architecture (including diagrams and service names) can be found here.
+The full description of the architecture (including diagrams and service names) can be found [here](./architecture/architecture-diagram.md "here").
 
 ## Install and deploy Invictus for Azure
 The full release and deployment procedure is described in this section.
