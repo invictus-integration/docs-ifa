@@ -4,4 +4,4 @@ tba
 
 ## Installing the dashboard
 
-Follow [this guide](framework-dashboard.md) to setup your build and release pipelines in DevOps.
+Follow [this guide](dashboard-installation.md) to setup your build and release pipelines in DevOps.

@@ -10,8 +10,8 @@ Once you receive the SAS-token, you will use it in the next step: Creating the b
 
 ## Build Pipeline
 
-The build pipeline
+Follow [this guide](dashboard-buildpipeline.md) to setup your build in Azure DevOps.
 
 ## Release Pipeline
 
-The release pipeline...
+Follow [this guide](dashboard-releasepipeline.md) to setup your release in Azure DevOps.

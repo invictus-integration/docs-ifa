@@ -16,7 +16,7 @@ Once you have the variable group, we can now proceed to creating the build pipel
 
 ## Create the build pipeline
 
-Create a new build pipeline, starting with an empty template with this naming: {prefix}.Invictus.Framework.
+Create a new build pipeline, starting with an empty template with this naming: {prefix}.Invictus.Dashboard.
 
 Select 'Azure Pipelines' as the agent pool and 'vs2017-win2016' as the agent specification.
 
@@ -31,7 +31,7 @@ The build will have only 2 tasks:
 
 ### Powershell task
 
-Add a PowerShell task to the pipeline and name it **Pull Framework**, then point the script path to the powershell you downloaded at the beginning of this guide.
+Add a PowerShell task to the pipeline and name it **Pull Dashboard**, then point the script path to the powershell you downloaded at the beginning of this guide.
 
 Copy/paste the following arguments for the script:
 
@@ -42,7 +42,7 @@ Copy/paste the following arguments for the script:
 or configure it with these:
 
 - **StorageAccountName** (mandatory): `$(Invictus.Installation.StorageAccount.Name)`.
-- **StorageSasToken** (mandatory): `$(Invictus.Installation.StorageAccount.Framework.SasToken)`.
+- **StorageSasToken** (mandatory): `$(Invictus.Installation.StorageAccount.Dashboard.SasToken)`.
 - **StorageContainerName** (mandatory): framework
 - **Version** (optional): by default this will get the latest version of the resources, but you can override this by specifying the version nr here.
 - **SaveLocation** (mandatory): `$(build.artifactstagingdirectory)`
@@ -50,6 +50,6 @@ or configure it with these:
 
 ### Publish Artifacts task
 
-Add a Publish build artifacts task to the pipeline and name it **Publish Framework**, use `$(Build.ArtifactStagingDirectory)` as the path to publish (or the SaveLocation argument you specified in the previous task).
+Add a Publish build artifacts task to the pipeline and name it **Publish Dashboard**, use `$(Build.ArtifactStagingDirectory)` as the path to publish (or the SaveLocation argument you specified in the previous task).
 
-Use **Framework** as the artifact name.
+Use **Dashboard** as the artifact name.
