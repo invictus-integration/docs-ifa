@@ -4,14 +4,14 @@ This document will guide you through the setup of your build and release pipelin
 
 ## Azure Storage
 
-In order to have access to the resources stored on Azure blob storage you have to request an SAS-token to [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
+In order to have access to the resources stored on Azure blob storage you have to request an SAS-token from Codit Software by emailing to  [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
 
-Once you receive the SAS-token, you will use it in the next step: Creating the build pipeline.
+Once you receive the SAS-token, you will use it in the next step: creating the build pipeline.
 
 ## Build Pipeline
 
-The build pipeline
+Follow [this guide](framework-buildpipeline.md) to setup your build in Azure DevOps.
 
 ## Release Pipeline
 
-The release pipeline...
+Follow [this guide](framework-releasepipeline.md) to setup your release in Azure DevOps.
