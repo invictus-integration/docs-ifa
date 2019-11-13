@@ -71,3 +71,67 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 
 The below table lists the parameters accepted by the ARM template.
 
+|Parameter Name|Required|Default Value|Description|
+| --- | :---: | --- | --- |
+|resourcePrefix|Yes||used as part of the default names for most resources.|
+|apiKey1|No|Generated value|The value used for basic authentication for the APIs|
+|apiKey2|No|Generated value|The value used for basic authentication for the APIs|
+|sqlServerName|No|invictus-{resourcePrefix}-sqlsvr|The name for the SQL Server that will host the databases|
+|sqlServerLogin|No|InvictusFrameworkAdmin|The default username set for SQL Server|
+|sqlServerLoginPassword|No|Generated value|The password that will be set to login into SQL Server|
+|dashboardDatabaseName|No|coditcip|The name of the Database used by the Dashboard|
+|timesequencerFunctionName|No|invictus-{resourcePrefix}-timesequencer|Name for the time sequencer Web API|
+|pubSubWebAppName|No|invictus-{resourcePrefix}-pubsubapp|Name for the PubSub Web API|
+|matrixWebAppName|No|invictus-{resourcePrefix}-matrixapp|Name for the Matrix Web API|
+|transcoWebAppName|No|invictus-{resourcePrefix}-transcoapp|Name for the Transco Web API|
+|serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
+|keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
+|storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
+|blobContainerPrefix|No|invictus|Prefix set for blob containers for pubsub|
+|approvedMessageSizeInBytesKey|No|200000|The max allowed message size before pushing message to Blob when using PubSub|
+|appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
+|servicePlanName|No|invictus-{resourcePrefix}-appplan|Name for the service plan which will host the APIs|
+|serviceBusMessageTimeToLiveMinutes|No|-1|Time messages should be stored on service bus before being archived|
+|storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
+|invictusFrameworkBasicUser|No|Invictus|The username used for Basic Authentication for the APIs|
+|servicePlanSkuName|No|S1|Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
+|servicePlanSkuCapacity|No|1|The SKU capacity setting  for the App Plan|
+|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name for the autoscale function|
+|minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
+|maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
+|buildtype|No|production|Always leave this property as "production". This created a DB used internally for testing.|
+|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan|
+|dashboardDbSkuName|No|S1|The SKU name of the CoditCip DB|
+|dashboardDbSkuTier|No|Standard|The Tier name for the CoditCip DB|
+|dashboardDbMaxSizeBytes|No|268435456000|Default size of CoditCip DB when created|
+|mTriggerCpuTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
+|mTriggerCpuTimeGrainAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
+|mTriggerRamTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
+|mTriggerRamTimeGrainAutoScaleDecrease|No|50|Percentage when rule is triggered|
+|mTriggerCpuTimeWindowAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
+|mTriggerCpuTimeWindowAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
+|mTriggerCpuThresholdAutoScaleIncrease|No|70|Percentage when rule is triggered|
+|mTriggerCpuThresholdAutoScaleDecrease|No|50|Percentage when rule is triggered|
+|mTriggerRamTimeWindowAutoScaleIncrease|No|PT5M|Time evaluated when rule is triggered|
+|mTriggerRamTimeWindowAutoScaleDecrease|No|PT5M|Time evaluated when rule is triggered|
+|mTriggerRamThresholdAutoScaleIncrease|No|70|Percentage when rule is triggered|
+|mTriggerRamThresholdAutoScaleDecrease|No|50|Percentage when rule is triggered|
+|scaleActionCpuCooldownTimeAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
+|scaleActionCpuCooldownTimeAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
+|scaleActionRamCooldownTimeAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
+|scaleActionRamCooldownTimeAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
+|pubSubWebAppAlwaysOn|No|true|Always on Setting for WebApp|
+|matrixWebAppAlwaysOn|No|true|Always on Setting for WebApp|
+|transcoWebAppAlwaysOn|No|true|Always on Setting for WebApp|
+|accessPolicies|No|[]|A list of Azure Key vault access policies|
+|devOpsObjectId|Yes||The object-id associated with the service principal that's connected to the service connection on DevOps|
+|enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
+|vnetName|No|&nbsp;|The name of the VNET on Azure|
+|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|aseName|No|&nbsp;|The name of the ASE on Azure|
+|aseResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the ASE is located|
+|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|sqlServerSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|invictusDataFactoryName|No|invictus-{resourcePrefix}-datafactory|The name of the Data factory service.|
