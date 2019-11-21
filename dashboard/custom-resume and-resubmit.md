@@ -7,9 +7,7 @@
 As you can see in this picture, when you create a new flow, now you can see that we have two tabs in this pop up.
 
 1.	Details: the details of the flow.
-2.	Advanced Settings: The custom resubmit and resubmit and the connected dashboard checkbox.
-
-## Usage of components
+2.	Advanced Settings: The custom resubmit and resume and the connected dashboard checkbox.
 
 ![Flow Advanced Settings](../images/dashboard/picture2.JPG)
 
