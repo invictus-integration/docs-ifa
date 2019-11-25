@@ -50,3 +50,5 @@ CompleteExecution is used to complete a process and to trigger any pending webho
 
 > ![ifa-timesequencer-la](../images/ifa-timesequencer-la.PNG)
 
+As can be seen in the image above, the Webhook executes WaitForExecution to register the request and also check if it should proceed with the execution, wait for the callback to be called or if the process should terminate. If a Stop command is returned then the Terminate case will be executed. If the result is Start then the LA will proceed to executing CompleteExecution which will mark the request as Processed and also trigger any callbacks related to the current SequenceName.
+
