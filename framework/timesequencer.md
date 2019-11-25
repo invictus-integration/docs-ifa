@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Timesequencer uses Function authorization. 
+The Timesequencer uses Function authorization, so the URL will contain all the authentication details, no Authentication is to be passed when calling the Function. Internally the timesequencer uses SQL Server to manage and queue all it's requests. A cleanup job is also added to DataFactory to cleanup the tables used by the function.
 
 ### Functions
 
@@ -27,7 +27,7 @@ POST Request Object:
 
 ```
 {
-  "callbackUri": "@{listCallbackUrl()}", //This is a property exposed by the Webhook action which should be supplied to the Timesequencer
+  "callbackUri": "@{listCallbackUrl()}", //This property is exposed by the Webhook LogicApp action, this value should be supplied to the Timesequencer
   "instanceId": "[STRING]", //The ID assosited to the request. SequenceName and InstanceId form the PrimaryKey for the request
   "sequenceName": "[STRING]", //The ID used to group requests togheter, //SequenceName and InstanceId form the PrimaryKey for the request
   "timestamp": "[DATETIME]" //The time the request was generated ex: file last update time
