@@ -54,7 +54,7 @@ POST Request Object:
 
 As can be seen in the image above, the Webhook executes WaitForExecution to register the request and also check if it should proceed with the execution, wait for the callback to be called or if the process should terminate. If a Stop command is returned then the Terminate case will be executed. If the result is Start then the LA will proceed to executing CompleteExecution which will mark the request as Processed and also trigger any callbacks related to the current SequenceName.
 
-> ![ifa-timesequencer-we-la](../images/ifa-timesequencer-we.png)
+> ![ifa-timesequencer-we-la](../images/ifa-timesequencer-we-la.png)
 
-> ![ifa-timesequencer-ce-la](../images/ifa-timesequencer-ce.png)
+> ![ifa-timesequencer-ce-la](../images/ifa-timesequencer-ce-la.png)
 
