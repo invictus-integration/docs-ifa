@@ -48,5 +48,5 @@ CompleteExecution is used to complete a process and to trigger any pending webho
 ### Logic App Timesequencer Sample Diagram
 
 
-> ![ifa-timesequencer-la](../images/ifa-timesequencer-la.png)
+> ![ifa-timesequencer-la](../images/ifa-timesequencer-la.PNG)
 
