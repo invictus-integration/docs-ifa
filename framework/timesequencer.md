@@ -13,7 +13,7 @@ The below two are used by the developers when setting up their flows:
 * WaitForExecution [POST]
 * CompleteExecution [POST]
 
-The below two are used internally the Azure Function and should be ignore:
+The below two are used internally the Azure Function and should be ignored:
 
 * PerformCallbackAction
 * PerformCallbackOrchestrator
@@ -21,7 +21,7 @@ The below two are used internally the Azure Function and should be ignore:
 
 ### WaitForExecution
 
-WaitForExecution is used by the Webhook action in a LogicApp. This function will determine if processing should continue, stop or wait. This is determined by checking if a current request with the SameSequence name is already being processed.
+WaitForExecution should be used by a Webhook action in a LogicApp. This function will queue your request and check if processing should continue, stop or wait. This is determined by checking if a current request with the SameSequence name is already being processed. The logic will skip the request and return a Stopped result if it finds a more recent request queued in the database.
 
 POST Request Object:
 
@@ -36,7 +36,7 @@ POST Request Object:
 
 ### CompleteExecution
 
-CompleteExecution is used to complete a process and to trigger any pending webhook callbacks.
+CompleteExecution is used to complete a request and to trigger any pending webhook callbacks.
 
 POST Request Object:
 
