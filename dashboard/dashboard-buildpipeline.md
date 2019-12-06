@@ -36,7 +36,7 @@ Add a PowerShell task to the pipeline and name it **Pull Dashboard**, then point
 Copy/paste the following arguments for the script:
 
 ```powershell
--StorageAccountName "$(Invictus.Installation.StorageAccount.Name)" -StorageSasToken  "$(Invictus.Installation.StorageAccount.Framework.SasToken)" -StorageContainerName "framework" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta $False
+-StorageAccountName "$(Invictus.Installation.StorageAccount.Name)" -StorageSasToken  "$(Invictus.Installation.StorageAccount.Dashboard.SasToken)" -StorageContainerName "dashboard" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta $False
 ```
 
 or configure it with these:
