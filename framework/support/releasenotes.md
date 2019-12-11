@@ -8,7 +8,7 @@ _Release date: 2019-12-11_
 
 > Features:
 
-* Added a new connector: TimeSequencer
+* Added a new connector: [TimeSequencer](../components/timesequencer.md)
 * New [installation procedure](../installation/framework-installation.md)
 
 ## v2.3.2
