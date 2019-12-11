@@ -10,8 +10,8 @@ The full description of the architecture (including diagrams and service names) 
 
 The full release and deployment procedure is described in this section.
 
-- [Dashboard](./dashboard/dashboard.md)
-- [Framework](./framework/framework.md)
+- [Dashboard](dashboard/installation/dashboard-installation.md)
+- [Framework](framework/installation/framework-installation.md)
 
 ## Invictus components documentation
 
