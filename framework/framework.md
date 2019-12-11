@@ -16,3 +16,7 @@ Invictus for Azure currently offers the following components:
 * Matrix
 * Transco
 * [Time sequencer](components/timesequencer.md)
+
+## Release Notes
+
+The release notes for the framework can be found [here](support/releasenotes.md)
