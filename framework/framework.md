@@ -1,7 +1,18 @@
+[home](../README.md)
+
 # Framework
 
-tba
+todo: add description about the framework
 
 ## Installing the framework
 
-Follow [this guide](framework-installation.md) to setup your build and release pipelines in DevOps.
+Follow [this guide](installation/framework-installation.md) to setup your build and release pipelines in DevOps.
+
+## Components
+
+Invictus for Azure currently offers the following components:
+
+* Publish and Subscribe
+* Matrix
+* Transco
+* [Time sequencer](components/timesequencer.md)

@@ -1,3 +1,5 @@
+[home](../README.md)
+
 # Invictus for Azure Architecture Diagram
 
 ![Architecture diagram](../images/ifa-architecture-diagram.png "Invictus architecture diagram")
@@ -6,14 +8,15 @@
 
 The above components can be mainly split into 3 categories.
 
-1. Framework
-Consists of PubSubAPI, TranscoAPI, and MatrixAPI. These are the services which expose the functionality of each component, they are mainly used with LogicApps to execute the functions they expose.
+* **Framework**
 
-2. Frontend
-Mainly consists of the database which is used to monitor all flows that have been saved to the database and their status.
+   Consists of PubSubAPI, TranscoAPI, and MatrixAPI. These are the services which expose the functionality of each component, they are mainly used with LogicApps to execute the functions they expose.
 
-3. Backend
-The Backend which is mainly made up of the ImportJob, CacheImportJob, StoreImportJob, and FlowHandler. The ImportJob functions are used to listen on EventHub for all LogicApp executions, all data is then merged and finally pushed to the Database. The FlowHandler is used to handle Ignores, Resubmit and Resume requests for flows.
+* **Dashboard**
+
+  * *Frontend*: Mainly consists of the database which is used to monitor all flows that have been saved to the database and their status.
+
+  * *Import*: The import which is mainly made up of the ImportJob, CacheImportJob, StoreImportJob, and FlowHandler. The ImportJob functions are used to listen on EventHub for all LogicApp executions, all data is then merged and finally pushed to the Database. The FlowHandler is used to handle Ignores, Resubmit and Resume requests for flows.
 
 ## Usage of components
 

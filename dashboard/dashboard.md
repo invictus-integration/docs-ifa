@@ -1,7 +1,9 @@
+[home](../README.md)
+
 # Dashboard
 
 tba
 
 ## Installing the dashboard
 
-Follow [this guide](dashboard-installation.md) to setup your build and release pipelines in DevOps.
+Follow [this guide](installation/dashboard-installation.md) to setup your build and release pipelines in DevOps.
