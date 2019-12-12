@@ -12,7 +12,7 @@ Follow [this guide](installation/framework-installation.md) to setup your build 
 
 Invictus for Azure currently offers the following components:
 
-* Publish and Subscribe
+* [Publish and Subscribe](components/pubsub.md)
 * Matrix
 * Transco
 * [Time sequencer](components/timesequencer.md)
