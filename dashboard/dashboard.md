@@ -17,3 +17,4 @@ The release notes for the dashboard can be found [here](support/releasenotes.md)
 The following documentation pages are related to the use of the dashboard and can help you set up or troubleshoot.
 
 * [Flow Handler](flowhandler.md): How resume/resubmit is handled.
+* [Import Job](importjob.md): Detailed information on the import job.
