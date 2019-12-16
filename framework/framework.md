@@ -16,7 +16,7 @@ Invictus for Azure currently offers the following components:
 
 * [Publish and Subscribe](components/pubsub.md)
 * [Matrix](components/matrix.md)
-* Transco
+* [Transco](components/transco.md)
 * [Time sequencer](components/timesequencer.md)
 
 ## Release Notes
