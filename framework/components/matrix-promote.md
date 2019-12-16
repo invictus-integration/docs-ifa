@@ -89,7 +89,7 @@ To test this Logic App and ensure your API is functioning
 7. Post the Sample request below to your Logic App
 8. You should get the response below, notice that "CountryName":"GBP" has been added to your context
 
-### MandatoryJson.xml
+MandatoryJson.xml
 
 ```xml
 <?xml version="1.0"?>  
@@ -104,7 +104,7 @@ To test this Logic App and ensure your API is functioning
 </XPathPromotorConfig>
 ```
 
-### Sample request
+Sample request
 
 ```json
 {  
@@ -120,7 +120,7 @@ To test this Logic App and ensure your API is functioning
 }
 ```
 
-### Expected Response
+Expected Response
 
 ```json
 {  
