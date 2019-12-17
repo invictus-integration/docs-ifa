@@ -1,8 +1,6 @@
 ![logo](images/invictus.png)
 
-<div align="center">
-For smart business monitoring and better control of your integrations.
-</div>
+**For smart business monitoring and better control of your integrations.**
 
 ## Architecture
 
