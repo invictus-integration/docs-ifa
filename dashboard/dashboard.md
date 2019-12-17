@@ -16,7 +16,7 @@ The following documentation pages are related on the use of the dashboard.
 
 * [Setup](setup.md): A one time setup procedure.
 * [Home page](home.md): An overview of the home page.
-* Folders & Flows: Information on folders and flows.
+* [Folders & Flows](foldersflows.md): Information on folders and flows.
 * Search: Information on the search functionality.
 * Message handling: Resubmit, resume and handle.
 * Settings: An overview of the settings page.
