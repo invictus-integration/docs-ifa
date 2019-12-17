@@ -15,7 +15,7 @@ Follow [this guide](installation/dashboard-installation.md) to setup your build 
 The following documentation pages are related on the use of the dashboard.
 
 * [Setup](setup.md): A one time setup procedure.
-* Home page: An overview of the home page.
+* [Home page](home.md): An overview of the home page.
 * Folders & Flows: Information on folders and flows.
 * Search: Information on the search functionality.
 * Message handling: Resubmit, resume and handle.
