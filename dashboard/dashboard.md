@@ -33,3 +33,7 @@ The following documentation pages are related to the backend of the dashboard an
 ## Release Notes
 
 The release notes for the dashboard can be found [here](support/releasenotes.md).
+
+## Frequently Asked Questions
+
+Visit the [Frequently Asked Questions](support/faq.md) page for more information and help in troubleshooting common issues.
