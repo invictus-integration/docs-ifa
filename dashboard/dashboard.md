@@ -10,13 +10,30 @@ Invictus™ Integration Dashboard is designed so that other integration solution
 
 Follow [this guide](installation/dashboard-installation.md) to setup your build and release pipelines in DevOps.
 
+## Frontend Documentation
+
+The following documentation pages are related on the use of the dashboard.
+
+* [Setup](setup.md): A one time setup procedure.
+* [Home page](home.md): An overview of the home page.
+* [Folders & Flows](foldersflows.md): Information on folders and flows.
+* [Search](search.md): Information on the search functionality.
+* [Message handling](messagehandling.md): Resubmit, resume and handle.
+* [Execution Tree](executiontree.md): Detail of flow execution.
+* [Settings](settings.md): An overview of the settings page.
+* [User management](usermanagement.md): More info on user management.
+
+## Backend Documentation
+
+The following documentation pages are related to the backend of the dashboard and can help you set up or troubleshoot.
+
+* [Flow Handler](flowhandler.md): How resume/resubmit is handled.
+* [Import Job](importjob.md): Detailed information on the import job.
+
 ## Release Notes
 
 The release notes for the dashboard can be found [here](support/releasenotes.md).
 
-## Related Documentation
+## Frequently Asked Questions
 
-The following documentation pages are related to the use of the dashboard and can help you set up or troubleshoot.
-
-* [Flow Handler](flowhandler.md): How resume/resubmit is handled.
-* [Import Job](importjob.md): Detailed information on the import job.
+Visit the [Frequently Asked Questions](support/faq.md) page for more information and help in troubleshooting common issues.
