@@ -20,7 +20,7 @@ The following documentation pages are related on the use of the dashboard.
 * [Search](search.md): Information on the search functionality.
 * Message handling: Resubmit, resume and handle.
 * [Settings](settings.md): An overview of the settings page.
-* User management: More info on user management.
+* [User management](usermanagement.md): More info on user management.
 
 ## Backend Documentation
 
