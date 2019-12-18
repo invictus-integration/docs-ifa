@@ -19,6 +19,7 @@ The following documentation pages are related on the use of the dashboard.
 * [Folders & Flows](foldersflows.md): Information on folders and flows.
 * [Search](search.md): Information on the search functionality.
 * Message handling: Resubmit, resume and handle.
+* [Execution Tree](executiontree.md): Detail of flow execution.
 * [Settings](settings.md): An overview of the settings page.
 * [User management](usermanagement.md): More info on user management.
 
