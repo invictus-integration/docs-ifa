@@ -1,6 +1,6 @@
 [home](../../README.md) | [framework](../framework.md) | [framework installation](framework-installation.md)
 
-# Release Pipeline
+# Framework Release Pipeline
 
 The release pipeline will use the artifacts created from the build pipeline and publish this to the stage(s) you define. Each stage will deploy the resources to the Azure subscription and resource group you specify in the deployment tasks.
 
