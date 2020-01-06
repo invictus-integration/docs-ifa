@@ -1,4 +1,6 @@
-# Release Pipeline
+[home](../../README.md) | [dashboard](../dashboard.md) | [dashboard installation](dashboard-installation.md)
+
+# Dashboard Release Pipeline
 
 The release pipeline will use the artifacts created from the build pipeline and publish this to the stage(s) you define. Each stage will deploy the resources to the Azure subscription and resource group you specify in the deployment tasks.
 
@@ -10,7 +12,7 @@ Create a variable group named {prefix}.Invictus.{stage} for all the stages (envi
 
 Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
 
-> ![Library Security](../images/ifa-library-security.png)
+> ![Library Security](../../images/ifa-library-security.png)
 
 ## Release
 
@@ -30,7 +32,7 @@ Add a stage for each environment you wish to release to.
 - Don't forget to link the Infra variable group as well.
 - Allow the agent to access the OAuth token
 
-> ![Agent OAuth](../images/ifa-agent-oauth.png)
+> ![Agent OAuth](../../images/ifa-agent-oauth.png)
 
 Add an Azure PowerShell task to each stage. This task will take care of the following:
 
@@ -50,13 +52,14 @@ Use the following arguments for the fields of the azure powershell task:
 - **Script Arguments**
   - ArtifactsPath (mandatory): `$(ArtifactsPath)`
   - ArtifactsPathScripts (optional): uses ArtifactsPath when not specified.
-  - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` 
+  - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName (mandatory): name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName (mandatory): The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
+- **Azure PowerShell Version**: Latest installed version
 
 The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-servicePlanSkuName "S1"` to the arguments of the powershell script.
 

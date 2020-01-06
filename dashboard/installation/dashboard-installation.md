@@ -1,3 +1,5 @@
+[home](../../README.md) | [dashboard](../dashboard.md)
+
 # Dashboard Installation
 
 This document will guide you through the setup of your build and release pipeline using Azure DevOps. The dashboard resources are stored on Azure blob storage, so the first thing you will need is access to that storage.
@@ -15,3 +17,7 @@ Follow [this guide](dashboard-buildpipeline.md) to setup your build in Azure Dev
 ## Release Pipeline
 
 Follow [this guide](dashboard-releasepipeline.md) to setup your release in Azure DevOps.
+
+## Migration Guide
+
+If you're migrating from a version previous to version 4.7.0 you might find our [migration guide](dashboard-migration.md) helpful.

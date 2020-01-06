@@ -1,25 +1,18 @@
-# Invictus for Azure - Integration
+![logo](images/invictus.png)
 
-All relevant product documentation for Invictus for Azure can be found here.
+**For smart business monitoring and better control of your integrations.**
 
 ## Architecture
 
-The full description of the architecture (including diagrams and service names) can be found [here](./architecture/architecture-diagram.md "here").
+The full description of the architecture (including diagrams and service names) can be found [here](architecture/architecture-diagram.md "here").
 
-## Install and deploy Invictus for Azure
+## Dashboard
 
-The full release and deployment procedure is described in this section.
+Documentation on the dashboard can be found [here](dashboard/dashboard.md).
 
-- [Dashboard](./dashboard/dashboard.md)
-- [Framework](./framework/framework.md)
+## Framework
 
-## Invictus components documentation
-
-The documentation for the components can be found in this section
-
-- Pub-Sub
-- Matrix
-- Transco
+Documentation on the framework can be found [here](framework/framework.md).
 
 ## Related documentation
 
@@ -28,4 +21,4 @@ Some of these documentations are only accessible to authorized customers.
 
 - Invictus methodology (private)
 - Invictus jumpstart templates (private)
-- Invictus for BizTalk
+- [Invictus for BizTalk](http://docs.invictus-integration.com/invictus-for-biztalk)

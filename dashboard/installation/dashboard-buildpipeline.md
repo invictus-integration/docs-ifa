@@ -1,4 +1,6 @@
-# Build Pipeline
+[home](../../README.md) | [dashboard](../dashboard.md) | [dashboard installation](dashboard-installation.md)
+
+# Dashboard Build Pipeline
 
 The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded [here](https://invictusreleases.blob.core.windows.net/devops/prod/Invictus-GetSources.ps1?st=2019-07-04T04%3A23%3A07Z&se=2050-07-05T04%3A23%3A00Z&sp=rl&sv=2017-07-29&sr=b&sig=QBgU4yCVEXeV4CHWlaA9fgTYO6y88hnFlYhsmEJVM1c%3D). Make sure to include it in your Git repository (e.g. in the deploy folder).
 
@@ -16,7 +18,7 @@ Once you have the variable group, we can now proceed to creating the build pipel
 
 ## Create the build pipeline
 
-Create a new build pipeline, starting with an empty template with this naming: {prefix}.Invictus.Framework.
+Create a new build pipeline, starting with an empty template with this naming: {prefix}.Invictus.Dashboard.
 
 Select 'Azure Pipelines' as the agent pool and 'vs2017-win2016' as the agent specification.
 
@@ -31,18 +33,18 @@ The build will have only 2 tasks:
 
 ### Powershell task
 
-Add a PowerShell task to the pipeline and name it **Pull Framework**, then point the script path to the powershell you downloaded at the beginning of this guide.
+Add a PowerShell task to the pipeline and name it **Pull Dashboard**, then point the script path to the powershell you downloaded at the beginning of this guide.
 
 Copy/paste the following arguments for the script:
 
 ```powershell
--StorageAccountName "$(Invictus.Installation.StorageAccount.Name)" -StorageSasToken  "$(Invictus.Installation.StorageAccount.Framework.SasToken)" -StorageContainerName "framework" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta $False
+-StorageAccountName "$(Invictus.Installation.StorageAccount.Name)" -StorageSasToken  "$(Invictus.Installation.StorageAccount.Dashboard.SasToken)" -StorageContainerName "dashboard" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta $False
 ```
 
 or configure it with these:
 
 - **StorageAccountName** (mandatory): `$(Invictus.Installation.StorageAccount.Name)`.
-- **StorageSasToken** (mandatory): `$(Invictus.Installation.StorageAccount.Framework.SasToken)`.
+- **StorageSasToken** (mandatory): `$(Invictus.Installation.StorageAccount.Dashboard.SasToken)`.
 - **StorageContainerName** (mandatory): framework
 - **Version** (optional): by default this will get the latest version of the resources, but you can override this by specifying the version nr here.
 - **SaveLocation** (mandatory): `$(build.artifactstagingdirectory)`
@@ -50,6 +52,8 @@ or configure it with these:
 
 ### Publish Artifacts task
 
-Add a Publish build artifacts task to the pipeline and name it **Publish Framework**, use `$(Build.ArtifactStagingDirectory)` as the path to publish (or the SaveLocation argument you specified in the previous task).
+Add a Publish build artifacts task to the pipeline and name it **Publish Dashboard**, use `$(Build.ArtifactStagingDirectory)` as the path to publish (or the SaveLocation argument you specified in the previous task).
 
-Use **Framework** as the artifact name.
+Use **Dashboard** as the artifact name.
+
+Once you've saved the build pipeline you can create the [release pipeline](dashboard-releasepipeline.md).
