@@ -20,6 +20,10 @@ If you want to perform a mass action on all messages at once, then you can check
 
 ![mass handling](../images/dsb-masshandling.gif)
 
+## Custom Resume and Resubmit
+
+It's possible to use a custom resubmit and resume, see [this page](custom-resumeresubmit.md) for more infromation.
+
 ## Resubmit
 
 Resubmit will trigger the execution of any corresponding flow, even completed ones. When Resubmit is triggered, the first Logic App in the chain(execution tree) is resubmitted on Azure thus retriggering the whole flow.
