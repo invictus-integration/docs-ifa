@@ -17,3 +17,7 @@ Follow [this guide](framework-buildpipeline.md) to setup your build in Azure Dev
 ## Release Pipeline
 
 Follow [this guide](framework-releasepipeline.md) to setup your release in Azure DevOps.
+
+## Migration Guide
+
+If you're migrating from a version previous to version 2.4.0 you might find our [migration guide](framework-migration.md) helpful.
