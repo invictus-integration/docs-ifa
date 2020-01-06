@@ -51,17 +51,18 @@ Use the following arguments for the fields of the azure powershell task:
 - **Script Arguments**
   - ArtifactsPath (mandatory): `$(ArtifactsPath)`
   - ArtifactsPathScripts (optional): uses ArtifactsPath when not specified.
-  - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` 
+  - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName (mandatory): name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName (mandatory): The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
+- **Azure PowerShell Version**: Latest installed version
 
 The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-servicePlanSkuName "S1"` to the arguments of the powershell script.
 
-> Note that **resourcePrefix** and **accessPolicies** are overridden by the script, so no need to include that in the arguments.
+> Note that **accessPolicies** are overridden by the script, so no need to include that in the arguments.
 
 Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
 
