@@ -1,4 +1,4 @@
-[home](../../README.md) | [dashboard](../dashboard.md)
+[home](../../README.md) | [dashboard](../dashboard.md) | [dashboard installation](dashboard-installation.md)
 
 # Dashboard Migration Guide
 

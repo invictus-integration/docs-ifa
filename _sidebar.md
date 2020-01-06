@@ -7,6 +7,7 @@
   * [Installation](/dashboard/installation/dashboard-installation.md)
     * [Build Pipeline](/dashboard/installation/dashboard-buildpipeline.md)
     * [Release Pipeline :rocket:](/dashboard/installation/dashboard-releasepipeline.md)
+    * [Migration Guide](/dashboard/installation/dashboard-migration.md)
   * Frontend Documentation
     * [Setup](/dashboard/setup.md)
     * [Home page](/dashboard/home.md)
@@ -27,6 +28,7 @@
   * [Installation](/framework/installation/framework-installation.md)
     * [Build Pipeline](/framework/installation/framework-buildpipeline.md)
     * [Release Pipeline :rocket:](/framework/installation/framework-releasepipeline.md)
+    * [Migration Guide](/framework/installation/framework-migration.md)
   * Components
     * [Publish and Subscribe](/framework/components/pubsub.md)
     * [Matrix](/framework/components/matrix.md)

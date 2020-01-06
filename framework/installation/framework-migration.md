@@ -1,4 +1,4 @@
-[home](../../README.md) | [dashboard](../dashboard.md)
+[home](../../README.md) | [framework](../framework.md) | [framework installation](framework-installation.md)
 
 # Framework Migration Guide
 
