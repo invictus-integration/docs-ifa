@@ -24,6 +24,8 @@ Use the Artifacts from the build pipeline as a source for the release. Name the 
 
 Add a variable **ArtifactsPath** to the release with scope 'Release' and a value of `$(System.DefaultWorkingDirectory)/InvictusFramework/Framework`.
 
+Please Note that a current bug in the Az library might cause the release to fail for new installation. Simply re-deploy the failed release to resolve the issue.
+
 ### Stages
 
 Add a stage for each environment you wish to release to.
