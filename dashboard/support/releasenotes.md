@@ -13,9 +13,9 @@ _Release date: 2019-11-20_
 * 13307 - Add source column in workflowevents table - to show/hide the Details link from clickthrough if it's logicapps or generic. (Azure)
 * 12573 - Custom resume/resubmit when creating a flow (Advanced Settings) - (Azure)
 * Track messages from any source: implementation of two separate functions, a generic import job that includes a generic receiver over * EventHub and an HTTP receiver endpoint.
-	Support to run inside a virtual network (VNET)	
+* Support to run inside a virtual network (VNET)	
 * Import Job upgraded to Functions v2
-*Simplified versioning and improved release procedure using a PowerShell script
+* Simplified versioning and improved release procedure using a PowerShell script
 
 ---
 
