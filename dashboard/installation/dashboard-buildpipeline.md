@@ -45,7 +45,7 @@ or configure it with these:
 
 - **StorageAccountName** (mandatory): `$(Invictus.Installation.StorageAccount.Name)`.
 - **StorageSasToken** (mandatory): `$(Invictus.Installation.StorageAccount.Dashboard.SasToken)`.
-- **StorageContainerName** (mandatory): framework
+- **StorageContainerName** (mandatory): dashboard
 - **Version** (optional): by default this will get the latest version of the resources, but you can override this by specifying the version nr here.
 - **SaveLocation** (mandatory): `$(build.artifactstagingdirectory)`
 - **UseBeta** (optional): by default this is false and will look for the resources in the prod folder, when set to true it will use the resources from the staging folder.
