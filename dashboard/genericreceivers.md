@@ -84,6 +84,6 @@ Error:Code | The code value within the Error Object | String |   | False
 Error:Message | The message value within the Error Object | String |   | False
 
 ## Current backend architecture
-![ifa-architecture-diagram](../images/ifa-architecture-diagram.png)
+![ifa-architecture-diagram](../images/receiversarchitecture.png)
 
 
