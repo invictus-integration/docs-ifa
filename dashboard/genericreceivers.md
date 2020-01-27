@@ -46,15 +46,15 @@ Using the above JSON schema, create a message and fill in the required details. 
 
 Using the above JSON schema, send a request with the Status started. This is required since this event will be used to retrieve the start time.
 
-![step three](../images/setup-step3.png)
+![example1](../images/genericreceiver1.png)
 
 To Complete the event send a request with either Completed or Failed Status
 
-![step three](../images/setup-step3.png)
+![example2](../images/genericreceiver2.png)
 
 As you can see the above examples have only 1 entry in the execution tree, to insert multiple entries for the same event simply change the StepId.
 
-![step three](../images/setup-step3.png)
+![example3](../images/genericreceiver3.png)
 
 Name | Description | Type | Default Values | IsRequired
 -- | -- | -- | -- | --
@@ -84,6 +84,6 @@ Error:Code | The code value within the Error Object | String |   | False
 Error:Message | The message value within the Error Object | String |   | False
 
 ## Current backend architecture
-![step three](images/setup-step3.png)
+![ifa-architecture-diagram](images/ifa-architecture-diagram.png)
 
 
