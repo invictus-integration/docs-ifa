@@ -62,6 +62,7 @@ Use the following arguments for the fields of the azure powershell task:
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
 - **Azure PowerShell Version**: Latest installed version
+- Under the Advanced section enable: **Use Powershell Core**. Without this option the deployment will fail.
 
 The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-servicePlanSkuName "S1"` to the arguments of the powershell script.
 
