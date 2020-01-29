@@ -1,6 +1,12 @@
+The purpose of these receivers is to allow developers to add entries to the dashboard manually. The first version of IfA was specifically designed for LogicApps, which post Diagnostic Logs to EventHub, which are then processed by the ImportJob and inserted into the Database.
+
 # Generic Receiver
  
-The purpose of the Generic Receiver is to allow developers to add entries to the dashboard manually. The first version of IfA was specifically designed for LogicApps, which post Diagnostic Logs to EventHub, which are then processed by the ImportJob and inserted into the Database. This receiver will use the same technology but will be listening on a different eventhub.
+The Generic receiver will use the same technology but will be listening on the eventhub ending with "-genericreceiver-evhb". The below JSON schema is expected to generate events.
+
+# HTTP Receiver
+
+The Http receiver epxoses it's functionality through the function ending with "-httpreceiver". To send requests to this function simply find the function in Azure and retreive the url from there. The below JSON schema is expected to generate events.
 
 ## Json Schema
 
