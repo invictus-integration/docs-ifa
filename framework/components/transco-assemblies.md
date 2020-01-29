@@ -17,6 +17,18 @@ Create an xml file with the xml below and upload it to the **extensions** subfol
     <ExtensionObject Namespace="http://tvh.demos.sharedFunctions" AssemblyName="TVH.Sample, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" ClassName="TVH.Sample.Common" /> 
 </ExtensionObjects>
 ```
+If your assembly has **Dependencies** which are required during execution then add them to the ExtensionObject ex:
+```xml
+<ExtensionObjects> 
+	<ExtensionObject Namespace="http://tvd.dependency.sharedFunctions" AssemblyName="TVH.Dependency, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" ClassName="TVH.Dependency.Common">
+		<DependenciesObject>
+			<DependencyObject AssemblyFileName="Dependency.dll" />
+			<DependencyObject AssemblyFileName="DataDependency.dll" />
+		</DependenciesObject>
+	</ExtensionObject>
+</ExtensionObjects>
+```
+Notice the **DependenciesObject** and the **DependencyObject**. Ensure that the Assemblies are uploaded to storage inside the assemblies folder and that the exact name for the dll matches the one in storage. Note: Only add the required dependencies as adding all dependencies can greatly reduce the execution speed since each dll has to be downloaded from storage.
 
 ## Assemblies
 
