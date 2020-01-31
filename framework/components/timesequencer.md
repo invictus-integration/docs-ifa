@@ -28,7 +28,7 @@ WaitForExecution should be used by a Webhook action in a LogicApp. This function
 
 POST Request Object:
 
-```json
+```
 {
   "callbackUri": "@{listCallbackUrl()}", //This property is exposed by the Webhook LogicApp action, this value should be supplied to the Timesequencer
   "instanceId": "[STRING]", //The ID assosited to the request. SequenceName and InstanceId form the PrimaryKey for the request
@@ -43,7 +43,7 @@ CompleteExecution is used to complete a request and to trigger any pending webho
 
 POST Request Object:
 
-```json
+```
 {
  "instanceId": "[STRING]", //The ID assosited to the request. SequenceName and InstanceId form the PrimaryKey for the request
  "sequenceName": "[STRING]"The ID used to group requests togheter, //SequenceName and InstanceId form the PrimaryKey for the request
