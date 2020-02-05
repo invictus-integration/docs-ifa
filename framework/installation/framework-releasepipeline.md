@@ -62,6 +62,8 @@ Use the following arguments for the fields of the azure powershell task:
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
 - **Azure PowerShell Version**: Latest installed version
 
+**NOTE:** When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
+
 The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-servicePlanSkuName "S1"` to the arguments of the powershell script.
 
 > Note that **accessPolicies** are overridden by the script, so no need to include that in the arguments.
