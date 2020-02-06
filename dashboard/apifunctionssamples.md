@@ -1,8 +1,10 @@
-#API Functions
+# API Functions
 
 The below script has a sample of the most used/requested API functions. These can be called externally to execute functionality without having to go through the Dashboard or Database. 
 
 As a prerequisite, the Dashboard's setup has to be completed since an Admin role user is required to trigger the OAuth call. The below script can be executed multiple times to generate some sample User/Folders/Flows. You can then extract the parts you need to create your own customized script.
+
+## Sample Script
 
 ```
 ##SET THE BELOW VARIABLES
