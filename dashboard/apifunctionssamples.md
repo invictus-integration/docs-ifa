@@ -43,6 +43,18 @@ $createSubFolderJson = '{"friendlyName":"'+$SubFolderName+'","parentFolderId":'+
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
 $createSubFolderRespone = Invoke-WebRequest -Uri $createFolderUrl -Method POST -Body $createSubFolderJson -Headers $headers
 
+##GET ALL FOLDERS
+$headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
+$getFoldersResponse = Invoke-WebRequest -Uri $createFolderUrl -Method GET -Headers $headers
+$getFoldersObject = ConvertFrom-Json –InputObject $getFoldersResponse.Content
+
+##GET FOLDER BY ID using first item from $getFolderObject[0].id
+$getFolderByIdUrl = $createFolderUrl+'/'+$getFolderObject[0].id
+Write-OutPut $getFolderByIdUrl
+$headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
+$getFolderResponse = Invoke-WebRequest -Uri $getFolderByIdUrl -Method GET -Headers $headers
+$getFolderObject = ConvertFrom-Json –InputObject $getFolderResponse.Content
+
 ##ADD FLOW
 $FlowName = "Flow" + $randomValue
 $createFlowJson = '{"name":"'+$FlowName+'","mappings":[{"workFlowName":"","version":"","domain":"","service":"","action":"","state":0,"id":0}],"properties":[],"flowTypeHttpHeadersResubmit":[],"flowTypeHttpHeadersResume":[],"isCustomResubmitEnabled":false,"isCustomResumeEnabled":false,"customResubmitUrl":null,"customResumeUrl":null,"flowTypeHttpHeaders":[],"folderId":'+$folderId+',"connectedDashboard":false}'
