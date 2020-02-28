@@ -4,7 +4,7 @@
 
 ## Version 2.4.2
 
-_Release date: 2020-02-06_
+_Release date: 2020-02-19_
 
 > Features and improvements:
 
