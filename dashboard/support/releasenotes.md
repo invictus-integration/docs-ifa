@@ -2,6 +2,17 @@
 
 # Dashboard Release Notes
 
+## Version 4.7.3
+
+_Release date: 2020-03-03_
+
+> Features and improvements:
+
+* Fixed Deploy.ps1, webApp names were hardcoded
+* Changed datatype from int to Big int for the properties table
+
+---
+
 ## Version 4.7.2
 
 _Release date: 2020-02-19_
