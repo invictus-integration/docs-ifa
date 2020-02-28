@@ -2,6 +2,16 @@
 
 # Dashboard Release Notes
 
+## Version 4.7.2
+
+_Release date: 2020-02-19_
+
+> Features and improvements:
+
+* ARM template region fix
+* TriggerCleanup SPR bug - increased table name size to 500
+
+
 ## Version 4.7.1
 
 _Release date: 2020-02-06_
