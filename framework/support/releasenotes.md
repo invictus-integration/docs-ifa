@@ -2,6 +2,20 @@
 
 # Framework Release Notes
 
+## Version 2.4.1
+
+_Release date: 2020-02-06_
+
+> Features and improvements:
+
+* Transco Custom Assemblies Dependency support
+
+Note: Please update the Deploy Task in your release pipeline by enabling "Use Powershell Core"
+ 
+NOTE: When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
+
+---
+
 ## v2.4.0
 
 _Release date: 2019-12-11_
