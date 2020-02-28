@@ -2,6 +2,15 @@
 
 # Framework Release Notes
 
+## Version 2.4.2
+
+_Release date: 2020-02-06_
+
+> Features and improvements:
+
+* Added caching for Transco to improve performance 
+* Fixed hardcoded regions inside the ARM template
+
 ## Version 2.4.1
 
 _Release date: 2020-02-06_
