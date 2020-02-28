@@ -4,7 +4,7 @@
 
 ## Version 4.7.1
 
-_Release date: 2020-01-13_
+_Release date: 2020-02-06_
 
 > Features and improvements:
 
