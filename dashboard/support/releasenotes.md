@@ -8,7 +8,7 @@ _Release date: 2020-02-19_
 
 > Features and improvements:
 
-* ARM template region fix
+* Fixed hardcoded regions inside the ARM template
 * TriggerCleanup SPR bug - increased table name size to 500
 
 
