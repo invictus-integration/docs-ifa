@@ -9,6 +9,9 @@ _Release date: 2020-03-03_
 > Features and improvements:
 
 * Fixed Deploy.ps1, webApp names were hardcoded
+
+> Bug Fixes:
+
 * Changed datatype from int to bigint for the properties table
 
 ---
