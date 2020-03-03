@@ -12,7 +12,7 @@ _Release date: 2020-03-03_
 * Added missing usings in Transco code to improve garbage collection
 * Optimized Transco to reduce the XSLT Transform duration
 
-> Bug Fix:
+> Bug Fixes:
 
 * Fixed Deploy.ps1, webApp names were hardcoded
 
