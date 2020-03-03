@@ -8,10 +8,13 @@ _Release date: 2020-03-03_
 
 > Features and improvements:
 
-* Fixed Deploy.ps1, webApp names were hardcoded
 * Updated Transco cache to expire without requiring a restart
 * Added missing usings in Transco code to improve garbage collection
 * Optimized Transco to reduce the XSLT Transform duration
+
+> Bug Fix:
+
+* Fixed Deploy.ps1, webApp names were hardcoded
 
 ## Version 2.4.2
 
