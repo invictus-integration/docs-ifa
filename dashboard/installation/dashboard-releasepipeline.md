@@ -85,7 +85,7 @@ If you are planning to enable AAD for the dashboard you will need to set the fol
 
 The option to login with AAD in the dashboard will only be possible if the above values are supplied.
 
-**ARM Template Parameters**
+## ARM Template Parameters
 
 The below table lists the parameters accepted by the ARM template.
 
