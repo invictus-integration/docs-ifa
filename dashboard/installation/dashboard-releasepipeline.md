@@ -163,5 +163,5 @@ The below table lists the parameters accepted by the ARM template.
 |storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |sqlServerSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|azureActiveDirectoryClientId|No|[]|Client AAD ID required to enable AAD for dashboard|
-|azureActiveDirectoryTenantId|No|[]|Tenant AAD ID required to enable AAD for dashboard|
+|azureActiveDirectoryClientId|No|&nbsp;|Client AAD ID required to enable AAD for dashboard|
+|azureActiveDirectoryTenantId|No|&nbsp;|Tenant AAD ID required to enable AAD for dashboard|
