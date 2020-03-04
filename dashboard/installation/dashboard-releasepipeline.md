@@ -76,6 +76,15 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
 ```
 
+##Azure Active Directory
+
+If you are planning to enable AAD for the dashboard you will need to set the following parameters as arguments within the Deploy Task
+
+* AzureActiveDirectoryClientId
+* AzureActiveDirectoryTenantId
+
+The option to login with AAD in the dashboard will only be possible if the above values are supplied.
+
 **ARM Template Parameters**
 
 The below table lists the parameters accepted by the ARM template.
