@@ -76,7 +76,7 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
 ```
 
-##Azure Active Directory
+**Azure Active Directory**
 
 If you are planning to enable AAD for the dashboard you will need to set the following parameters as arguments within the Deploy Task
 
