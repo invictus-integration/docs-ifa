@@ -15,6 +15,10 @@ First, go to "Azure Active Directory" and from the left side menu click on the "
 
 ![Access Tokens and ID Tokens ](../images/dashboard/azuread2.JPG)
 
+Now go to the "Manifest" link from the left side menu and in the replyUrlsWithType node, insert the your url from which you are going to login plus * (wildcard), like the picture underneath.
+
+![Reply Url Wildcard ](../images/dashboard/azuread6.JPG)
+
 Now go to "Authentication" page from the left side menu and check the 2 check boxes which are "Access Tokens" and "ID Tokens" and click on Save button from the top.
 
 ![Create owner](../images/dashboard/azuread3.JPG)
