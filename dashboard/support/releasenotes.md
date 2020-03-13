@@ -2,6 +2,23 @@
 
 # Dashboard Release Notes
 
+## Version 4.7.5
+
+_Release date: 2020-03-13_
+
+> Features and improvements:
+
+* Azure Active Directory Login Support added to the Dashboard
+* Flows are now sorted alphabetically in the menu
+* Added Scope to Reindex SPR in DataFactory
+* Added SQL Serverless support to the Dashboard ARM template
+
+> Bug Fixes:
+
+* Hidden incorrectly displayed export button in the Dashboard
+
+---
+
 ## Version 4.7.4
 
 _Release date: 2020-03-03_

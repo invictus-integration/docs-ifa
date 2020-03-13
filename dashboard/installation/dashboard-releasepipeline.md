@@ -76,7 +76,24 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
 ```
 
-**ARM Template Parameters**
+## Azure Active Directory
+
+If you are planning to enable AAD for the dashboard you will need to set the following parameters as **arguments** within the **Deploy Powershell Task**
+
+* AzureActiveDirectoryClientId
+* AzureActiveDirectoryTenantId
+
+The option to login with AAD in the dashboard will only be possible if the above values are supplied.
+
+## Enable Sql Serverless
+
+To deploy the Dashboard database(coditcip) as Sql Servleress simply pass the value for the following paramter "isDashboardDatabaseServerless" as 1. The following parameters can be passed to the deployment but have default values set.
+
+* dashboardServerlessDatabaseMaxVCores
+* dashboardServerlessDatabaseSize
+* dashboardServerlessDatabaseaAutoPauseDelay
+
+## ARM Template Parameters
 
 The below table lists the parameters accepted by the ARM template.
 
@@ -154,3 +171,10 @@ The below table lists the parameters accepted by the ARM template.
 |storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |sqlServerSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|azureActiveDirectoryClientId|No|&nbsp;|Client AAD ID required to enable AAD for dashboard|
+|azureActiveDirectoryTenantId|No|&nbsp;|Tenant AAD ID required to enable AAD for dashboard|
+|isDashboardDatabaseServerless|No|0|If set to 1 the dashboard database, coditcip is deployed as serverless|
+|dashboardServerlessDatabaseSize|No|21474836480|Size in bytes for Dashboard Serverless database|
+|dashboardServerlessDatabaseMaxVCores|No|1|Number of max cores allowed for the Dashboard Serverless database|
+|dashboardServerlessDatabaseaAutoPauseDelay|No|1440|The timeout before the database goes dormant in minutes|
+
