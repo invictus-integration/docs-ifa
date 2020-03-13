@@ -2,7 +2,7 @@
 
 # Dashboard Release Notes
 
-## Version 4.7.3
+## Version 4.7.4
 
 _Release date: 2020-03-03_
 
