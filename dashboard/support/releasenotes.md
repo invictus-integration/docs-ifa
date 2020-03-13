@@ -4,7 +4,7 @@
 
 ## Version 4.7.5
 
-_Release date: 2020-03-12_
+_Release date: 2020-03-13_
 
 > Features and improvements:
 
@@ -18,7 +18,6 @@ _Release date: 2020-03-12_
 * Hidden incorrectly displayed export button in the Dashboard
 
 ---
-
 
 ## Version 4.7.4
 
