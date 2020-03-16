@@ -76,3 +76,12 @@ Users can choose to handle (ignore) a message, normally this could be the case w
 When a message has been set to be ignore, its status will change and show as follows
 
 ![handled status](../images/dsb-handledstatus.png)
+
+
+## Export
+
+Users can select and export any of the messages to a CSV file. There are two options to export the messages, either exporting the selected properties or all the properties.
+
+When Users click the "Export All to CSV", all the available properties for their messages will be exported.
+
+On the other hand, if the users click the "Export Selected to CSV", only the selected properties from the properties dropdown at the top of the messages list will be exported.
