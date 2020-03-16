@@ -33,7 +33,7 @@ The above components can be mainly split into 3 categories.
 
 ### CoditCip
 
-D- atabase for Frontend, data is pushed by StoreImportJob
+- Database for Frontend, data is pushed by StoreImportJob
 
 ### Azure Event Hubs
 
