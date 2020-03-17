@@ -20,30 +20,30 @@ The above components can be mainly split into 3 categories.
 
 ## Usage of components
 
-### ServiceBus
+### Azure Service Bus
 
-Used by PubSub API to push messages to Subscriptions
-Used by ImportJob to push data to CacheImportJob after splitting data by ClientTrackingId
-Used by Dashboard to queue requests for Ignore/Resume/Resubmit which are then picked up by the Flow Handler
+- Used by PubSub API to push messages to Subscriptions
+- Used by ImportJob to push data to CacheImportJob after splitting data by ClientTrackingId
+- Used by Dashboard to queue requests for Ignore/Resume/Resubmit which are then picked up by the Flow Handler
 
-### Storage
+### Azure Storage
 
-Used by PubSub to create Blobs for ClaimCheck pattern
-Used by CacheImportJob to all events received from EventHub as a temporary cache
+- Used by PubSub to create Blobs for ClaimCheck pattern
+- Used by CacheImportJob to all events received from EventHub as a temporary cache
 
 ### CoditCip
 
-Database for Frontend, data is pushed by StoreImportJob
+- Database for Frontend, data is pushed by StoreImportJob
 
-### EventHubs
+### Azure Event Hubs
 
-Diagnostic settings for LogicApps that are tracked is pushed there
-The ImportJob listens on this Eventhub and reads these events which are then processed and mapped to a flow
+- Diagnostic settings for LogicApps that are tracked is pushed there
+- The ImportJob listens on this Eventhub and reads these events which are then processed and mapped to a flow
  
-### AppInsights
+### Azure Application Insights
 
-All APIs, WebApps, and Functions point to a single AppInsights which contains all traces and logs that were created
+- All APIs, WebApps, and Functions point to a single AppInsights which contains all traces and logs that were created
  
-### AzureKeyVault
+### Azure Key Vault
 
-Used to store passwords for Database, API keys, and Transco Connectionstring, etc
+- Used to store passwords for Database, API keys, and Transco Connectionstring, etc
