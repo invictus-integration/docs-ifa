@@ -59,6 +59,8 @@ Note: Please update the Deploy Task in your release pipeline by enabling "Use Po
  
 Important: Please remember that you will need to stop your "triggering" logicapps before releasing this version so that any data in the pipeline is cleared. The reason for this is because since we are switching to Blob there might be some data loss. The ImportJob is now much more stable and able to handle more load as Table storage starts to suffer when load increases and connections start running out. If you are ok with some data loss then you can just proceed with the installation normally. 
 
+Important: All failed flow messages should be re-triggered before the release. 
+
 NOTE: When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
 
 ---
