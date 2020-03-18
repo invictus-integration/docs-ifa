@@ -1,4 +1,4 @@
-[home](../README.md) | [dashboard](dashboard.md) | [User Management](usermanagement.md)
+[home](../README.md) | [dashboard](dashboard.md)
 
 # Dashboard User Management
 
@@ -6,32 +6,40 @@
 
 To access the user management screen you have to click on the icon in the upper right corner.
 
-![user mgmt](../images/dashboard/userman_1.JPG)
+![user mgmt](../images/dsb-usericon.png)
 
 ### Create a user
 
 By default, the only available user after installing the dashboard is the user that installed it, this user is an admin.
 
-Click on the "Add User" button.
+Click on the "Add user" button.
 
-![user mgmt](../images/dashboard/userman_2.JPG)
+![user mgmt](../images/dsb-useractions.png)
 
-Specify all the user information + user role (System Admin or Non Admin). The difference between them is that System Admin can do everything. From adding a user, deleting a user, adding flows, adding folders, edit flows etc... For Non Admin, the difference is that he cannot add users, delete users. He will be a normal user but then he can be a Folder Admin for a specific folder. We will go into more detail regarding the Folder Permissions in another documentation.
+Specify all the user information + user role (operator or admin)
 
-![user mgmt](../images/dashboard/userman_3.JPG)
+![user mgmt](../images/dsb-usercreate.png)
 
 ### Delete a user
 
 To delete a user click on the delete icon next to the user in the user list.
 
-![user mgmt](../images/dashboard/userman_4.JPG)
+![user mgmt](../images/dsb-userdelete.png)
 
-### Edit a user role
+## Assign users to folders
 
-To edit a user role, click on the edit button next to the delete button.
+**Note that user(s) should be created before assigning a folder.**
 
-![user mgmt](../images/dashboard/userman_5.JPG)
+1. Click on the 3 dots next to the folder name.
 
-Now you can just select a role you want to give to that user and click on the save button next to the delete button.
+   ![folder1](../images/dsb-userfolder1.png)
 
-![user mgmt](../images/dashboard/userman_6.JPG)
+2. Several option will pop-up. Choose 'assign users'.
+
+   ![folder2](../images/dsb-userfolder2.png)
+
+3. Search and select the users that you want to assign to that folder.
+
+   ![folder3](../images/dsb-userfolder3.png)
+
+4. Click "Assign users"
