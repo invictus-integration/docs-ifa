@@ -1,4 +1,4 @@
-[home](../README.md) | [dashboard](dashboard.md)
+[home](../README.md) | [dashboard](dashboard.md) | [Folder Management](foldermanagement.md)
 
 # Dashboard Folder Permission Management
 
