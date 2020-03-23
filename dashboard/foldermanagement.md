@@ -26,10 +26,10 @@ Operator can see messages from flows in specific folder, see flows from specific
 
 Reader can see messages from flows in specific folder, see flows from specific folder, see flow statistics.
 
-![folder3](../images/dashboard/folderman_4.JPG)
+![folder4](../images/dashboard/folderman_4.JPG)
 
 ## Delete users from a folder
 
 Click on the delete icon button next to the user you want to delete.
 
-![folder3](../images/dashboard/folderman_5.JPG)
+![folder5](../images/dashboard/folderman_5.JPG)
