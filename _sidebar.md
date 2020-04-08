@@ -17,6 +17,7 @@
     * [Execution Tree](/dashboard/executiontree.md)
     * [Settings](/dashboard/settings.md)
     * [User management](/dashboard/usermanagement.md)
+    * [Azure Active Directory Setup](/dashboard/azureADSetup.md)
   * Backend Documentation
     * [Flow Handler](/dashboard/flowhandler.md)
     * [Import Job](/dashboard/importjob.md)
