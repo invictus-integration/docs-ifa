@@ -8,6 +8,7 @@
     * [Build Pipeline](/dashboard/installation/dashboard-buildpipeline.md)
     * [Release Pipeline :rocket:](/dashboard/installation/dashboard-releasepipeline.md)
     * [Migration Guide](/dashboard/installation/dashboard-migration.md)
+    * [Azure Active Directory Setup](/dashboard/azureADSetup.md)
   * Frontend Documentation
     * [Setup](/dashboard/setup.md)
     * [Home page](/dashboard/home.md)
@@ -17,7 +18,6 @@
     * [Execution Tree](/dashboard/executiontree.md)
     * [Settings](/dashboard/settings.md)
     * [User management](/dashboard/usermanagement.md)
-    * [Azure Active Directory Setup](/dashboard/azureADSetup.md)
   * Backend Documentation
     * [Flow Handler](/dashboard/flowhandler.md)
     * [Import Job](/dashboard/importjob.md)
