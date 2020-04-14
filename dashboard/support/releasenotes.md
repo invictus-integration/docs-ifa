@@ -2,6 +2,25 @@
 
 # Dashboard Release Notes
 
+## Version 4.7.6
+
+_Release date: 2020-04-14_
+
+> Features and improvements:
+
+* Create flows with the same name in different folders
+* Advanced Search now showing the Folder name helping selecting specific flows
+* Export to CSV improvements adding an option to export only the selected columns
+* Show dates in English in Dashboard
+
+> Bug Fixes
+
+* Fix for error when renaming a flow with special characters
+* Fix for selection of default date filter that was incorrect
+* Fix for Select All checkbox after a bulk resume/resubmit
+
+---
+
 ## Version 4.7.5
 
 _Release date: 2020-03-13_
