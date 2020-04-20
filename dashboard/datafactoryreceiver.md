@@ -27,5 +27,5 @@ To start receiving data from DataFactory:
 
 To track properties when executing pipeline runs you will need to set the User Properties within an Activity inside a pipeline. These will be then picked up by the importjob.
 
-![datafactorydiagnosticsettings](../images/dfuserproperties.PNG)
+![datafactoryuserproperties](../images/dfuserproperties.PNG)
 
