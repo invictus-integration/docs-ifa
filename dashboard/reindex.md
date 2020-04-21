@@ -1,7 +1,7 @@
 ## Adaptive Re-Indexing
 
 In the Invictus coditcip database we have added a number of storedprocedures which can be used to reorganize or rebuild the Indexes for each table. 
-Although the DataFactory re-index pipeline has been disabled, this is still available for developers to manually trigger this.
+Although the DataFactory re-index pipeline has been disabled, this is still available for developers to manually trigger.
 
 The occurrence when re-indexing needs to be done will vary from client to client, depending on their load and frequency of their cleanup jobs. These SPRs can be very expensive to run and might take a long time to complete, they also tend to use 100% DTU usage each time they are executed.
 
