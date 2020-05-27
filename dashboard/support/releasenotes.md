@@ -48,6 +48,16 @@ _Release date: 2020-05-21_ (Beta)
 
 ---
 
+## Version 4.7.7
+
+_Release date: 2020-04-28_
+
+> Features and improvements:
+
+* Improved reindexing job to use store procedure provided by Microsoft (same as Azure version).
+
+---
+
 ## Version 4.7.6
 
 _Release date: 2020-04-14_
