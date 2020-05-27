@@ -2,6 +2,62 @@
 
 # Dashboard Release Notes
 
+## Version 4.8.1
+
+_Release date: TBD
+
+> Features and improvements:
+
+* Option to configure milestone and event text columns in clickthrough to show or hide from the add/edit flow dialog
+* Added support for HTML elements for milestone and event text
+
+> Bug Fixes
+
+* Fixed the width of the dialog when you click on the clickthrough details icon
+* Fixed dynamic width of columns for the messages result page
+* Move and delete business properties when editing flow are now working as it should
+
+---
+
+## Version 4.8.0
+
+_Release date: 2020-05-21_ (Beta)
+
+> Features and improvements:
+
+* Role management
+* EventText & Milestone are now trimmed and can be viewed in a modal popup
+* DataFactory receiver
+* Move Flows from folder to another folder
+* Disabled Re-Indexing Pipeline
+* Added collapse/expand for the Flows
+* Reduced Flows font size and padding
+* Allow subfolders with the same names in different folders
+* Improved loading time for the Flow messages page
+* Improved loading time for the Statistics page
+* Changed loading of Flow messages to last 24hrs. Added a config which can be set at the release stage
+* Reduced ErrorInfo in WorkFlowEvent table nvarchar from max to 500
+
+> Bug Fixes
+
+* Increased timeout for API calls
+* Increased timeout for Flow messages
+* Increased timeout for Statistics messages
+* Changed Statistics to load data first before refreshing
+* Fixed Paging options null exception on Dashboard
+
+---
+
+## Version 4.7.7
+
+_Release date: 2020-04-28_
+
+> Features and improvements:
+
+* Improved reindexing job to use store procedure provided by Microsoft (same as Azure version).
+
+---
+
 ## Version 4.7.6
 
 _Release date: 2020-04-14_
