@@ -94,3 +94,13 @@ Depending on its rights, a user can delete the following:
 * Folders
 * Subfolders
 * Flows
+
+### Move Flow
+
+Depending on its rights, a user can move the following:
+
+* Flows
+
+### Moving a Flow to another Folder
+
+If you need to move a flow from one folder to another one, you need to enter in the edit flow screen. At the bottom of tab 1 (Details), you have a drop down list of all the Folders and Sub Folders that you have rights to access. You just need to choose a folder which you want to move the current flow to and just click submit.
