@@ -17,7 +17,10 @@
     * [Message handling](/dashboard/messagehandling.md)
     * [Execution Tree](/dashboard/executiontree.md)
     * [Settings](/dashboard/settings.md)
-    * [User management](/dashboard/usermanagement.md)
+  * Security and permissions
+    * [User Management](/dashboard/usermanagement.md) 
+    * [Role Management](/dashboard/role-management.md) 
+    * [Manage folder permissions](/dashboard/foldermanagement.md) 
   * Backend Documentation
     * [Flow Handler](/dashboard/flowhandler.md)
     * [Import Job](/dashboard/importjob.md)

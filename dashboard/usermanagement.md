@@ -1,37 +1,40 @@
 [home](../README.md) | [dashboard](dashboard.md) | [User Management](usermanagement.md)
 
-# Dashboard User Management
+# User Management
 
-## Manage Users
+## Access user management page
 
-To access the user management screen you have to click on the icon in the upper right corner.
+Only users with System Admin privileges can access this feature.
+
+1. To access the user management screen you have to click on the icon in the upper right corner.
 
 ![user mgmt](../images/dashboard/userman_1.JPG)
 
+2. You will now see an overview of all the Invictus Integration Dashboard users. You will also see the options to Add, edit or delete users. 
+
 ### Create a user
 
-By default, the only available user after installing the dashboard is the user that installed it, this user is an admin.
-
-Click on the "Add User" button.
+1. Click on the "Add User" button.
 
 ![user mgmt](../images/dashboard/userman_2.JPG)
+By default, the only available user after installing the dashboard is the user that configured it . By default, this user is a System Admin.
 
-Specify all the user information + user role (System Admin or Non Admin). The difference between them is that System Admin can do everything. From adding a user, deleting a user, adding flows, adding folders, edit flows etc... For Non Admin, the difference is that he cannot add users, delete users. He will be a normal user but then he can be a Folder Admin for a specific folder. We will go into more detail regarding the Folder Permissions in another documentation.
+2. Specify all the user information + user role (System Admin or Non admin). Non admin users will be assigned a specific role on folder level.
 
 ![user mgmt](../images/dashboard/userman_3.JPG)
 
 ### Delete a user
 
-To delete a user click on the delete icon next to the user in the user list.
+1. To delete a user click on the delete icon next to the user in the user list
 
 ![user mgmt](../images/dashboard/userman_4.JPG)
 
 ### Edit a user role
 
-To edit a user role, click on the edit button next to the delete button.
+1. To edit a user click on the edit icon next to the user in the user list
 
 ![user mgmt](../images/dashboard/userman_5.JPG)
 
-Now you can just select a role you want to give to that user and click on the save button next to the delete button.
+2. You can change the role of the user and save the changes. 
 
 ![user mgmt](../images/dashboard/userman_6.JPG)
