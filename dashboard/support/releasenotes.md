@@ -23,7 +23,7 @@ _Release date: TBD
 
 ## Version 4.8.0
 
-_Release date: 2020-05-21_ (Beta)
+_Release date: 2020-05-21_ 
 
 > Features and improvements:
 
