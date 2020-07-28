@@ -2,7 +2,7 @@
 
 # Dashboard Release Notes
 
-## Version 4.8.1
+## Version 4.9.0
 
 _Release date: TBD
 
@@ -11,6 +11,8 @@ _Release date: TBD
 * Option to configure milestone and event text columns in clickthrough to show or hide from the add/edit flow dialog
 * Added support for HTML elements for milestone and event text
 * DSAV is searched with a like not = .. so when searching it doesn't need to be the exact word
+* Added Re-import with the resubmit/resume/ignore functionality.
+* 
 
 > Bug Fixes
 
