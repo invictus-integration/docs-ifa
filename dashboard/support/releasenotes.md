@@ -19,6 +19,7 @@ _Release date: TBD
 * Fixed dynamic width of columns for the messages result page
 * Move and delete business properties when editing flow are now working as it should
 * Fixed the documentation link for both biztalk and logicapps
+* Fixed issue with subfolders having same name in different folders
 
 ---
 
