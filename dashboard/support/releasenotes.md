@@ -10,8 +10,8 @@ _Release date: TBD
 
 * Option to configure milestone and event text columns in clickthrough to show or hide from the add/edit flow dialog
 * Added support for HTML elements for milestone and event text
-* DSAV is searched with a like not = .. so when searching it doesn't need to be the exact word
-* Added Re-import with the resubmit/resume/ignore functionality.
+* DSAV is searched with a "like" not "=" (when searching it doesn't need to be the exact word)
+* Added Re-import function to flow rows.
 
 > Bug Fixes
 
@@ -19,6 +19,7 @@ _Release date: TBD
 * Fixed dynamic width of columns for the messages result page
 * Move and delete business properties when editing flow are now working as it should
 * Fixed the documentation link for both biztalk and logicapps
+* Fixed issue with subfolders having same name in different folders
 
 ---
 
