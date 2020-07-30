@@ -22,6 +22,7 @@ $deleteFlowUrl = $url + '/config/flowtypes'
 $createFolderUrl = $url + '/config/folders'
 $addUserUrl = $url + '/users'
 $addUserToFolderUrl = $url + '/config/folders/users'
+$getStatsUrl = $url + '/dashboard/stats/flowtypes?option=0&forceUpdate=false'
 
 ##GET AUTH TOKEN
 $postParams = @{grant_type='password';username=$username;password=$password}
@@ -75,6 +76,14 @@ $userObject = ConvertFrom-Json –InputObject $createUserResponse.Content
 $addUserToFolderJson = '{"folderId":'+$folderId+',"userId":"'+$userObject.user.userId+'"}'
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
 $createUserResponse = Invoke-WebRequest -Uri $addUserToFolderUrl -Method POST -Body $addUserToFolderJson -Headers $headers
+
+##GET STATS
+Write-OutPut $getStatsUrl
+$headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
+$getStatsResponse = Invoke-WebRequest -Uri $getStatsUrl -Method GET -Headers $headers
+$getStatsObject = ConvertFrom-Json –InputObject $getStatsResponse.Content
+
+
 
 $confirmation = Read-Host "Proceed with cleanup? (y/n):"
 
