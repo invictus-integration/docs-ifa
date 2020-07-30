@@ -23,6 +23,7 @@ $createFolderUrl = $url + '/config/folders'
 $addUserUrl = $url + '/users'
 $addUserToFolderUrl = $url + '/config/folders/users'
 $getStatsUrl = $url + '/dashboard/stats/flowtypes?option=0&forceUpdate=false'
+$getMessagesUrl = $url + '/messages'
 
 ##GET AUTH TOKEN
 $postParams = @{grant_type='password';username=$username;password=$password}
@@ -83,6 +84,12 @@ $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
 $getStatsResponse = Invoke-WebRequest -Uri $getStatsUrl -Method GET -Headers $headers
 $getStatsObject = ConvertFrom-Json –InputObject $getStatsResponse.Content
 
+##GET Messages
+## Example request JSON: '{"pagingOptions":{"skip":0,"take":50},"requestDate":"2020-07-30T06:32:28.443Z","flowTypeId":[1],"searchString":"","flowTypeProperties":[{"name":"TrackedDataA","value":"3ce47a30-4fb3-4467-9361-3b622766cd3b"},{"name":"Milestone","value":"LA-C-Reached"}],"handled":false,"domain":"","service":"","action":"","version":"","dsavContainsSearchWord":false,"startDate":"2020-07-30T03:32:28.443Z","endDate":"2020-07-30T06:32:28.443Z"}'
+$getMessagesJson = '{"pagingOptions":{"skip":0,"take":50},"requestDate":"","flowTypeId":[1],"searchString":"","flowTypeProperties":[{"name":"","value":""},{"name":"Milestone","value":""}],"handled":false,"domain":"","service":"","action":"","version":"","dsavContainsSearchWord":false,"startDate":"","endDate":""}'
+$headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
+$getMessagesResponse = Invoke-WebRequest -Uri $getMessagesUrl -Method POST -Body $getMessagesJson -Headers $headers
+$messagesObject = ConvertFrom-Json –InputObject $getMessagesResponse.Content
 
 
 $confirmation = Read-Host "Proceed with cleanup? (y/n):"
