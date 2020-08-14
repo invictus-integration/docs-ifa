@@ -13,6 +13,7 @@
     * [Setup](/dashboard/setup.md)
     * [Home page](/dashboard/home.md)
     * [Folders & Flows](/dashboard/foldersflows.md)
+    * [Alerting](/dashboard/alerting.md)
     * [Search](/dashboard/search.md)
     * [Message handling](/dashboard/messagehandling.md)
     * [Execution Tree](/dashboard/executiontree.md)
