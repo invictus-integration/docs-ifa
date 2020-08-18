@@ -116,3 +116,7 @@ This query type will filter logs on Azure Logs by the "InvictusImportJobFlowErro
 
 This will create a rule to run every 10 minutes, scans the logs for the last 10 minutes and if the returned value is greater than the threshold, it means that the flow has failing messages, thus triggers the alert on Azure.
 
+### AzureResultCount
+
+This basically enables the Script field which will accept custom Azure Alert Syntax. If you require further information about this type of Sytax please refer to the official documentation by Microsoft.
+
