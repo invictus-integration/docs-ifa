@@ -10,7 +10,10 @@ This is a step by step on how to set up alerting. The following functionality is
 - Setup Activity check for a flow
 - Setup Error check for a flow
 
-**When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule**
+**Please note that:**
+
+- When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule
+- The Alerting tab will only be visible after a flow has been created. This tab will not be visible during the creation of a new flow 
 
 ## Add Alert Rule
 
@@ -71,8 +74,6 @@ Click on the Rule you want to delete. In this case I will be deleting the {{Flow
 At the bottom, you will see a red button Delete Rule. Click on it and it will be deleted.
 
 ![alerting](../images/dashboard/alerting8.JPG)
-
-**The Alerting tab will only be visible after a flow has been created. This tab will not be visible during the creation of a new flow**
 
 ## Parameters Description
 
