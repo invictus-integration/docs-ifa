@@ -153,6 +153,8 @@ The below table lists the parameters accepted by the ARM template.
 |invictusHttpReceiverFunctionName|No|invictus-{resourcePrefix}-httpreceiver|Name for Azure Function|
 |workflowEventHubName|No|invictus-{resourcePrefix}-workflow-evhb|EventHub name for the import job|
 |genericEventHubName|No|invictus-{resourcePrefix}-genericreceiver-evhb|EventHub name for the import job|
+|workFlowCleanupJobIntervalInMinutes|No|180|Interval in minutes for the workflowevent cleanup job|
+|dataWorkFlowCleanupMaxRetentionDays|No|90|Max number of days the WorkFlowEvent data is stored|
 |cleanupJobIntervalInMinutes|No|1440|Interval in minutes for the cleanup job|
 |reIndexIntervalInHours|No|24|Interval in hours for the re-indexing|
 |reIndexStartTime|No|2019-05-30T02:00:00.000Z|Start time for the re-indexing|
