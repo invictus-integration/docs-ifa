@@ -77,8 +77,8 @@ At the bottom, you will see a red button Delete Rule. Click on it and it will be
 
 ## Parameters Description
 
-|Parameter Name|Required||Description|
-| --- | :---: | --- |
+|Parameter Name|Required|Description|
+| --- | --- | --- |
 |Name|Yes|The name for the rule, must be unique per flow. Name will automatically have the flow name added as a prefix to it|
 |Description|No|Description for the rule|
 |Severity|Yes|Has to be a value between 1-4 which identifies the severity of a warning|
