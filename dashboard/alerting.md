@@ -17,11 +17,11 @@ This is a step by step on how to set up alerting. The following functionality is
 
 ## Add Alert Rule
 
-First you need to choose a flow from the left panel which you want to see the rules. Then click on the 3 dots next to it and choose the Edit Flow.
+To Add a rule, start by editing a flow.
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, you can see that there is a new tab "Alerting". Click on it.
+As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab
 
 ![alerting](../images/dashboard/alerting2.JPG)
 
@@ -29,41 +29,41 @@ To add a rule, you need to click on the "Add Rule" tab and start inserting the r
 
 ![alerting](../images/dashboard/alerting3.JPG)
 
-As soon as you are ready from the first tab, you can click on the "Set Recipient "button underneath. 
+As soon as you are ready from the first tab, you can click on the "**Set Recipient**" button underneath. 
 
 ![alerting](../images/dashboard/alerting4.JPG)
 
 In here you can enter the email subject and the emails of those individuals who need to be prompted.
 
-When you are done, you can click on the "Save Rule" and give it some time till it saves. When it saves it will take you to the Rules tab with the new rule being added there.
+When you are done, you can click on the "**Save Rule**". When the rule is saved it will take you to the Rules tab with the new rule being visible there.
 
 ![alerting](../images/dashboard/alerting6.JPG)
 
 ## Edit Alert Rule
 
-First you need to choose a flow from the left panel which you want to see the rules. Then click on the 3 dots next to it and choose the Edit Flow.
+To Edit a rule, start by editing a flow.
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, you can see that there is a new tab. It's called Alerting. Click on it.
+As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab
 
 ![alerting](../images/dashboard/alerting5.JPG)
 
-Click on the Rule you want to edit. In this case I will be editing the {{FlowName}}-AdrianRule one.
+Click on the Rule you want to edit. In this case I will be editing the **{{FlowName}}-AdrianRule**.
 
 ![alerting](../images/dashboard/alerting6.JPG)
 
-Change any information and click on the Set Recepients button underneath and click on the Update Rule button.
+Change any information and click on the "**Set Recepients**" button underneath and click on the "**Update Rule**" button.
 
 ![alerting](../images/dashboard/alerting7.JPG)
 
 ## Delete Alert Rule
 
-First you need to choose a flow from the left panel which you want to see the rules. Then click on the 3 dots next to it and choose the Edit Flow.
+To Delete a rule, start by editing a rule. Once the modal opens go to the "**Alerting**" tab
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, you can see that there is a new tab. It's called Alerting. Click on it.
+As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab
 
 ![alerting](../images/dashboard/alerting5.JPG)
 
@@ -92,5 +92,6 @@ Query Type|Yes|This value is used to select which type of query the alert rule w
 |Email Subject|Yes|The subject for an email when an alert is sent|
 |Recipients|Yes|The list of email recipients for a rule|
 
+## Query Type Description
 
 
