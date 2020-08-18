@@ -10,6 +10,11 @@ This is a step by step on how to set up alerting. The following functionality is
 - Setup Activity check for a flow
 - Setup Error check for a flow
 
+
+
+**It is required to allocate the flowhandler as "Owner" to the Access control (IAM) section for the Invictus resource group**
+
+
 **Please note that:**
 
 - When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule.
