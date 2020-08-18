@@ -83,7 +83,7 @@ At the bottom, you will see a red button Delete Rule. Click on it and it will be
 |Description|No|Description for the rule|
 |Severity|Yes|Has to be a value between 1-4 which identifies the severity of a warning|
 |Time Window|Yes|This value will be used by the Azure rule to check the logs for the last x minutes - value must be between the range of 5-2880|
-|Frequency|Yes|The frequency how often the rule is exectued - value must be between between the range of 5-1440|
+|Frequency|Yes|The frequency how often the rule is executed - value must be between the range of 5-1440|
 |Trigger Threshold Operator|Yes|The values available are: Equal/GreaterThan/LessThan, these operators are used along with the Threshold field to check if a rule needs to be triggered or not|
 |Threshold|Yes|This is the value which will set the threshold for the rule|
 |Suppress Alerts|No|This by default is set of, if enabled the Suppress Alerts in Mins is enabled|
@@ -105,7 +105,7 @@ This query type will filter logs on Azure Logs by the "InvictusImportJobFlowActi
 
 This will create a rule to run every 60 minutes, scans the logs for the last 60 minutes and if the returned value is less than the threshold, it means that the flow is inactive, thus triggers the alert on Azure.
 
-Please note that the importjob will not increment the activity for each message that is processed for a flow. This simply sends a single log per hour for each flow that is active, the count might be higher than one per hour due to scaling situations and multi threaded scenarios. The logging frequency for the importjob can be increased by reducing the following value: **FlowActivityIntervalInMinutes**. This can be passed to the ARM template during deployment.
+Please note that the importjob will not increment the activity for each message that is processed for a flow. This simply sends a single log per hour for each flow that is active, the count might be higher than one per hour due to scaling situations and multi-threaded scenarios. The logging frequency for the importjob can be increased by reducing the following value: **FlowActivityIntervalInMinutes**. This can be passed to the ARM template during deployment.
 
 ### Invictus Error Check
 
@@ -120,5 +120,5 @@ This will create a rule to run every 10 minutes, scans the logs for the last 10 
 
 ### AzureResultCount
 
-This basically enables the Script field which will accept custom Azure Alert Syntax. If you require further information about this type of Sytax please refer to the official documentation by Microsoft.
+This basically enables the Script field which will accept custom Azure Alert Syntax. If you require further information about this type of syntax please refer to the official documentation by Microsoft.
 
