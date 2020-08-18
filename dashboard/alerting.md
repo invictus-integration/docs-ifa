@@ -12,8 +12,8 @@ This is a step by step on how to set up alerting. The following functionality is
 
 **Please note that:**
 
-- When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule
-- The Alerting tab will only be visible after a flow has been created. This tab will not be visible during the creation of a new flow 
+- When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule.
+- The Alerting tab will only be visible after a flow has been created. This tab will not be visible during the creation of a new flow.
 
 ## Add Alert Rule
 
@@ -21,11 +21,11 @@ To Add a rule, start by editing a flow.
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab
+As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab.
 
 ![alerting](../images/dashboard/alerting2.JPG)
 
-To add a rule, you need to click on the "Add Rule" tab and start inserting the rule information. For more information regarding the parameters refer to the section "**Parameters Description**" below
+To add a rule, you need to click on the "Add Rule" tab and start inserting the rule information. For more information regarding the parameters refer to the section "**Parameters Description**" below.
 
 ![alerting](../images/dashboard/alerting3.JPG)
 
@@ -45,7 +45,7 @@ To Edit a rule, start by editing a flow.
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab
+As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab.
 
 ![alerting](../images/dashboard/alerting5.JPG)
 
@@ -59,11 +59,11 @@ Change any information and click on the "**Set Recepients**" button underneath a
 
 ## Delete Alert Rule
 
-To Delete a rule, start by editing a rule. Once the modal opens go to the "**Alerting**" tab
+To Delete a rule, start by editing a rule. Once the modal opens go to the "**Alerting**" tab.
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab
+As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab.
 
 ![alerting](../images/dashboard/alerting5.JPG)
 
@@ -98,10 +98,10 @@ Query Type|Yes|This value is used to select which type of query the alert rule w
 
 This query type will filter logs on Azure Logs by the "InvictusImportJobFlowActivityAlert" property. The ImportJob will every hour log activity for any flows that are active. An example how the alert settings for this flow could be set:
 
-Frequency: 60
-Time Window: 60
-Trigger Threshold Operator: LessThan
-Threshold: 0
+- Frequency: 60
+- Time Window: 60
+- Trigger Threshold Operator: LessThan
+- Threshold: 0
 
 This will create a rule to run every 60 minutes, scans the logs for the last 60 minutes and if the returned value is less than the threshold, it means that the flow is inactive, thus triggers the alert on Azure.
 
@@ -109,10 +109,10 @@ This will create a rule to run every 60 minutes, scans the logs for the last 60 
 
 This query type will filter logs on Azure Logs by the "InvictusImportJobFlowErrorAlert" property. The ImportJob will log a message for each Flow that triggers an error. An example how the alert settings for this flow could be set:
 
-Frequency: 10
-Time Window: 10
-Trigger Threshold Operator: GreaterThan
-Threshold: 0
+- Frequency: 10
+- Time Window: 10
+- Trigger Threshold Operator: GreaterThan
+- Threshold: 0
 
 This will create a rule to run every 10 minutes, scans the logs for the last 10 minutes and if the returned value is greater than the threshold, it means that the flow has failing messages, thus triggers the alert on Azure.
 
