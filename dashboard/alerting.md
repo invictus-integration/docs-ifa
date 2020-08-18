@@ -94,4 +94,25 @@ Query Type|Yes|This value is used to select which type of query the alert rule w
 
 ## Query Type Description
 
+### Invictus Activity Check
+
+This query type will filter logs on Azure Logs by the "InvictusImportJobFlowActivityAlert" property. The ImportJob will every hour log activity for any flows that are active. An example how the alert settings for this flow could be set:
+
+Frequency: 60
+Time Window: 60
+Trigger Threshold Operator: LessThan
+Threshold: 0
+
+This will create a rule to run every 60 minutes, scans the logs for the last 60 minutes and if the returned value is less than the threshold, it means that the flow is inactive, thus triggers the alert on Azure.
+
+### Invictus Error Check
+
+This query type will filter logs on Azure Logs by the "InvictusImportJobFlowErrorAlert" property. The ImportJob will log a message for each Flow that triggers an error. An example how the alert settings for this flow could be set:
+
+Frequency: 10
+Time Window: 10
+Trigger Threshold Operator: GreaterThan
+Threshold: 0
+
+This will create a rule to run every 10 minutes, scans the logs for the last 10 minutes and if the returned value is greater than the threshold, it means that the flow has failing messages, thus triggers the alert on Azure.
 
