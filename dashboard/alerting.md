@@ -2,9 +2,15 @@
 
 # Alerting
 
-This is a step by step on how to use alerting. How to create a rule and see rules per flow.
+This is a step by step on how to set up alerting. The following functionality is covered in this document:
 
-** When creating the Name of the rule, keep in mind that the flow name will be automatically included in the name ex. {{flowname}}-AdrianRule**
+- Create a Rule
+- Update a Rule
+- Delete a Rule
+- Setup Activity check for a flow
+- Setup Error check for a flow
+
+**When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule**
 
 ## Add a new rule
 
@@ -12,21 +18,21 @@ First you need to choose a flow from the left panel which you want to see the ru
 
 ![alerting](../images/dashboard/alerting1.JPG)
 
-As soon as the Edit Flow modal pop up opens, you can see that there is a new tab. It's called Alerting. Click on it.
+As soon as the Edit Flow modal pop up opens, you can see that there is a new tab "Alerting". Click on it.
 
 ![alerting](../images/dashboard/alerting2.JPG)
 
-To add a rule, you need to click on the Add Rule tab and start inserting the rule information. 
+To add a rule, you need to click on the "Add Rule" tab and start inserting the rule information. 
 
 ![alerting](../images/dashboard/alerting3.JPG)
 
-As soon as you are ready from the first tab, you can click on the Set Recipient button underneath. 
+As soon as you are ready from the first tab, you can click on the "Set Recipient "button underneath. 
 
 ![alerting](../images/dashboard/alerting4.JPG)
 
 In here you can enter the email subject and the emails of those individuals who need to be prompted.
 
-When you are done, you can click on the Save Rule and give it some time till it saves. When it saves it will take you to the Rules tab with the new rule being added there.
+When you are done, you can click on the "Save Rule" and give it some time till it saves. When it saves it will take you to the Rules tab with the new rule being added there.
 
 ![alerting](../images/dashboard/alerting6.JPG)
 
