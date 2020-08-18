@@ -12,7 +12,7 @@ This is a step by step on how to set up alerting. The following functionality is
 
 **When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule**
 
-## Add a new rule
+## Add Alert Rule
 
 First you need to choose a flow from the left panel which you want to see the rules. Then click on the 3 dots next to it and choose the Edit Flow.
 
@@ -22,7 +22,7 @@ As soon as the Edit Flow modal pop up opens, you can see that there is a new tab
 
 ![alerting](../images/dashboard/alerting2.JPG)
 
-To add a rule, you need to click on the "Add Rule" tab and start inserting the rule information. 
+To add a rule, you need to click on the "Add Rule" tab and start inserting the rule information. For more information regarding the parameters refer to the section "**Parameters Description**" below
 
 ![alerting](../images/dashboard/alerting3.JPG)
 
@@ -36,7 +36,7 @@ When you are done, you can click on the "Save Rule" and give it some time till i
 
 ![alerting](../images/dashboard/alerting6.JPG)
 
-## Edit a rule
+## Edit Alert Rule
 
 First you need to choose a flow from the left panel which you want to see the rules. Then click on the 3 dots next to it and choose the Edit Flow.
 
@@ -54,7 +54,7 @@ Change any information and click on the Set Recepients button underneath and cli
 
 ![alerting](../images/dashboard/alerting7.JPG)
 
-## Delete a rule
+## Delete Alert Rule
 
 First you need to choose a flow from the left panel which you want to see the rules. Then click on the 3 dots next to it and choose the Edit Flow.
 
@@ -73,6 +73,8 @@ At the bottom, you will see a red button Delete Rule. Click on it and it will be
 ![alerting](../images/dashboard/alerting8.JPG)
 
 **The Alerting tab will only be visible after a flow has been created. This tab will not be visible during the creation of a new flow**
+
+## Parameters Description
 
 |Parameter Name|Required||Description|
 | --- | :---: | --- | --- |
