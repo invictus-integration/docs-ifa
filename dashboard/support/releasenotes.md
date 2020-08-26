@@ -2,9 +2,22 @@
 
 # Dashboard Release Notes
 
+## Version 4.10.0
+
+_Release date: TBD_
+
+> Features and improvements:
+
+* Alerting
+
+> Bug Fixes
+
+* Fixed an issue when creating an operator in a folder and opening a subfolder, will not show the Details/Properties in the clickthrough.
+* When creating a System Admin user, it will automatically add all folders to the user.
+  
 ## Version 4.9.0
 
-_Release date: TBD
+_Release date: 2020-05-27_
 
 > Features and improvements:
 
