@@ -12,7 +12,7 @@ First you need a system admin account to login in the dashboard and from the set
 
 ![forgotpassword](../images/dashboard/forgotpassword5.JPG)
 
-In here, you need to enter the host for example "smpt.gmail.com" if it's for a gmail email account. The port number, which by default is 587. The username and password for the email account to get access. The from is from which email you want to send it. If you want you can use "Invictus Dashboard <invictusdashboard@gmail.com>". The last thing is if it's ssl enabled or not. It's better to use enable ssl as the major email providers need this as to be checked. You can proceed by clicking the save button and you are done.
+In here, you need to enter the host for example "smpt.gmail.com" if it's for a gmail email account. The port number, which by default is 587. The email api key and password api key is the key of the keyvault from which you need to retrieve the email address and password of the forgot password email you are going to send from. The last thing is if it's ssl enabled or not. It's better to use enable ssl as the major email providers need this as to be checked. You can proceed by clicking the save button and you are done.
 
 ## Forgot your password
 
