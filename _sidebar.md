@@ -12,6 +12,7 @@
   * Frontend Documentation
     * [Setup](/dashboard/setup.md)
     * [Home page](/dashboard/home.md)
+    * [Forgot Password](/dashboard/forgotpassword.md)
     * [Folders & Flows](/dashboard/foldersflows.md)
     * [Alerting](/dashboard/alerting.md)
     * [Search](/dashboard/search.md)
