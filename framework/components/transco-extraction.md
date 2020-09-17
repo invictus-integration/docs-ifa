@@ -75,6 +75,10 @@ JSON support has also been added to the Transco Component. The Message content c
 
 > ![xslt](../../images/transco-configjson.png)
 
+## Encoding
+
+The encoding for the content of the message can be specified to the Transco Extract by passing the Code page along with the request. If not supplied the default UTF8 encoding will be used when parsing the message. https://docs.microsoft.com/en-us/dotnet/api/system.text.encoding?view=netcore-3.1
+
 ## Database Setup
 
 The Transco component needs an SQL Database setup. Since the properties retreived are cells from a database everything needs to be setup prior to testing or using the component.
