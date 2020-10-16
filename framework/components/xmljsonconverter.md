@@ -10,12 +10,13 @@ This framework component can be used to transform either XML to JSON or JSON to 
 
 ### Parameters
 
-|Name|Description|Result|
+|Name|Required|Description|
 |--- |--- |--- |
-|Yes|Yes|Value of Logic App Textbox input|
-|Yes|No|Value of Context|
-|No|Yes|Value of Textbox input|
-|No|No|Auto Generated|
+|Content|Yes|A base64 string with either xml or json|
+|Context|No|A dictionary of key,object collection|
+|ConfigName|Yes|The name of the config which wil be used during the transform|
+|XPath|No|Used to focus on part of the content/result|
+|JPath|No|Used to focus on part of the content/result|
 
 	"xpath": "",
 	"jpath" "",
