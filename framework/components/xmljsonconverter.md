@@ -30,15 +30,15 @@ This framework component can be used to transform either XML to JSON or JSON to 
 
 ### Config
 
-The Config file should be an XSLT file which will handle the transformation. This should be uploaded to storage to the xmltojsonconfigstore blob container which is automatically created on Startup of the application. Please note that for:
+The Config file should be an XSLT file which will handle the transformation. This should be uploaded to storage to the xmltojsonconfigstore blob container which is automatically created on Startup of the application. Please note that the above functions execute the conversion/transform steps in the following order:
 
-JsonToXml
+**JsonToXml:**
 * The JPath is executed **before** the convert
 * Json is converted to XML
 * The XSLT Transform is executed after the JSON is converted to XML
 * The XPath is executed **after** the Transform
 
-XmlToJson
+**XmlToJson:**
 * The XPath is executed **before** the Transform
 * The XSLT is executed before the XML is converted to JSON
 * XML is converted to JSON
