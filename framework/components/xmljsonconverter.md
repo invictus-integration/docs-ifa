@@ -43,3 +43,5 @@ The Config file should be an XSLT file which will handle the transformation. Thi
 * The XSLT is executed before the XML is converted to JSON
 * XML is converted to JSON
 * The JPath is executed **after** the convert
+
+![xmljsonconverter](../../images/xmljsonconv.png)
