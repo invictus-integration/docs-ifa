@@ -20,9 +20,26 @@ This framework component can be used to transform either XML to JSON or JSON to 
 
 ### Sample Request Schema
 
+{
 "configName":"IDD038-inbound.xsl",
-"content": "eyJFbnZlbG9wZSI6IHsiU2FsZXNPcmRlckluIjp7ICAgICAgICAgICAgICAgICJDb21wYW55QjJCSGVhZGVyIjogICAgeyAgICAgICAgICAgICAgICAgICAgIkN1c3RBY2NvdW50IjoiQVggQ3VzdG9tZXIgaWQiLCAgICAgICAgIkludm9pY2VBY2NvdW50SWQiOiJQcm92aWRlZCBieSBBWCBGaW5hbmNlIiAgICB9LCAgICAiREZPcmRlckhlYWRlcnMiOiAgICAgICAgWyAgICAgICAgeyJERk9yZGVySGVhZGVyIjogICAgICAgICAgICB7ICAgICAgICAgICAgICAgICJtZXNzYWdlSWQiOiIyMTkwNGI3Zi0yMWQ0LTQ1MzEtYmQzYi03YjY3OGVmYjYxOTciLCAgICAgICAgICAgICAgICAiT3JkZXJUeXBlIjoiMDIzIiwgICAgICAgICAgICAgICAgIkNvbnRyYWN0UmVmZXJlbmNlIjoiQnV5ZXJzIG9yZGVyIG51bWJlciIsICAgICAgICAgICAgICAgICJEZWxpdmVyeU5hbWUiOiIwMDIiLCAgICAgICAgICAgICAgICAiRGVsaXZlcnlNZXRob2QiOiIwMTAiLCAgICAgICAgICAgICAgICAiU3RyZWV0IjoiMDA1IiwgICAgICAgICAgICAgICAgIlRvd24iOiIwMTQiICAgICAgICAgICAgfX0gICAgICAgIF0gICAgfX19" 
+"content": "eyJFbnZlbG9wZSI6IHsiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." 
 "context": {"x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"},
 "xpath": "",
-"jpath" "$.Envelope",
+"jpath" "$.Envelope"
+}
 
+### Config
+
+The Config file should be an XSLT file which will handle the transformation. This should be uploaded to storage to the xmltojsonconfigstore blob container which is automatically created on Startup of the application. Please note that for:
+
+JsonToXml
+* The JPath is executed **before** the convert
+* Json is converted to XML
+* The XSLT Transform is executed after the JSON is converted to XML
+* The XPath is executed **after** the Transform
+
+XmlToJson
+* The XPath is executed **before** the Transform
+* The XSLT is executed before the XML is converted to JSON
+* XML is converted to JSON
+* The JPath is executed **after** the convert
