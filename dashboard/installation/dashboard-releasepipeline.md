@@ -179,4 +179,5 @@ The below table lists the parameters accepted by the ARM template.
 |dashboardServerlessDatabaseSize|No|21474836480|Size in bytes for Dashboard Serverless database|
 |dashboardServerlessDatabaseMaxVCores|No|1|Number of max cores allowed for the Dashboard Serverless database|
 |dashboardServerlessDatabaseaAutoPauseDelay|No|1440|The timeout before the database goes dormant in minutes|
+|invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
 
