@@ -48,6 +48,9 @@ Open the Manifest link from the side menu and update the following properties:
 
 Once user is logged in, agree to the permissions request:
 
+![folder1](../images/dashboard/groupman_8.png)
+
+
 
 
 
@@ -73,6 +76,7 @@ Once Synced, set the required groups as enabled to be used for permissions, and 
 To add global roles to the groups, click the edit buttons and set the required role:
 
 ![folder1](../images/dashboard/groupman_12.png)
+
 
 
 
