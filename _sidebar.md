@@ -14,6 +14,7 @@
     * [Home page](/dashboard/home.md)
     * [Forgot Password](/dashboard/forgotpassword.md)
     * [Folders & Flows](/dashboard/foldersflows.md)
+    * [Flow Auditing](/dashboard/flowauditing.md)
     * [Alerting](/dashboard/alerting.md)
     * [Search](/dashboard/search.md)
     * [Message handling](/dashboard/messagehandling.md)
