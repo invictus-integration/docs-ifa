@@ -2,7 +2,12 @@
 
 # Group Permission Management
 
+To setup permissions for Azure Active Directory groups on Invictus, there are three steps to follow:
+- Setup App Registration on Microsoft Azure
+- Sync Groups on Invictus
+- Assign Groups to Folders
 
+<br>
 
 ## Setup App Registration on Microsoft Azure
 
@@ -11,16 +16,20 @@ Create a new App Registration:
 ![folder1](../images/dashboard/groupman_1.png)
 
 
+<br>
+
 Register a new Application:
 
 ![folder1](../images/dashboard/groupman_2.png)
 
+<br>
 
 Once registered, an overview of the application with all keys and ids will be displayed.
 These keys are required to be added in the configuration for Invictus later on:
 
 ![folder1](../images/dashboard/groupman_3.png)
 
+<br>
 
 Setup the Redirect URIs according to the application address by adding:
 ```
@@ -32,21 +41,27 @@ Setup Redirect URIs in the Authentication tab:
 
 ![folder1](../images/dashboard/groupman_4.png)
 
+<br>
 
 Create a New Secret Key:
 
 ![folder1](../images/dashboard/groupman_5.png)
 
 
+<br>
+
 Add API Permissions:
 
 ![folder1](../images/dashboard/groupman_6.png)
 
 
+<br>
+
 Grant Consent:
 
 ![folder1](../images/dashboard/groupman_7.png)
 
+<br>
 
 Open the Manifest link from the side menu and update the following properties:
 
@@ -56,16 +71,16 @@ Open the Manifest link from the side menu and update the following properties:
     "oauth2AllowImplicitFlow": true,
 ```
 
-
 Once user is logged in, agree to the permissions request:
 
 ![folder1](../images/dashboard/groupman_8.png)
 
 
 
+<br>
 
 
-## Sync Groups
+## Sync Groups on Invictus
 
 **Note that an app registration should be created before assigning group permissions**
 
@@ -73,16 +88,19 @@ Click on the Groups Icon on the top left:
 
 ![folder1](../images/dashboard/groupman_9.png)
  
+<br>
 
 Click the Sync Groups Icon on the Global Groups page:
 
 ![folder1](../images/dashboard/groupman_10.png)
  
+<br>
 
 Once Synced, set the required groups as enabled to be used for permissions, and click the Save Enabled button:
 
 ![folder1](../images/dashboard/groupman_11.png)
 
+<br>
  
 To add global roles to the groups, click the edit buttons and set the required role:
 
@@ -90,6 +108,7 @@ To add global roles to the groups, click the edit buttons and set the required r
 
 
 
+<br>
 
 
 ## Assign Groups to Folders
@@ -101,17 +120,21 @@ Click on the 3 dots next to the folder name:
 
 ![folder1](../images/dashboard/groupman_13.png)
 
+<br>
 Several options will pop-up. Click on the 'Manage permissions' link:
 
 ![folder1](../images/dashboard/groupman_14.png)
 
+<br>
 Click on the "Add Groups" button.
 
 ![folder1](../images/dashboard/groupman_15.png)
 
+<br>
 An Assign Group Popup will show up:
 ![folder1](../images/dashboard/groupman_16.png)
 
+<br>
 Choose the group from the first drop down menu. And choose the role you want the group users to have for that specific folder. You can see that you have 3 options:
 - Folder Admin
 - Operator
