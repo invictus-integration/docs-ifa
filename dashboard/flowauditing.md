@@ -29,3 +29,9 @@ Now if you click on the Charts tab, you can see at first glance the totals of th
 ![auditing](../images/dashboard/auditing5.JPG)
 
 You can filter by the username, flow name, action and chain id. As you can see, I searched by "Adrian De Battista" from the username drop down list. It will show you the actions the user did. The other filters are just the same. Pretty much straight forward.
+
+![auditing](../images/dashboard/auditing6.JPG)
+
+Now, if you would like to see the audits of a specific flow only, you can click on the 3 little dots next to the flow you want to see it's audits and press the Audit Flow.
+
+You can filter by the username, flow name, action and chain id. As you can see, I searched by "Adrian De Battista" from the username drop down list. It will show you the actions the user did. The other filters are just the same. Pretty much straight forward.
