@@ -3,13 +3,14 @@
 # Group Permission Management
 
 To setup permissions for Azure Active Directory groups on Invictus, there are three steps to follow:
-- Setup App Registration on Microsoft Azure
-- Sync Groups on Invictus
-- Assign Groups to Folders
+- Step 1: Setup App Registration on Microsoft Azure
+- Step 2: Add Secret Key to Invictus' Configuration
+- Step 3: Sync Groups on Invictus
+- Step 4: Assign Groups to Folders
 
 <br>
 
-## Setup App Registration on Microsoft Azure
+## Step 1: Setup App Registration on Microsoft Azure
 
 Create a new App Registration:
 
@@ -80,7 +81,21 @@ Once user is logged in, agree to the permissions request:
 <br>
 
 
-## Sync Groups on Invictus
+## Step 2: Add Secret Key to Invictus' Configuration
+
+Copy the secret key created and add it to the 
+
+```
+    <!-- InvictusAAD -->
+    <add key="aad:tenantId" value="xxxxxx-6b41-445f-xxxx-ddc3420307dd" />
+    <add key="aad:clientId" value="xxxxxx-7595-4e28-xxxx-ae5jkuild682" />
+    <add key="aad:clientSecret" value="xxxxxxxxxxxxxxxxxx-IFr804U" />
+```
+
+
+<br>
+
+## Step 3: Sync Groups on Invictus
 
 **Note that an app registration should be created before assigning group permissions**
 
@@ -111,7 +126,7 @@ To add global roles to the groups, click the edit buttons and set the required r
 <br>
 
 
-## Assign Groups to Folders
+## Step 4: Assign Groups to Folders
 
 **Note that an app registration should be created before assigning group permissions**
 
