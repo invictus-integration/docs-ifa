@@ -2,8 +2,9 @@
 
 ## Introduction
 
-This documentation will give you an overview of the Regex Translation component and will help you use it. The following functions will be exposed by this components:
+This documentation will give you an overview of the Regex Translation component and will help you use it. The following function will be exposed by this component:
 
+- RegexTranslation
 
 ### Overview
 
