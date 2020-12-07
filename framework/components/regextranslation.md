@@ -8,14 +8,14 @@ This documentation will give you an overview of the Regex Translation component 
 
 ### Overview
 
-The scope of the Regex Translator is to translate a given message using regex and based on the MacthKey supplied an entity will be retrieved from an Azure Table Storage with the associated translation of the message.
+The scope of the Regex Translator is to translate a given message using regex and based on the MacthKey provided an entity will be retrieved from an Azure Table Storage with the associated translation of the message.
 
 ### Parameters
 
 |Name|Required|Description|
 |--- |--- |--- |
 |Content|Yes|A base64 string that will be used in the translation|
-|MatchKey|Yes|An string array|
+|MatchKey|Yes|An array of type string|
 
 ### Sample Request Schema
 
