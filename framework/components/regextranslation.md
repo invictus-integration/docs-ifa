@@ -25,7 +25,7 @@ The scope of the Regex Translator is to translate a given message using regex an
 
 When setting up your Logic App, the HttpRequest is to be setup as follows:
 
-![regextranslator](../images/regextranslator2.PNG)
+![regextranslator](../../images/regextranslator2.PNG)
 
 ### Output
 
