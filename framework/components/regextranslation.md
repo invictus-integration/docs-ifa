@@ -43,7 +43,7 @@ If the translation is unsuccessful, the output returned will either be the origi
 
 The response to the function **RegexTranslation** is to be setup as follows:
 
-![regextranslator](../images/regextranslator3.PNG)
+![regextranslator](../../images/regextranslator3.PNG)
 
 ### Config
 
@@ -59,4 +59,4 @@ Within the table 2 properties of type string have to be added when creating a ne
 - MatchPattern
 - OutputPattern
 
-![regextranslator](../images/regextranslator.PNG)
+![regextranslator](../../images/regextranslator.PNG)
