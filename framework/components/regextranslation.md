@@ -17,6 +17,25 @@ The scope of the Regex Translator is to translate a given message using regex an
 |Content|Yes|A base64 string that will be used in the translation|
 |MatchKey|Yes|An array of type string|
 
+### Azure Table Storage Config
+
+Create a table called RegexTranslator within a dedicated Storage Account. 
+
+By default the table will consist of 3 properties.
+
+- PartitionKey
+- RowKey
+- Timetamp
+
+Within the table 2 properties of type string have to be added when creating a new entity:
+
+- MatchPattern
+- OutputPattern
+
+![regextranslator](../../images/regextranslator.PNG)
+
+**Note: Upon startup the application will check if a table called RegexTranslator exists. If the table does not exist a table with that name will be created. The newly created table will not have any properties these will have to be added manually.**
+
 ### Sample Request Schema
 
 `{
@@ -45,19 +64,3 @@ If the translation is unsuccessful, the output returned will either be the origi
 The response to the function **RegexTranslation** is to be setup as follows:
 
 ![regextranslator](../../images/regextranslator3.PNG)
-
-### Config
-
-Upon startup of the application an Azure Table called RegexTranslator will be created within a dedicated Storage Account if the table doesn't already exist. 
-By default the table will consist of 3 properties.
-
-- PartitionKey
-- RowKey
-- Timetamp
-
-Within the table 2 properties of type string have to be added when creating a new entity:
-
-- MatchPattern
-- OutputPattern
-
-![regextranslator](../../images/regextranslator.PNG)
