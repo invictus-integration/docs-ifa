@@ -36,6 +36,8 @@ Within the table 2 properties of type string have to be added when creating a ne
 
 **Note: Upon startup the application will check if a table called RegexTranslator exists. If the table does not exist a table with that name will be created. The newly created table will not have any properties these will have to be added manually.**
 
+## Input
+
 ### Sample Request Schema
 
 `{
@@ -51,7 +53,7 @@ The request is then followed by the execution of the function **RegexTranslation
 
 ![regextranslator](../../images/regextranslationfunction.PNG)
 
-### Output
+## Output
 
 After the message is translated, the result for a successful translation returns the translated message:
 
