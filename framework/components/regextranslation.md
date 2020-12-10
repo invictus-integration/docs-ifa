@@ -17,7 +17,7 @@ The scope of the Regex Translator is to translate a given message using regex an
 |Content|Yes|A base64 string that will be used in the translation|
 |MatchKey|Yes|An array of type string|
 
-### Azure Table Storage Config
+## Azure Table Storage Config
 
 Create a table called RegexTranslator within a dedicated Storage Account. 
 
