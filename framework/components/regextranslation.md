@@ -45,7 +45,11 @@ Within the table 2 properties of type string have to be added when creating a ne
 
 When setting up your Logic App, the HttpRequest is to be setup as follows:
 
-![regextranslator](../../images/regextranslator2.PNG)
+![regextranslator](../../images/regextranslationrequest.PNG)
+
+The request is then followed by the execution of the function **RegexTranslation** as follows:
+
+![regextranslator](../../images/regextranslationfunction.PNG)
 
 ### Output
 
@@ -63,4 +67,4 @@ If the translation is unsuccessful, the output returned will either be the origi
 
 The response to the function **RegexTranslation** is to be setup as follows:
 
-![regextranslator](../../images/regextranslator3.PNG)
+![regextranslator](../../images/regextranslationresponse.PNG)
