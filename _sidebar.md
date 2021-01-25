@@ -45,6 +45,8 @@
       * [Transco Extraction](/framework/components/transco-extraction.md)
       * [Transco Custom Assemblies](/framework/components/transco-assemblies.md)
     * [Time sequencer](/framework/components/timesequencer.md)
+    * [XSD validator](/framework/components/xsd-validator.md)
+    * [Regex translator](/framework/components/regextranslation.md)
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
   * Support
