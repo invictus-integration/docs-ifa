@@ -1,89 +1,69 @@
-[home](../README.md) | [dashboard](dashboard.md) | [Folder Management](foldermanagement.md)
+[home](../README.md) | [dashboard](dashboard.md) | [Group Management](groupmanagement.md)
 
 # Group Permission Management
 
 To setup permissions for Azure Active Directory groups on Invictus, there are three steps to follow:
 - Step 1: Setup App Registration on Microsoft Azure
-- Step 2: Add Secret Key to Invictus' Configuration
+- Step 2: Add Secret Key to Invictus Configuration
 - Step 3: Sync Groups on Invictus
 - Step 4: Assign Groups to Folders
-
-<br>
 
 ## Step 1: Setup App Registration on Microsoft Azure
 
 Create a new App Registration:
 
-![folder1](../images/dashboard/groupman_1.png)
-
-
-<br>
+![aad1](../images/dashboard/aad_1.JPG)
 
 Register a new Application:
 
-![folder1](../images/dashboard/groupman_2.png)
+![aad2](../images/dashboard/aad_2.JPG)
 
-<br>
+Once registered, go to Authentication from the side menu and add these two new links and tick the checkboxes:- Access Tokens and ID Tokens and press save.
 
-Once registered, an overview of the application with all keys and ids will be displayed.
-These keys are required to be added in the configuration for Invictus later on:
-
-![folder1](../images/dashboard/groupman_3.png)
-
-<br>
-
-Setup the Redirect URIs according to the application address by adding:
-```
 -	{url-to-app}/login?returnUrl=%2Fdashboard%2Fsettings
 -	{url-to-app}/login?returnUrl=%2Fdashboard%2Foverview
-```
 
-Setup Redirect URIs in the Authentication tab:
+![aad3](../images/dashboard/aad_7.JPG)
 
-![folder1](../images/dashboard/groupman_4.png)
+Go to API Permissions from the side menu and add these two:- Directory.Read.All Delegated and Application and press the Grant admin consent for button.
 
-<br>
+![aad4](../images/dashboard/aad_3.JPG)
 
-Create a New Secret Key:
+Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
 
-![folder1](../images/dashboard/groupman_5.png)
+![aad5](../images/dashboard/aad_4.JPG)
 
+Now go to the manifest and change these:
 
-<br>
+![aad6](../images/dashboard/aad_5.JPG)
+![aad7](../images/dashboard/aad_6.JPG)
 
-Add API Permissions:
+In the manifest add this wildcard like this:
 
-![folder1](../images/dashboard/groupman_6.png)
+![aad8](../images/dashboard/aad_8.JPG)
 
+Now go to Enterprise Applications and go to Owners. Add an owner which have all rights.
 
-<br>
+![aad9](../images/dashboard/aad_9.JPG)
 
-Grant Consent:
+Go to users and groups and click on the Add user/group and add all the users that have access to login to the dashboard.
 
-![folder1](../images/dashboard/groupman_7.png)
+![aad10](../images/dashboard/aad_10.JPG)
 
-<br>
+Now go to Permissions from the side menu and click on the Grant admin consent for button. You should login using a full access (permission wise) account.
 
-Open the Manifest link from the side menu and update the following properties:
+![aad11](../images/dashboard/aad_11.JPG)
 
-```
-    "groupMembershipClaims": "All",
-    "oauth2AllowIdTokenImplicitFlow": true,
-    "oauth2AllowImplicitFlow": true,
-```
+If you want to create a group. Go to Groups and click on New group button which will lead you to this screen. Enter a group name and use the owners and members to assign it to the AAD you just created.
 
-Once user is logged in, agree to the permissions request:
+![aad12](../images/dashboard/aad_12.JPG)
 
-![folder1](../images/dashboard/groupman_8.png)
+If you want to add a new user, go to Users and click New user button and it will lead you to this screen. Enter all the input fields and don't forget to assign the Groups you want this user to be assigned to.
 
-
-
-<br>
-
-
+![aad13](../images/dashboard/aad_13.JPG)
 ## Step 2: Add Secret Key to Invictus' Configuration
 
-Copy the secret key created and add it to the 
+Copy the secret key created and add it to the Arm template (on release).
 
 ```
     <!-- InvictusAAD -->
@@ -91,10 +71,6 @@ Copy the secret key created and add it to the
     <add key="aad:clientId" value="xxxxxx-7595-4e28-xxxx-ae5jkuild682" />
     <add key="aad:clientSecret" value="xxxxxxxxxxxxxxxxxx-IFr804U" />
 ```
-
-
-<br>
-
 ## Step 3: Sync Groups on Invictus
 
 **Note that an app registration should be created before assigning group permissions**
@@ -102,54 +78,38 @@ Copy the secret key created and add it to the
 Click on the Groups Icon on the top left:
 
 ![folder1](../images/dashboard/groupman_9.png)
- 
-<br>
 
 Click the Sync Groups Icon on the Global Groups page:
 
 ![folder1](../images/dashboard/groupman_10.png)
- 
-<br>
 
 Once Synced, set the required groups as enabled to be used for permissions, and click the Save Enabled button:
 
 ![folder1](../images/dashboard/groupman_11.png)
-
-<br>
  
 To add global roles to the groups, click the edit buttons and set the required role:
 
 ![folder1](../images/dashboard/groupman_12.png)
 
-
-
-<br>
-
-
 ## Step 4: Assign Groups to Folders
 
 **Note that an app registration should be created before assigning group permissions**
-
 
 Click on the 3 dots next to the folder name:
 
 ![folder1](../images/dashboard/groupman_13.png)
 
-<br>
 Several options will pop-up. Click on the 'Manage permissions' link:
 
 ![folder1](../images/dashboard/groupman_14.png)
 
-<br>
 Click on the "Add Groups" button.
 
 ![folder1](../images/dashboard/groupman_15.png)
 
-<br>
 An Assign Group Popup will show up:
 ![folder1](../images/dashboard/groupman_16.png)
 
-<br>
 Choose the group from the first drop down menu. And choose the role you want the group users to have for that specific folder. You can see that you have 3 options:
 - Folder Admin
 - Operator
