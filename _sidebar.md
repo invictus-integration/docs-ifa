@@ -9,6 +9,7 @@
     * [Release Pipeline :rocket:](/dashboard/installation/dashboard-releasepipeline.md)
     * [Migration Guide](/dashboard/installation/dashboard-migration.md)
     * [Azure Active Directory Setup](/dashboard/azureADSetup.md)
+    * [Group Management Azure Setup](/dashboard/groupmanagement.md)
   * Frontend Documentation
     * [Setup](/dashboard/setup.md)
     * [Home page](/dashboard/home.md)
