@@ -181,3 +181,4 @@ The below table lists the parameters accepted by the ARM template.
 |dashboardServerlessDatabaseaAutoPauseDelay|No|1440|The timeout before the database goes dormant in minutes|
 |invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
 |use32BitWorkerProcess |No|false|If set to true, webapps are deployed as 32bit|
+|azureActiveDirectoryClientSecret|No|false|Required for AD Login|
