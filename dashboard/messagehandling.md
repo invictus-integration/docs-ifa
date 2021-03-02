@@ -2,7 +2,7 @@
 
 # Dashboard Message Handling
 
-It is possible to select one or multiple messages and handle them to either  resubmit, resume or ignore them.
+It is possible to select one or multiple messages and handle them to either  resubmit, resume, reimport or ignore them.
 
 As you may notice, in the messages page you will see 3 buttons that are disabled on load.
 
@@ -12,7 +12,7 @@ These buttons are enabled when one or multiple messages are selected.
 
 ![handling buttons](../images/dsb-handlingbuttons.gif)
 
-To resubmit, resume or handle a message, you can either select the message or messages and click on the corresponding button or you can also right click on the status of the message where a context menu will appear with the same actions as well. This is to make an action on single flows.
+To resubmit, resume, reimport or handle a message, you can either select the message or messages and click on the corresponding button or you can also right click on the status of the message where a context menu will appear with the same actions as well. This is to make an action on single flows.
 
 ![context menu](../images/dsb-handlingbuttonscontext.png)
 
@@ -20,7 +20,7 @@ If you want to perform a mass action on all messages at once, then you can check
 
 ![mass handling](../images/dsb-masshandling.gif)
 
-## Custom Resume and Resubmit
+## Custom Resume and Resubmit and Reimport
 
 It's possible to use a custom resubmit and resume, see [this page](custom-resumeresubmit.md) for more infromation.
 
@@ -68,6 +68,9 @@ The logicapps that failed to resume will show like this.
 
 ![resume failed](../images/dsb-resumefailed.png)
 
+## Reimport
+
+Basically re triggers the merging process from Storage to SQL Server. This should only be used in cases where some messages are stuck in an incomplete state. Lately we never had these issues but if SQL server reaches 100% DTUs you might endup with data not fully updated.
 
 ## Handle
 
