@@ -60,7 +60,7 @@ Use the following arguments for the fields of the azure powershell task:
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
-- **Azure PowerShell Version**: Latest installed version
+- **Azure PowerShell Version**: Specify other version : **2.6.0**
 
 **NOTE:** When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
 
