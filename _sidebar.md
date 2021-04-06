@@ -30,7 +30,7 @@
     * [Flow Handler](/dashboard/flowhandler.md)
     * [Import Job](/dashboard/importjob.md)
   * Support
-    * [Release Notes :fire:](/dashboard/support/releasenotes.md)
+    * [Release Notes :fire:](https://github.com/invictus-integration/docs-ifa/releases)
     * [FAQ :question:](/dashboard/support/faq.md)
 * Framework
   * [Overview](/framework/framework.md)
@@ -52,4 +52,4 @@
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
   * Support
-    * [Release Notes :fire:](/framework/support/releasenotes.md)
+    * [Release Notes :fire:](https://github.com/invictus-integration/docs-ifa/releases)
