@@ -27,6 +27,12 @@ Milestone and EventText are properties set and displayed by default, they do not
 
 ![milestone](../images/dsb-auditmilestone.png)
 
+### Message Content View
+
+The message content view allows the user to track the outputs and inputs of an action.
+
+![milestone](../images/dashboard/mcv1.JPG)
+
 ### Tracked Properties
 
 To see the tracked properties on execution tree level, click on the "Details" link. A popup opens showing all the tracked properties available on every logic app inside the flow.
