@@ -29,9 +29,20 @@ Milestone and EventText are properties set and displayed by default, they do not
 
 ### Message Content View
 
-The message content view allows the user to track the outputs and inputs of an action.
+The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the Clickthrough(execution tree) table.
 
 ![milestone](../images/dashboard/mcv1.JPG)
+
+To track the input and output of an action in a logicapp the below tracked properties have to be set in an action.
+
+|Property Name|Required|Sample Value|Description|
+| --- | :---: | --- | --- |
+|x-iv-messagecontent-input-name|Yes(if the input content type is present)|ActionInput|This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word|
+|x-iv-messagecontent-input-content-type|Yes(if the input name is present)|application/json|This should have the same content type as the data type when opening the input link for an action|
+|x-iv-messagecontent-output-name|Yes(if the output content type is present)|ActionOutput|This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word|
+|x-iv-messagecontent-output-content-type|Yes(if the output name is present)|application/json|This should have the same content type as the data type when opening the input link for an action|
+
+Please not that you can have one or the other, or both active, you do not need to have both input and output setup. The only requirment is that if the "-name" is present then the "-content-type" has to be also present for the desired output.
 
 ### Tracked Properties
 
