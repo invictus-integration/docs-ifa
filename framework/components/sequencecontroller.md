@@ -17,6 +17,8 @@ This call is not required but we do request that it is used if possible. This ca
 |sequenceName|Yes|SampleSequence1|This is the name given to a sequence, this has to be unique per sequence when processing a chain of requests|
 |sequenceStart|Yes|1|This is the starting value of the sequence, this in reality is only required on the very first call to GetSequenceNumber but has no effect and should still be passed on subsequent calls|
 
+> ![sequencecontroller-get-number-execution](../../images/seqcont-getseqnum.jpg)
+
 ### WaitForExecution
 
 This call will check if the request should be processed or if it should be queued. This is done by checking if the counter assigned to the request is within sequence and by also checking if the previous counter in the sequence was processed. As stated earlier, you are not required to use GetSequenceNumber and can directly use WaitForExecution by managing the counter yourself, although this is not suggested.
@@ -26,6 +28,8 @@ This call will check if the request should be processed or if it should be queue
 |sequenceName|Yes|SampleSequence1|This is the name given to a sequence, this has to be unique per sequence when processing a chain of requests|
 |counter|Yes|1|This is the value assigned to the call, this has to be also unique per call|
 |callBackUri|Yes|1|This is the callbackUrl available for the Webhook via logicapps|
+
+> ![sequencecontroller-wait-execution](../../images/seqcont-waitforexec.jpg)
 
 ### CompleteExecution
 
