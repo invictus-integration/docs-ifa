@@ -35,7 +35,7 @@ The message content view allows the user to track the outputs and inputs of an a
 
 The links in the above image are the friendly names set in the tracked properties of the "tracked" action. Once any of the above names is clicked a new tab will open with the content of either the input or the output.
 
-To track the input and output of an action in a logicapp the below tracked properties have to be set in an action.
+**To track the input and output of an action in a logicapp the below tracked properties have to be set in an action.**
 
 |Property Name|Required|Sample Value|Description|
 | --- | :---: | --- | --- |
