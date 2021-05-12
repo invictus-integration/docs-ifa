@@ -23,7 +23,7 @@ Now go to "Authentication" page from the left side menu and check the 2 check bo
 
 ![Add Secret](../images/dashboard/aad_4.JPG)
 
-Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
+Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be added when you do a release along with the tenant id and client id.
 
 ![Create owner](../images/dashboard/azuread3.JPG)
 
