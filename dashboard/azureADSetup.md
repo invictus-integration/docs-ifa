@@ -21,6 +21,10 @@ Now go to the "Manifest" link from the left side menu and in the replyUrlsWithTy
 
 Now go to "Authentication" page from the left side menu and check the 2 check boxes which are "Access Tokens" and "ID Tokens" and click on Save button from the top.
 
+![Add Secret](../images/dashboard/aad_3.JPG)
+
+Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
+
 ![Create owner](../images/dashboard/azuread3.JPG)
 
 Now go back to "Azure Active Directory" and from the left side menu click on the "Enterprise Application" and search for the one you just created and click on it. Now from the left hand side, click on "Owners" and Add yourself or whoever you want to be the owner of the application.
