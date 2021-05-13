@@ -25,7 +25,7 @@ Once registered, go to Authentication from the side menu and add these two new l
 
 ![aad3](../images/dashboard/aad_7.JPG)
 
-Go to API Permissions from the side menu and add these two:- Directory.Read.All Delegated and Application and press the Grant admin consent for button.
+Go to API Permissions from the side menu and add all of these permissions and press the Grant admin consent for button.
 
 ![aad4](../images/dashboard/aad_3.JPG)
 
