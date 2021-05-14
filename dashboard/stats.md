@@ -4,6 +4,8 @@
 
 This is a step by step on how to use the Statistics page.
 
+To enable the KPIs function you will need to pass the following argument during your deploy task: -enableStatisticsFunction "true"
+
 First of all you need to be a system admin to see the statistics page. A system admin can see all the statistics for every flow that exist.
 
 If you are a system admin then you can see that now, on the top right of the header, you can see a small graph icon. Click on that.
