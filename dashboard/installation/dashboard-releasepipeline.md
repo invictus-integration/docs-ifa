@@ -61,6 +61,7 @@ Use the following arguments for the fields of the azure powershell task:
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
+  - Pass the following argument if you wish to enable statistics in the dashboard: **-enableStatisticsFunction "true"**
 - **Azure PowerShell Version**: Specify other version : **2.6.0**
 - Under the Advanced section enable: **Use Powershell Core**. Without this option the deployment will fail.
 
