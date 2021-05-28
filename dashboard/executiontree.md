@@ -29,7 +29,9 @@ Milestone and EventText are properties set and displayed by default, they do not
 
 ### Message Content View
 
-The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the Clickthrough(execution tree) table.
+The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the Clickthrough(execution tree) table. 
+
+**The flowhandlerjob needs Logic Apps Contributor rights on the resource group where the logic app is located.**
 
 ![milestone](../images/dashboard/mcv1.JPG)
 
