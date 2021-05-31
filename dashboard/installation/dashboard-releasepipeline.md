@@ -83,6 +83,7 @@ If you are planning to enable AAD for the dashboard you will need to set the fol
 
 * AzureActiveDirectoryClientId
 * AzureActiveDirectoryTenantId
+* AzureActiveDirectoryClientSecret
 
 The option to login with AAD in the dashboard will only be possible if the above values are supplied.
 
