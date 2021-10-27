@@ -63,13 +63,10 @@ If you want to add a new user, go to Users and click New user button and it will
 ![aad13](../images/dashboard/aad_13.JPG)
 ## Step 2: Add Secret Key to Invictus' Configuration
 
-Copy the secret key created and add it to the Arm template (on release).
+Copy the secret key created and pass the credentials as arguments to the Deploy.ps1 script (on release).
 
 ```
-    <!-- InvictusAAD -->
-    <add key="aad:tenantId" value="xxxxxx-6b41-445f-xxxx-ddc3420307dd" />
-    <add key="aad:clientId" value="xxxxxx-7595-4e28-xxxx-ae5jkuild682" />
-    <add key="aad:clientSecret" value="xxxxxxxxxxxxxxxxxx-IFr804U" />
+    -AzureActiveDirectoryTenantId "$(Invictus.Dashboard.AAD.TenantId)" -AzureActiveDirectoryClientId "$(Invictus.Dashboard.AAD.ClientId)" -AzureActiveDirectoryClientSecret "$(Invictus.Dashboard.AAD.ClientSecret)"
 ```
 ## Step 3: Sync Groups on Invictus
 
