@@ -37,7 +37,7 @@ To do this, goto the flowhandlerjob Function App and select Identity. Click on "
       `"type": "Microsoft.Authorization/roleAssignments",`
       `"apiVersion": "2020-04-01-preview",`
       `// Fixed GUID to make it idempotent`
-      `"name": "[guid(subscription().subscriptionId, 'FlowHandlerJob')]",`
+      `"name": "[guid(subscription().subscriptionId, 'FlowHandlerJobContribute')]",`
       `"properties": {`
         `"description": "The Invictus FlowHandlerJob needs Contribute permissions on the VMI services resource group to display the contents of the message.",`
         `"roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",`

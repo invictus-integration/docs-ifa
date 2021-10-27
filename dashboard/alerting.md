@@ -18,7 +18,7 @@ To do this, goto the flowhandlerjob Function App and select Identity. Click on "
   "type": "Microsoft.Authorization/roleAssignments",
   "apiVersion": "2020-04-01-preview",
   // Fixed GUID to make it idempotent
-  "name": "4ABE66E2-C0C9-490A-9A79-95F399CA5744",
+  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobMonitoringContribute')]",
   "properties": {
     "description": "The Invictus FlowHandlerJob needs Monitoring Contribute permissions on the VMI invictus resource group to allow alert rules.",
     "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
