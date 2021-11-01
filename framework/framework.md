@@ -18,6 +18,9 @@ Invictus for Azure currently offers the following components:
 * [Matrix](components/matrix.md)
 * [Transco](components/transco.md)
 * [Time sequencer](components/timesequencer.md)
+* [XML/Json convertor](/framework/components/xmljsonconverter.md)
+* [XSD validator](/framework/components/xsd-validator.md)
+* [Regex translator](/framework/components/regextranslation.md)
 
 ## Release Notes
 
