@@ -49,6 +49,7 @@
     * [Time sequencer](/framework/components/timesequencer.md)
     * [XSD validator](/framework/components/xsd-validator.md)
     * [Regex translator](/framework/components/regextranslation.md)
+    * [XML/Json convertor](/framework/components/xmljsonconverter.md)
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
   * Support
