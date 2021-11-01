@@ -32,35 +32,6 @@ Milestone and EventText are properties set and displayed by default, they do not
 The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the Clickthrough(execution tree) table. 
 
 **The flowhandlerjob needs Logic Apps Contributor rights on the resource group where the logic app is located.**
-To do this, goto the flowhandlerjob Function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changed. Alternatively, the following template can be used:
-    ``{`
-      `"type": "Microsoft.Authorization/roleAssignments",`
-      `"apiVersion": "2020-04-01-preview",`
-      `// Fixed GUID to make it idempotent`
-      `"name": "[guid(subscription().subscriptionId, 'FlowHandlerJobContribute')]",`
-      `"properties": {`
-        `"description": "The Invictus FlowHandlerJob needs Contribute permissions on the VMI services resource group to display the contents of the message.",`
-        `"roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",`
-        `"principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"`
-      `},`
-      `"dependsOn": []`
-    }`
-
-To do this, goto the flowhandlerjob Function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changed. Alternatively, the following template can be used:
-```
-{
-  "type": "Microsoft.Authorization/roleAssignments",
-  "apiVersion": "2020-04-01-preview",
-  // Fixed GUID to make it idempotent
-  "name": "9A2E950B-AEFB-4C46-9897-D3D85D860E04",
-  "properties": {
-    "description": "The Invictus FlowHandlerJob needs Contribute permissions on the Logic App resource group to display the contents of the message.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
-  },
-  "dependsOn": []
-}
-```
 
 To do this, goto the flowhandlerjob Function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changes.
 Alternatively, the following template can be used:
