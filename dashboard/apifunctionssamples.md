@@ -22,7 +22,7 @@ $deleteFlowUrl = $url + '/config/flowtypes'
 $createFolderUrl = $url + '/config/folders'
 $addUserUrl = $url + '/users'
 $addUserToFolderUrl = $url + '/config/folders/users'
-$getStatsUrl = $url + '/dashboard/stats/flowtypes?option=0&forceUpdate=false'
+$getStatsUrl = $url + '/dashboard/stats/flowtypes/get?option=0&forceUpdate=false'
 $getMessagesUrl = $url + '/messages'
 
 ##GET AUTH TOKEN
@@ -51,7 +51,7 @@ $getFoldersResponse = Invoke-WebRequest -Uri $createFolderUrl -Method GET -Heade
 $getFoldersObject = ConvertFrom-Json –InputObject $getFoldersResponse.Content
 
 ##GET FOLDER BY ID using first item from $getFolderObject[0].id
-$getFolderByIdUrl = $createFolderUrl+'/'+$getFolderObject[0].id
+$getFolderByIdUrl = $createFolderUrl+'/'+$getFoldersObject[0].id
 Write-OutPut $getFolderByIdUrl
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
 $getFolderResponse = Invoke-WebRequest -Uri $getFolderByIdUrl -Method GET -Headers $headers
@@ -65,12 +65,13 @@ $createFlowResponse = Invoke-WebRequest -Uri $createFlowUrl -Method POST -Body $
 $flowObject = ConvertFrom-Json –InputObject $createFlowResponse.Content
 
 ##ADD USER 
-$userEmail = "$randomValue" + "@codit.eu"
+$userEmail = $randomValue.ToString() + "@codit.eu"
 $username  = "User" + $randomValue
 $password  = "Demo*9999"
-$createUserJson = '{"email":"'+$userEmail+'","firstName":"AdminName","lastName":"AdminSurname","role":"admin","username":"'+$username+'","password":"'+$password+'"}'
+$createUserJson = '{"email":"'+$userEmail+'","firstName":"AdminName","lastName":"AdminSurname","role":"systemadmin","username":"'+$username+'","password":"'+$password+'"}'
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
 $createUserResponse = Invoke-WebRequest -Uri $addUserUrl -Method POST -Body $createUserJson -Headers $headers
+
 $userObject = ConvertFrom-Json –InputObject $createUserResponse.Content
 
 ##ADD USER TO FOLDER
@@ -85,12 +86,11 @@ $getStatsResponse = Invoke-WebRequest -Uri $getStatsUrl -Method GET -Headers $he
 $getStatsObject = ConvertFrom-Json –InputObject $getStatsResponse.Content
 
 ##GET Messages
-## Example request JSON: '{"pagingOptions":{"skip":0,"take":50},"requestDate":"2020-07-30T06:32:28.443Z","flowTypeId":[1],"searchString":"","flowTypeProperties":[{"name":"TrackedDataA","value":"3ce47a30-4fb3-4467-9361-3b622766cd3b"},{"name":"Milestone","value":"LA-C-Reached"}],"handled":false,"domain":"","service":"","action":"","version":"","dsavContainsSearchWord":false,"startDate":"2020-07-30T03:32:28.443Z","endDate":"2020-07-30T06:32:28.443Z"}'
-$getMessagesJson = '{"pagingOptions":{"skip":0,"take":50},"requestDate":"","flowTypeId":[1],"searchString":"","flowTypeProperties":[{"name":"","value":""},{"name":"Milestone","value":""}],"handled":false,"domain":"","service":"","action":"","version":"","dsavContainsSearchWord":false,"startDate":"","endDate":""}'
+## Example request JSON: '{"initLoad": false, "pagingOptions":{"skip":0,"take":50},"requestDate":"2020-07-30T06:32:28.443Z","flowTypeId":[1],"searchString":"","flowTypeProperties":[{"name":"TrackedDataA","value":"3ce47a30-4fb3-4467-9361-3b622766cd3b"},{"name":"Milestone","value":"LA-C-Reached"}],"handled":false,"domain":"","service":"","action":"","version":"","dsavContainsSearchWord":false,"startDate":"2020-07-30T03:32:28.443Z","endDate":"2020-07-30T06:32:28.443Z"}'
+$getMessagesJson = '{"initLoad": false, "pagingOptions":{"skip":0,"take":50},"requestDate":"","flowTypeId":[1],"searchString":"","flowTypeProperties":[{"name":"","value":""},{"name":"Milestone","value":""}],"handled":false,"domain":"","service":"","action":"","version":"","dsavContainsSearchWord":false,"startDate":"","endDate":""}'
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
 $getMessagesResponse = Invoke-WebRequest -Uri $getMessagesUrl -Method POST -Body $getMessagesJson -Headers $headers
 $messagesObject = ConvertFrom-Json –InputObject $getMessagesResponse.Content
-
 
 $confirmation = Read-Host "Proceed with cleanup? (y/n):"
 
@@ -101,7 +101,7 @@ if ($confirmation -eq 'y') {
     $createUserResponse = Invoke-WebRequest -Uri $removeUserFromFolderUrl -Method DELETE -Headers $headers
 
     ##DELETE Flow
-    $deleteFlowUrlWithId = $deleteFlowUrl+'?id='+$flowObject.id
+    $deleteFlowUrlWithId = $deleteFlowUrl+'?id='+$flowObject.id+'&folderId='+$folderObject.id
     $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
     Invoke-WebRequest -Uri $deleteFlowUrlWithId -Method DELETE -Headers $headers
     
@@ -114,5 +114,7 @@ if ($confirmation -eq 'y') {
     $deleteUserUrl = $addUserUrl+'?userid='+$userObject.user.userId
     $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
     Invoke-WebRequest -Uri $deleteUserUrl -Method DELETE -Headers $headers
+
+    Write-OutPut 'Cleanup ready'
 }
 ```
