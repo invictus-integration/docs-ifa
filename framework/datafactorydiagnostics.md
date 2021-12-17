@@ -75,7 +75,7 @@ After the below code is executed you should be able to see the setup as displaye
     },
     {
       "type": "microsoft.datafactory/factories/providers/diagnosticsettings",
-      "name": "[concat(variables('dataFactoryName'),'/Microsoft.Insights/diagnostics')]",
+      "name": "[concat(variables('dataFactoryName'),'/Microsoft.Insights/SendDataFactoryDataToInvictus')]",
       "location": "[parameters('location')]",
       "apiVersion": "2017-05-01-preview",
       "dependsOn": [
@@ -114,6 +114,33 @@ After the below code is executed you should be able to see the setup as displaye
           }
         ]
       }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/accessPolicies",
+      "name": "[concat(parameters('infra').secrets.keyVaultName, '/add')]",
+      "apiVersion": "2018-02-14",
+      "comments": "Data Factory requires an access policy to read secrets for the managed identity",
+      "properties": {
+        "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "[reference(resourceId('Microsoft.DataFactory/factories',  variables('dataFactoryName')), '2018-06-01', 'Full').identity.principalId]",
+            "permissions": {
+              "secrets": [ "list", "get" ]
+            }
+          }
+        ]
+      },
+      "tags": {
+        "displayName": "Access for Azure DevOps",
+        "releaseName": "[parameters('releaseInfo').release.name]",
+        "createdBy": "[parameters('releaseInfo').release.url]",
+        "triggeredBy": "[parameters('releaseInfo').deployment.requestedFor]",
+        "triggerType": "[parameters('releaseInfo').deployment.triggerType]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.DataFactory/factories/', variables('dataFactoryName'))]"
+      ]
     }
   ],
   "outputs": {
