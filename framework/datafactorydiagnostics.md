@@ -1,6 +1,6 @@
 [home](../README.md) | [framework](framework.md)
 
-# LogicApps Diagnostics
+# Data Factory Diagnostics
 
 To enable diagnostics and automatically stream all PipelineRuns, TriggerRuns and ActivityRuns events from your Data Factory to event hub use the template below.
 
