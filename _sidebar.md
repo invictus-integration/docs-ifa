@@ -52,5 +52,6 @@
     * [XML/Json convertor](/framework/components/xmljsonconverter.md)
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
+    * [DataFactory diagnostics](/framework/datafactorydiagnostics.md) 
   * Support
     * [Release Notes :fire:](https://github.com/invictus-integration/docs-ifa/releases)
