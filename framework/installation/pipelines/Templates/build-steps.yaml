@@ -1,0 +1,35 @@
+parameters:
+  type: ''
+  useBeta: ''
+  storageAccountName: ''
+  storageSasToken: ''
+
+steps:
+- task: PowerShell@2
+  displayName: 'Pull Sources'
+  inputs:
+    targetType: filePath
+    filePath: './deploy/Invictus-GetSources.ps1'
+    arguments: '-StorageAccountName "${{parameters.storageAccountName}}" -StorageSasToken "${{parameters.storageSasToken}}" -StorageContainerName "${{parameters.type}}" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta ${{parameters.useBeta}}'
+          
+- task: PublishPipelineArtifact@1
+  inputs:
+    TargetPath: $(Build.ArtifactStagingDirectory)
+    ArtifactName: ${{parameters.type}}
+    publishLocation: 'pipeline'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    TargetPath: deploy
+    ArtifactName: scripts
+
+- task: PowerShell@2
+  displayName: Tag Sources
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+        Write-Host "Tagging Build: $env:BUILD_DEFINITIONNAME-$env:BUILD_BUILDNUMBER"
+      
+        git tag $env:BUILD_DEFINITIONNAME-$env:BUILD_BUILDNUMBER
+        git push origin $env:BUILD_DEFINITIONNAME-$env:BUILD_BUILDNUMBER
