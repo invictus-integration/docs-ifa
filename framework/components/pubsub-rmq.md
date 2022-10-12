@@ -89,24 +89,19 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 
 ## Test
 
-To test the above functions, you can use Postman. Before doing this part ensure that both Logic Apps have been setup as described. It is also important to have Subscribe setup before attempting to Post a request, as this will create both the topic and subscription on service bus. Without the Topic and Subscription, it is guaranteed that the first message posted will fail and no messages will be available.
+To test the above functions, you can use Postman. Before doing this part ensure that both Logic Apps have been setup as described. It is also important to have Subscribe setup before attempting to Post a request, as this will create both the topic and subscription on service bus.
 
-1. Get the url exposed by the **Publish Request trigger**
+
+1. Create a new subsciber by creating a new standard logic app and choose the Httpwebhook trigger.
+	
+	![postman](../../images/pubsub-httpwebhook.png)
+
+2. Get the url exposed by the **Publish Request trigger**
 
    ![http](../../images/pubsub-httprequestsmall.png)
 
-2. Send a POST request using the below Json or anything that matches the schema which you setup when creating the HTTP request trigger.
+3. Send a POST request using the below Json or anything that matches the schema which you setup when creating the HTTP request trigger.
 
-   ![postman](../../images/pubsub-json.png)
+   ![postman](../../images/pubsub-httpwebhook.png)
 
-3. You should receive 202 if request was Accepted
-
-To confirm that both Logic apps are now working and handling the messages as expected go to each Logic App on Azure. Review the Run History for Both Logic Apps.
-
-It is important to confirm that the Data sent in Publish is what is being outputted in the Subscribe. This can be achieved by clicked on any of the rows in the table shown below.
-
-![la-runs](../../images/pubsub-laruns.png)
-
-You will be taken to another screen where you will be able to view all input and outputs.
-
-![la-runsdetail](../../images/pubsub-subscriberesult.png)
+4. 
