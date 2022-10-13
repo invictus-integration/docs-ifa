@@ -13,6 +13,7 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 * Basic Authentication is used for API Authentication, this will require authentication for each connector
 *   Passwords for API authentication - ApiKey1 and ApiKey2 will be stored in KeyVault
 *   Each request can have a max size of 100mb
+*	Each message resuest can have a maximum message size of 25mb
 *   Timeout for Subscribe is set to 75 seconds by default
 *   Blob Storage will only be used when message is greater than 256kb. This is configurable at API level.
 *   Subscribe should always use the LogicAppName as the subscription property. This can be done when using ARM deployments or typed manually
