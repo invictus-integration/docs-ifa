@@ -10,15 +10,16 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 
 ## General Information
 
-* Basic Authentication is used for API Authentication, this will require authentication for each connector
+* 	Basic Authentication is used for API Authentication, this will require authentication for each connector
 *   Passwords for API authentication - ApiKey1 and ApiKey2 will be stored in KeyVault
 *   Each request can have a max size of 100mb
-*	Each message resuest can have a maximum message size of 25mb
-*   Timeout for Subscribe is set to 75 seconds by default
-*   Blob Storage will only be used when message is greater than 256kb. This is configurable at API level.
+*   Blob Storage will only be used when message is greater than 20mb. This is configurable in the environmental variables.
 *   Subscribe should always use the LogicAppName as the subscription property. This can be done when using ARM deployments or typed manually
 *   A message id is automatically generated per message sent.
 *	Once saving the newly created subscriber logic app an automatic run will be triggered.
+*	The Storage Container is defined as "***invictus-pubsub-messages***"
+*	The Storage Table Name is defined as "***InvictusPubSubRmqSubscribers***"
+*	The Storage Table Partition Key is defined as "***RMQueue***"
 
 ## RabbitMQ Specific
 
@@ -95,17 +96,18 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 To test the above functions, you can use Postman. Before doing this part ensure that both Logic Apps have been setup as described. It is also important to have Subscribe setup before attempting to Post a request, as this will create both the topic and subscription on service bus.
 
 
-1. Create a new subsciber by creating a new standard logic app and choose the Httpwebhook trigger.
+1. Create a new subsciber by creating a new standard logic app and choose the Httpwebhook trigger. Fill in the required details as shown below.
 	
 	![postman](../../images/pubsub-httpwebhook.png)
 
 2. Get the url exposed by the **Publish Request trigger**
 
-   ![http](../../images/pubsub-httprequestsmall.png)
+	![http](../../images/pubsub-httprequestsmall.png)
 
 3. Send a POST request using the below Json or anything that matches the schema which you setup when creating the HTTP request trigger.
 
-   ![postman](../../images/pubsub-publish-request.png)
+	![postman](../../images/pubsub-publish-request.png)
 
 4. Check the result in the subscriber logic app.
+
 	![httpwebhookresult](../../images/pubsub-httpwebhook-result.png)
