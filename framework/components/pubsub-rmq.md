@@ -18,6 +18,7 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 *   Blob Storage will only be used when message is greater than 256kb. This is configurable at API level.
 *   Subscribe should always use the LogicAppName as the subscription property. This can be done when using ARM deployments or typed manually
 *   A message id is automatically generated per message sent.
+*	Once saving the newly created subscriber logic app an automatic run will be triggered.
 
 ## RabbitMQ Specific
 
@@ -82,6 +83,7 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 
 1.  Start by creating a new Logic App in Azure Portal. The plan type should be of type Standard.
 2.  Open the newly created logic app and create a new stateful workflow and give the workflow a name.
+	![newworkflow](../../images/pubsub-newworkflow)
 3.  Once the workflow is created, open the workflow and go to the designer.
 4.  Select the Http Webhook as a trigger.
 5.  Fill in the details as shown below:  
@@ -103,6 +105,7 @@ To test the above functions, you can use Postman. Before doing this part ensure 
 
 3. Send a POST request using the below Json or anything that matches the schema which you setup when creating the HTTP request trigger.
 
-   ![postman](../../images/pubsub-httpwebhook.png)
+   ![postman](../../images/pubsub-publish-request.png)
 
-4. 
+4. Check the result in the subscriber logic app.
+	![httpwebhookresult](../../images/pubsub-httpwebhook-result.png)
