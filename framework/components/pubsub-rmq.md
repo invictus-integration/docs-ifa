@@ -26,7 +26,7 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 *	All the required queue, exchanges and bindings are automatically created.
 *	The main queue where all the message are forwarded from the subscriber queues is called “***inv_pubsubqueue***”.
 *	There is only one exchange being created, it is called “***main_exchange***”.
-*	The main exchange is of type headers.
+*	The main exchange is of type headers. For more information how this exchange works please go to [https://www.cloudamqp.com/blog/part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html#headers-exchange]
 *	RabbitMQ requires a connection string. Please follow the correct format (amqp://user:pass@host/vhost) for more information please visit [https://www.rabbitmq.com/uri-spec.html](https://www.rabbitmq.com/uri-spec.html).
 *	A dead letter queue is automatically created and is called “***dead_letter_queue***”.
 *	A dead letter exchange is automatically created and called “***dead..letter.exchange***”.
@@ -84,12 +84,12 @@ The PubSub component will mainly be used to push messages to RabbitMQ using the 
 
 1.  Start by creating a new Logic App in Azure Portal. The plan type should be of type Standard.
 2.  Open the newly created logic app and create a new stateful workflow and give the workflow a name.
-	![newworkflow](../../images/pubsub-newworkflow)
+	![newworkflow](../../images/pubsub-newworkflow.png)
 3.  Once the workflow is created, open the workflow and go to the designer.
 4.  Select the Http Webhook as a trigger.
-5.  Fill in the details as shown below:  
+5.  Fill in the details as shown below (all fields are mandatory):  
 		![Http Webhook Designer View](../../images/pubsub-httpwebhook.png)
-7.  Click Save
+6.  Click Save
 
 ## Test
 
