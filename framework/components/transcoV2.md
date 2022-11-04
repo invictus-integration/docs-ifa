@@ -104,3 +104,36 @@ Within the _**transcov2**_ container:
  - Transformation files must be saved in a folder named ***XSLTs***
  - Assembly and dependency DLL files must be saved in a folder named
    ***Assemblies***
+  
+## Transco Request Object
+
+The Transco request requires three values:
+
+ 1. XML or JSON content in Base64 string format
+ 2. Context as key-value pair list
+ 3. Name of transco config file in storage account
+
+Example payload:
+
+    {
+	    "Content":  "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PHJvb3Q+PG5hbWUgc3RhdHVzPSJNZW1iZXIiPkpvaG4gRG9lPC9uYW1lPjwvcm9vdD4=",
+	    "Context":  {
+		    "CustomerActive":  "true" 
+	    }, 
+	    "TranscoConfig":  "docs_config.json"    
+    }
+
+## Creating Logic App with TranscoV2 Connector
+
+ 1. Create a new blank Logic App in the Azure Portal
+ 2. Open the Logic App designer
+ 3. Choose a trigger of your choice, we will use a *Request* trigger
+ 4. Add a "Call an Azure Function" action
+ 5. Select the appropriate TranscoV2 function from the list and give the connection a name
+ 6. Select the Function endpoint you wish to use
+ 7. Set the Method to POST
+ 8. Set the Request Body to a valid Transco Request
+ 
+![Function Request](../../images/transcoV2LA.png)
+
+ 9. Add any other actions you require and save
