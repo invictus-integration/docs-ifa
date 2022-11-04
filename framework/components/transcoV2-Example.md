@@ -1,4 +1,4 @@
-## Full Transco V2 Example
+# Full Transco V2 Example
 
 The following is a full example which demonstrates the usage of Transco V2.
 
