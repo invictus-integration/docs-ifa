@@ -105,6 +105,8 @@ Within the _**transcov2**_ container:
  - Assembly and dependency DLL files must be saved in a folder named
    ***Assemblies***
   
+![transcov2 Storage Account](../../images/transcoV2Storage.png)
+  
 ## Transco Request Object
 
 The Transco request requires three values:
@@ -128,11 +130,13 @@ Example payload:
  1. Create a new blank Logic App in the Azure Portal
  2. Open the Logic App designer
  3. Choose a trigger of your choice, we will use a *Request* trigger
- 4. Add a "Call an Azure Function" action
- 5. Select the appropriate TranscoV2 function from the list and give the connection a name
+ 4. Add a "Azure Function" action
+ 5. Select the appropriate TranscoV2 function from the list
+
+![Azure Function Action](../../images/transcoV2LAAction.png)
+
  6. Select the Function endpoint you wish to use
- 7. Set the Method to POST
- 8. Set the Request Body to a valid Transco Request
+ 7. Set the Request Body to a valid Transco Request
  
 ![Function Request](../../images/transcoV2LA.png)
 
