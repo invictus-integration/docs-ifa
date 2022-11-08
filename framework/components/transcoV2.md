@@ -131,13 +131,13 @@ Example payload:
  2. Open the Logic App designer
  3. Choose a trigger of your choice, we will use a *Request* trigger
  4. Add a "Azure Function" action
+ 
+ ![Azure Function Action](../../images/transcoV2LAAction.png)
+ 
  5. Select the appropriate TranscoV2 function from the list
-
-![Azure Function Action](../../images/transcoV2LAAction.png)
-
  6. Select the Function endpoint you wish to use
  7. Set the Request Body to a valid Transco Request
  
 ![Function Request](../../images/transcoV2LA.png)
 
- 9. Add any other actions you require and save
+ 8. Add any other actions you require and save
