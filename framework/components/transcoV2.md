@@ -20,6 +20,7 @@ The parameters of the SQL query can be populated from 3 sources:
 
 Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation.  Any required assemblies and dependencies used by the transformation can also be specfied, while the respective DLL files are to be in the storage account.
 
+Transco supports XSLT 1.0 syntax.
 
 ## Transco Config File
 
