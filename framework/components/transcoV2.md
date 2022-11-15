@@ -27,9 +27,11 @@ Transco supports XSLT 1.0 syntax.
 Transco V2 provides two endpoints:
 
 */api/TranscoXML* 
+
 This endpoint is to be used with XML content. A transco config file is used to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file. 
 
-*/api/TranscoJson
+*/api/TranscoJson*
+
 This endpoint is to be used with JSON content. A transco config file is used to list the instructions necessary to promote values from an SQL database. Transformations cannot be performed on JSON content.
 
 ## Transco Config File
@@ -110,7 +112,9 @@ This instruction can be added to the Transco config to promote values from the d
 
 Example:
 *SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
+
 or
+
 *SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
 
 
