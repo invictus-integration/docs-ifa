@@ -45,8 +45,7 @@ The below Transco config is used to obtain the Customer Status from the DB and i
 
     {
     	"instructions": [
-    		{
-    			"type": "xml",
+    		{   			
     			"scopePath": "/persons",
     			"destinationPath": "//status",
     			"command": {

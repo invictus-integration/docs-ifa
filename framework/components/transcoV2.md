@@ -20,6 +20,19 @@ The parameters of the SQL query can be populated from 3 sources:
 
 Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation.  Any required assemblies and dependencies used by the transformation can also be specfied, while the respective DLL files are to be in the storage account.
 
+Transco supports XSLT 1.0 syntax.
+
+## Transco V2 Endpoints
+
+Transco V2 provides two endpoints:
+
+*/api/TranscoXML* 
+
+This endpoint is to be used with XML content. A transco config file is used to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file. 
+
+*/api/TranscoJson*
+
+This endpoint is to be used with JSON content. A transco config file is used to list the instructions necessary to promote values from an SQL database. Transformations cannot be performed on JSON content.
 
 ## Transco Config File
 
@@ -93,6 +106,79 @@ A JSON Transco config file is required to specify details about the instruction 
     	}
     }
 
+**SQL Command Instruction**
+
+This instruction can be added to the Transco config to promote values from the database into XML or JSON content. Scope path can be defined so that the command affects only nodes within that path. In the command section, a connection to the DB must be provided either via a connection string or via the Key Vault secret name. The SQL query itself is also defined in this section. Parameters in the SQL query must be denoted with an '@' symbol. Parameters may be given a name or indexed with a number.
+
+Example:
+*SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
+
+or
+
+*SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
+
+
+    {
+    	"scopePath": [XPath/JPath of content scope],
+    	"namespaces": [
+    				{
+    					"namespace": [XML Namespace],
+    					"prefix": [XML Namespace prefix]
+    				}
+    			],
+    	"destinationPath": [XPath/JPath of the results destination],
+    	"command": {
+    		"databaseConnectionString":[Raw connection string to DB],
+    		"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
+    		"commandValue": [SQL query to be executed],
+    		"isMandatory": [If true, will throw error when result is null],
+    		"defaultValue": [Default value of result],
+    		"parameters": [
+    					{
+    						"paramName": [Name of param in query],
+    						"value": [Type dependent. XPath or JPath if valueType = "path"],
+    						"type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+    						"valueType": ["path" or "fixedValue" or "context"]
+    					},
+    					{
+    						"paramName": [Name of param in query],
+    						"value": [Type dependent. Any string value if valueType = "fixedValue"],
+    						"type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+    						"valueType": ["path" or "fixedValue" or "context"]
+    					},
+    					{
+    						"paramName": [Name of param in query],
+    						"value": [Type dependent. Key to value in context if valueType = "context"],
+    						"type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+    						"valueType": ["path" or "fixedValue" or "context"]
+    					}
+    				],
+    		"cache": {
+    					"useCaching": [If true, query result is cached],
+    					"cachingTimeout": [Cache timeout timespan]
+    				}
+    	}
+    }
+
+**XML Transform Instruction**
+This instruction can be added to the Transco Config to transform XML content via the specified XSLT file. Assemblies and dependencies used by the XSLT transformation are also specified in this instruction so that they may downloaded from storage and loaded for use by Transco.
+
+This instruction is only available when calling the /TranscoXML endpoint.
+
+    {
+	    "xsltTransform": [Name of XSLT file],
+	    "extensions": [
+		    {
+		    		"namespace": [Assembly namespace],
+		    		"assemblyName": [Assembly name],
+		    		"className": [Assembly class name],
+		    		"dependencies": [
+			    		[DLL dependency file name],
+			    		[DLL dependency file name]
+				    ]
+		    }
+	    ]
+    }
 
 ## Storage Account
 
