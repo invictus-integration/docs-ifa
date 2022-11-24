@@ -38,6 +38,8 @@ This endpoint is to be used with JSON content. A transco config file is used to 
 
 This endpoint does not accept any config. It accepts a simple list of parameters and promotes them to the Context.
 
+See [Transco V2 - Matrix Functionality](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/transcoV2-Matrix.md) for more details.
+
 ## Transco Config File
 
 A JSON Transco config file is required to specify details about the instruction which will be performed. Instructions are executed in the order in which they appear. The name of the config file should be specified in the request so that it can be retrieved from the storage account.
