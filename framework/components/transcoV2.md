@@ -34,6 +34,12 @@ This endpoint is to be used with XML content. A transco config file is used to l
 
 This endpoint is to be used with JSON content. A transco config file is used to list the instructions necessary to promote values from an SQL database. Transformations cannot be performed on JSON content.
 
+*/api/MatrixBasicPromote*
+
+This endpoint does not accept any config. It accepts a simple list of parameters and promotes them to the Context.
+
+See [Transco V2 - Matrix Functionality](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/transcoV2-Matrix.md) for more details.
+
 ## Transco Config File
 
 A JSON Transco config file is required to specify details about the instruction which will be performed. Instructions are executed in the order in which they appear. The name of the config file should be specified in the request so that it can be retrieved from the storage account.
@@ -50,7 +56,8 @@ A JSON Transco config file is required to specify details about the instruction 
 						"prefix": [XML Namespace prefix]
 					}
 				],
-    			"destinationPath": [XPath/JPath of the results destination],
+    			"destination": [XPath/JPath of the results destination, or Context key if promoteToContext = true],
+			"promoteToContext":[If true query result is saved to Context at key destination],
     			"command": {
 	    			"databaseConnectionString":[Raw connection string to DB],
     				"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
@@ -108,7 +115,7 @@ A JSON Transco config file is required to specify details about the instruction 
 
 **SQL Command Instruction**
 
-This instruction can be added to the Transco config to promote values from the database into XML or JSON content. Scope path can be defined so that the command affects only nodes within that path. In the command section, a connection to the DB must be provided either via a connection string or via the Key Vault secret name. The SQL query itself is also defined in this section. Parameters in the SQL query must be denoted with an '@' symbol. Parameters may be given a name or indexed with a number.
+This instruction can be added to the Transco config to promote values from the database into XML or JSON content, or into the requst Context. Scope path can be defined so that the command affects only nodes within that path. In the command section, a connection to the DB must be provided either via a connection string or via the Key Vault secret name. The SQL query itself is also defined in this section. Parameters in the SQL query must be denoted with an '@' symbol. Parameters may be given a name or indexed with a number.
 
 Example:
 *SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
@@ -126,7 +133,8 @@ or
     					"prefix": [XML Namespace prefix]
     				}
     			],
-    	"destinationPath": [XPath/JPath of the results destination],
+    	"destination": [XPath/JPath of the results destination, or Context key if promoteToContext = true],
+	"promoteToContext": [If true query result is saved to Context at key destination],
     	"command": {
     		"databaseConnectionString":[Raw connection string to DB],
     		"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
