@@ -1,0 +1,26 @@
+{{- if not .Values.PubSub.RmqConnectionString}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "invictus.fullname" . }}-internal
+  labels:
+    {{- include "rabbitmq.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: {{ .Values.rabbitMQ.service.amqp.port }}
+      targetPort: amqp
+      name: amqp
+    - port: {{ .Values.rabbitMQ.service.mgmt.port }}
+      targetPort: mgmt
+      name: mgmt
+    - port: 4369
+      targetPort: epmd
+      name: epmd
+    - port: 25672
+      targetPort: dist
+      name: dist
+  selector:
+    {{- include "rabbitmq.selectorLabels" . | nindent 4 }}
+{{- end }}

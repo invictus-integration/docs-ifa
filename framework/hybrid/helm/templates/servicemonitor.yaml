@@ -1,0 +1,36 @@
+{{- if not .Values.PubSub.RmqConnectionString}}
+{{- if .Values.rabbitMQ.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "invictus.fullname" . }}
+  labels:
+    {{- include "rabbitmq.labels" . | nindent 4 }}
+    {{- with .Values.rabbitMQ.serviceMonitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.rabbitMQ.serviceMonitor.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  endpoints:
+    - port: "prometheus"
+      path: "/metrics"
+      {{- if .Values.rabbitMQ.serviceMonitor.interval }}
+      interval: {{ .Values.rabbitMQ.serviceMonitor.interval }}
+      {{- end }}
+      {{- if .Values.rabbitMQ.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.rabbitMQ.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+      {{- with .Values.rabbitMQ.serviceMonitor.extraEndpointParameters }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+  {{- with .Values.rabbitMQ.serviceMonitor.extraParameters }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rabbitmq.selectorLabels" . | nindent 6 }}
+{{- end }}
+{{- end }}

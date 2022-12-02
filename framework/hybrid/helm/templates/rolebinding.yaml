@@ -1,0 +1,16 @@
+{{- if not .Values.PubSub.RmqConnectionString}}
+{{- if and .Values.rabbitMQ.serviceAccount.create .Values.rabbitMQ.rbac.create }}
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "invictus.fullname" . }}-endpoint-reader
+  labels: {{- include "rabbitmq.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "rabbitmq.serviceAccountName" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ template "invictus.fullname" . }}-endpoint-reader
+{{- end }}
+{{- end }}

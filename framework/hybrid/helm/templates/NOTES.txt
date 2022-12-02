@@ -1,0 +1,19 @@
+Thank you for installing {{ template "invictus.fullname" . }}.
+
+You are currently using version: {{ .Values.Invictusversion }}.
+
+Some password might be randomly generated check if these match with the value you give in the deployment.
+
+RabbitMQ:
+---
+username: {{.Values.rabbitMQ.authentication.user}}
+password: {{ template "rabbitMQ.password" .}}
+erlangcookie: {{template "erlangCookie" .}}
+---
+
+SQL:
+---
+username: sa
+password: {{ template "sql.sapassword" .}}
+connectionstring:{{ template "connectionstringmsSQL" .}}
+---

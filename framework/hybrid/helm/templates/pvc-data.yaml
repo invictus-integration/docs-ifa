@@ -1,0 +1,30 @@
+{{- if not .Values.existingSQLConnectionString}}
+{{- if and .Values.SQL.persistence.enabled (not .Values.SQL.persistence.existingDataClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "invictus.fullname" . }}-data
+  labels:
+    app: {{ template "invictus.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+{{- if .Values.SQL.persistence.annotations }}
+  annotations:
+{{ toYaml .Values.SQL.persistence.annotations | indent 4 }}
+{{- end }}
+spec:
+  accessModes:
+    - {{ .Values.SQL.persistence.dataAccessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.SQL.persistence.dataSize | quote }}
+{{- if .Values.SQL.persistence.storageClass }}
+{{- if (eq "-" .Values.SQL.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.SQL.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end -}}
+{{- end }}

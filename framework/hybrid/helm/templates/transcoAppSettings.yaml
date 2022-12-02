@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+ name: transcoconfig
+data: 
+    FUNCTIONS_WORKER_RUNTIME: {{.Values.Framework.FUNCTIONS_WORKER_RUNTIME | b64enc | quote }}
+    WEBSITE_SLOT_NAME: {{"Production" | b64enc | quote }}
+    FUNCTIONS_EXTENSION_VERSION: {{.Values.Framework.FUNCTIONS_EXTENSION_VERSION | b64enc | quote }}
+    ScmType: {{"VSTSRM" | b64enc | quote }}
+    WEBSITE_AUTH_ENABLED: {{"False" | b64enc | quote }}
+    WEBSITE_RUN_FROM_PACKAGE: {{"1" | b64enc | quote }}
+    REMOTEDEBUGGINGVERSION: {{"15.0.28307.222" | b64enc | quote }}
+    StorageConnectionString: {{.Values.Transco.StorageConnectionString | b64enc | quote }}
+    APPINSIGHTS_INSTRUMENTATIONKEY: {{.Values.Framework.APPINSIGHTS_INSTRUMENTATIONKEY | b64enc | quote }}
+    InvictusDashboardConnectionString: {{.Values.Framework.InvictusDashboardConnectionString | b64enc | quote }}
+    WEBSITE_AUTH_AUTO_AAD: {{"False" | b64enc | quote }}
+    WEBSITE_SITE_NAME: {{.Values.Transco.OpenApiInfoTitle | b64enc | quote }}
+    WEBSITE_AUTH_LOGOUT_PATH: {{"/.auth/logout" | b64enc | quote }}
+    AzureWebJobsStorage: {{.Values.Framework.AzureWebJobsStorage| b64enc | quote }}
+    WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: {{.Values.Transco.WEBSITE_CONTENTAZUREFILECONNECTIONSTRING| b64enc | quote }}
+    WEBSITE_CONTENTSHARE: {{.Values.Transco.WEBSITE_CONTENTSHARE| b64enc | quote }}
+    AzureWebJobsDashboard: {{.Values.Framework.AzureWebJobsDashboard| b64enc | quote }}
+    AzureWebJobsSecretStorageType : {{.Values.Framework.AzureWebJobsSecretStorageType| b64enc | quote }}
+    OpenApi__Info__Version: {{.Values.Framework.OpenApiInfoVersion| b64enc | quote }}
+    OpenApi__Info__Title: {{.Values.Transco.OpenApiInfoTitle| b64enc | quote }}
+    RunningEnvironment: {{.Values.Framework.RunningEnvironment| b64enc | quote }}
+    SqlFilesConnectionString:  {{"template 'connectionstringmsSQL' ."| b64enc | quote }} 
