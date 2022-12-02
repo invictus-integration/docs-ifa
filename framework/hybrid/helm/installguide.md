@@ -8,8 +8,6 @@ First check is there is a cluster running with **kubectl cluster-info**. if not:
 ### Linux:
 <pre><code>curl -sfL https://get.k3s.io | sh - 
 </code></pre>
-### Windows:
-todo: look into k3d or alternative for windows
 ## Step 2: Get the Helm chart
 download the helm.zip in docs-ifa\framework\hybrid and unzip it.
 ## Step 3: deploy HELM chart
