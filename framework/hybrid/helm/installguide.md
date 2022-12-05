@@ -3,12 +3,24 @@
 ### install kubectl:  
 linux: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 windows: https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+### install helm
+<pre><code>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+ ./get_helm.sh
+</code></pre>
+
+
+
+
 ## Step1: kubernetes
 First check is there is a cluster running with **kubectl cluster-info**. if not:
 ### Linux:
 <pre><code>curl -sfL https://get.k3s.io | sh - 
 </code></pre>
-<pre><code>cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && chown $USER ~/.kube/config && chmod 600 ~/.kube/config && export KUBECONFIG=~/.kube/config
+setup kubectl access
+<pre><code>sudo mkdir ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chmod 666 ~/.kube/config
 </code></pre>
 ### Windows:
 ## Step 2: pull HELM chart
