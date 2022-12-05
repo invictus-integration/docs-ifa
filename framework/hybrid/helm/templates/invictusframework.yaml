@@ -100,6 +100,9 @@ spec:
           ports:
             - name: regextransl #makes it easier for liveness probes to be installed
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
         - name: "sequencecontl"
           image: "{{ .Values.SequenceController.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
@@ -178,6 +181,9 @@ spec:
           ports:
             - name: sequencecontrol
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
 
         - name: "xmljsonconv"
           image: "{{ .Values.XmlJsonConverter.image.repository }}:{{ .Values.tag }}"
@@ -256,6 +262,9 @@ spec:
           ports:
             - name: xmljsonconv
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80
 
         - name: "xsdvalidator"
           image: "{{ .Values.XsdValidator.image.repository }}:{{ .Values.tag }}"
@@ -334,6 +343,9 @@ spec:
           ports:
             - name: xsdvalidator
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
 
         - name: "timesequencer"
           image: "{{ .Values.TimeSequencer.image.repository }}:{{ .Values.tag }}"
@@ -412,6 +424,9 @@ spec:
           ports:
             - name: timesequencer
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
 
         - name: "transco"
           image: "{{ .Values.Transco.image.repository }}:{{ .Values.tag }}"
@@ -490,6 +505,9 @@ spec:
           ports:
             - name: transco
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
 
         - name: "pupsub"
           image: "{{ .Values.PubSub.image.repository }}:{{ .Values.tag }}"
@@ -573,6 +591,9 @@ spec:
           ports:
             - name: pubsub
               containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
       imagePullSecrets:
        - name: myregistrykey
         
