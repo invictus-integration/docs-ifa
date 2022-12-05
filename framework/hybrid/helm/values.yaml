@@ -444,8 +444,6 @@ Framework:
  OpenApiInfoVersion: "2.0.0"
  RunningEnvironment: "onprem"
  InvictusDashboardConnectionString: ""
- releaseVersion: "latest"
-
 
 RegexTranslation:
   image:
