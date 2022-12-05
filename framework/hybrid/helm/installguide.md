@@ -1,6 +1,6 @@
 # intall guide
 ## basic installs
-### install kubectl:  
+### install kubectl 
 linux: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 windows: https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
 ### install helm
@@ -14,7 +14,7 @@ chmod 700 get_helm.sh
 
 ## Step1: kubernetes
 First check is there is a cluster running with **kubectl cluster-info**. if not:
-### Linux:
+### Linux
 <pre><code>curl -sfL https://get.k3s.io | sh - 
 </code></pre>
 setup kubectl access
@@ -22,11 +22,12 @@ setup kubectl access
 sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 sudo chmod 666 ~/.kube/config
 </code></pre>
-### Windows:
+### Windows
 ## Step 2: pull HELM chart
 Download the **helm.zip** folder in this repository and unzip it
 ## Step 3: deploy HELM chart
-<pre><code>helm upgrade --install {name} .\helm\ --values .\helm\values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString={InvictusDashboardConnectionString}
+in the helm directory open a terminal and execute:
+<pre><code>helm upgrade --install {name} . --values ./values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
 </code></pre>
 replace the bracketed values with the wanted ones
 | Variable                         | Description                      |
