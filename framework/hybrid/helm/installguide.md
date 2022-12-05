@@ -8,7 +8,7 @@ First check is there is a cluster running with **kubectl cluster-info**. if not:
 ### Linux:
 <pre><code>curl -sfL https://get.k3s.io | sh - 
 </code></pre>
-<pre><code>export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+<pre><code>cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && chown $USER ~/.kube/config && chmod 600 ~/.kube/config && export KUBECONFIG=~/.kube/config
 </code></pre>
 ### Windows:
 ## Step 2: pull HELM chart
