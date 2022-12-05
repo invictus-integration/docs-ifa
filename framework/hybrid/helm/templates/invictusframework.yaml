@@ -57,11 +57,6 @@ spec:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
                 name: regextranslationconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: regextranslationconfig  
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -81,31 +76,6 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
-                name: regextranslationconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: regextranslationconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: regextranslationconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: regextranslationconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: regextranslationconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
                 name: regextranslationconfig  
             - name: "OpenApi__Info__Version"
               valueFrom:
@@ -164,11 +134,6 @@ spec:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
                 name: sequenceconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: sequenceconfig  
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -189,31 +154,7 @@ spec:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
                 name: sequenceconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: sequenceconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: sequenceconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: sequenceconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: sequenceconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
-                name: sequenceconfig  
+            - name: "AzureWebJobsStorage" 
             - name: "OpenApi__Info__Version"
               valueFrom:
                secretKeyRef:
@@ -272,11 +213,6 @@ spec:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
                 name: xmljsonconverterconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: xmljsonconverterconfig  
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -296,31 +232,6 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
-                name: xmljsonconverterconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: xmljsonconverterconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: xmljsonconverterconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: xmljsonconverterconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: xmljsonconverterconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
                 name: xmljsonconverterconfig  
             - name: "OpenApi__Info__Version"
               valueFrom:
@@ -380,11 +291,6 @@ spec:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
                 name: xsdvalidatorconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: xsdvalidatorconfig  
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -404,31 +310,6 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
-                name: xsdvalidatorconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: xsdvalidatorconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: xsdvalidatorconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: xsdvalidatorconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: xsdvalidatorconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
                 name: xsdvalidatorconfig  
             - name: "OpenApi__Info__Version"
               valueFrom:
@@ -488,11 +369,6 @@ spec:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
                 name: timesequencerconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: timesequencerconfig  
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -512,31 +388,6 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
-                name: timesequencerconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: timesequencerconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: timesequencerconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: timesequencerconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: timesequencerconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
                 name: timesequencerconfig  
             - name: "OpenApi__Info__Version"
               valueFrom:
@@ -595,12 +446,7 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
-                name: transcoconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: transcoconfig  
+                name: transcoconfig   
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -620,32 +466,7 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
-                name: transcoconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: transcoconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: transcoconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: transcoconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: transcoconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
-                name: transcoconfig  
+                name: transcoconfig   
             - name: "OpenApi__Info__Version"
               valueFrom:
                secretKeyRef:
@@ -703,12 +524,7 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : REMOTEDEBUGGINGVERSION
-                name: pupsubconfig  
-            - name: "StorageConnectionString"
-              valueFrom:
-               secretKeyRef:
-                key : StorageConnectionString
-                name: pupsubconfig  
+                name: pupsubconfig 
             - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
               valueFrom:
                secretKeyRef:
@@ -728,31 +544,6 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : WEBSITE_AUTH_LOGOUT_PATH
-                name: pupsubconfig  
-            - name: "AzureWebJobsStorage"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsStorage
-                name: pupsubconfig  
-            - name: "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
-                name: pupsubconfig  
-            - name: "WEBSITE_CONTENTSHARE"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_CONTENTSHARE
-                name: pupsubconfig  
-            - name: "AzureWebJobsDashboard"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsDashboard
-                name: pupsubconfig  
-            - name: "AzureWebJobsSecretStorageType"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsSecretStorageType
                 name: pupsubconfig  
             - name: "OpenApi__Info__Version"
               valueFrom:
