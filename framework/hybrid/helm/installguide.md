@@ -27,7 +27,7 @@ sudo chmod 666 ~/.kube/config
 Download the **helm.zip** folder in this repository and unzip it
 ## Step 3: deploy HELM chart
 in the helm directory open a terminal and execute:
-<pre><code>helm upgrade --install {name} . --values ./values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
+<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
 </code></pre>
 replace the bracketed values with the wanted ones
 | Variable                         | Description                      |
