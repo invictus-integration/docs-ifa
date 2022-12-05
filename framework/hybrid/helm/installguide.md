@@ -8,10 +8,12 @@ windows: https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
 chmod 700 get_helm.sh
  ./get_helm.sh
 </code></pre>
-
-
-
-
+### Install azure cli
+#### linux
+<pre><code>curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+</code></pre>
+#### windows
+https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli
 ## Step1: kubernetes
 First check is there is a cluster running with **kubectl cluster-info**. if not:
 ### Linux
