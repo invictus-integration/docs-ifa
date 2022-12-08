@@ -449,36 +449,32 @@ RegexTranslation:
   image:
     repository: "invictusdevacracr.azurecr.io/regextranslation"
   OpenApiInfoTitle: "Regex Translator"
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: ""
 
 SequenceController:
   image:
     repository: "invictusdevacracr.azurecr.io/sequencecontroller"
   OpenApiInfoTitle: "Sequence Controller"
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: ""
 
 XmlJsonConverter:
   image:
     repository: "invictusdevacracr.azurecr.io/xmljsonconverter"
   OpenApiInfoTitle: "Sequence Controller"
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: ""
+
 XsdValidator:
   image:
     repository: "invictusdevacracr.azurecr.io/xsdvalidator"
   OpenApiInfoTitle: "XSD Validator"
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: ""
+
 TimeSequencer:
   image:
     repository: "invictusdevacracr.azurecr.io/timesequencer"
   OpenApiInfoTitle: "Time Sequencer"
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: ""
+
 Transco: 
   image:
     repository: "invictusdevacracr.azurecr.io/transco"
   OpenApiInfoTitle: "Transco V2"
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: ""
-  WEBSITE_CONTENTSHARE: "invictus-dev-we-sft-transcov2"
-  WEBSITE_FILECONTENT: "invictus-dev-we-sft-transcov2"
+
 PubSub:
   image:
     repository: "invictusdevacracr.azurecr.io/pubsub"

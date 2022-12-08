@@ -3,7 +3,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "invictus.fullname" . }}
+  name: rabbitmq
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
     {{- with .Values.rabbitMQ.serviceMonitor.additionalLabels }}

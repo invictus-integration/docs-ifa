@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "invictus.fullname" . }}-config
+  name: rabbitmq-config
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
 data:

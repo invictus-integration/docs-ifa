@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.PubSub.OpenApiInfoTitle |lower | nospace}}
+  labels:
+    app: {{ template "invictus.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "invictus.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "invictus.name" . }}
+        release: {{ .Release.Name }}
+        function: {{ .Values.PubSub.OpenApiInfoTitle |lower | nospace}}
+    spec:
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        fsGroup: 10005
+      containers:  
+        - name: "pupsub"
+          image: "{{ .Values.PubSub.image.repository }}:{{ .Values.tag }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          env:
+            - name: "FUNCTIONS_WORKER_RUNTIME"
+              valueFrom:
+               secretKeyRef:
+                key : FUNCTIONS_WORKER_RUNTIME
+                name: pupsubconfig
+            - name: "WEBSITE_SLOT_NAME"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_SLOT_NAME
+                name: pupsubconfig                
+            - name: "FUNCTIONS_EXTENSION_VERSION"
+              valueFrom:
+               secretKeyRef:
+                key : FUNCTIONS_EXTENSION_VERSION
+                name: pupsubconfig    
+            - name: "ScmType"
+              valueFrom:
+               secretKeyRef:
+                key : ScmType
+                name: pupsubconfig    
+            - name: "WEBSITE_AUTH_ENABLED"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_AUTH_ENABLED
+                name: pupsubconfig                                    
+            - name: "REMOTEDEBUGGINGVERSION"
+              valueFrom:
+               secretKeyRef:
+                key : REMOTEDEBUGGINGVERSION
+                name: pupsubconfig 
+            - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
+              valueFrom:
+               secretKeyRef:
+                key : APPINSIGHTS_INSTRUMENTATIONKEY
+                name: pupsubconfig  
+            - name: "InvictusDashboardConnectionString"
+              valueFrom:
+               secretKeyRef:
+                key : InvictusDashboardConnectionString
+                name: pupsubconfig  
+            - name: "WEBSITE_SITE_NAME"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_SITE_NAME
+                name: pupsubconfig  
+            - name: "WEBSITE_AUTH_LOGOUT_PATH"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_AUTH_LOGOUT_PATH
+                name: pupsubconfig  
+            - name: "OpenApi__Info__Version"
+              valueFrom:
+               secretKeyRef:
+                key : OpenApi__Info__Version
+                name: pupsubconfig  
+            - name: "OpenApi__Info__Title"
+              valueFrom:
+               secretKeyRef:
+                key : OpenApi__Info__Title
+                name: pupsubconfig  
+            - name: "RunningEnvironment"
+              valueFrom:
+               secretKeyRef:
+                key : RunningEnvironment
+                name: pupsubconfig  
+            - name: "SqlFilesConnectionString"
+              valueFrom:
+               secretKeyRef:
+                key : SqlFilesConnectionString
+                name: pupsubconfig
+            - name: "RmqConnectionString"
+              valueFrom:
+               secretKeyRef:
+                key : RmqConnectionString
+                name: pupsubconfig                
+          ports:
+            - name: pubsub
+              containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80              
+      imagePullSecrets:
+       - name: myregistrykey

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.TimeSequencer.OpenApiInfoTitle |lower | nospace}}-service
+spec:
+  selector:
+     function: {{ .Values.TimeSequencer.OpenApiInfoTitle |lower | nospace}}
+  ports:
+    ports:
+    - name: timesequencer
+        containerPort: {{ .Values.port }}
+        targetPort: timesequencer
+    - name: http
+        protocol: TCP
+        containerPort: 80
+        targetPort: http

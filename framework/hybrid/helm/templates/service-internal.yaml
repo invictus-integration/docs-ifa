@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "invictus.fullname" . }}-internal
+  name: rabbitmq-internal
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
 spec:

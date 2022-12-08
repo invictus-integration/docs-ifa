@@ -2,14 +2,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "invictus.fullname" . }}
+  name: rabbitmq
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
       {{- include "rabbitmq.selectorLabels" . | nindent 6 }}
-  serviceName: {{ include "invictus.fullname" . }}-internal
+  serviceName: rabbitmq-internal
   podManagementPolicy: {{ .Values.rabbitMQ.podManagementPolicy }}
   replicas: {{ .Values.rabbitMQ.replicaCount }}
 {{- if .Values.rabbitMQ.revisionHistoryLimit }}

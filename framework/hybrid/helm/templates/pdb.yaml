@@ -7,7 +7,7 @@ apiVersion: policy/v1beta1
 {{- end }}
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "invictus.fullname" . }}
+  name: rabbitmq
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
 spec:

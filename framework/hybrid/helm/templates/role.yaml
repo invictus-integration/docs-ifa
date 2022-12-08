@@ -3,7 +3,7 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ template "invictus.fullname" . }}-endpoint-reader
+  name: rabbitmq-endpoint-reader
   labels: {{- include "rabbitmq.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]

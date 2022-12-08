@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.XsdValidator.OpenApiInfoTitle |lower | nospace}}
+  labels:
+    app: {{ template "invictus.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "invictus.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "invictus.name" . }}
+        release: {{ .Release.Name }}
+        function: {{ .Values.XsdValidator.OpenApiInfoTitle |lower | nospace}}
+    spec:
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        fsGroup: 10005
+      containers:                   
+        - name: "xsdvalidator"
+          image: "{{ .Values.XsdValidator.image.repository }}:{{ .Values.tag }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          env:
+            - name: "FUNCTIONS_WORKER_RUNTIME"
+              valueFrom:
+               secretKeyRef:
+                key : FUNCTIONS_WORKER_RUNTIME
+                name: xsdvalidatorconfig
+            - name: "WEBSITE_SLOT_NAME"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_SLOT_NAME
+                name: xsdvalidatorconfig                
+            - name: "FUNCTIONS_EXTENSION_VERSION"
+              valueFrom:
+               secretKeyRef:
+                key : FUNCTIONS_EXTENSION_VERSION
+                name: xsdvalidatorconfig    
+            - name: "ScmType"
+              valueFrom:
+               secretKeyRef:
+                key : ScmType
+                name: xsdvalidatorconfig    
+            - name: "WEBSITE_AUTH_ENABLED"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_AUTH_ENABLED
+                name: xsdvalidatorconfig                                    
+            - name: "REMOTEDEBUGGINGVERSION"
+              valueFrom:
+               secretKeyRef:
+                key : REMOTEDEBUGGINGVERSION
+                name: xsdvalidatorconfig  
+            - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
+              valueFrom:
+               secretKeyRef:
+                key : APPINSIGHTS_INSTRUMENTATIONKEY
+                name: xsdvalidatorconfig  
+            - name: "InvictusDashboardConnectionString"
+              valueFrom:
+               secretKeyRef:
+                key : InvictusDashboardConnectionString
+                name: xsdvalidatorconfig  
+            - name: "WEBSITE_SITE_NAME"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_SITE_NAME
+                name: xsdvalidatorconfig  
+            - name: "WEBSITE_AUTH_LOGOUT_PATH"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_AUTH_LOGOUT_PATH
+                name: xsdvalidatorconfig  
+            - name: "OpenApi__Info__Version"
+              valueFrom:
+               secretKeyRef:
+                key : OpenApi__Info__Version
+                name: xsdvalidatorconfig  
+            - name: "OpenApi__Info__Title"
+              valueFrom:
+               secretKeyRef:
+                key : OpenApi__Info__Title
+                name: xsdvalidatorconfig  
+            - name: "RunningEnvironment"
+              valueFrom:
+               secretKeyRef:
+                key : RunningEnvironment
+                name: xsdvalidatorconfig  
+            - name: "SqlFilesConnectionString"
+              valueFrom:
+               secretKeyRef:
+                key : SqlFilesConnectionString
+                name: xsdvalidatorconfig      
+          ports:
+            - name: xsdvalidator
+              containerPort: {{ .Values.port }}
+            - name: http
+              protocol: TCP
+              containerPort: 80   
+      imagePullSecrets:
+       - name: myregistrykey                
