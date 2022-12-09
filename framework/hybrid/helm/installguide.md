@@ -34,13 +34,13 @@ in the helm directory open a terminal and execute:
 <pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
 </code></pre>
 replace the bracketed values with the wanted ones
-| Variable                         | Description                      |
-|----------------------------------|----------------------------------|
-| {name}                           | wanted name of the helm chart    |
-| {username}                       | username given by codit products |
-| {password}                       | password given by codit products |
-| {appinsights_instrumentationkey} | the appinstights key             |
-| {InvictusDashboardConnectionString} | dashboard connection string   |
+| Variable                            | Description                      |
+| ----------------------------------- | -------------------------------- |
+| {name}                              | wanted name of the helm chart    |
+| {username}                          | username given by codit products |
+| {password}                          | password given by codit products |
+| {appinsights_instrumentationkey}    | the appinstights key             |
+| {InvictusDashboardConnectionString} | dashboard connection string      |
 
 
 ### optional settings
@@ -63,40 +63,64 @@ az provider register --namespace Microsoft.ExtendedLocation
 Connect an existing Kubernetes cluster
 <pre><code>az connectedk8s connect --name {name} --resource-group {resource-group}
 </code></pre>
-| Variable                         | Description                      |
-|----------------------------------|----------------------------------|
-| {name}                           | wanted name arc cluster    |
-| {resource-group}                       | resource group for the arc cluster |
+| Variable         | Description                        |
+| ---------------- | ---------------------------------- |
+| {name}           | wanted name arc cluster            |
+| {resource-group} | resource group for the arc cluster |
+
+
+
+
 # Windows
 note: i advice using a base linux operating system. But kubernetes can run anywhere even on Windows OS.
 ## basic installs
 ### install kubectl 
 windows: https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
 ### Install azure cli
-#### linux
-<pre><code>curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-</code></pre>
-#### windows
 https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli
 ## Step1: kubernetes
-### Windows
 https://microk8s.io/microk8s-installer.exe
 follow the installer
+ - press next
+ - pressI Agree
+ - the defaults are correct if you want you can select the add 'kubectl' to path funtion
+ - press install
+ - press next
+ - pressI Agree
+ - select Microsoft Hyper-V (Recommended)
+ - press next
+ - select Add multipass to current user's PATH  (Recommended) => **this is very important**
+ - press next
+ - press next again
+ - press install
+ - press Finnish
+  
+next run:
+<pre><code>microk8s start</code></pre>
+run **microk8s status** to make sure the microk8s is running
+### Install helm
+<pre><code>microk8s enable helm3</code></pre>
+
 
 ## Step 2: pull HELM chart
-Download the **helm.zip** folder in this repository and unzip it
+<pre><code> multipass shell microk8s-vm</code></pre>
+<pre><code>
+wget https://github.com/invictus-integration/docs-ifa/raw/laurent-hybrid-solution/framework/hybrid/helm.zip
+</code></pre>
+<pre><code>sudo apt install unzip</code></pre>
+<pre><code>unzip helm.zip</code></pre>
 ## Step 3: deploy HELM chart
-in the helm directory open a terminal and execute:
-<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
+<pre><code> exit </code></pre>
+<pre><code>microk8s helm3 upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
 </code></pre>
 replace the bracketed values with the wanted ones
-| Variable                         | Description                      |
-|----------------------------------|----------------------------------|
-| {name}                           | wanted name of the helm chart    |
-| {username}                       | username given by codit products |
-| {password}                       | password given by codit products |
-| {appinsights_instrumentationkey} | the appinstights key             |
-| {InvictusDashboardConnectionString} | dashboard connection string   |
+| Variable                            | Description                      |
+| ----------------------------------- | -------------------------------- |
+| {name}                              | wanted name of the helm chart    |
+| {username}                          | username given by codit products |
+| {password}                          | password given by codit products |
+| {appinsights_instrumentationkey}    | the appinstights key             |
+| {InvictusDashboardConnectionString} | dashboard connection string      |
 
 
 ### optional settings
@@ -106,9 +130,16 @@ Some interesting are:
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
 If you set these the corresponding resource will not be used but the one you gave will.
 ## Step 4: enable arc
-
+enable kubectl
+<pre><code>
+cd %USERPROFILE%
+mkdir .kube
+cd .kube
+microk8s config > config
+</code></pre>
+enable kubernetes dns extension
+<pre><code> microk8s enable dns</code></pre>
 login to azure
-
 <pre><code>az login
 </code></pre>
 Register providers for Azure Arc-enabled Kubernetes
@@ -119,7 +150,7 @@ az provider register --namespace Microsoft.ExtendedLocation
 Connect an existing Kubernetes cluster
 <pre><code>az connectedk8s connect --name {name} --resource-group {resource-group}
 </code></pre>
-| Variable                         | Description                      |
-|----------------------------------|----------------------------------|
-| {name}                           | wanted name arc cluster    |
-| {resource-group}                       | resource group for the arc cluster |
+| Variable         | Description                        |
+| ---------------- | ---------------------------------- |
+| {name}           | wanted name arc cluster            |
+| {resource-group} | resource group for the arc cluster |
