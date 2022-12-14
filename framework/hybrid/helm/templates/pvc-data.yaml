@@ -3,7 +3,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: rabbitmq-data
+  name: mqsql-data
   labels:
     app: {{ template "invictus.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
