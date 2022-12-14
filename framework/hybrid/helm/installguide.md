@@ -83,11 +83,13 @@ https://microk8s.io/microk8s-installer.exe
 follow the installer
  - press next
  - pressI Agree
- - the defaults are correct if you want you can select the add 'kubectl' to path funtion
+ -  **add microk8s to PATH** is needed, 'kubectl' is optional
+  ![add microk8s to PATH](./images/microk8s_selection.png)
  - press install
  - press next
  - pressI Agree
  - select Microsoft Hyper-V (Recommended)
+  ![Select Hypervisor](./images/selecthyperV.png)
  - press next
  - select Add multipass to current user's PATH  (Recommended) => **this is very important**
  - press next
