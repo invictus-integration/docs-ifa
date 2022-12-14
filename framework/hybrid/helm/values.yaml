@@ -458,7 +458,7 @@ SequenceController:
 XmlJsonConverter:
   image:
     repository: "invictusdevacracr.azurecr.io/xmljsonconverter"
-  OpenApiInfoTitle: "Sequence Controller"
+  OpenApiInfoTitle: "XML JSON Converter"
 
 XsdValidator:
   image:

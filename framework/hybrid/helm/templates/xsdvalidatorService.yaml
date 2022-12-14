@@ -6,11 +6,11 @@ spec:
   selector:
      function: {{ .Values.XsdValidator.OpenApiInfoTitle |lower | nospace}}
   ports:
-    ports:
-    - name: xsdvalidator
-        containerPort: {{ .Values.port }}
-        targetPort: xsdvalidator
-    - name: http
-        protocol: TCP
-        containerPort: 80
-        targetPort: http
+  - name: xsdvalidator
+    protocol: TCP
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

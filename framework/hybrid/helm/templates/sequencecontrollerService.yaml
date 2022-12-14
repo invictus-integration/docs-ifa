@@ -6,11 +6,11 @@ spec:
   selector:
      function: {{ .Values.SequenceController.OpenApiInfoTitle |lower | nospace}}
   ports:
-    ports:
-    - name: sequencecontrol
-        containerPort: {{ .Values.port }}
-        targetPort: sequencecontrol
-    - name: http
-        protocol: TCP
-        containerPort: 80
-        targetPort: http
+  - name: sequencecontrol
+    protocol: TCP
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

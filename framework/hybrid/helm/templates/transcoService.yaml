@@ -6,11 +6,11 @@ spec:
   selector:
      function: {{ .Values.Transco.OpenApiInfoTitle |lower | nospace}}
   ports:
-    ports:
-    - name: transco
-        containerPort: {{ .Values.port }}
-        targetPort: transco
-    - name: http
-        protocol: TCP
-        containerPort: 80
-        targetPort: http
+  - name: transco
+    protocol: TCP
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

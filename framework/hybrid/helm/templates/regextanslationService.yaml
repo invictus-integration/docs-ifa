@@ -6,11 +6,11 @@ spec:
   selector:
      function: {{ .Values.RegexTranslation.OpenApiInfoTitle |lower | nospace}}
   ports:
-    ports:
-    - name: regextransl
-        containerPort: {{ .Values.port }}
-        targetPort: regextransl
-    - name: http
-        protocol: TCP
-        containerPort: 80
-        targetPort: http
+  - name: regextransl
+    protocol: TCP
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: http

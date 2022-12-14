@@ -6,11 +6,11 @@ spec:
   selector:
      function: {{ .Values.TimeSequencer.OpenApiInfoTitle |lower | nospace}}
   ports:
-    ports:
-    - name: timesequencer
-        containerPort: {{ .Values.port }}
-        targetPort: timesequencer
-    - name: http
-        protocol: TCP
-        containerPort: 80
-        targetPort: http
+  - name: timesequencer
+    protocol: TCP
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

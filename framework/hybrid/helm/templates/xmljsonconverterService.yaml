@@ -6,11 +6,11 @@ spec:
   selector:
      function: {{ .Values.XmlJsonConverter.OpenApiInfoTitle |lower | nospace}}
   ports:
-    ports:
-    - name: xmljsonconv
-        containerPort: {{ .Values.port }}
-        targetPort: xmljsonconv
-    - name: http
-        protocol: TCP
-        containerPort: 80
-        targetPort: http
+  - name: xmljsonconv
+    protocol: TCP
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
