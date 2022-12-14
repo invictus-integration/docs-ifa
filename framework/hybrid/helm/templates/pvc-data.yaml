@@ -9,10 +9,10 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
-{{- if .Values.SQL.persistence.annotations }}
+{{- if .Values.SQL.persistence.annotations -}}
   annotations:
 {{ toYaml .Values.SQL.persistence.annotations | indent 4 }}
-{{- end }}
+{{- end -}}
 spec:
   accessModes:
     - {{ .Values.SQL.persistence.dataAccessMode | quote }}
