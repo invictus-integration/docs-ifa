@@ -53,7 +53,7 @@ spec:
             - name: SA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "invictus.fullname" . }}-secret
+                  name: mssql-secret
                   key: sapassword
             - name: MSSQL_DATA_DIR
               value: {{ .Values.SQL.dataDir }}
@@ -101,7 +101,7 @@ spec:
           {{- if .Values.SQL.persistence.existingDataClaim }}
           claimName: {{ .Values.SQL.persistence.existingDataClaim }}
           {{- else }}
-          claimName: {{ template "invictus.fullname" . }}-data
+          claimName: mssql-data
           {{- end -}}
       {{- else }}
         emptyDir: {}

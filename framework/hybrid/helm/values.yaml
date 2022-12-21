@@ -440,9 +440,9 @@ rabbitMQ:
 Framework:
  APPINSIGHTS_INSTRUMENTATIONKEY: ""
  FUNCTIONS_EXTENSION_VERSION: "4"
- FUNCTIONS_WORKER_RUNTIME: "dotnet"
+ FUNCTIONS_WORKER_RUNTIME: dotnet
  OpenApiInfoVersion: "2.0.0"
- RunningEnvironment: "onprem"
+ RunningEnvironment: onprem
  InvictusDashboardConnectionString: ""
 
 RegexTranslation:

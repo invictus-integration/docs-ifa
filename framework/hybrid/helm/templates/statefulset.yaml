@@ -260,7 +260,7 @@ spec:
           emptyDir: {}
         - name: rabbitconfig
           configMap:
-            name: {{ include "invictus.fullname" . }}-config
+            name: rabbitmq-config
         {{- if .Values.rabbitMQ.extraSecretConfigs }}
         - name: extraconfigs-volume
           secret:
@@ -273,15 +273,15 @@ spec:
         {{- end }}
         - name: scripts
           configMap:
-            name: {{ include "invictus.fullname" . }}-scripts
+            name: rabbitmq-scripts
             defaultMode: 0555
         - name: plugins
           configMap:
-            name: {{ include "invictus.fullname" . }}-plugins
+            name: rabbitmq-plugins
         {{- if .Values.rabbitMQ.certificates.enabled }}
         - name: certs
           secret:
-            secretName: {{ include "invictus.fullname" . }}-certs
+            secretName: rabbitmq-certs
             defaultMode: 0440
         {{- end }}
         {{- range $secret := .Values.rabbitMQ.extraSecrets }}
