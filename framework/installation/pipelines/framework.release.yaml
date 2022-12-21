@@ -49,7 +49,7 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/framework-release-steps.yaml
             parameters:
-              azureSubscription: $(Infra.Environment.ServiceConnection)
+              azureSubscription: 'YourAzureSubscription'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
 - stage: deploy_tst
@@ -70,7 +70,7 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/framework-release-steps.yaml
             parameters:
-              azureSubscription: $(Infra.Environment.ServiceConnection)
+              azureSubscription: 'YourAzureSubscription'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
 
@@ -92,7 +92,7 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/framework-release-steps.yaml
             parameters:
-              azureSubscription: $(Infra.Environment.ServiceConnection)
+              azureSubscription: 'YourAzureSubscription'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
 - stage: deploy_prd
@@ -113,6 +113,6 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/framework-release-steps.yaml
             parameters:
-              azureSubscription: $(Infra.Environment.ServiceConnection)
+              azureSubscription: 'YourAzureSubscription'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "true" -matrixWebAppAlwaysOn "true" -transcoWebAppAlwaysOn "true" -servicePlanSkuName "P1V2" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'

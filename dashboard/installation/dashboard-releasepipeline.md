@@ -27,7 +27,9 @@ resources:
     trigger: true
 ```
 
-Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ADD using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+**Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
+
+Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
 
 If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
 
