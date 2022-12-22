@@ -104,6 +104,11 @@ spec:
                secretKeyRef:
                 key : SqlFilesConnectionString
                 name: sequenceconfig
+            - name: "SQLDB_DurableState_Connection"
+              valueFrom:
+               secretKeyRef:
+                key : SQLDB_DurableState_Connection
+                name: sequenceconfig    
           ports:
             - name: sequencecontrol
               containerPort: {{ .Values.port }}

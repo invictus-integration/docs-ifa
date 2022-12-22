@@ -19,3 +19,4 @@ data:
     OpenApi__Info__Title: {{.Values.TimeSequencer.OpenApiInfoTitle | b64enc | quote }}
     RunningEnvironment: {{.Values.Framework.RunningEnvironment | b64enc | quote }}
     SqlFilesConnectionString:  {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 
+    SQLDB_DurableState_Connection: {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 

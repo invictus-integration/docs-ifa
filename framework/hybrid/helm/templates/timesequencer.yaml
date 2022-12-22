@@ -98,6 +98,11 @@ spec:
                secretKeyRef:
                 key : SqlFilesConnectionString
                 name: timesequencerconfig
+            - name: "SQLDB_DurableState_Connection"
+              valueFrom:
+               secretKeyRef:
+                key : SQLDB_DurableState_Connection
+                name: timesequencerconfig 
           ports:
             - name: timesequencer
               containerPort: {{ .Values.port }}
