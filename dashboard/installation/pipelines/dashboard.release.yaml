@@ -49,7 +49,7 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/dashboard-release-steps.yaml
             parameters:
-              azureSubscription: 'YourAzureSubscription'
+              azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
 - stage: deploy_tst
@@ -70,7 +70,7 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/dashboard-release-steps.yaml
             parameters:
-              azureSubscription: 'YourAzureSubscription'
+              azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
 
@@ -92,7 +92,7 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/dashboard-release-steps.yaml
             parameters:
-              azureSubscription: 'YourAzureSubscription'
+              azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
 - stage: deploy_prd
@@ -113,6 +113,6 @@ stages:
             displayName: Download Artifact
           - template: ./Templates/dashboard-release-steps.yaml
             parameters:
-              azureSubscription: 'YourAzureSubscription'
+              azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
               deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "P1V2" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
