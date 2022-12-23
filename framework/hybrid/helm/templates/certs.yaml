@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "invictus.fullname" . }}-certs
+  name: rabbitmq-certs
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
 type: Opaque

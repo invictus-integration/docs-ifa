@@ -11,6 +11,6 @@ subjects:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ template "invictus.fullname" . }}-endpoint-reader
+  name: rabbitmq-endpoint-reader
 {{- end }}
 {{- end }}

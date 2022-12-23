@@ -1,6 +1,6 @@
 {{- if not .Values.PubSub.RmqConnectionString}}
 {{- if .Values.rabbitMQ.ingress.enabled }}
-{{- $fullName := include "invictus.fullname" . -}}
+{{- $fullName := rabbitmq -}}
 {{- $svcPort := .Values.rabbitMQ.service.mgmt.port -}}
 {{- $apiVersion := .Capabilities.APIVersions -}}
 {{- if $apiVersion.Has "networking.k8s.io/v1" }}

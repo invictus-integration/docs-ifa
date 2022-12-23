@@ -1,4 +1,4 @@
-{{- $fullname := include "invictus.fullname" . }}
+{{- $fullname := rabbitmq }}
 {{- $labels := include "rabbitmq.labels" . }}
 {{- $selectorLabels := include "rabbitmq.selectorLabels" . }}
 {{- range $service := .Values.rabbitMQ.extraServices }}
