@@ -196,9 +196,10 @@ vm_memory_high_watermark_paging_ratio = {{ .pagingRatio }}
 {{- end -}}
 {{- define "connectionstringmsSQL" }}
 {{- if .Values.existingSQLConnectionString }}
-{{.Values.existingSQLConnectionString}}
+{{- .Values.existingSQLConnectionString -}}
 {{- else }}
-Server=mssql;Database=master;User=sa;Password={{ template "sql.sapassword". }};
+{{- $passwd := include "sql.sapassword" .}}
+{{- printf "Server=mssql;Database=master;User=sa;Password=%s;" $passwd -}}
 {{- end }}
 {{- end }}
 {{/*
