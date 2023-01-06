@@ -8,7 +8,7 @@ stringData:
     {
       "masterKey": {
         "name": "master",
-        "value": {{ include "transco-hostmaster-function-key" . }},
+        "value": tester,
         "encrypted": false
       },
       "functionKeys": [ ]
@@ -18,7 +18,7 @@ stringData:
       "keys": [
         {
           "name": "default",
-          "value":  {{ include "transco-HttpTrigger-function-key" .}},
+          "value":  test,
           "encrypted": false
         }
       ]
