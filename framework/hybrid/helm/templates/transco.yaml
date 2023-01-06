@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.Transco.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
-          - name: secrets
+          - name: transco-function-keys
             mountPath: "/azure-functions-host/Secrets"
             readOnly: true
           env:
@@ -113,7 +113,7 @@ spec:
                 key : AzureWebJobsKubernetesSecretName
                 name: transcoconfig                         
           volumes:
-          - name: secrets
+          - name: transco-function-keys
             secret:
               secretName: transco-function-keys          
           ports:

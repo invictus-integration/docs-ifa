@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.SequenceController.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
-          - name: secrets
+          - name: sequencecontroller-function-keys
             mountPath: "/azure-functions-host/Secrets"
             readOnly: true
           env:
@@ -124,7 +124,7 @@ spec:
                 key : AzureWebJobsKubernetesSecretName
                 name: sequenceconfig                    
           volumes:
-          - name: secrets
+          - name: sequencecontroller-function-keys
             secret:
               secretName: sequencecontroller-function-keys
           ports:

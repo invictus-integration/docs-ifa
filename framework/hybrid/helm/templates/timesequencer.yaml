@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.TimeSequencer.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
-          - name: secrets
+          - name: timesequencer-function-keys
             mountPath: "/azure-functions-host/Secrets"
             readOnly: true
           env:
@@ -118,7 +118,7 @@ spec:
                 key : AzureWebJobsKubernetesSecretName
                 name: timesequencerconfig                 
           volumes:
-          - name: secrets
+          - name: timesequencer-function-keys
             secret:
               secretName: timesequencer-function-keys        
           ports:

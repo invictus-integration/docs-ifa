@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.PubSub.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
-          - name: secrets
+          - name: pubsub-function-keys
             mountPath: "/azure-functions-host/Secrets"
             readOnly: true
           env:
@@ -118,7 +118,7 @@ spec:
                 key : AzureWebJobsKubernetesSecretName
                 name: pupsubconfig                                                    
           volumes:
-          - name: secrets
+          - name: pubsub-function-keys
             secret:
               secretName: pubsub-function-keys         
           ports:
