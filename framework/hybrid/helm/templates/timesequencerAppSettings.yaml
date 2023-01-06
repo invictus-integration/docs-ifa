@@ -21,4 +21,4 @@ data:
     SqlFilesConnectionString:  {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 
     SQLDB_DurableState_Connection: {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
-    AzureWebJobsKubernetesSecretName: {{ "TimeSequencer-function-keys"  | b64enc | quote}}
+    AzureWebJobsKubernetesSecretName: {{ "timesequencer-function-keys"  | b64enc | quote}}

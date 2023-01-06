@@ -20,4 +20,4 @@ data:
     RunningEnvironment: {{.Values.Framework.RunningEnvironment | b64enc | quote }}
     SqlFilesConnectionString: {{"template 'connectionstringmsSQL' . "| b64enc | quote }} 
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
-    AzureWebJobsKubernetesSecretName: {{ "RegexTranslation-function-keys" | b64enc | quote}}
+    AzureWebJobsKubernetesSecretName: {{ "regextranslation-function-keys" | b64enc | quote}}

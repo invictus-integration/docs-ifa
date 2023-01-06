@@ -21,4 +21,4 @@ data:
     RunningEnvironment: {{.Values.Framework.RunningEnvironment | b64enc | quote}}
     SQLDB_DurableState_Connection: {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
-    AzureWebJobsKubernetesSecretName: {{"SequenceController-function-keys"  | b64enc | quote}}
+    AzureWebJobsKubernetesSecretName: {{"sequencecontroller-function-keys"  | b64enc | quote}}

@@ -21,4 +21,4 @@ data:
     SqlFilesConnectionString: {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 
     RmqConnectionString: {{ "template 'rabbitMQ.connection' ." | b64enc | quote }}
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
-    AzureWebJobsKubernetesSecretName: {{ "PubSub-function-keys"  | b64enc | quote}}
+    AzureWebJobsKubernetesSecretName: {{ "pubsub-function-keys"  | b64enc | quote}}

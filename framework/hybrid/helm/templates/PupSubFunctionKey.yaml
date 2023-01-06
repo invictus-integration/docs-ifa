@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: PubSub-function-keys
+  name: pubsub-function-keys
 type: Opaque
 data:
   host.master: {{ include "PubSub-hostmaster-function-key" .| b64enc | quote}}
