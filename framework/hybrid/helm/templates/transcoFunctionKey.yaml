@@ -3,6 +3,23 @@ kind: Secret
 metadata:
   name: transco-function-keys
 type: Opaque
-data:
-  host.master: {{ include "transco-hostmaster-function-key" .| b64enc | quote }}
-  function.HttpTrigger.default: {{ include "transco-HttpTrigger-function-key" .| b64enc | quote}}
+stringData:
+  host.json: |-
+    {
+      "masterKey": {
+        "name": "master",
+        "value": {{ include "transco-hostmaster-function-key" . }},
+        "encrypted": false
+      },
+      "functionKeys": [ ]
+    }
+  httpTrigger.json: |-
+    {
+      "keys": [
+        {
+          "name": "default",
+          "value":  {{ include "transco-HttpTrigger-function-key" .}},
+          "encrypted": false
+        }
+      ]
+    }
