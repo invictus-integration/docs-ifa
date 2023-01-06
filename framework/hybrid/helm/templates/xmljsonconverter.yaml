@@ -27,6 +27,10 @@ spec:
         - name: "xmljsonconv"
           image: "{{ .Values.XmlJsonConverter.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
+          volumeMounts:
+          - name: secrets
+            mountPath: "/azure-functions-host/Secrets"
+            readOnly: true
           env:
             - name: "FUNCTIONS_WORKER_RUNTIME"
               valueFrom:
