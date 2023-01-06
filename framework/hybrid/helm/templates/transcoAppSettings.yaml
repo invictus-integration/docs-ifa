@@ -19,5 +19,5 @@ data:
     OpenApi__Info__Title: {{.Values.Transco.OpenApiInfoTitle| b64enc | quote }}
     RunningEnvironment: {{.Values.Framework.RunningEnvironment| b64enc | quote }}
     SqlFilesConnectionString:  {{"template 'connectionstringmsSQL' ."| b64enc | quote }} 
-    AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
+    AzureWebJobsSecretStorageType: {{"file"| b64enc | quote}}
     AzureWebJobsKubernetesSecretName: {{ "transco-function-keys"  | b64enc | quote}}
