@@ -108,6 +108,10 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: transcoconfig                         
+          volumes:
+          - name: secrets
+            secret:
+              secretName: transco-function-keys          
           ports:
             - name: transco
               containerPort: {{ .Values.port }}

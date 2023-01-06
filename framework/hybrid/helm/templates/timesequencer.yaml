@@ -113,6 +113,10 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: timesequencerconfig                 
+          volumes:
+          - name: secrets
+            secret:
+              secretName: timesequencer-function-keys        
           ports:
             - name: timesequencer
               containerPort: {{ .Values.port }}

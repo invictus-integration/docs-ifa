@@ -113,6 +113,10 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: pupsubconfig                                                    
+          volumes:
+          - name: secrets
+            secret:
+              secretName: pubsub-function-keys         
           ports:
             - name: pubsub
               containerPort: {{ .Values.port }}

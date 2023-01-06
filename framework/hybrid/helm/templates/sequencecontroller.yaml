@@ -119,6 +119,10 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: sequenceconfig                    
+          volumes:
+          - name: secrets
+            secret:
+              secretName: sequencecontroller-function-keys
           ports:
             - name: sequencecontrol
               containerPort: {{ .Values.port }}
