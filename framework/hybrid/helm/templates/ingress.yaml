@@ -1,6 +1,5 @@
 {{- if not .Values.PubSub.RmqConnectionString}}
 {{- if .Values.rabbitMQ.ingress.enabled }}
-{{- $fullName := rabbitmq -}}
 {{- $svcPort := .Values.rabbitMQ.service.mgmt.port -}}
 {{- $apiVersion := .Capabilities.APIVersions -}}
 {{- if $apiVersion.Has "networking.k8s.io/v1" }}
@@ -14,7 +13,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: rabbitmq
   labels:
     {{- include "rabbitmq.labels" . | nindent 4 }}
   {{- with .Values.rabbitMQ.ingress.annotations }}
@@ -43,12 +42,12 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ $fullName }}
+                name: rabbitmq
                 port:
                   number: {{ $svcPort }}
             {{- else }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: rabbitmq
               servicePort: {{ $svcPort }}
             {{- end }}
           {{- end }}

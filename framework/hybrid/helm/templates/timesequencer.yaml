@@ -103,6 +103,16 @@ spec:
                secretKeyRef:
                 key : SQLDB_DurableState_Connection
                 name: timesequencerconfig 
+            - name: "AzureWebJobsSecretStorageType"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsSecretStorageType
+                name: timesequencerconfig    
+            - name: "AzureWebJobsKubernetesSecretName"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsKubernetesSecretName
+                name: timesequencerconfig                 
           ports:
             - name: timesequencer
               containerPort: {{ .Values.port }}

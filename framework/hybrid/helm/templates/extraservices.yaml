@@ -1,11 +1,10 @@
-{{- $fullname := rabbitmq }}
 {{- $labels := include "rabbitmq.labels" . }}
 {{- $selectorLabels := include "rabbitmq.selectorLabels" . }}
 {{- range $service := .Values.rabbitMQ.extraServices }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $fullname }}-{{ $service.name }}
+  name: rabbitmq-{{ $service.name }}
   labels:
     {{- $labels | nindent 4 }}
   {{- with $service.annotations }}

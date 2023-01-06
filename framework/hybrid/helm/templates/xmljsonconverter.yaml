@@ -97,7 +97,17 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : SqlFilesConnectionString
-                name: xmljsonconverterconfig     
+                name: xmljsonconverterconfig   
+            - name: "AzureWebJobsSecretStorageType"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsSecretStorageType
+                name: xmljsonconverterconfig    
+            - name: "AzureWebJobsKubernetesSecretName"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsKubernetesSecretName
+                name: xmljsonconverterconfig                    
           ports:
             - name: xmljsonconv
               containerPort: {{ .Values.port }}

@@ -102,7 +102,17 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : RmqConnectionString
-                name: pupsubconfig                
+                name: pupsubconfig
+            - name: "AzureWebJobsSecretStorageType"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsSecretStorageType
+                name: pupsubconfig    
+            - name: "AzureWebJobsKubernetesSecretName"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsKubernetesSecretName
+                name: pupsubconfig                                                    
           ports:
             - name: pubsub
               containerPort: {{ .Values.port }}

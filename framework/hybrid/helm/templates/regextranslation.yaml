@@ -98,6 +98,16 @@ spec:
                secretKeyRef:
                 key : SqlFilesConnectionString
                 name: regextranslationconfig
+            - name: "AzureWebJobsSecretStorageType"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsSecretStorageType
+                name: regextranslationconfig    
+            - name: "AzureWebJobsKubernetesSecretName"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsKubernetesSecretName
+                name: regextranslationconfig                 
           ports:
             - name: regextransl
               containerPort: {{ .Values.port }}

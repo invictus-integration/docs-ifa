@@ -97,7 +97,17 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : SqlFilesConnectionString
-                name: xsdvalidatorconfig      
+                name: xsdvalidatorconfig  
+            - name: "AzureWebJobsSecretStorageType"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsSecretStorageType
+                name: xsdvalidatorconfig    
+            - name: "AzureWebJobsKubernetesSecretName"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsKubernetesSecretName
+                name: xsdvalidatorconfig                       
           ports:
             - name: xsdvalidator
               containerPort: {{ .Values.port }}

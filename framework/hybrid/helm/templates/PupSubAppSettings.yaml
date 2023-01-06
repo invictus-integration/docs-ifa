@@ -20,3 +20,5 @@ data:
     RunningEnvironment: {{.Values.Framework.RunningEnvironment| b64enc | quote }}
     SqlFilesConnectionString: {{"template 'connectionstringmsSQL' ." | b64enc | quote }} 
     RmqConnectionString: {{ "template 'rabbitMQ.connection' ." | b64enc | quote }}
+    AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
+    AzureWebJobsKubernetesSecretName: {{ "PubSub-function-keys"  | b64enc | quote}}

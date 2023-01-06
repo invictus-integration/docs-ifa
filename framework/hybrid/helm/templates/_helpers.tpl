@@ -239,3 +239,42 @@ create imagePullSecret
 {{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"auth\":\"%s\"}}}" .registryURL .username .password  (printf "%s:%s" .username .password | b64enc) | b64enc }}
 {{- end }}
 {{- end }}
+{{/*
+create FunctionKeys
+*/}}
+{{- define "PubSub-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "PubSub-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "RegexTranslation-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "RegexTranslation-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "SequenceController-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "SequenceController-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "TimeSequencer-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "TimeSequencer-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "XmlJsonConverter-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "XmlJsonConverter-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "XsdValidator-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "XsdValidator-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
