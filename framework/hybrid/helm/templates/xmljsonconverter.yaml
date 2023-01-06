@@ -112,15 +112,16 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: xmljsonconverterconfig                    
-          volumes:
-          - name: xmljsonconverter-function-keys
-            secret:
-              secretName: xmljsonconverter-function-keys         
+
           ports:
             - name: xmljsonconv
               containerPort: {{ .Values.port }}
             - name: http
               protocol: TCP
               containerPort: 80
+      volumes:
+      - name: xmljsonconverter-function-keys
+        secret:
+          secretName: xmljsonconverter-function-keys      
       imagePullSecrets:
        - name: myregistrykey

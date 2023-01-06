@@ -112,15 +112,16 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: xsdvalidatorconfig                       
-          volumes:
-          - name: xsdvalidator-function-keys
-            secret:
-              secretName: xsdvalidator-function-keys        
+        
           ports:
             - name: xsdvalidator
               containerPort: {{ .Values.port }}
             - name: http
               protocol: TCP
               containerPort: 80   
+      volumes:
+      - name: xsdvalidator-function-keys
+        secret:
+          secretName: xsdvalidator-function-keys     
       imagePullSecrets:
        - name: myregistrykey                

@@ -112,15 +112,16 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: regextranslationconfig                 
-          volumes:
-          - name: regextranslation-function-keys
-            secret:
-              secretName: regextranslation-function-keys
+
           ports:
             - name: regextransl
               containerPort: {{ .Values.port }}
             - name: http
               protocol: TCP
               containerPort: 80
+      volumes:
+      - name: regextranslation-function-keys
+        secret:
+          secretName: regextranslation-function-keys      
       imagePullSecrets:
        - name: myregistrykey

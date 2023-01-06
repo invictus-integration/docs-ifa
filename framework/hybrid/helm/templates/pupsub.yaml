@@ -117,15 +117,16 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
                 name: pupsubconfig                                                    
-          volumes:
-          - name: pubsub-function-keys
-            secret:
-              secretName: pubsub-function-keys         
+        
           ports:
             - name: pubsub
               containerPort: {{ .Values.port }}
             - name: http
               protocol: TCP
-              containerPort: 80              
+              containerPort: 80 
+      volumes:
+      - name: pubsub-function-keys
+        secret:
+          secretName: pubsub-function-keys                            
       imagePullSecrets:
        - name: myregistrykey
