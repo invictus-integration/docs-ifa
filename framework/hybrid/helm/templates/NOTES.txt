@@ -43,4 +43,8 @@ http trigger key:{{ template "XmlJsonConverter-HttpTrigger-function-key" .}}
 XsdValidator:
 host masterkey:{{ template "XsdValidator-hostmaster-function-key" .}}
 http trigger key:{{ template "XsdValidator-HttpTrigger-function-key" .}}
+
+Transco:
+host masterkey:{{ template "transco-hostmaster-function-key" .}}
+http trigger key:{{ template "transco-HttpTrigger-function-key" .}}
 ---

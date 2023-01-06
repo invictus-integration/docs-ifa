@@ -98,6 +98,16 @@ spec:
                secretKeyRef:
                 key : SqlFilesConnectionString
                 name: transcoconfig
+            - name: "AzureWebJobsSecretStorageType"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsSecretStorageType
+                name: transcoconfig    
+            - name: "AzureWebJobsKubernetesSecretName"
+              valueFrom:
+               secretKeyRef:
+                key : AzureWebJobsKubernetesSecretName
+                name: transcoconfig                         
           ports:
             - name: transco
               containerPort: {{ .Values.port }}

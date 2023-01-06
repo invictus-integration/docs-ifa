@@ -278,3 +278,9 @@ create FunctionKeys
 {{- define "XsdValidator-HttpTrigger-function-key" }}
 {{- randAlphaNum 20 | nospace -}}
 {{- end }}
+{{- define "transco-hostmaster-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
+{{- define "transco-HttpTrigger-function-key" }}
+{{- randAlphaNum 20 | nospace -}}
+{{- end }}
