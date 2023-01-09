@@ -13,8 +13,10 @@ erlangcookie: {{template "erlangCookie" .}}
 
 SQL:
 ---
+{{- if not .Values.existingSQLConnectionString }}
 username: sa
 password: {{ template "sql.sapassword" .}}
+{{- end }}
 connectionstring:{{ template "connectionstringmsSQL" .}}
 ---
 
