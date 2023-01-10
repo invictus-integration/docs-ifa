@@ -27,10 +27,10 @@ spec:
         - name: "sequencecontl"
           image: "{{ .Values.SequenceController.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          volumeMounts:
-          - name: sequencecontroller-function-keys
-            mountPath: "/run/secrets/functions-keys"
-            readOnly: false
+        #  volumeMounts:
+        #  - name: sequencecontroller-function-keys
+        #    mountPath: "/run/secrets/functions-keys"
+        #    readOnly: false
           env:
             - name: "SQLDB_DurableState_Connection"
               valueFrom:
@@ -130,9 +130,9 @@ spec:
             - name: http
               protocol: TCP
               containerPort: 80
-      volumes:
-      - name: sequencecontroller-function-keys
-        secret:
-          secretName: sequencecontroller-function-keys              
+      #volumes:
+      #- name: sequencecontroller-function-keys
+      #  secret:
+      #    secretName: sequencecontroller-function-keys              
       imagePullSecrets:
        - name: myregistrykey              
