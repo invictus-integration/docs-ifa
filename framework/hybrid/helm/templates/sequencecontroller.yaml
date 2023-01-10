@@ -30,7 +30,7 @@ spec:
           volumeMounts:
           - name: sequencecontroller-function-keys
             mountPath: "/run/secrets/functions-keys"
-            readOnly: true
+            readOnly: false
           env:
             - name: "SQLDB_DurableState_Connection"
               valueFrom:

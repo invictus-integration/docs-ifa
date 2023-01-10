@@ -30,7 +30,7 @@ spec:
           volumeMounts:
           - name: timesequencer-function-keys
             mountPath: "/run/secrets/functions-keys"
-            readOnly: true
+            readOnly: false
           env:
             - name: "FUNCTIONS_WORKER_RUNTIME"
               valueFrom:
