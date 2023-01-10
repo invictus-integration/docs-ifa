@@ -29,7 +29,7 @@ spec:
           imagePullPolicy: {{ .Values.pullPolicy }}
           volumeMounts:
           - name: timesequencer-function-keys
-            mountPath: "/run/secrets/functions-keys"
+            mountPath: "/default/secrets/functions-keys"
             readOnly: true
           env:
             - name: "FUNCTIONS_WORKER_RUNTIME"
