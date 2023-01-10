@@ -11,6 +11,7 @@ pullPolicy: IfNotPresent
 replicaCount: 1
 port: 7071
 existingSQLConnectionString: ""
+existingDurableSQLConnectionString: ""
 
 SQL:
   acceptEula:

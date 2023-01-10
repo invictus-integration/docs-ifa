@@ -203,6 +203,17 @@ vm_memory_high_watermark_paging_ratio = {{ .pagingRatio }}
 {{- end }}
 {{- end }}
 {{/*
+Durable database
+*/}}
+{{- define "durableconnectionstringmsSQL" }}
+{{- if .Values.existingDurableSQLConnectionString }}
+{{- .Values.existingDurableSQLConnectionString -}}
+{{- else }}
+{{- $passwd := include "sql.sapassword" .}}
+{{- printf "Server=mssql;Database=DurableDB;User=sa;Password=%s;" $passwd -}}
+{{- end }}
+{{- end }}
+{{/*
 Random keys if none are given
 */}}
 {{- define "erlangCookie" -}}

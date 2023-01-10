@@ -18,6 +18,7 @@ username: sa
 password: {{ template "sql.sapassword" .}}
 {{- end }}
 connectionstring:{{ template "connectionstringmsSQL" .}}
+Durableconnectionstring:{{ template "durableconnectionstringmsSQL" .}}
 ---
 
 Function Keys:

@@ -19,6 +19,6 @@ data:
     OpenApi__Info__Title: {{.Values.TimeSequencer.OpenApiInfoTitle | b64enc | quote }}
     RunningEnvironment: {{.Values.Framework.RunningEnvironment | b64enc | quote }}
     SqlFilesConnectionString:  {{include "connectionstringmsSQL" . | b64enc | quote }} 
-    SQLDB_DurableState_Connection: {{include "connectionstringmsSQL" . | b64enc | quote }} 
+    SQLDB_DurableState_Connection: {{include "durableconnectionstringmsSQL" . | b64enc | quote }} 
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
     AzureWebJobsKubernetesSecretName: {{ "timesequencer-function-keys"  | b64enc | quote}}
