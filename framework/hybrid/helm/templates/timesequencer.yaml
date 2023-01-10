@@ -112,11 +112,11 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsSecretStorageType
                 name: timesequencerconfig    
-            - name: "AzureWebJobsKubernetesSecretName"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsKubernetesSecretName
-                name: timesequencerconfig                 
+            #- name: "AzureWebJobsKubernetesSecretName"
+            #  valueFrom:
+            #   secretKeyRef:
+            #    key : AzureWebJobsKubernetesSecretName
+            #    name: timesequencerconfig                 
         
           ports:
             - name: timesequencer

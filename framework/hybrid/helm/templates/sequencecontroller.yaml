@@ -118,11 +118,11 @@ spec:
                secretKeyRef:
                 key : AzureWebJobsSecretStorageType
                 name: sequenceconfig    
-            - name: "AzureWebJobsKubernetesSecretName"
-              valueFrom:
-               secretKeyRef:
-                key : AzureWebJobsKubernetesSecretName
-                name: sequenceconfig                    
+          #  - name: "AzureWebJobsKubernetesSecretName"
+          #    valueFrom:
+          #     secretKeyRef:
+          #      key : AzureWebJobsKubernetesSecretName
+          #      name: sequenceconfig                    
 
           ports:
             - name: sequencecontrol
