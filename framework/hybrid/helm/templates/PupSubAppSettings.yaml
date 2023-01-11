@@ -19,6 +19,6 @@ data:
     OpenApi__Info__Title: {{.Values.PubSub.OpenApiInfoTitle| b64enc | quote }}
     RunningEnvironment: {{.Values.Framework.RunningEnvironment| b64enc | quote }}
     SqlFilesConnectionString: {{include "connectionstringmsSQL" . | b64enc | quote }} 
-    RmqConnectionString: {{ "template 'rabbitMQ.connection' ." | b64enc | quote }}
+    RmqConnectionString: {{ include "rabbitMQ.connection" . | b64enc | quote }}
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
     AzureWebJobsKubernetesSecretName: {{ "pubsub-function-keys"  | b64enc | quote}}
