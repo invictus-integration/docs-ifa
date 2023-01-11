@@ -241,7 +241,11 @@ Random keys if none are given
 generate the rabbitMq connection
 */}}
 {{- define "rabbitMQ.connection" -}}
+{{- if .Values.PubSub.RmqConnectionString }}
+{{.Values.PubSub.RmqConnectionString}}
+{{- else}} 
 amqp://{{.Values.rabbitMQ.authentication.user}}:{{ template "rabbitMQ.password" .}}@host/vhost
+{{- end}}
 {{- end}}
 {{/*
 create imagePullSecret
