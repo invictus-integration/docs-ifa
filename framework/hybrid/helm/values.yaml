@@ -25,7 +25,7 @@ SQL:
   replicaCount: 1
   image:
     repository: mcr.microsoft.com/mssql/server
-    tag: 2019-CU16-ubuntu-20.04
+    tag: 2022-latest 
     pullPolicy: IfNotPresent
   sapassword: ""
     

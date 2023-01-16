@@ -32,11 +32,6 @@ spec:
         #    mountPath: "/run/secrets/functions-keys"
         #    readOnly: false
           env:
-            - name: "SQLDB_DurableState_Connection"
-              valueFrom:
-                secretKeyRef:
-                  key : SqlFilesConnectionString
-                  name: sequenceconfig
             - name: "FUNCTIONS_WORKER_RUNTIME"
               valueFrom:
                secretKeyRef:

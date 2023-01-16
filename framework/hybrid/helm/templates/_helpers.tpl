@@ -116,8 +116,8 @@ K8 peer discovery cluster plugin options (when plugin is enabled)
 cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s
 cluster_formation.k8s.host = kubernetes.default.svc.{{ .Values.rabbitMQ.clusterDomain }}
 cluster_formation.k8s.address_type = {{ .Values.rabbitMQ.k8sPeerDiscoveryPlugin.addressType }}
-cluster_formation.k8s.service_name = {{ template "invictus.fullname" . }}-internal
-cluster_formation.k8s.hostname_suffix = .{{ template "invictus.fullname" . }}-internal.{{ .Release.Namespace }}.svc.{{ .Values.rabbitMQ.clusterDomain }}
+cluster_formation.k8s.service_name = rabbitmq-internal
+cluster_formation.k8s.hostname_suffix = .rabbitmq-internal.{{ .Release.Namespace }}.svc.{{ .Values.rabbitMQ.clusterDomain }}
 {{- end }}
 {{- end -}}
 

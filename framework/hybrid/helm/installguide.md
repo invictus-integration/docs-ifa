@@ -4,10 +4,11 @@
 ### install kubectl 
 linux: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 ### install helm
-<pre><code>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+<pre><code>curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="server --disable=traefik" sh -
 chmod 700 get_helm.sh
  ./get_helm.sh
 </code></pre>
+note: if you do not plan on using Azure arc for deploying logic apps or functions you can do curl -sfL **https://get.k3s.io | sh -** to have traefik.
 ### Install azure cli
 #### linux
 <pre><code>curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
