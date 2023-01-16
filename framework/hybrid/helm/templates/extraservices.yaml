@@ -1,3 +1,4 @@
+{{- if not .Values.PubSub.RmqConnectionString}}
 {{- $labels := include "rabbitmq.labels" . }}
 {{- $selectorLabels := include "rabbitmq.selectorLabels" . }}
 {{- range $service := .Values.rabbitMQ.extraServices }}
@@ -30,4 +31,5 @@ spec:
   selector:
     {{- $selectorLabels | nindent 4 }}
 ---
+{{- end }}
 {{- end }}

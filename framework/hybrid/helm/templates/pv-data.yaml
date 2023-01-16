@@ -1,4 +1,4 @@
-{{- if not .Values.existingSQLConnectionString}}
+{{- if or (not .Values.existingSQLConnectionString) (not .Values.existingDurableSQLConnectionString)}}
 {{- if and .Values.SQL.persistence.enabled (not .Values.SQL.persistence.existingDataClaim) }}
 apiVersion: v1
 kind: PersistentVolume

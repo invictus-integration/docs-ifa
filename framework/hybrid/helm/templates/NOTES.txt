@@ -4,16 +4,18 @@ You are currently using version: {{ .Values.Invictusversion }}.
 
 Some password might be randomly generated check if these match with the value you give in the deployment.
 
+{{- if not .Values.PubSub.RmqConnectionString}}
 RabbitMQ:
 ---
 username: {{.Values.rabbitMQ.authentication.user}}
 password: {{ template "rabbitMQ.password" .}}
 erlangcookie: {{template "erlangCookie" .}}
 ---
+{{- end }}
 
 SQL:
 ---
-{{- if not .Values.existingSQLConnectionString }}
+{{- if or (not .Values.existingSQLConnectionString) (not .Values.existingDurableSQLConnectionString)}}
 username: sa
 password: {{ template "sql.sapassword" .}}
 {{- end }}

@@ -1,4 +1,4 @@
-{{- if not .Values.existingSQLConnectionString}}
+{{- if or (not .Values.existingSQLConnectionString) (not .Values.existingDurableSQLConnectionString)}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
