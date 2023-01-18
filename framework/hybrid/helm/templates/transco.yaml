@@ -122,6 +122,7 @@ spec:
       volumes:
       - name: transco-function-keys
         secret:
-          secretName: transco-function-keys         
+          secretName: transco-function-keys  
+          defaultMode: 0666          
       imagePullSecrets:
        - name: myregistrykey              

@@ -123,5 +123,6 @@ spec:
       - name: regextranslation-function-keys
         secret:
           secretName: regextranslation-function-keys      
+          defaultMode: 0666   
       imagePullSecrets:
        - name: myregistrykey

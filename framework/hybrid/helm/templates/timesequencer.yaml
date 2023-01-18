@@ -27,10 +27,10 @@ spec:
         - name: "timesequencer"
           image: "{{ .Values.TimeSequencer.image.repository }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
-          #volumeMounts:
-          #- name: timesequencer-function-keys
-          #  mountPath: "/run/secrets/functions-keys"
-          #  readOnly: false
+          volumeMounts:
+          - name: timesequencer-function-keys
+            mountPath: "/run/secrets/functions-keys"
+            readOnly: false
           env:
             - name: "FUNCTIONS_WORKER_RUNTIME"
               valueFrom:
@@ -124,9 +124,10 @@ spec:
             - name: http
               protocol: TCP
               containerPort: 80   
-      #volumes:
-      #- name: timesequencer-function-keys
-      #  secret:
-      #    secretName: timesequencer-function-keys     
+      volumes:
+      - name: timesequencer-function-keys
+        secret:
+          secretName: timesequencer-function-keys
+          defaultMode: 0666      
       imagePullSecrets:
        - name: myregistrykey               

@@ -123,5 +123,6 @@ spec:
       - name: xmljsonconverter-function-keys
         secret:
           secretName: xmljsonconverter-function-keys      
+          defaultMode: 0666   
       imagePullSecrets:
        - name: myregistrykey

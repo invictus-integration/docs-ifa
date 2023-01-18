@@ -122,6 +122,7 @@ spec:
       volumes:
       - name: xsdvalidator-function-keys
         secret:
-          secretName: xsdvalidator-function-keys     
+          secretName: xsdvalidator-function-keys  
+          defaultMode: 0666      
       imagePullSecrets:
        - name: myregistrykey                

@@ -127,6 +127,7 @@ spec:
       volumes:
       - name: pubsub-function-keys
         secret:
-          secretName: pubsub-function-keys                            
+          secretName: pubsub-function-keys   
+          defaultMode: 0666                            
       imagePullSecrets:
        - name: myregistrykey
