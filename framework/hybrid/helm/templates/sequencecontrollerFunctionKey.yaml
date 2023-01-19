@@ -4,5 +4,5 @@ metadata:
   name: sequencecontroller-function-keys
 type: Opaque
 data:
-  #host.master: {{ include "SequenceController-hostmaster-function-key" .| b64enc | quote}}
-  #function.HttpTrigger.default: {{ include "SequenceController-HttpTrigger-function-key" .| b64enc | quote}}
+  host.master: {{ include "SequenceController-hostmaster-function-key" .| b64enc | quote}}
+  function.HttpTrigger.default: {{ include "SequenceController-HttpTrigger-function-key" .| b64enc | quote}}

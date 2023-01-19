@@ -4,5 +4,5 @@ metadata:
   name: timesequencer-function-keys
 type: Opaque
 data:
-  #host.master: {{ include "TimeSequencer-hostmaster-function-key" .| b64enc | quote}}
-  #function.HttpTrigger.default: {{ include "TimeSequencer-HttpTrigger-function-key" .| b64enc | quote}}
+  host.master: {{ include "TimeSequencer-hostmaster-function-key" .| b64enc | quote}}
+  function.HttpTrigger.default: {{ include "TimeSequencer-HttpTrigger-function-key" .| b64enc | quote}}

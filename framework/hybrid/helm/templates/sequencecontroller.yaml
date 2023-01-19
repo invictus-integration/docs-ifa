@@ -20,6 +20,7 @@ spec:
         release: {{ .Release.Name }}
         function: {{ .Values.SequenceController.OpenApiInfoTitle |lower | nospace}}
     spec:
+      serviceAccountName: invictus-secret-reader
       terminationGracePeriodSeconds: 30
       securityContext:
         fsGroup: 10005
