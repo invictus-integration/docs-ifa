@@ -12,6 +12,7 @@
 | replicaCount                | sting  | `1`                      | Copies of the framework you want deployed on the cluster    |
 | port                        | int    | `7071`                   | Funtion port                                                |
 | existingSQLConnectionString | string | `nil`                    | Provide a connectionstring if there is already a SQL server |
+| existingDurableSQLConnectionString | string | `nil`                    | Provide a connectionstring if there is already a SQL server for the durable state (must be a msSQL) |
 
 # Component specific variables
 ## general
