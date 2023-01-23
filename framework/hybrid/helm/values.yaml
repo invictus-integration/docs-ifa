@@ -455,6 +455,7 @@ SequenceController:
   image:
     repository: "invictusdevacracr.azurecr.io/sequencecontroller"
   OpenApiInfoTitle: "Sequence Controller"
+  WebsiteHostname: "sequencecontroller"
 
 XmlJsonConverter:
   image:
@@ -470,6 +471,7 @@ TimeSequencer:
   image:
     repository: "invictusdevacracr.azurecr.io/timesequencer"
   OpenApiInfoTitle: "Time Sequencer"
+  WebsiteHostname: "timesequencer"
 
 Transco: 
   image:

@@ -117,8 +117,12 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
-                name: timesequencerconfig                 
-        
+                name: timesequencerconfig
+            - name: "WEBSITE_HOSTNAME"
+              valueFrom:
+               secretKeyRef:
+                key : WEBSITE_HOSTNAME
+                name: timesequencerconfig
           ports:
             - name: timesequencer
               containerPort: {{ .Values.port }}

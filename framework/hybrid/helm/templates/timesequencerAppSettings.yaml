@@ -22,3 +22,4 @@ data:
     SQLDB_DurableState_Connection: {{include "durableconnectionstringmsSQL" . | b64enc | quote }} 
     AzureWebJobsSecretStorageType: {{"kubernetes"| b64enc | quote}}
     AzureWebJobsKubernetesSecretName: {{ "timesequencersecret"  | b64enc | quote}}
+    WEBSITE_HOSTNAME: {{.Values.TimeSequencer.WebsiteHostname | b64enc | quote}}
