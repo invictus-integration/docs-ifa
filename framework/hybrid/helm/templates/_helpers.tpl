@@ -244,7 +244,7 @@ generate the rabbitMq connection
 {{- if .Values.PubSub.RmqConnectionString }}
 {{.Values.PubSub.RmqConnectionString}}
 {{- else}} 
-amqp://{{.Values.rabbitMQ.authentication.user}}:{{ template "rabbitMQ.password" .}}@host/vhost
+amqp://{{.Values.rabbitMQ.authentication.user}}:{{ template "rabbitMQ.password" .}}@host:5672/vhost
 {{- end}}
 {{- end}}
 {{/*
