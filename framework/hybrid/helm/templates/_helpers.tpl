@@ -245,8 +245,7 @@ generate the rabbitMq connection
 {{.Values.PubSub.RmqConnectionString}}
 {{- else}} 
 {{- $passwd := include "rabbitMQ.password" .}}
-{{- $suffix := "%2f" -}}
-{{- printf "amqp://%s:%s@host:5672/%s" .Values.rabbitMQ.authentication.user $passwd $suffix -}}
+{{- printf "amqp://%s:%s@host:5672//" .Values.rabbitMQ.authentication.user $passwd -}}
 {{- end}}
 {{- end}}
 {{/*
