@@ -10,6 +10,7 @@ RabbitMQ:
 username: {{.Values.rabbitMQ.authentication.user}}
 password: {{ template "rabbitMQ.password" .}}
 erlangcookie: {{template "erlangCookie" .}}
+url: {{template "rabbitMQ.connection" .}}
 ---
 {{- end }}
 
