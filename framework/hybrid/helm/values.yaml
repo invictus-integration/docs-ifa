@@ -477,6 +477,8 @@ Transco:
   image:
     repository: "invictusdevacracr.azurecr.io/transco"
   OpenApiInfoTitle: "Transco V2"
+  hostkey: ""
+  triggerkey: ""
 
 PubSub:
   image:

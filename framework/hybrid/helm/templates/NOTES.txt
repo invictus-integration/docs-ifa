@@ -51,6 +51,6 @@ host masterkey:{{ template "XsdValidator-hostmaster-function-key" .}}
 http trigger key:{{ template "XsdValidator-HttpTrigger-function-key" .}}
 
 Transco:
-host masterkey:{{ template "transco-hostmaster-function-key" .}}
-http trigger key:{{ template "transco-HttpTrigger-function-key" .}}
+host masterkey: {{ .Values.Transco.hostkey }}
+http trigger key: {{.Values.Transco.triggerkey}}
 ---
