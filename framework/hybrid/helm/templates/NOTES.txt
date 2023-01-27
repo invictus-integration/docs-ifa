@@ -2,55 +2,35 @@ Thank you for installing {{ template "invictus.fullname" . }}.
 
 You are currently using version: {{ .Values.Invictusversion }}.
 
-Some password might be randomly generated check if these match with the value you give in the deployment.
-
-{{- if not .Values.PubSub.RmqConnectionString}}
+to find the 
 RabbitMQ:
 ---
+{{- if not .Values.PubSub.RmqConnectionString}}
 username: {{.Values.rabbitMQ.authentication.user}}
-password: {{ template "rabbitMQ.password" .}}
-erlangcookie: {{template "erlangCookie" .}}
-url: {{template "rabbitMQ.connection" .}}
----
+password: {{ .Values.rabbitMQ.authentication.password}}
+{{- else }}
+Rabbitmqconnection:{{ template "rabbitMQ.connection" . }}
 {{- end }}
+erlangcookie: {{.Values.rabbitMQ.authentication.erlangCookie}}
+---
 
 SQL:
 ---
 {{- if or (not .Values.existingSQLConnectionString) (not .Values.existingDurableSQLConnectionString)}}
 username: sa
-password: {{ template "sql.sapassword" .}}
+password: {{ .Values.SQL.sapassword}}
 {{- end }}
 connectionstring:{{ template "connectionstringmsSQL" .}}
 Durableconnectionstring:{{ template "durableconnectionstringmsSQL" .}}
 ---
 
-Function Keys:
+addresses of the functions:
 ---
-pubsub:
-host masterkey:{{ template "PubSub-hostmaster-function-key" .}}
-http trigger key:{{ template "PubSub-HttpTrigger-function-key" .}}
-
-RegexTranslation:
-host masterkey:{{ template "RegexTranslation-hostmaster-function-key" .}}
-http trigger key:{{ template "RegexTranslation-HttpTrigger-function-key" .}}
-
-SequenceController:
-host masterkey:{{ template "SequenceController-hostmaster-function-key" .}}
-http trigger key:{{ template "SequenceController-HttpTrigger-function-key" .}}
-
-TimeSequencer:
-host masterkey:{{ template "TimeSequencer-hostmaster-function-key" .}}
-http trigger key:{{ template "TimeSequencer-HttpTrigger-function-key" .}}
-
-XmlJsonConverter:
-host masterkey:{{ template "XmlJsonConverter-hostmaster-function-key" .}}
-http trigger key:{{ template "XmlJsonConverter-HttpTrigger-function-key" .}}
-
-XsdValidator:
-host masterkey:{{ template "XsdValidator-hostmaster-function-key" .}}
-http trigger key:{{ template "XsdValidator-HttpTrigger-function-key" .}}
-
-Transco:
-host masterkey: {{ .Values.Transco.hostkey }}
-http trigger key: {{.Values.Transco.triggerkey}}
+PubSub: {{ .Values.PubSub.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
+RegexTranslation: {{ .Values.RegexTranslation.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
+SequenceController: {{ .Values.SequenceController.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
+TimeSequencer: {{ .Values.TimeSequencer.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
+Transco: {{ .Values.Transco.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
+XmlJsonConverter: {{ .Values.XmlJsonConverter.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
+XsdValidator: {{ .Values.XsdValidator.OpenApiInfoTitle |lower | nospace}}.{{.Release.Namespace}}.{{ .Values.clusterDomain}}
 ---

@@ -4,5 +4,5 @@ metadata:
   name: transco-function-keys
 type: Opaque
 data:
-  host.master: {{ .Values.Transco.hostkey | b64enc | quote}}
-  function.HttpTrigger.default: {{ .Values.Transco.triggerkey | b64enc | quote}}
+  host.master: {{ include "transco-hostmaster-function-key" .| b64enc | quote}}
+  function.HttpTrigger.default: {{ include "transco-HttpTrigger-function-key" .| b64enc | quote}}

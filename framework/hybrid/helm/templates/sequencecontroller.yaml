@@ -118,12 +118,8 @@ spec:
               valueFrom:
                secretKeyRef:
                 key : AzureWebJobsKubernetesSecretName
-                name: sequenceconfig
-            - name: "WEBSITE_HOSTNAME"
-              valueFrom:
-               secretKeyRef:
-                key : WEBSITE_HOSTNAME
-                name: sequenceconfig
+                name: sequenceconfig                    
+
           ports:
             - name: sequencecontrol
               containerPort: {{ .Values.port }}

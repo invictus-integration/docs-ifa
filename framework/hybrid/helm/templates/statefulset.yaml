@@ -198,7 +198,7 @@ spec:
                   fieldPath: metadata.name
             {{- if .Values.rabbitMQ.clustering.useLongName }}
             - name: RABBITMQ_NODENAME
-              value: rabbit@$(NODE_NAME).rabbitmq-internal.{{ .Release.Namespace }}.svc.{{ .Values.rabbitMQ.clusterDomain }}
+              value: rabbit@$(NODE_NAME).rabbitmq-internal.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
             {{- else }}
             - name: RABBITMQ_NODENAME
               value: rabbit@$(NODE_NAME)

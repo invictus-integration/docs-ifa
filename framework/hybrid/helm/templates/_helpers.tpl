@@ -114,10 +114,10 @@ K8 peer discovery cluster plugin options (when plugin is enabled)
 {{- if .Values.rabbitMQ.k8sPeerDiscoveryPlugin.enabled }}
 ## Clustering with K8s peer discovery plugin
 cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s
-cluster_formation.k8s.host = kubernetes.default.svc.{{ .Values.rabbitMQ.clusterDomain }}
+cluster_formation.k8s.host = kubernetes.default.svc.{{ .Values.clusterDomain }}
 cluster_formation.k8s.address_type = {{ .Values.rabbitMQ.k8sPeerDiscoveryPlugin.addressType }}
 cluster_formation.k8s.service_name = rabbitmq-internal
-cluster_formation.k8s.hostname_suffix = .rabbitmq-internal.{{ .Release.Namespace }}.svc.{{ .Values.rabbitMQ.clusterDomain }}
+cluster_formation.k8s.hostname_suffix = .rabbitmq-internal.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
 {{- end }}
 {{- end -}}
 
@@ -198,7 +198,7 @@ vm_memory_high_watermark_paging_ratio = {{ .pagingRatio }}
 {{- if .Values.existingSQLConnectionString }}
 {{- .Values.existingSQLConnectionString -}}
 {{- else }}
-{{- $passwd := include "sql.sapassword" .}}
+{{- $passwd := .Values.SQL.sapassword}}
 {{- printf "Server=mssql;Database=master;User=sa;Password=%s;" $passwd -}}
 {{- end }}
 {{- end }}
@@ -209,33 +209,9 @@ Durable database
 {{- if .Values.existingDurableSQLConnectionString }}
 {{- .Values.existingDurableSQLConnectionString -}}
 {{- else }}
-{{- $passwd := include "sql.sapassword" .}}
+{{- $passwd := .Values.SQL.sapassword}}
 {{- printf "Server=mssql;Database=DurableDB;User=sa;Password=%s;" $passwd -}}
 {{- end }}
-{{- end }}
-{{/*
-Random keys if none are given
-*/}}
-{{- define "erlangCookie" -}}
-{{- if not .Values.rabbitMQ.authentication.erlangCookie}}
-{{-  randAlphaNum 20 | nospace -}}
-{{- else}} 
-{{-  .Values.rabbitMQ.authentication.erlangCookie -}}
-{{- end -}}   
-{{- end }}
-{{- define "rabbitMQ.password" -}}
-{{- if not .Values.rabbitMQ.authentication.password}}
-{{-  randAlphaNum 20 | nospace -}}
-{{- else}} 
-{{-  .Values.rabbitMQ.authentication.password -}}
-{{- end -}}   
-{{- end }}
-{{- define "sql.sapassword" -}}
-{{- if not .Values.SQL.sapassword }}
-{{- randAlphaNum 20 | nospace -}}
-{{- else}} 
-{{- .Values.SQL.sapassword -}}
-{{- end -}}   
 {{- end }}
 {{/*
 generate the rabbitMq connection
@@ -244,8 +220,7 @@ generate the rabbitMq connection
 {{- if .Values.PubSub.RmqConnectionString }}
 {{.Values.PubSub.RmqConnectionString}}
 {{- else}} 
-{{- $passwd := include "rabbitMQ.password" .}}
-{{- printf "amqp://%s:%s@rabbitmq:5672//" .Values.rabbitMQ.authentication.user $passwd -}}
+amqp://{{.Values.rabbitMQ.authentication.user}}:{{ .Values.rabbitMQ.authentication.password}}@host/vhost
 {{- end}}
 {{- end}}
 {{/*

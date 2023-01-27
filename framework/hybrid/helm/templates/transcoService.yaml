@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.Transco.OpenApiInfoTitle |lower | nospace}}-service
+  name: {{ .Values.Transco.OpenApiInfoTitle |lower | nospace}}
 spec:
   selector:
      function: {{ .Values.Transco.OpenApiInfoTitle |lower | nospace}}

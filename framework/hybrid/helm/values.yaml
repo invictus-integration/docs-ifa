@@ -12,6 +12,8 @@ replicaCount: 1
 port: 7071
 existingSQLConnectionString: ""
 existingDurableSQLConnectionString: ""
+## Default Kubernetes cluster domain
+clusterDomain: cluster.local
 
 SQL:
   acceptEula:
@@ -287,10 +289,6 @@ rabbitMQ:
 
   ## Extra containers for usage as sidecars
   extraContainers: []
-
-  ## Default Kubernetes cluster domain
-  clusterDomain: cluster.local
-
   ## Container termination grace period
   terminationGracePeriodSeconds: 60
 
@@ -455,7 +453,6 @@ SequenceController:
   image:
     repository: "invictusdevacracr.azurecr.io/sequencecontroller"
   OpenApiInfoTitle: "Sequence Controller"
-  WebsiteHostname: "sequencecontroller"
 
 XmlJsonConverter:
   image:
@@ -471,14 +468,11 @@ TimeSequencer:
   image:
     repository: "invictusdevacracr.azurecr.io/timesequencer"
   OpenApiInfoTitle: "Time Sequencer"
-  WebsiteHostname: "timesequencer"
 
 Transco: 
   image:
     repository: "invictusdevacracr.azurecr.io/transco"
   OpenApiInfoTitle: "Transco V2"
-  hostkey: ""
-  triggerkey: ""
 
 PubSub:
   image:

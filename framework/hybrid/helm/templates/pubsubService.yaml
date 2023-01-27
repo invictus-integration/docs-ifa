@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.PubSub.OpenApiInfoTitle |lower | nospace}}-service
+  name: {{ .Values.PubSub.OpenApiInfoTitle |lower | nospace}}
 spec:
   selector:
      function: {{ .Values.PubSub.OpenApiInfoTitle |lower | nospace}}

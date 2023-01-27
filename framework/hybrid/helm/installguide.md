@@ -32,16 +32,20 @@ wget https://github.com/invictus-integration/docs-ifa/raw/laurent-hybrid-solutio
 todo: update this to master before pull request
 ## Step 3: deploy HELM chart
 in the helm directory open a terminal and execute:
-<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
+<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword {sqlpassword} --set rabbitMQ.authentication.password {rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie {erlangcookie} 
 </code></pre>
 replace the bracketed values with the wanted ones
-| Variable                            | Description                      |
-| ----------------------------------- | -------------------------------- |
-| {name}                              | wanted name of the helm chart    |
-| {username}                          | username given by codit products |
-| {password}                          | password given by codit products |
-| {appinsights_instrumentationkey}    | the appinstights key             |
-| {InvictusDashboardConnectionString} | dashboard connection string      |
+| Variable                            | Description                                               |
+| ----------------------------------- | --------------------------------------------------------- |
+| {name}                              | wanted name of the helm chart                             |
+| {username}                          | username given by codit products                          |
+| {password}                          | password given by codit products                          |
+| {appinsights_instrumentationkey}    | the appinstights key                                      |
+| {InvictusDashboardConnectionString} | dashboard connection string                               |
+| {sqlpassword}                       | the sql password you want to set (any random string)      |
+| {rabbitmqpassword}                  | the rabbitmq password you want to set (any random string) |
+| {erlangcookie}                      | the erlang cookie (any random string)                     |
+
 
 
 ### optional settings

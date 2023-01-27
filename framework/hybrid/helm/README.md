@@ -5,14 +5,15 @@
 |-----------------------------|--------|--------------------------|-------------------------------------------------------------|
 | fullnameOverride            | string | `invictus`               | Fully override the deployment name                          |
 | Invictusversion             | string | `4.15.11`                | The version of invictus                                     |
-| imagePullSecret.username    | string | `nil`                    | Login username to acces acr (provided by products team)     |
-| imagePullSecret.password    | string | `nil`                    | Login password to acces acr (provided by products team)     |
+| imagePullSecret.username    | string | `nil`                    | Login username to access acr (provided by products team)     |
+| imagePullSecret.password    | string | `nil`                    | Login password to access acr (provided by products team)     |
 | tag                         | string | `latest`                 | Docker pull tag                                             |
 | pullPolicy                  | string | `IfNotPresent`           | options: IfNotPresent                                       |
 | replicaCount                | sting  | `1`                      | Copies of the framework you want deployed on the cluster    |
-| port                        | int    | `7071`                   | Funtion port                                                |
+| port                        | int    | `7071`                   | Function port                                                |
 | existingSQLConnectionString | string | `nil`                    | Provide a connectionstring if there is already a SQL server |
-| existingDurableSQLConnectionString | string | `nil`                    | Provide a connectionstring if there is already a SQL server for the durable state (must be a msSQL) |
+| existingDurableSQLConnectionString | string | `nil`             | Provide a connectionstring if there is already a SQL server for the durable state (must be a msSQL) |
+| clusterDomain               | string | `"cluster.local"`        | Kubernetes cluster domain (DNS)suffix                       |
 
 # Component specific variables
 ## general
@@ -191,7 +192,6 @@ Section to define custom services
 
 | Key                                  | Type   | Default               | Description                                                                                                                   |
 | ------------------------------------ | ------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| rabbitMQ.clusterDomain               | string | `"cluster.local"`     | Kubernetes cluster domain (DNS) suffix                                                                                        |
 | rabbitMQ.plugins                     | list   | `[]`                  | List of additional RabbitMQ plugins that should be activated (see: [RabbitMQ plugins](https://www.rabbitmq.com/plugins.html)) |
 | rabbitMQ.authentication.user         | string | `"InvictusMQ"`             | Initial user name                                                                                                             |
 | rabbitMQ.authentication.password     | string | `"H^PL^SXATf(k5^cbb&Jw"`             | Initial password                                                                                                              |
