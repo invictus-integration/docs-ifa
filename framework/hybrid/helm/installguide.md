@@ -32,8 +32,8 @@ wget https://github.com/invictus-integration/docs-ifa/raw/laurent-hybrid-solutio
 todo: update this to master before pull request
 ## Step 3: deploy HELM chart
 in the helm directory open a terminal and execute:
-<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword {sqlpassword} --set rabbitMQ.authentication.password {rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie {erlangcookie} 
-</code></pre>
+<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword={sqlpassword} --set rabbitMQ.authentication.password={rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie={erlangcookie} --set tag={releaseverion}
+
 replace the bracketed values with the wanted ones
 | Variable                            | Description                                               |
 | ----------------------------------- | --------------------------------------------------------- |
@@ -45,6 +45,7 @@ replace the bracketed values with the wanted ones
 | {sqlpassword}                       | the sql password you want to set (any random string)      |
 | {rabbitmqpassword}                  | the rabbitmq password you want to set (any random string) |
 | {erlangcookie}                      | the erlang cookie (any random string)                     |
+| {releaseverion}                     | the erlang cookie (any random string)                     |
 
 
 
@@ -54,6 +55,8 @@ Some interesting are:
 <pre><code>--set existingSQLConnectionString={connectionstring}</code></pre>
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
 If you set these the corresponding resource will not be used but the one you gave will.
+<pre><code>-n {namespace}</code></pre>
+If you want to deploy it into an other namespace the default
 ## Step 4: enable arc
 
 login to azure
@@ -117,17 +120,22 @@ wget https://github.com/invictus-integration/docs-ifa/raw/laurent-hybrid-solutio
 <pre><code>sudo apt install unzip</code></pre>
 <pre><code>unzip helm.zip</code></pre>
 ## Step 3: deploy HELM chart
-<pre><code> exit </code></pre>
-<pre><code>microk8s helm3 upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}"
-</code></pre>
+in the helm directory open a terminal and execute:
+<pre><code>helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword={sqlpassword} --set rabbitMQ.authentication.password={rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie={erlangcookie} --set tag={releaseverion}
+
 replace the bracketed values with the wanted ones
-| Variable                            | Description                      |
-| ----------------------------------- | -------------------------------- |
-| {name}                              | wanted name of the helm chart    |
-| {username}                          | username given by codit products |
-| {password}                          | password given by codit products |
-| {appinsights_instrumentationkey}    | the appinstights key             |
-| {InvictusDashboardConnectionString} | dashboard connection string      |
+| Variable                            | Description                                               |
+| ----------------------------------- | --------------------------------------------------------- |
+| {name}                              | wanted name of the helm chart                             |
+| {username}                          | username given by codit products                          |
+| {password}                          | password given by codit products                          |
+| {appinsights_instrumentationkey}    | the appinstights key                                      |
+| {InvictusDashboardConnectionString} | dashboard connection string                               |
+| {sqlpassword}                       | the sql password you want to set (any random string)      |
+| {rabbitmqpassword}                  | the rabbitmq password you want to set (any random string) |
+| {erlangcookie}                      | the erlang cookie (any random string)                     |
+| {releaseverion}                     | the erlang cookie (any random string)                     |
+
 
 
 ### optional settings
@@ -136,6 +144,8 @@ Some interesting are:
 <pre><code>--set existingSQLConnectionString={connectionstring}</code></pre>
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
 If you set these the corresponding resource will not be used but the one you gave will.
+<pre><code>-n {namespace}</code></pre>
+If you want to deploy it into an other namespace the default
 ## Step 4: enable arc
 enable kubectl
 <pre><code>
