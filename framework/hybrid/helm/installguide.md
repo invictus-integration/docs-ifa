@@ -45,18 +45,20 @@ replace the bracketed values with the wanted ones
 | {sqlpassword}                       | the sql password you want to set (any random string)      |
 | {rabbitmqpassword}                  | the rabbitmq password you want to set (any random string) |
 | {erlangcookie}                      | the erlang cookie (any random string)                     |
-| {releaseverion}                     | the erlang cookie (any random string)                     |
+| {releaseverion}                     | the version of the release you want                       |
 
 
 
 ### optional settings
 In the README.md you can find all the optional parameters.
 Some interesting are:
+If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
 <pre><code>--set existingSQLConnectionString={connectionstring}</code></pre>
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
-If you set these the corresponding resource will not be used but the one you gave will.
-<pre><code>-n {namespace}</code></pre>
+
 If you want to deploy it into an other namespace the default
+<pre><code>-n {namespace}</code></pre>
+
 ## Step 4: enable arc
 
 login to azure
@@ -134,18 +136,20 @@ replace the bracketed values with the wanted ones
 | {sqlpassword}                       | the sql password you want to set (any random string)      |
 | {rabbitmqpassword}                  | the rabbitmq password you want to set (any random string) |
 | {erlangcookie}                      | the erlang cookie (any random string)                     |
-| {releaseverion}                     | the erlang cookie (any random string)                     |
+| {releaseverion}                     | the version of the release you want                       |
 
 
 
 ### optional settings
 In the README.md you can find all the optional parameters.
 Some interesting are:
+If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
 <pre><code>--set existingSQLConnectionString={connectionstring}</code></pre>
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
-If you set these the corresponding resource will not be used but the one you gave will.
-<pre><code>-n {namespace}</code></pre>
+
 If you want to deploy it into an other namespace the default
+<pre><code>-n {namespace}</code></pre>
+
 ## Step 4: enable arc
 enable kubectl
 <pre><code>
