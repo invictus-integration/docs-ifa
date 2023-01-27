@@ -55,6 +55,7 @@ Some interesting are:
 If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
 <pre><code>--set existingSQLConnectionString={connectionstring}</code></pre>
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
+<pre><code>--set existingDurableSQLConnectionString={durableconnectionstring}</code></pre>
 
 If you want to deploy it into an other namespace the default
 <pre><code>-n {namespace}</code></pre>
@@ -146,6 +147,7 @@ Some interesting are:
 If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
 <pre><code>--set existingSQLConnectionString={connectionstring}</code></pre>
 <pre><code>--set PubSub.RmqConnectionString={amqpconnectionstring}</code></pre>
+<pre><code>--set existingDurableSQLConnectionString={durableconnectionstring}</code></pre>
 
 If you want to deploy it into an other namespace the default
 <pre><code>-n {namespace}</code></pre>
