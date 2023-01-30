@@ -183,7 +183,7 @@ enable kubectl
 
 enable kubernetes dns extension
 ```shell
-> microk8s enable dns</code></pre>
+> microk8s enable dns
 ```
 
 login to azure
