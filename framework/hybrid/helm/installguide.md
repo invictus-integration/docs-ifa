@@ -14,7 +14,11 @@ The Invictus framework components run in a hybrid solution on a [Kubernetes](htt
 > chmod 700 get_helm.sh
 > ./get_helm.sh
 ```
-note: if you do not plan on using Azure arc for deploying logic apps or functions you can do curl -sfL **https://get.k3s.io | sh -** to have traefik.
+
+> 💡 On Windows: If the `curl` command cannot find the `-sfL` other parameters, it may mean that it is not using `curl` but `Invoke-WebRequest`. Running `Remove-item alias:curl` will circumvent that so that the `curl` alias is using the correct tool
+
+> 💡 Note: if you do not plan on using Azure arc for deploying logic apps or functions you can do curl -sfL **https://get.k3s.io | sh -** to have traefik.
+
 ### Install azure cli
 #### linux
 ```shell
