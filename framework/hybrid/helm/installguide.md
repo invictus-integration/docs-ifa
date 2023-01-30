@@ -127,15 +127,20 @@ Next run:
 > microk8s start
 ```
 Run `microk8s status` to make sure the microk8s is running
-### Install helm
-```shell
-> microk8s enable helm3
-```
 
-> 💡 Note that you have to reload/restart the command prompt to be able to run `mcro8s` (so that the prompt is using the most recent updated PATH environment variable). 
+
+> 💡 Note that you have to reload/restart the command prompt to be able to run `microk8s` (so that the prompt is using the most recent updated PATH environment variable). 
 
 ## Step 2: deploy HELM chart
-login to the acr to pull the helm chart
+### Install helm
+```shell
+> choco install kubernetes-helm
+```
+> 💡 If you still need to install chocolatey you can find the info here: https://chocolatey.org/install
+
+```shell
+> microk8s config > .kube/config
+```
 ```shell
 > helm registry login invictusdevacracr.azurecr.io --username {username} --password {password}
 ```
