@@ -175,7 +175,7 @@ If you want to deploy it into an other namespace the default
 ## Step 3: enable arc
 enable kubectl
 ```shell
-> cd %USERPROFILE%
+> cd ~
 > mkdir .kube
 > cd .kube
 > microk8s config > config
