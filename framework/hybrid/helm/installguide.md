@@ -1,4 +1,4 @@
-# intall guide
+# Install guide
 # linux
 ## basic installs
 ### install kubectl 
