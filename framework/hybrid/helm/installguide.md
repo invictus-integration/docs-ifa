@@ -28,17 +28,14 @@ setup kubectl access
 > sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 > sudo chmod 666 ~/.kube/config
 ```
-## Step 2: pull HELM chart
-Download the **helm.zip** folder in this repository and unzip it
-or 
+## Step 2: deploy HELM chart
+login to the acr to pull the helm chart
 ```shell
-> wget https://github.com/invictus-integration/docs-ifa/raw/laurent-hybrid-solution/framework/hybrid/helm.zip
+> helm registry login invictusdevacracr.azurecr.io --username {username} --password {password}
 ```
 todo: update this to master before pull request
-## Step 3: deploy HELM chart
-in the helm directory open a terminal and execute:
 ```shell
-> helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword={sqlpassword} --set rabbitMQ.authentication.password={rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie={erlangcookie} --set tag={releaseverion}
+> helm upgrade --install {name} oci://invictusdevacracr.azurecr.io/helm/invictus-on-premise --version 1.0.0 --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword={sqlpassword} --set rabbitMQ.authentication.password={rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie={erlangcookie} --set tag={releaseverion}
 ```
 
 replace the bracketed values with the wanted ones
@@ -69,7 +66,7 @@ If the below parameters are set, the corresponding resource will not be created 
 If you want to deploy it into an other namespace the default
 `-n {namespace}`
 
-## Step 4: enable arc
+## Step 3: enable arc
 
 login to azure
 
@@ -130,18 +127,14 @@ run **microk8s status** to make sure the microk8s is running
 > microk8s enable helm3
 ```
 
-## Step 2: pull HELM chart
+## Step 2: deploy HELM chart
+login to the acr to pull the helm chart
 ```shell
-> multipass shell microk8s-vm
-> wget https://github.com/invictus-integration/docs-ifa/raw/laurent-hybrid-solution/framework/hybrid/helm.zip
-> sudo apt install unzip
-> unzip helm.zip
+> helm registry login invictusdevacracr.azurecr.io --username {username} --password {password}
 ```
-
-## Step 3: deploy HELM chart
-in the helm directory open a terminal and execute:
+todo: update this to master before pull request
 ```shell
-helm upgrade --install {name} . --values values.yaml --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword={sqlpassword} --set rabbitMQ.authentication.password={rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie={erlangcookie} --set tag={releaseverion}
+> helm upgrade --install {name} oci://invictusdevacracr.azurecr.io/helm/invictus-on-premise --version 1.0.0 --set imagePullSecret.username={username} --set imagePullSecret.password={password} --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" --set SQL.sapassword={sqlpassword} --set rabbitMQ.authentication.password={rabbitmqpassword} --set rabbitMQ.authentication.erlangCookie={erlangcookie} --set tag={releaseverion}
 ```
 
 replace the bracketed values with the wanted ones
@@ -157,20 +150,22 @@ replace the bracketed values with the wanted ones
 | `{erlangcookie}`                      | the erlang cookie (any random string)                     |
 | `{releaseverion}`                     | the version of the release you want                       |
 
+
+
 ### optional settings
 In the README.md you can find all the optional parameters.
 Some interesting are:
 If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
 ```shell
 --set existingSQLConnectionString={connectionstring}
-`-set PubSub.RmqConnectionString={amqpconnectionstring}
+--set PubSub.RmqConnectionString={amqpconnectionstring}
 --set existingDurableSQLConnectionString={durableconnectionstring}
 ```
 
 If you want to deploy it into an other namespace the default
 `-n {namespace}`
 
-## Step 4: enable arc
+## Step 3: enable arc
 enable kubectl
 ```shell
 > cd %USERPROFILE%
