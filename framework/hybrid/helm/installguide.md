@@ -122,15 +122,17 @@ follow the installer
  - press install
  - press Finnish
   
-next run:
+Next run:
 ```shell
 > microk8s start
 ```
-run **microk8s status** to make sure the microk8s is running
+Run `microk8s status` to make sure the microk8s is running
 ### Install helm
 ```shell
 > microk8s enable helm3
 ```
+
+> 💡 Note that you have to reload/restart the command prompt to be able to run `mcro8s` (so that the prompt is using the most recent updated PATH environment variable). 
 
 ## Step 2: deploy HELM chart
 login to the acr to pull the helm chart
