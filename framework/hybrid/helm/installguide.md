@@ -1,8 +1,13 @@
 # Install guide
-# linux
-## basic installs
-### install kubectl 
-linux: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+This installation guide will walk through the process of installing the Invictus framework components in a hybrid setting on on-premise environments. 
+
+## Install prerequisites
+
+### Install Kubernetes
+The Invictus framework components run in a hybrid solution on a [Kubernetes](https://kubernetes.io/docs/concepts/overview/) cluster, which means that the Kubernetes has to be installed on the on-premise machine.
+* [Linux](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+* [Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
+
 ### install helm
 ```shell
 > curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="server --disable=traefik" sh -
