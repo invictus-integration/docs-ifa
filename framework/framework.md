@@ -24,7 +24,7 @@ Invictus for Azure currently offers the following components:
 
 ## Release Notes
 
-The release notes for the framework can be found [here](support/releasenotes.md).
+The release notes for the framework can be found [here](https://github.com/invictus-integration/docs-ifa/releases).
 
 ## Related Documentation
 
