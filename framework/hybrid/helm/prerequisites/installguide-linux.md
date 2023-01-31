@@ -26,5 +26,19 @@ To deploy the Invictus framework components using Azure ACR, you need to install
 > curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
+## Verify correct Kubernetes setup
+To verify if Kubernetes is correctly installed and configured, check if there is a cluster running with `kubectl cluster-info`; if not run the following command:
+
+```shell
+> curl -sfL https://get.k3s.io | sh - 
+```
+
+Second, make sure that Kubernetes (`kubectl`) has the correct access, by running:
+```shell
+> sudo mkdir ~/.kube
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+> sudo chmod 666 ~/.kube/config
+```
+
 ## Done
 After installing Kubernetes, Helm, and Azure, you can continue with [installing and setting up the Invictus framework components](../installguide.md). 
