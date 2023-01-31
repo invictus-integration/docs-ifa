@@ -51,5 +51,19 @@ Afterwards, start the Microk8s service and make sure that the service is running
 
 > 💡 Note that you have to reload/restart the command prompt to be able to run `microk8s` (so that the prompt is using the most recent updated PATH environment variable). 
 
+## Configure Kubernetes setup
+Lastly, make sure that Kubernetes uses the `~/.kube` folder to store its configuration:
+```shell
+> cd %USERPROFILE%
+> mkdir .kube
+> cd .kube
+> microk8s config > config
+```
+
+And enable the Kubernetes dns extension so that it can interact with Azure resources.
+```shell
+> microk8s enable dns
+```
+
 ## Done
 After installing Kubernetes, Helm, and Azure, you can continue with [installing and setting up the Invictus framework components](../installguide.md). 
