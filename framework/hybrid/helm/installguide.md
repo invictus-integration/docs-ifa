@@ -75,3 +75,5 @@ Connect an existing Kubernetes cluster
 | ------------------ | ---------------------------------- |
 | `{name}`           | wanted name arc cluster            |
 | `{resource-group}` | resource group for the arc cluster |
+
+> The command may ask to install the extension `connectedk8s` if it is not installed on the system.
