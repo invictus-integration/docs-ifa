@@ -39,8 +39,6 @@ replace the bracketed values with the wanted ones
 | `{erlangcookie}`                      | the erlang cookie (any random string)                     |
 | `{releaseverion}`                     | the version of the release you want                       |
 
-
-
 ### Optional settings
 In the `README.md` you can find all the optional parameters.
 Some interesting are:
