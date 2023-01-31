@@ -76,4 +76,4 @@ Connect an existing Kubernetes cluster
 | `{name}`           | wanted name arc cluster            |
 | `{resource-group}` | resource group for the arc cluster |
 
-> The command may ask to install the extension `connectedk8s` if it is not installed on the system.
+> The command may ask to install the extension `connectedk8s` if it is not installed on the system. A outdated version of `az` may also result in problems running this extension. Try upgrading the Azure CLI with `az upgrade` and run the command again.
