@@ -3,8 +3,8 @@ This installation guide will walk through the process of installing the Invictus
 
 ## Install prerequisites
 We support both Linux and Windows installations. Please make sure that the necessary prerequisites services are installed by following these steps:
-* [Linux](/prerequisites/installguide-linux.md) (🥇 Recommended)
-* [Windows](/prerequisites/installguide-windows.md)
+* [Linux](./prerequisites/installguide-linux.md) (🥇 Recommended)
+* [Windows](./prerequisites/installguide-windows.md)
 
 ## Deploy HELM chart
 login to the acr to pull the helm chart
