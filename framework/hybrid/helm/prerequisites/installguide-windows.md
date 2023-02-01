@@ -3,10 +3,10 @@ This sub-installation guide will walk through the process of installing any prer
 
 > 💡 Note: it is advised to a base Linux operating system. But Kubernetes can run anywhere even on Windows OS.
 
-## Install Kubernetes
-The Invictus framework components run in a hybrid solution on a [Kubernetes](https://kubernetes.io/docs/concepts/overview/) cluster, which means that the Kubernetes has to be installed on the on-premise machine.
+## Install Kubectl
+The Invictus framework components run in a hybrid solution on a [Kubernetes](https://kubernetes.io/docs/concepts/overview/) cluster, which means that the Kuberctl has to be installed on the on-premise machine.
 
-[Installing Kubernetes on Linux](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
+[Installing Kuberctl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
 
 ## Install Helm
 To deploy the Invictus framework components on a Kubernetes cluster, you need the [Helm](https://helm.sh/) package manager of Kubernetes.
@@ -19,10 +19,19 @@ Run the following shell commands to install Helm on your Windows machine:
 
 > 💡 If you still need to install chocolatey you can find the info here: https://chocolatey.org/install
 
+To verify that helm is installed you can run:
+```shell
+> helm help
+```
 ## Install Azure CLI
 To deploy the Invictus framework components using Azure ACR, you need to install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/what-is-azure-cli) command tool to interact with Azure.
 
 Follow [this section](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli) to install the Azure CLI command tool on your machine.
+
+To verify that azure cli is installed you can run:
+```shell
+> az --version
+```
 
 ## Install Microk8s
 To easily get your Kubernetes cluster up and running, consider using the lightweight [Microk8s](https://microk8s.io/).
@@ -59,6 +68,8 @@ Lastly, make sure that Kubernetes uses the `~/.kube` folder to store its configu
 > cd .kube
 > microk8s config > config
 ```
+To verify if Kubernetes is correctly installed and configured, check if there 
+is a cluster running with `kubectl cluster-info`
 
 And enable the Kubernetes dns extension so that it can interact with Azure resources.
 ```shell

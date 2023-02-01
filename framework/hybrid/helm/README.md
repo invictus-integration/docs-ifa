@@ -19,8 +19,7 @@
 ## general
 | Parameter                                | Type   | Default  | Description                        |
 |------------------------------------------|--------|----------|------------------------------------|
-| Framework.APPINSIGHTS_INSTRUMENTATIONKEY | string | `nil`    | The appinsights instrumentationkey |
-| Framework.AzureWebJobsStorage            | string | `nil`    | The AzureWebJobsStorage            |
+| Framework.APPINSIGHTS_INSTRUMENTATIONKEY | string | `nil`    | The appinsights instrumentationkey ||
 | Framework.FUNCTIONS_EXTENSION_VERSION    | string    | `4`      | The funtion extension version      |
 | Framework.FUNCTIONS_WORKER_RUNTIME       | string | `dotnet` |                                    |
 | Framework.OpenApi__Info__Version         | sting    | `2.0.0`  |                                    |
@@ -31,11 +30,6 @@
 |---------------------------------------------------------------------|--------|-------------------------------------------------|------------------------------------------------|
 | Framework.RegexTranslation.image.repository                         | string | `invictusdevacracr.azurecr.io/regextranslation` | The arc repository where the images are hosted |
 | Framework.RegexTranslation.OpenApi__Info__Title                     | string | `Regex Translator`                              | The OpenApi__Info__Title                       |
-| Framework.RegexTranslation.StorageConnectionString                  | string | `nil`                                           | The StorageConnectionString                    |
-| Framework.RegexTranslation.WEBSITE_CONTENTAZUREFILECONNECTIONSTRING | string | `nil`                                           | The WEBSITE_CONTENTAZUREFILECONNECTIONSTRING   |
-| Framework.RegexTranslation.WEBSITE_CONTENTSHARE                     | string | `invictus-dev-we-sft-regextranslator`           |                                                |
-| Framework.RegexTranslation.WEBSITE_FILECONTENT                      | string | `invictus-dev-we-sft-regextranslator`           |                                                |
- ## Other components
  All other components have the same settings just the **RegexTranslation** changed for
 - SequenceController
 - XmlJsonConverter
