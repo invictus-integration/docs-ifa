@@ -19,7 +19,6 @@ todo: update this to master before pull request
   --set imagePullSecret.username={username} \
   --set imagePullSecret.password={password} \
   --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} \
-  --set Framework.InvictusDashboardConnectionString="{InvictusDashboardConnectionString}" \
   --set SQL.sapassword={sqlpassword} \
   --set rabbitMQ.authentication.password={rabbitmqpassword} \
   --set rabbitMQ.authentication.erlangCookie={erlangcookie} \
@@ -33,7 +32,6 @@ replace the bracketed values with the wanted ones
 | `{username}`                          | username given by codit products                          |
 | `{password}`                          | password given by codit products                          |
 | `{appinsights_instrumentationkey}`    | the appinstights key                                      |
-| `{InvictusDashboardConnectionString}` | dashboard connection string                               |
 | `{sqlpassword}`                       | the sql password you want to set (any random string)      |
 | `{rabbitmqpassword}`                  | the rabbitmq password you want to set (any random string) |
 | `{erlangcookie}`                      | the erlang cookie (any random string)                     |
