@@ -26,16 +26,16 @@ todo: update this to master before pull request
 ```
 
 replace the bracketed values with the wanted ones
-| Variable                              | Description                                               |
-| ------------------------------------- | --------------------------------------------------------- |
-| `{name}`                              | wanted name of the helm chart                             |
-| `{username}`                          | username given by codit products                          |
-| `{password}`                          | password given by codit products                          |
-| `{appinsights_instrumentationkey}`    | the appinstights key                                      |
-| `{sqlpassword}`                       | the sql password you want to set (any random string)      |
-| `{rabbitmqpassword}`                  | the rabbitmq password you want to set (any random string) |
-| `{erlangcookie}`                      | the erlang cookie (any random string)                     |
-| `{releaseverion}`                     | the version of the release you want                       |
+| Variable                           | Description                                               |
+| ---------------------------------- | --------------------------------------------------------- |
+| `{name}`                           | wanted name of the helm chart                             |
+| `{username}`                       | username given by codit products                          |
+| `{password}`                       | password given by codit products                          |
+| `{appinsights_instrumentationkey}` | the appinstights key                                      |
+| `{sqlpassword}`                    | the sql password you want to set (any random string)      |
+| `{rabbitmqpassword}`               | the rabbitmq password you want to set (any random string) |
+| `{erlangcookie}`                   | the erlang cookie (any random string)                     |
+| `{releaseverion}`                  | the version of the release you want                       |
 
 ### Optional settings
 In the `README.md` you can find all the optional parameters.
@@ -51,6 +51,22 @@ If you want to deploy it into an other namespace the default
 `-n {namespace}`
 
 ## Enable arc
+run arc.ps1
+```shell
+> powershell .\arc.ps1 {name} {resource-group} {serviceaccount}
+```
+| Variable           | Description                                                      |
+| ------------------ | ---------------------------------------------------------------- |
+| `{name}`           | wanted name arc cluster                                          |
+| `{resource-group}` | resource group for the arc cluster                               |
+| `{serviceaccount}` | the name of the kubernetes service account it uses for the token |
+
+at the end the script returns a bearer token. that one is used the authenticate in the portal.
+
+![authentication in portal](./images/arc-bearer-token.png)
+
+## or
+
 Login to Azure:
 
 ```shell
@@ -75,3 +91,4 @@ Connect an existing Kubernetes cluster
 | `{resource-group}` | resource group for the arc cluster |
 
 > The command may ask to install the extension `connectedk8s` if it is not installed on the system. A outdated version of `az` may also result in problems running this extension. Try upgrading the Azure CLI with `az upgrade` and run the command again.
+
