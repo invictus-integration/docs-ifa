@@ -25,17 +25,19 @@ todo: update this to master before pull request
   --set tag={releaseverion}
 ```
 
-replace the bracketed values with the wanted ones
-| Variable                           | Description                                               |
-| ---------------------------------- | --------------------------------------------------------- |
-| `{name}`                           | wanted name of the helm chart                             |
-| `{username}`                       | username given by codit products                          |
-| `{password}`                       | password given by codit products                          |
-| `{appinsights_instrumentationkey}` | the appinstights key                                      |
-| `{sqlpassword}`                    | the sql password you want to set (any random string)      |
-| `{rabbitmqpassword}`               | the rabbitmq password you want to set (any random string) |
-| `{erlangcookie}`                   | the erlang cookie (any random string)                     |
-| `{releaseverion}`                  | the version of the release you want                       |
+Replace the bracketed values with your own variables:
+| Variable                           | Description                                                                               |
+| ---------------------------------- | ----------------------------------------------------------------------------------------- |
+| `{name}`                           | Your release name of the helm deployment (free to choose)                                 |
+| `{username}`                       | Username given by Codit ([contact us](mailto:coditproducts@codit.eu))                     |
+| `{password}`                       | Password given by Codit ([contact us](mailto:coditproducts@codit.eu))                     |
+| `{appinsights_instrumentationkey}` | An instrumantation key of your Azure Application Insights (needs to be manually deployed) |
+| `{sqlpassword}` **                 | SQL server password for the SA account (will be generated on deploy)                      |
+| `{rabbitmqpassword}`               | Password for your RabbitMQ (will be generated during deploy)                              |
+| `{erlangcookie}`                   | RabbitMQ cookie string (free to choose, will be used during RabbitMQ deploy)              |
+| `{releaseverion}`                  | WHat release version of Invictus you want to deploy (or `latest` for the latest version)  |
+
+** 🚩 When you already have a SQL server running on your machine, use `--set SQL.existingSQLConnectionString` to specify the connection string directly.
 
 ### Optional settings
 In the `README.md` you can find all the optional parameters.
