@@ -1,16 +1,20 @@
-# Install guide
+# Installing Invictus framework components on-premise 
 This installation guide will walk through the process of installing the Invictus framework components in a hybrid setting on on-premise environments. 
+At the end of this guide, you will be running the Invictus framework components as Kubernetes pods on your local machine. 
 
 ## Install prerequisites
-We support both Linux and Windows installations. Please make sure that the necessary prerequisites services are installed by following these steps:
+⚠️ Please make sure that the necessary prerequisites services are installed by following these steps. This will make sure that your local machine is prepared to deploy the Invictus framework components.
 * [Linux](./prerequisites/installguide-linux.md) (🥇 Recommended)
 * [Windows](./prerequisites/installguide-windows.md)
 
-## Deploy HELM chart
-login to the acr to pull the helm chart
+## Deploy Invictus framework components
+The Invictus framework components are deployed on your machine by a Helm chart that we publicly provide. All that is required is providing the necessary input information for the different dependency services in the deployment package.
+
+### 1. Login to the acr to pull the helm chart
 ```shell
 > helm registry login invictusdevacracr.azurecr.io --username {username} --password {password}
 ```
+### 2. Deploy Helm chart
 todo: update this to master before pull request
 ```shell
 > helm upgrade \
@@ -37,7 +41,7 @@ Replace the bracketed values with your own variables:
 | `{erlangcookie}`                   | RabbitMQ cookie string (free to choose, will be used during RabbitMQ deploy)              |
 | `{releaseverion}`                  | WHat release version of Invictus you want to deploy (or `latest` for the latest version)  |
 
-### ** Alternative settings
+#### ** Alternative settings
 If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
 ```shell
 --set existingSQLConnectionString={connectionstring}
@@ -45,7 +49,7 @@ If the below parameters are set, the corresponding resource will not be created 
 --set existingDurableSQLConnectionString={durableconnectionstring}
 ```
 
-### Optional settings
+#### Optional settings
 💡 In the `README.md` you can find all the optional parameters.
 
 If you want to deploy it into an other namespace the default
