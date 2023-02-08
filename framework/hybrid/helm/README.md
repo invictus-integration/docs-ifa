@@ -1,35 +1,35 @@
 # invictus on premise
 ![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: framework](https://img.shields.io/badge/Type-framework-informational?style=flat-square) ![AppVersion: 4.15.11](https://img.shields.io/badge/AppVersion-4.15.11-informational?style=flat-square)
 ## general variables
-| Parameter                   | Type   | Default                  | Description                                                 |
-|-----------------------------|--------|--------------------------|-------------------------------------------------------------|
-| fullnameOverride            | string | `invictus`               | Fully override the deployment name                          |
-| Invictusversion             | string | `4.15.11`                | The version of invictus                                     |
-| imagePullSecret.username    | string | `nil`                    | Login username to access acr (provided by products team)     |
-| imagePullSecret.password    | string | `nil`                    | Login password to access acr (provided by products team)     |
-| tag                         | string | `latest`                 | Docker pull tag                                             |
-| pullPolicy                  | string | `IfNotPresent`           | options: IfNotPresent                                       |
-| replicaCount                | sting  | `1`                      | Copies of the framework you want deployed on the cluster    |
-| port                        | int    | `7071`                   | Function port                                                |
-| existingSQLConnectionString | string | `nil`                    | Provide a connectionstring if there is already a SQL server |
+| Parameter                          | Type   | Default           | Description                                                                                         |
+| ---------------------------------- | ------ | ----------------- | --------------------------------------------------------------------------------------------------- |
+| fullnameOverride                   | string | `invictus`        | Fully override the deployment name                                                                  |
+| Invictusversion                    | string | `4.15.11`         | The version of invictus                                                                             |
+| imagePullSecret.username           | string | `nil`             | Login username to access acr (provided by products team)                                            |
+| imagePullSecret.password           | string | `nil`             | Login password to access acr (provided by products team)                                            |
+| tag                                | string | `latest`          | Docker pull tag                                                                                     |
+| pullPolicy                         | string | `IfNotPresent`    | options: IfNotPresent                                                                               |
+| replicaCount                       | sting  | `1`               | Copies of the framework you want deployed on the cluster                                            |
+| port                               | int    | `7071`            | Function port                                                                                       |
+| existingSQLConnectionString        | string | `nil`             | Provide a connectionstring if there is already a SQL server                                         |
 | existingDurableSQLConnectionString | string | `nil`             | Provide a connectionstring if there is already a SQL server for the durable state (must be a msSQL) |
-| clusterDomain               | string | `"cluster.local"`        | Kubernetes cluster domain (DNS)suffix                       |
+| clusterDomain                      | string | `"cluster.local"` | Kubernetes cluster domain (DNS)suffix                                                               |
 
 # Component specific variables
 ## general
 | Parameter                                | Type   | Default  | Description                        |
-|------------------------------------------|--------|----------|------------------------------------|
-| Framework.APPINSIGHTS_INSTRUMENTATIONKEY | string | `nil`    | The appinsights instrumentationkey ||
-| Framework.FUNCTIONS_EXTENSION_VERSION    | string    | `4`      | The funtion extension version      |
+| ---------------------------------------- | ------ | -------- | ---------------------------------- |
+| Framework.APPINSIGHTS_INSTRUMENTATIONKEY | string | `nil`    | The appinsights instrumentationkey |
+| Framework.FUNCTIONS_EXTENSION_VERSION    | string | `4`      | The funtion extension version      |
 | Framework.FUNCTIONS_WORKER_RUNTIME       | string | `dotnet` |                                    |
-| Framework.OpenApi__Info__Version         | sting    | `2.0.0`  |                                    |
+| Framework.OpenApi__Info__Version         | sting  | `2.0.0`  |                                    |
 | Framework.RunningEnvironment             | string | `onprem` | This for the correct libraries     |
 
 ## RegexTranslation
-| Parameter                                                           | Type   | Default                                         | Description                                    |
-|---------------------------------------------------------------------|--------|-------------------------------------------------|------------------------------------------------|
-| Framework.RegexTranslation.image.repository                         | string | `invictusdevacracr.azurecr.io/regextranslation` | The arc repository where the images are hosted |
-| Framework.RegexTranslation.OpenApi__Info__Title                     | string | `Regex Translator`                              | The OpenApi__Info__Title                       |
+| Parameter                                       | Type   | Default                                         | Description                                    |
+| ----------------------------------------------- | ------ | ----------------------------------------------- | ---------------------------------------------- |
+| Framework.RegexTranslation.image.repository     | string | `invictusdevacracr.azurecr.io/regextranslation` | The arc repository where the images are hosted |
+| Framework.RegexTranslation.OpenApi__Info__Title | string | `Regex Translator`                              | The OpenApi__Info__Title                       |
  All other components have the same settings just the **RegexTranslation** changed for
 - SequenceController
 - XmlJsonConverter
@@ -39,40 +39,40 @@
 - PubSub
 ### pubsub 
 The pubsub has one more config:
-| Parameter                                | Type   | Default  | Description                        |
-|------------------------------------------|--------|----------|------------------------------------|
-| Framework.PubSub.RmqConnectionString | string | `nil`    | The rabbitmq connectionstring (leave empty for automatic deployment) |
+| Parameter                            | Type   | Default | Description                                                          |
+| ------------------------------------ | ------ | ------- | -------------------------------------------------------------------- |
+| Framework.PubSub.RmqConnectionString | string | `nil`   | The rabbitmq connectionstring (leave empty for automatic deployment) |
 # MQ SQL
 ## variables
-| Parameter                     | Type  |  Default                           | Description                                                  |
-|-------------------------------|-------------|----------------------------------|--------------------------------------------------------------|
-| SQL.acceptEula.value              | string      | `y`                              | End-user license agreement (EULA) that needs to be accepted. |
-| SQL.edition.value                 | string      | `Developer`                      | The edition of SQL Server to install. See section [Editions](#sql-server-for-linux-editions).|
-| SQL.sapassword                    | string      | `Random (20-AlphNum)`<sup>1<sup> | Password for sa login                                        |
-| SQL.image.repository              | string      | `microsoft/mssql-server-linux`   | The docker hub repo for SQL Server                           |
-| SQL.image.tag                     | string      | `2019-CU16-ubuntu-20.04`         | The tag for the image                                        |
-| SQL.image.pullPolicy              | string      | `IfNotPresent`                   | The pull policy for the deployment                           |
-| SQL.image.pullSecrets             | string      | `Commented Out`                  | Specify an image pull secret if needed                       |
-| SQL.nodeSelector                  | object      | `{}`                             | Node labels for pod assignment                               |
-| SQL.service.headless              | boolean     | `false`                          | Allows you to setup a headless service                       |
-| SQL.service.type                  | string      | `ClusterIP`                      | Service Type                                                 |
-| SQL.service.port                  | int         | `1433`                           | Service Port                                                 |
-| SQL.service.annotations           | object      | `{}`                             | Kubernetes service annotations                               |
-| SQL.service.labels                | object      | `{}`                             | Kubernetes service labels                                    |
-| SQL.deployment.annotations        | object      | `{}`                             | Kubernetes deployment annotations                            |
-| SQL.deployment.labels             | object      | `{}`                             | Kubernetes deployment labels                                 |
-| SQL.pod.annotations               | object      | `{}`                             | Kubernetes pod annotations                                   |
-| SQL.pod.labels                    | object      | `{}`                             | Kubernetes pod labels                                        |
-| SQL.collation                     | string      | `SQL_Latin1_General_CP1_CI_AS`   | Default collation for SQL Server                             |
-| SQL.dataDir                       | string      | `/var/opt/mssql`                 | Specify the default SQL data directory                       |
-| SQL.lcid                          | int         | `1033`                           | Default languages for SQL Server                             |
-| SQL.hadr                          | int         | `0`                              | Enable Availability Group                                    |
-| SQL.replicaCount                  | int         | `1`                              | Set the number of replica                                    |
-| SQL.persistence.enabled           | boolean     | `false`                          | Persist the Data and Log files for SQL Server                |
-| SQL.persistence.existingDataClaim | string      | `Commented Out`                  | Identify an existing Claim to be used for the Data Directory |
-| SQL.persistence.storageClass      | string      | `Commented Out`                  | Storage Class to be used                                     |
-| SQL.persistence.dataAccessMode    | string      | `ReadWriteOnce`                  | Data Access Mode to be used for the Data Directory           |
-| SQL.persistence.dataSize          | string      | `1Gi`                            | PVC Size for Data Directory          
+| Parameter                         | Type    | Default                          | Description                                                                                   |
+| --------------------------------- | ------- | -------------------------------- | --------------------------------------------------------------------------------------------- |
+| SQL.acceptEula.value              | string  | `y`                              | End-user license agreement (EULA) that needs to be accepted.                                  |
+| SQL.edition.value                 | string  | `Developer`                      | The edition of SQL Server to install. See section [Editions](#sql-server-for-linux-editions). |
+| SQL.sapassword                    | string  | `Random (20-AlphNum)`<sup>1<sup> | Password for sa login                                                                         |
+| SQL.image.repository              | string  | `microsoft/mssql-server-linux`   | The docker hub repo for SQL Server                                                            |
+| SQL.image.tag                     | string  | `2019-CU16-ubuntu-20.04`         | The tag for the image                                                                         |
+| SQL.image.pullPolicy              | string  | `IfNotPresent`                   | The pull policy for the deployment                                                            |
+| SQL.image.pullSecrets             | string  | `Commented Out`                  | Specify an image pull secret if needed                                                        |
+| SQL.nodeSelector                  | object  | `{}`                             | Node labels for pod assignment                                                                |
+| SQL.service.headless              | boolean | `false`                          | Allows you to setup a headless service                                                        |
+| SQL.service.type                  | string  | `ClusterIP`                      | Service Type                                                                                  |
+| SQL.service.port                  | int     | `1433`                           | Service Port                                                                                  |
+| SQL.service.annotations           | object  | `{}`                             | Kubernetes service annotations                                                                |
+| SQL.service.labels                | object  | `{}`                             | Kubernetes service labels                                                                     |
+| SQL.deployment.annotations        | object  | `{}`                             | Kubernetes deployment annotations                                                             |
+| SQL.deployment.labels             | object  | `{}`                             | Kubernetes deployment labels                                                                  |
+| SQL.pod.annotations               | object  | `{}`                             | Kubernetes pod annotations                                                                    |
+| SQL.pod.labels                    | object  | `{}`                             | Kubernetes pod labels                                                                         |
+| SQL.collation                     | string  | `SQL_Latin1_General_CP1_CI_AS`   | Default collation for SQL Server                                                              |
+| SQL.dataDir                       | string  | `/var/opt/mssql`                 | Specify the default SQL data directory                                                        |
+| SQL.lcid                          | int     | `1033`                           | Default languages for SQL Server                                                              |
+| SQL.hadr                          | int     | `0`                              | Enable Availability Group                                                                     |
+| SQL.replicaCount                  | int     | `1`                              | Set the number of replica                                                                     |
+| SQL.persistence.enabled           | boolean | `false`                          | Persist the Data and Log files for SQL Server                                                 |
+| SQL.persistence.existingDataClaim | string  | `Commented Out`                  | Identify an existing Claim to be used for the Data Directory                                  |
+| SQL.persistence.storageClass      | string  | `Commented Out`                  | Storage Class to be used                                                                      |
+| SQL.persistence.dataAccessMode    | string  | `ReadWriteOnce`                  | Data Access Mode to be used for the Data Directory                                            |
+| SQL.persistence.dataSize          | string  | `200Gi`                          | PVC Size for Data Directory                                                                   |
 
 # RabbitMQ
 ## Deployment parameters
@@ -184,15 +184,15 @@ Section to define custom services
 
 ## RabbitMQ base parameters
 
-| Key                                  | Type   | Default               | Description                                                                                                                   |
-| ------------------------------------ | ------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| rabbitMQ.plugins                     | list   | `[]`                  | List of additional RabbitMQ plugins that should be activated (see: [RabbitMQ plugins](https://www.rabbitmq.com/plugins.html)) |
-| rabbitMQ.authentication.user         | string | `"InvictusMQ"`             | Initial user name                                                                                                             |
-| rabbitMQ.authentication.password     | string | `"H^PL^SXATf(k5^cbb&Jw"`             | Initial password                                                                                                              |
-| rabbitMQ.authentication.erlangCookie | string | `Random (20-AlphNum)` | Erlang cookie (MANDATORY) (Alternative: Set the environment variable ERLANG_COOKIE)                                           |
-| rabbitMQ.clustering.rebalance        | bool   | `false`               | Enable rebalance queues with master when new replica is created                                                               |
-| rabbitMQ.clustering.forceBoot        | bool   | `false`               | Force boot in case cluster peers are not available                                                                            |
-| rabbitMQ.clustering.useLongName      | bool   | `true`                | Use FQDN for RabbitMQ node names                                                                                              |
+| Key                                  | Type   | Default                  | Description                                                                                                                   |
+| ------------------------------------ | ------ | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| rabbitMQ.plugins                     | list   | `[]`                     | List of additional RabbitMQ plugins that should be activated (see: [RabbitMQ plugins](https://www.rabbitmq.com/plugins.html)) |
+| rabbitMQ.authentication.user         | string | `"InvictusMQ"`           | Initial user name                                                                                                             |
+| rabbitMQ.authentication.password     | string | `"H^PL^SXATf(k5^cbb&Jw"` | Initial password                                                                                                              |
+| rabbitMQ.authentication.erlangCookie | string | `Random (20-AlphNum)`    | Erlang cookie (MANDATORY) (Alternative: Set the environment variable ERLANG_COOKIE)                                           |
+| rabbitMQ.clustering.rebalance        | bool   | `false`                  | Enable rebalance queues with master when new replica is created                                                               |
+| rabbitMQ.clustering.forceBoot        | bool   | `false`                  | Force boot in case cluster peers are not available                                                                            |
+| rabbitMQ.clustering.useLongName      | bool   | `true`                   | Use FQDN for RabbitMQ node names                                                                                              |
 
 ## RabbitMQ memory parameters
 
