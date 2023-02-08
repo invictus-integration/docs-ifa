@@ -15,8 +15,8 @@ Make sure the Project Collection Build Service has Administrator access to these
 > ![Library Security](../../images/ifa-library-security.png)
 
 ## YAML Pipeline
-Add the files and folders from [this](./pipelines) location to your DevOps repo. 
-This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [framework.release.yaml](./pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+Add the files and folders from [this](pipelines) location to your DevOps repo. 
+This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [dashboard.release.yaml](pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
 ``` yaml
 resources:
   pipelines:
@@ -27,11 +27,13 @@ resources:
     trigger: true
 ```
 
-Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ADD using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+**Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
+
+Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
 
 If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
 
-Afterwards add the [framework.release.yaml](./pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
+Afterwards add the [dashboard.release.yaml](pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
 ## Classic Pipeline
 ### Release
