@@ -38,9 +38,14 @@ When you click the advanced search tab you can select the following filter optio
   * is in the last (minute(s) - hour(s) - day(s) - week(s) - month(s)) |
 * **Flow filter**: A user will be able to select the flow he/she wants to search on.
 * **Flow property filter**: Once a user selected a flow, he/she will be able to select the properties he/she wants to search on.
-  * when part of text is entered, it will return a match if the property value contains the text.
-  * when using a wildcard \*, it will return a match if the property value contains the text including the wildcard. Ex: B*L can return BABYBEL, BEOL.
-  * when using a wildcard ?, it will return a match if the proeprty value contains a character at the place of the wildcard ?. Ex: B?L can return BABYBEL, BEL, BOL but not BEOL.
+  ![business properties search](../images/dashboard/businesspropertiessearch.png)
+  * "Contains" - search within the specified business property that contains a specific word.
+  * "Starts With" - search within the specified business property that starts with a specific word.
+  * "Ends With" - search within the specified business property that ends with a specific word.
+  * "Equal To" - search within the specified business property that matches exactly the specific word.
+  * "Not Equal To" - search within the specified business property that doesn't match the specific word.
+  * "Regex" - search within the specified business property by using regex pattern. You can use these patterns below.
+  ![regex](../images/dashboard/regex.png)
 * **Chain ID**: A user can search by the chain id.
 * **Status filter**: A user can select the following statuses:
   * Active - Shows all messages which are being processed as active, resubmit request, resubmitted, resume request, resumed.
