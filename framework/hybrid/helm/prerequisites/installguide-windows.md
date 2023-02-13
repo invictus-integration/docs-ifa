@@ -68,6 +68,9 @@ Lastly, make sure that Kubernetes uses the `~/.kube` folder to store its configu
 > cd .kube
 > microk8s config > config
 ```
+
+>  🚩 Use `cd ~` in a PowerShell terminal to navigate to the user profile folder. 
+
 To verify if Kubernetes is correctly installed and configured, check if there 
 is a cluster running with `kubectl cluster-info`
 
