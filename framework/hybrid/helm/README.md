@@ -50,7 +50,7 @@ The pubsub has one more config:
 | SQL.edition.value                 | string  | `Developer`                      | The edition of SQL Server to install. See section [Editions](#sql-server-for-linux-editions). |
 | SQL.sapassword                    | string  | `Random (20-AlphNum)`<sup>1<sup> | Password for sa login                                                                         |
 | SQL.image.repository              | string  | `microsoft/mssql-server-linux`   | The docker hub repo for SQL Server                                                            |
-| SQL.image.tag                     | string  | `2019-CU16-ubuntu-20.04`         | The tag for the image                                                                         |
+| SQL.image.tag                     | string  | `2022-latest`                    | The tag for the image                                                                         |
 | SQL.image.pullPolicy              | string  | `IfNotPresent`                   | The pull policy for the deployment                                                            |
 | SQL.image.pullSecrets             | string  | `Commented Out`                  | Specify an image pull secret if needed                                                        |
 | SQL.nodeSelector                  | object  | `{}`                             | Node labels for pod assignment                                                                |
