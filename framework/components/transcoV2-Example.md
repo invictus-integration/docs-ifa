@@ -47,7 +47,7 @@ The below Transco config is used to obtain the Customer Status from the DB and i
     	"instructions": [
     		{   			
     			"scopePath": "/persons",
-    			"destinationPath": "//status",
+    			"destination": "//status",
     			"command": {
     				"databaseKeyVaultName": "transcoV2LocalDB",
     				"commandValue": "SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active",
