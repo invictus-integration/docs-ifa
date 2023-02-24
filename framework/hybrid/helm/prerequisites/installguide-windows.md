@@ -74,9 +74,10 @@ Lastly, make sure that Kubernetes uses the `~/.kube` folder to store its configu
 To verify if Kubernetes is correctly installed and configured, check if there 
 is a cluster running with `kubectl cluster-info`
 
-And enable the Kubernetes dns extension so that it can interact with Azure resources.
+And enable the Kubernetes dns and hostpath-storage extension so that it can interact with Azure resources.
 ```shell
 > microk8s enable dns
+> microk8s enable hostpath-storage
 ```
 
 ## Done

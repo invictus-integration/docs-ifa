@@ -36,8 +36,8 @@ Replace the bracketed values with your own variables:
 | `{username}`                       | Username given by Codit ([contact us](mailto:coditproducts@codit.eu))                     |
 | `{password}`                       | Password given by Codit ([contact us](mailto:coditproducts@codit.eu))                     |
 | `{appinsights_instrumentationkey}` | An instrumantation key of your Azure Application Insights (needs to be manually deployed) |
-| `{sqlpassword}` **                 | SQL server password for the SA account (will be generated on deploy)                      |
-| `{rabbitmqpassword}` **            | Password for your RabbitMQ (will be generated during deploy)                              |
+| `{sqlpassword}` **                 | SQL server password for the SA account (give a strong password)                           |
+| `{rabbitmqpassword}` **            | Password for your RabbitMQ (give a strong password)                                       |
 | `{erlangcookie}`                   | RabbitMQ cookie string (free to choose, will be used during RabbitMQ deploy)              |
 | `{releaseverion}`                  | WHat release version of Invictus you want to deploy (or `latest` for the latest version)  |
 
