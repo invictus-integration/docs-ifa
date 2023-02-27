@@ -184,15 +184,15 @@ Section to define custom services
 
 ## RabbitMQ base parameters
 
-| Key                                  | Type   | Default               | Description                                                                                                                   |
-| ------------------------------------ | ------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| rabbitMQ.plugins                     | list   | `[]`                  | List of additional RabbitMQ plugins that should be activated (see: [RabbitMQ plugins](https://www.rabbitmq.com/plugins.html)) |
-| rabbitMQ.authentication.user         | string | `"InvictusMQ"`        | Initial user name                                                                                                             |
-| rabbitMQ.authentication.password     | string | `nil`                 | Initial password                                                                                                              |
-| rabbitMQ.authentication.erlangCookie | string | `Random (20-AlphNum)` | Erlang cookie (MANDATORY) (Alternative: Set the environment variable ERLANG_COOKIE)                                           |
-| rabbitMQ.clustering.rebalance        | bool   | `false`               | Enable rebalance queues with master when new replica is created                                                               |
-| rabbitMQ.clustering.forceBoot        | bool   | `false`               | Force boot in case cluster peers are not available                                                                            |
-| rabbitMQ.clustering.useLongName      | bool   | `true`                | Use FQDN for RabbitMQ node names                                                                                              |
+| Key                                  | Type   | Default        | Description                                                                                                                   |
+| ------------------------------------ | ------ | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| rabbitMQ.plugins                     | list   | `[]`           | List of additional RabbitMQ plugins that should be activated (see: [RabbitMQ plugins](https://www.rabbitmq.com/plugins.html)) |
+| rabbitMQ.authentication.user         | string | `"InvictusMQ"` | Initial user name                                                                                                             |
+| rabbitMQ.authentication.password     | string | `nil`          | Initial password                                                                                                              |
+| rabbitMQ.authentication.erlangCookie | string | `nil`          | Erlang cookie (MANDATORY) (Alternative: Set the environment variable ERLANG_COOKIE)                                           |
+| rabbitMQ.clustering.rebalance        | bool   | `false`        | Enable rebalance queues with master when new replica is created                                                               |
+| rabbitMQ.clustering.forceBoot        | bool   | `false`        | Force boot in case cluster peers are not available                                                                            |
+| rabbitMQ.clustering.useLongName      | bool   | `true`         | Use FQDN for RabbitMQ node names                                                                                              |
 
 ## RabbitMQ memory parameters
 
