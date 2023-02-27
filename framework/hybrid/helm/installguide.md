@@ -19,14 +19,13 @@ todo: update this to master before pull request
 ```shell
 > helm upgrade \
   --install {name} oci://invictusdevacracr.azurecr.io/helm/invictus-on-premise \
-  --version 1.0.0 \
+  --version {releaseverion} \
   --set imagePullSecret.username={username} \
   --set imagePullSecret.password={password} \
   --set Framework.APPINSIGHTS_INSTRUMENTATIONKEY={appinsights_instrumentationkey} \
   --set SQL.sapassword={sqlpassword} \
   --set rabbitMQ.authentication.password={rabbitmqpassword} \
-  --set rabbitMQ.authentication.erlangCookie={erlangcookie} \
-  --set tag={releaseverion}
+  --set rabbitMQ.authentication.erlangCookie={erlangcookie}
 ```
 
 Replace the bracketed values with your own variables:
@@ -39,7 +38,7 @@ Replace the bracketed values with your own variables:
 | `{sqlpassword}` **                 | SQL server password for the SA account (give a strong password)                           |
 | `{rabbitmqpassword}` **            | Password for your RabbitMQ (give a strong password)                                       |
 | `{erlangcookie}`                   | RabbitMQ cookie string (free to choose, will be used during RabbitMQ deploy)              |
-| `{releaseverion}`                  | WHat release version of Invictus you want to deploy (or `latest` for the latest version)  |
+| `{releaseverion}`                  | WHat release version of Invictus you want to deploy                                       |
 
 #### ** Alternative settings
 If the below parameters are set, the corresponding resource will not be created on the cluster but will instead use the provided connection string
