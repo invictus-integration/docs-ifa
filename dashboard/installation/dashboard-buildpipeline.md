@@ -18,7 +18,7 @@ Once you have the variable group, we can now proceed to creating the build pipel
 
 ## YAML Pipeline
 Add the files and folders from [this](pipelines) location to your DevOps repo. 
-This contains an example YAML pipelines to build the Invictus for Azure Dashboard, change the [dashboard.build.yaml](./pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
+This contains an example YAML pipelines to build the Invictus for Azure Dashboard, change the [dashboard.build.yaml](../../dashboard/installation/pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
 ``` yaml
   paths:
     include:
