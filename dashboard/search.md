@@ -4,51 +4,46 @@
 
 ## Basic Search
 
-The user is able to search through the search bar on top of the message screen. If no filters are selected, the search will be performed query wide.
+The user is able to perform a basic text search through the top search bar. This will search through all properties of the flow and will check if the property data contains the desired string. Click on the search button to perform your request.
 
-![basic search](../images/dsb-searchbasic.gif)
+No search query
+![basic search](../images/v2_search-basic1.png)
+
+With search query
+![basic search](../images/v2_search-basic2.png)
 
 ## Advanced Search
 
-There are 2 ways a user can make his/her search results more precise:
+Opening the advanced search pane will present the user with a selection of filters which can be applied to the flow data.
 
-1. Using the search bar
-2. Using the "Advanced Search" tab
+![basic search](../images/v2_search-advanced1.png)
 
-### Using the search bar
+The following filters may be applied:
 
-You can use symbols or words in the search bar. For example put `invoice:` in front of your search term (`invoice:173` would mean that you are searching for invoice number 173).
-
-The symbols or words in the search bar should match the flow property names (column title names).
-
-![advanced search](../images/dsb-searchadvancedbar.png)
-
-
-### Using the advanced search tab
-
-When you click the advanced search tab you can select the following filter options.
-
-![advanced search](../images/dsb-searchadvancedtab.png)
-
-* **Date filter**: A user will have 4 options to choose from:
-
+* **Date filter**: 5 options to choose from:
+  * all
   * is after (start state)
   * is before (end date)
   * is in between (start date - end date)
   * is in the last (minute(s) - hour(s) - day(s) - week(s) - month(s)) |
-* **Flow filter**: A user will be able to select the flow he/she wants to search on.
-* **Flow property filter**: Once a user selected a flow, he/she will be able to select the properties he/she wants to search on.
-  ![business properties search](../images/dashboard/businesspropertiessearch.png)
-  * "Contains" - search within the specified business property that contains a specific word.
-  * "Starts With" - search within the specified business property that starts with a specific word.
-  * "Ends With" - search within the specified business property that ends with a specific word.
-  * "Equal To" - search within the specified business property that matches exactly the specific word.
-  * "Not Equal To" - search within the specified business property that doesn't match the specific word.
-  * "Regex" - search within the specified business property by using regex pattern. You can use these patterns below.
-  ![regex](../images/dashboard/regex.png)
-* **Chain ID**: A user can search by the chain id.
-* **Status filter**: A user can select the following statuses:
+* **Chain ID**: Filter by specific Chain ID
+* **Status filter**: Filter to include only the selected status:
   * Active - Shows all messages which are being processed as active, resubmit request, resubmitted, resume request, resumed.
   * Completed - Shows all messages that are completed (processed successfully).
   * Error - Shows all messages that are suspended, dehydrated or terminated or request failed and resume failed.
   * Ignored -  Shows all messages that are ignored.
+ * **Flow property filter**: Enables more detailed searching per property. First, select the properties you wish to search on from the dropdown. Then click on the property filters button. This will open a modal where the user may add the specific filter as described below: 
+   * "Contains" - search within the specified business property that contains a specific word.
+   * "Starts With" - search within the specified business property that starts with a specific word.
+   * "Ends With" - search within the specified business property that ends with a specific word.
+   * "Equal To" - search within the specified business property that matches exactly the specific word.
+   * "Not Equal To" - search within the specified business property that doesn't match the specific word.
+   * "Regex" - search within the specified business property by using regex pattern. You can use these patterns below.
+   
+  ![regex](../images/dashboard/regex.png)
+
+## Search across flows
+
+All of the above searching functionality can be applied to searches across multiple flows. Simply select the desired flows from the "Select Flows" dropdown. Results will be combined into a single table.
+
+![basic search](../images/v2_search-advanced3.png)
