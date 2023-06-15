@@ -2,34 +2,42 @@
 
 # Dashboard Folder Permission Management
 
-## Assign users to folder
+All system admins are automatically assigned to every folder in the invictus dashboard. However, non-admins may be assigned a role on any folder via the Folder permissions page. 
 
-**Note that user(s) should be created before assigning a folder.**
+## Assign users to a folder
 
-Click on the 3 dots next to the folder name.
+To enter the Folder Permissions page, click on the 3 dots next to the folder name and choose 'Edit Folder Permissions'.
 
-![folder1](../images/dashboard/folderman_1.JPG)
+![folder1](../images/v2_folderpermissions1.png)
 
-Several option will pop-up. Choose 'Manage users'.
+Click on the "Assign a User" button.
 
-![folder2](../images/dashboard/folderman_2.JPG)
+![folder1](../images/v2_folderpermissions2.png)
 
-Click on the "Add Users" button.
 
-![folder3](../images/dashboard/folderman_3.JPG)
+Choose the desired non-admin user from the first drop down menu. Then, choose the role you want the user to have for that specific folder.
 
-Choose the user from the first drop down menu. And choose the role you want the user to have for that specific folder. You can see that you have 3 options. Folder Admin, Operator, Reader. The difference between these three are.
+![folder1](../images/v2_folderpermissions3.png)
 
-Folder Admin can assign users to specific folder, remove users from specific folder, create flows in specific folder, delete flows in specific folder, see messages from flows in specific folder, see flows from specific folder, resume/resubmit/ignore messages from specific folders, see flow statistics, edit flow in specific folder.
-
-Operator can see messages from flows in specific folder, see flows from specific folder, resume/resubmit/ignore messages from specific folders, see flow statistics.
-
-Reader can see messages from flows in specific folder, see flows from specific folder, see flow statistics.
-
-![folder4](../images/dashboard/folderman_4.JPG)
 
 ## Delete users from a folder
 
-Click on the delete icon button next to the user you want to delete.
+Click on the delete icon button next to the user you want to delete. This may only be done for non-admin users. Confirm your decision in the confirmation dialog.
 
-![folder5](../images/dashboard/folderman_5.JPG)
+## Assign groups to a folder
+
+To enter the Folder Permissions page, click on the 3 dots next to the folder name and choose 'Edit Folder Permissions'.
+
+![folder1](../images/v2_folderpermissions1.png)
+
+Click on the "Assign a Group" button.
+
+![folder1](../images/v2_folderpermissions2.png)
+
+Choose the desired group from the first drop down menu. Only enabled non-admin groups will be listed. Then, choose the role you want the group to have for that specific folder.
+
+![folder1](../images/v2_folderpermissions4.png)
+
+## Delete groups from a folder
+
+Click on the delete icon button next to the group you want to delete. This may only be done for non-admin groups. Confirm your decision in the confirmation dialog.
