@@ -11,32 +11,36 @@ First, go to "Azure Active Directory" and from the left side menu click on the "
 3. Now for the "Redirect URI" enter links that you are going to use from where you are going to login from. Such as "https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login". This will ensure that from where you are loging is legit and no one can use your tenant id from another domain or so.
 4. Click on Register button.
 
-![aad1](../images/dashboard/azureAD/aad1.JPG)
+![Allowing permissions for access and ID Tokens](../images/dashboard/azureAD/aad1.JPG)
 
-Now go to "Authentication" page from the left side menu and check the 2 check boxes which are "Access Tokens" and "ID Tokens" and click on Save button from the top.
+Step 1. Go to "Authentication" page from the left side menu and check the 2 check boxes which are "Access Tokens" and "ID Tokens" and click on Save button from the top.
 
-![aad2](../images/dashboard/azureAD/aad2.JPG)
+![Certifcates and secrets](../images/dashboard/azureAD/aad2.JPG)
 
-Now go to the "Manifest" link from the left side menu and in the replyUrlsWithType node, insert the your url from which you are going to login plus * (wildcard), like the picture underneath.
+Step 2. Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
 
-![aad3 ](../images/dashboard/azureAD/aad3.JPG)
+![API Permissions](../images/dashboard/azureAD/aad4.JPG)
 
-Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
+Step 3. Go to "API Permissions" from the left side menu and click on "Add a permission" button. Click on "Microsoft Graph" and click on "Delegated permissions" and search for Directory. Choose the Directory.Read.All and click on Add permissions button. Now click the "Grant admin consent for Codit" and it must turn as Granted the status of the new permission you added. 
 
-![aad4](../images/dashboard/azureAD/aad4.JPG)
+![Expose an API](../images/dashboard/azureAD/aad9.JPG)
 
-Now go to "API Permissions" from the left side menu and click on "Add a permission" button. Click on "Microsoft Graph" and click on "Delegated permissions" and search for Directory. Choose the Directory.Read.All and click on Add permissions button. Now click the "Grant admin consent for Codit" and it must turn as Granted the status of the new permission you added. 
+Step 4. Go To "Expose an API", Add the application ID URI: as the api://{client-id or also known as the application-id}, this can be found in the "Overview" section. Click on "Add a scope"
 
-![aad8](../images/dashboard/azureAD/aad8.JPG)
+![Add Scope](../images/dashboard/azureAD/aad10.JPG)
 
-Now go back to "Azure Active Directory" and from the left side menu click on the "Enterprise Application" and search for the one you just created and click on it. Now from the left hand side, click on "Owners" and Add yourself or whoever you want to be the owner of the application.
+Step 5. Fill in the form with the above image infromation. "access_as_user" for each of the textboxes, once finished click on "Add scope"
 
-![aad5](../images/dashboard/azureAD/aad5.JPG)
+![Frant consent to delegated / admin permissions ](../images/dashboard/azureAD/aad8.JPG)
 
-Now go to the "Permissions" page from the left side menu and click on the "Admin consent" "User consent" tab and click on the "Grant admin consent for Codit" button and continue with what it's telling you.
+Step 6. Back to "Azure Active Directory" and from the left side menu click on the "Enterprise Application" and search for the one you just created and click on it. Now from the left hand side, click on "Owners" and Add yourself or whoever you want to be the owner of the application.
 
-![aad6](../images/dashboard/azureAD/aad6.JPG)
+![Add Ownership to enterprise application](../images/dashboard/azureAD/aad5.JPG)
 
-Once you are done from this, you are able to login from Invictus Dashboard. Obviously you need to provide the Tenant ID, Client ID and the client secret to the dashboard to connect your dashboard with the AAD.
+Step 7. Go to the "Permissions" page from the left side menu and click on the "Admin consent" "User consent" tab and click on the "Grant admin consent for Codit" button and continue with what it's telling you.
 
-![aad7](../images/dashboard/azureAD/aad7.JPG)
+![Grant consent permissions for enterprise applications](../images/dashboard/azureAD/aad6.JPG)
+
+Step 8. Once you are done from this, you are able to login from Invictus Dashboard. Obviously you need to provide the Tenant ID, Client ID and the client secret to the dashboard to connect your dashboard with the AAD.
+
+![Tenant and client information](../images/dashboard/azureAD/aad7.JPG)
