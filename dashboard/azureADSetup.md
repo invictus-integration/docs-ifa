@@ -23,11 +23,11 @@ Step 2. Go to Certificates & secrets from the side menu and create a secret. Cli
 
 Step 3. Go to "API Permissions" from the left side menu and click on "Add a permission" button. Click on "Microsoft Graph" and click on "Delegated permissions" and search for Directory. Choose the Directory.Read.All and click on Add permissions button. Now click the "Grant admin consent for Codit" and it must turn as Granted the status of the new permission you added. 
 
-![Expose an API](../images/dashboard/azureAD/aad9.JPG)
+![Expose an API](../images/dashboard/azureAD/aad9.png)
 
 Step 4. Go To "Expose an API", Add the application ID URI: as the api://{client-id or also known as the application-id}, this can be found in the "Overview" section. Click on "Add a scope"
 
-![Add Scope](../images/dashboard/azureAD/aad10.JPG)
+![Add Scope](../images/dashboard/azureAD/aad10.png)
 
 Step 5. Fill in the form with the above image infromation. "access_as_user" for each of the textboxes, once finished click on "Add scope"
 
