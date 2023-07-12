@@ -11,19 +11,19 @@ First, go to "Azure Active Directory" and from the left side menu click on the "
 3. Now for the "Redirect URI" enter links that you are going to use from where you are going to login from. Such as "https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login". This will ensure that from where you are loging is legit and no one can use your tenant id from another domain or so.
 4. Click on Register button.
 
-![Allowing permissions for access and ID Tokens](../images/dashboard/azureAD/aad1.JPG)
+![Register AAD](../images/dashboard/azureAD/aad1.JPG)
 
 ## Step 1.  Grant Access Token Permissions
 
-Go to "Authentication" page from the left side menu and check the 2 check boxes which are "Access Tokens" and "ID Tokens" and click on Save button from the top.
+Go to "Authentication" page from the left side menu and check the check box which is "Access Tokens" click on Save button from the top.
 
-![Certifcates and secrets](../images/dashboard/azureAD/aad2.JPG)
+![Grant Access Token](../images/dashboard/azureAD/aad12.JPG)
 
 ## Step 2.  Certificates & secrets
 
 Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
 
-![API Permissions](../images/dashboard/azureAD/aad4.JPG)
+![Certificate and Secrets](../images/dashboard/azureAD/aad4.JPG)
 
 ## Step 3. Expose an API
 
