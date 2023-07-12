@@ -23,15 +23,16 @@ Step 2. Go to Certificates & secrets from the side menu and create a secret. Cli
 
 Step 3. Go to "API Permissions" from the left side menu and click on "Add a permission" button. Click on "Microsoft Graph" and click on "Delegated permissions" and search for Directory. Choose the Directory.Read.All and click on Add permissions button. Now click the "Grant admin consent for Codit" and it must turn as Granted the status of the new permission you added. 
 
-![Expose an API](../images/dashboard/azureAD/aad9.png)
+![Grant consent to delegated / admin permissions ](../images/dashboard/azureAD/aad8.JPG)
 
 Step 4. Go To "Expose an API", Add the application ID URI: as the api://{client-id or also known as the application-id}, this can be found in the "Overview" section. Click on "Add a scope"
 
-![Add Scope](../images/dashboard/azureAD/aad10.png)
+![Expose an API](../images/dashboard/azureAD/aad9.png)
+
 
 Step 5. Fill in the form with the above image infromation. "access_as_user" for each of the textboxes, once finished click on "Add scope"
 
-![Frant consent to delegated / admin permissions ](../images/dashboard/azureAD/aad8.JPG)
+![Add Scope](../images/dashboard/azureAD/aad10.png)
 
 Step 6. Back to "Azure Active Directory" and from the left side menu click on the "Enterprise Application" and search for the one you just created and click on it. Now from the left hand side, click on "Owners" and Add yourself or whoever you want to be the owner of the application.
 
