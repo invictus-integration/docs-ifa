@@ -23,7 +23,7 @@ First, go to "Azure Active Directory" and from the left side menu click on the "
 
 Go to "Authentication" page from the left side menu and check the check box which is "Access Tokens" click on Save button from the top.
 
-![Grant Access Token](../images/dashboard/azureAD/aad12.JPG)
+![Grant Access Token](../images/dashboard/azureAD/aad12.png)
 
 ## Step 2.  Certificates & secrets
 
@@ -95,11 +95,11 @@ Click on the Groups Icon which is located at the top middle menu:
 
 ![folder1](../images/dashboard/Groups/groupman_1.jpg)
 
-Click the Sync Groups Icon on the Global Groups page:
+Click the "Sync All Groups" on the Global Groups page:
 
 ![folder1](../images/dashboard/Groups/groupman_2.jpg)
 
-Once Synced, set the required groups as enabled to be used for permissions, and click the Save Enabled button:
+Once Synced, set the required groups as enabled to be used for permissions:
 
 ![folder1](../images/dashboard/Groups/groupman_3.jpg)
  
@@ -124,6 +124,7 @@ Click on the "Assign a group" button.
 ![folder1](../images/dashboard/Groups/groupman_7.jpg)
 
 An Assign Group Popup will show up:
+
 ![folder1](../images/dashboard/Groups/groupman_8.jpg)
 
 Choose the group from the first drop down menu. And choose the role you want the group users to have for that specific folder. You can see that you have 3 options:
