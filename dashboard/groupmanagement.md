@@ -10,43 +10,62 @@ To setup permissions for Azure Active Directory groups on Invictus, there are th
 
 ## Step 1: Setup App Registration on Microsoft Azure
 
-Create a new App Registration:
+First, go to "Azure Active Directory" and from the left side menu click on the "App Registrations" and click on the "New Registration" button on top of the page. 
 
-![aad1](../images/dashboard/aad_1.JPG)
+1. Enter a name for your app registration.
+2. Choose the "Accounts in any organizational directory (Any Azure AD directory - Multitenant)".
+3. Now for the "Redirect URI" enter links that you are going to use from where you are going to login from. Such as "https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login". This will ensure that from where you are loging is legit and no one can use your tenant id from another domain or so.
+4. Click on Register button.
 
-Register a new Application:
+![Register AAD](../images/dashboard/azureAD/aad1.JPG)
 
-![aad2](../images/dashboard/aad_2.JPG)
+## Step 1.  Grant Access Token Permissions
 
-Once registered, go to Authentication from the side menu and add these two new links and tick the checkboxes:- Access Tokens and ID Tokens and press save.
+Go to "Authentication" page from the left side menu and check the check box which is "Access Tokens" click on Save button from the top.
 
--	{url-to-app}/login?returnUrl=%2Fdashboard%2Fsettings
--	{url-to-app}/login?returnUrl=%2Fdashboard%2Foverview
+![Grant Access Token](../images/dashboard/azureAD/aad12.JPG)
 
-![aad3](../images/dashboard/aad_7.JPG)
+## Step 2.  Certificates & secrets
+
+Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
+
+![Certificate and Secrets](../images/dashboard/azureAD/aad4.JPG)
+
+## Step 3. Expose an API
+
+Go To "Expose an API", Add the application ID URI: as the api://{client-id or also known as the application-id}, this can be found in the "Overview" section. Click on "Add a scope"
+
+![Expose an API](../images/dashboard/azureAD/aad9.png)
+
+### Step 3.1. Add scopes
+
+Fill in the form with the above image infromation. "access_as_user" for each of the textboxes, once finished click on "Add scope"
+
+![Add Scope](../images/dashboard/azureAD/aad10.png)
+
+## Step 4. API permissions
 
 Go to API Permissions from the side menu and add all of these permissions and press the Grant admin consent for button.
 
 ![aad4](../images/dashboard/aad_3.JPG)
 
-Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
+### Step 4.1 API Permissions - Add Scope
 
-![aad5](../images/dashboard/aad_4.JPG)
+From the left hand side click again on "Add a permission" button. Click on "My APIs" and click on the app registration name that you have created currently. Choose "access_as_user" from the below permissions list and than click on "Add permissions"
 
-Now go to the manifest and change these:
+The below image is the result of above actions
 
-![aad6](../images/dashboard/aad_5.JPG)
-![aad7](../images/dashboard/aad_6.JPG)
+![Add Scope to API Permissions](../images/dashboard/azureAD/aad11.png)
 
-In the manifest add this wildcard like this:
+## Step 5. Enterprise application setup
 
-![aad8](../images/dashboard/aad_8.JPG)
+Go back to "Azure Active Directory" and from the left side menu click on the "Enterprise Application" and search for the one you just created and click on it. Now from the left hand side, click on "Owners" and Add yourself or whoever you want to be the owner of the application.
 
-Now go to Enterprise Applications and go to Owners. Add an owner which have all rights.
-
-![aad9](../images/dashboard/aad_9.JPG)
+![Add Ownership to enterprise application](../images/dashboard/azureAD/aad5.JPG)
 
 Go to users and groups and click on the Add user/group and add all the users that have access to login to the dashboard.
+
+# Group Management 
 
 ![aad10](../images/dashboard/aad_10.JPG)
 
@@ -72,21 +91,21 @@ Copy the secret key created and pass the credentials as arguments to the Deploy.
 
 **Note that an app registration should be created before assigning group permissions**
 
-Click on the Groups Icon on the top left:
+Click on the Groups Icon which is located at the top middle menu:
 
-![folder1](../images/dashboard/groupman_9.png)
+![folder1](../images/dashboard/Groups/groupman_1.jpg)
 
 Click the Sync Groups Icon on the Global Groups page:
 
-![folder1](../images/dashboard/groupman_10.png)
+![folder1](../images/dashboard/Groups/groupman_2.jpg)
 
 Once Synced, set the required groups as enabled to be used for permissions, and click the Save Enabled button:
 
-![folder1](../images/dashboard/groupman_11.png)
+![folder1](../images/dashboard/Groups/groupman_3.jpg)
  
 To add global roles to the groups, click the edit buttons and set the required role:
 
-![folder1](../images/dashboard/groupman_12.png)
+![folder1](../images/dashboard/Groups/groupman_4.jpg)
 
 ## Step 4: Assign Groups to Folders
 
@@ -94,18 +113,18 @@ To add global roles to the groups, click the edit buttons and set the required r
 
 Click on the 3 dots next to the folder name:
 
-![folder1](../images/dashboard/groupman_13.png)
+![folder1](../images/dashboard/Groups/groupman_5.jpg)
 
-Several options will pop-up. Click on the 'Manage permissions' link:
+Several options will pop-up. Click on the 'Edit Folder Permissions' link:
 
-![folder1](../images/dashboard/groupman_14.png)
+![folder1](../images/dashboard/Groups/groupman_6.jpg)
 
-Click on the "Add Groups" button.
+Click on the "Assign a group" button.
 
-![folder1](../images/dashboard/groupman_15.png)
+![folder1](../images/dashboard/Groups/groupman_7.jpg)
 
 An Assign Group Popup will show up:
-![folder1](../images/dashboard/groupman_16.png)
+![folder1](../images/dashboard/Groups/groupman_8.jpg)
 
 Choose the group from the first drop down menu. And choose the role you want the group users to have for that specific folder. You can see that you have 3 options:
 - Folder Admin
@@ -118,4 +137,4 @@ Choose the group from the first drop down menu. And choose the role you want the
 
 **Reader** can see messages from flows in specific folder, see flows from specific folder, see flow statistics.
 
-![folder1](../images/dashboard/groupman_17.png)
+![folder1](../images/dashboard/Groups/groupman_9.jpg)
