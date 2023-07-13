@@ -75,9 +75,9 @@ To Add Group Management APi Permissions follow these steps:
 
 N.B - Some of the permissions requires Admin consent, this requires an admin privileged user to grant permissions.
 
-   ![API Permissions](../images/dashboard/aad_3.JPG)
+![API Permissions](../images/dashboard/aad_3.JPG)
 
-### Step 4: API Permissions - Sending Mail Notifications for forgot password
+### API Permissions - Sending Mail Notifications for forgot password
 
 1. Go to **API Permissions** from the left side menu.
 2. Click the **Add a permission** button.
@@ -88,7 +88,9 @@ N.B - Some of the permissions requires Admin consent, this requires an admin pri
 
 N.B - This permission requires Admin consent, this requires an admin privileged user to grant permissions.
 
-### Step 4.1: API Permissions - Add Scope
+![API Permissions](../images/dashboard/azureAD/aad13.jpg)
+
+### API Permissions - Add Scope
 
 Click **Add a permission** again.
 1. Select **My APIs**.
