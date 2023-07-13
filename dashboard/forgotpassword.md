@@ -10,13 +10,14 @@ To set up the Azure Active Directory application registration with the Mail.Send
 
 ## Setup Email Address as the Sender
 
-![forgotpassword](../images/dashboard/forgotpassword5.JPG)
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
 
 To set up the email address as the sender, follow these steps:
 
 1. Log in with an administrator account or any user with the role of System Admin.
-2. Navigate to the settings page by clicking the controls button shown above.
+2. Navigate to the settings page by clicking the controls located at the top right next to the account name.
 3. In the **Forgot Password Settings** section, enter the email address you want to use.
+4. Click on **Save password settings** to save the email address being used.
 
 ## Forgot Your Password
 
