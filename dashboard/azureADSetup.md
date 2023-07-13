@@ -61,7 +61,32 @@ To manage API permissions, follow these steps:
 5. Click **Add permissions**.
 6. Click **Grant admin consent for Codit**. The status of the new permission should change to **Granted**.
 
-   ![Grant consent to delegated / admin permissions](../images/dashboard/azureAD/aad8.JPG)
+![Grant consent to delegated / admin permissions](../images/dashboard/azureAD/aad8.JPG)
+
+### Step 4: API Permissions - Group Management 
+
+To Add Group Management APi Permissions follow these steps:
+
+1. Go to **API Permissions** from the left side menu.
+2. Click the **Add a permission** button.
+3. For each of the permissions listed, insert the name in search box and the permission will be displayed. Click on the permission to add.
+4. Click **Add permissions**.
+5. Click **Grant admin consent for Codit**. The status of the new permission should change to **Granted**.
+
+N.B - Some of the permissions requires Admin consent, this requires an admin privileged user to grant permissions.
+
+   ![API Permissions](../images/dashboard/aad_3.JPG)
+
+### Step 4: API Permissions - Sending Mail Notifications for forgot password
+
+1. Go to **API Permissions** from the left side menu.
+2. Click the **Add a permission** button.
+3. Select **Microsoft Graph** and choose **Application permissions**.
+4. Search for **Mail** and choose **Mail.Send**.
+5. Click **Add permissions**.
+6. Click **Grant admin consent for Codit**. The status of the new permission should change to **Granted**.
+
+N.B - This permission requires Admin consent, this requires an admin privileged user to grant permissions.
 
 ### Step 4.1: API Permissions - Add Scope
 
