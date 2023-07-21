@@ -122,7 +122,6 @@ The below table lists the parameters accepted by the ARM template.
 |devOpsObjectId|Yes||The object-id associated with the service principal that's connected to the service connection on DevOps|
 |apiKey1|No|Generated value|The value used for basic authentication for the APIs|
 |apiKey2|No|Generated value|The value used for basic authentication for the APIs|
-|sqlServerName|No|invictus-{resourcePrefix}-sqlsvr|The name for the SQL Server that will be migrated to Cosmos DB|
 |invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
 |cosmosAccountName|No|invictus-{resourcePrefix}-cosmos-serverless or invictus-{resourcePrefix}-cosmos-provisoned|Name for Cosmos account|
 |cosmosDatabaseName|No|InvictusDashboard|Name for Cosmos database|
