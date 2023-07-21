@@ -40,7 +40,7 @@ Now that you have the necessary credentials, follow the steps below to log in to
 
 3. After successfully logging in, you will be prompted to reset your password to one of your choice.
 
-   ![dashboard reset password](../images/dashboard/AdminAccount/adminAccount-5.jpg)
+   ![dashboard reset password](../images/dashboard/AdminAccount/adminAccount-5.png)
 
 4. Congratulations! You can now continue using the system with your new password.
 
