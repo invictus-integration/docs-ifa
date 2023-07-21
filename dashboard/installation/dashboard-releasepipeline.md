@@ -106,7 +106,42 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 
 ## Provisoned Throughput vs Serverless Cosmos DB
 
-[DETAILS HERE]
+**Provisioned Throughput**: You specify a fixed amount of resources (RU/s) for your database, ensuring predictable performance. Best for steady workloads.
+
+**Serverless**: Capacity scales automatically based on actual usage, paying only for resources used per request. Cost-effective for variable traffic (high / low usage) and infrequently accessed data.
+
+## When to use Provisioned Throughput vs Serverless Cosmos DB
+
+
+### Serverless in Production
+
+- Cost-Efficiency for Variable Workloads: Suitable for applications with varying traffic patterns, automatically scaling down during periods of low activity to save costs.
+- Seasonal or Sporadic Traffic: Ideal for applications subject to seasonal fluctuations or occasional bursts of traffic.
+- Agile and Scalable: Enables quick adaptation to changing demands, auto-scaling based on real-time usage.
+
+### Provisioned Throughput in Production
+
+- Predictable and Stable Workloads: Ensures consistent and reliable performance for applications with steady traffic.
+- Guaranteed Performance: Provides dedicated resources for meeting strict performance requirements.
+- Mission-Critical Applications: Suitable for critical production systems where performance and stability are paramount.
+- SLA Compliance: Better choice for meeting specific Service Level Agreement (SLA) commitments.
+- Resource-Intensive Applications: Offers necessary resources to handle heavy read and write operations or complex queries.
+
+Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
+
+**Default Settings for Provisioned Throughput**
+
+| Collection    | RU/s          | Autoscale  |
+| ------------- | ------------- | ---------- |
+|Audits|500|No|
+|DashboardSettings|500|No|
+|Users|500|No|
+|Groups|500|No|
+|Statistics|500|No|
+|FolderFlows|500|No|
+|FlowData| 2000|Yes|
+|WorkflowEvent|2000|Yes|
+
 
 ## ARM Template Parameters
 
