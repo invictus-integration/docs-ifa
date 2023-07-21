@@ -115,17 +115,16 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 
 ### Serverless in Production
 
-- Cost-Efficiency for Variable Workloads: Suitable for applications with varying traffic patterns, automatically scaling down during periods of low activity to save costs.
-- Seasonal or Sporadic Traffic: Ideal for applications subject to seasonal fluctuations or occasional bursts of traffic.
-- Agile and Scalable: Enables quick adaptation to changing demands, auto-scaling based on real-time usage.
+- Cost-Efficiency for Variable Workloads: Suitable for scenarios with varying input volume loads, automatically scaling down during periods of low activity to optimize cost.
+- Sporadic Traffic: Ideal for situations where the volume fluctuates or experiences occasional bursts of traffic, such as higher volume during specific hours and lower volume at other times.
+- Agile and Scalable: Collections are auto-scaled, with FlowData and WorkFlowEvents being the most affected collections when data is inserted.
 
 ### Provisioned Throughput in Production
 
-- Predictable and Stable Workloads: Ensures consistent and reliable performance for applications with steady traffic.
-- Guaranteed Performance: Provides dedicated resources for meeting strict performance requirements.
-- Mission-Critical Applications: Suitable for critical production systems where performance and stability are paramount.
-- SLA Compliance: Better choice for meeting specific Service Level Agreement (SLA) commitments.
-- Resource-Intensive Applications: Offers necessary resources to handle heavy read and write operations or complex queries.
+- Fixed RU/s Allocation: Collections are allocated a defined RU/s, requiring consistent usage to make the most of the provisioned capacity.
+- Adjustable RU/s for High Volume Processing: RU/s can be increased to accommodate very high volume processing requirements, ensuring optimal performance.
+- Predictable Costs: Costs are fixed based on the allocated RU/s. However, for FlowData and WorkFlowEvents, since they are set to autoscale, there is a minimum and maximum price based on usage.
+
 
 Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
 
