@@ -2,7 +2,7 @@
 
 # Administrator Account Setup Guide
 
-Welcome, administrators! This guide is intended for those who are logging in for the first time on a new fresh installation of the system using this version.
+Welcome, administrators! This guide is intended for those who are logging in for the first time on a new fresh installation of the system using this version.Please note that this guide is not applicable to administrators who are migrating from version 1 to version 2.
 
 ## Administrator Account Credentials
 
