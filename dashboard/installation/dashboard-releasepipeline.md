@@ -82,10 +82,15 @@ Use the following arguments for the fields of the azure powershell task:
   - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
+  - AzureActiveDirectoryClientId (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup) 
+  - AzureActiveDirectoryTenantId (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup) 
+  - AzureActiveDirectoryClientSecret (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup) 
+  - AzureActiveDirectoryAudience (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup)
+  - PerformSqlDataMigration (mandatory): If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](https://invictus-integration.github.io/docs-ifa/#/dashboard/installation/dashboard-migration) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
+  - isProvisionedCosmos (optional): If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
-  - Pass the following argument if you wish to enable statistics in the dashboard: **-enableStatisticsFunction "true"**
-- **Azure PowerShell Version**: Specify other version : **2.6.0**
-- Under the Advanced section enable: **Use Powershell Core**. Without this option the deployment will fail.
+- **Azure PowerShell Version**: Latest installed version
+- Under the Advanced section: Ensure that **Use Powershell Core** is **disabled**.
 
 **NOTE:** When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
 
@@ -96,28 +101,12 @@ The AdditionalTemplateParameters argument are named arguments you can use to ove
 Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
 
 ```powershell
--ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
+-ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) -PerformSqlDataMigration 0 -isProvisionedCosmos 0 -AzureActiveDirectoryClientId "[YOUR_CLIENT_ID_HERE]" -AzureActiveDirectoryTenantId "[YOUR_TENANT_ID_HERE]" -AzureActiveDirectoryClientSecret "[YOUR_SECRET_HERE]" -AzureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]"
 ```
 
-A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+## Provisoned Throughput vs Serverless Cosmos DB
 
-## Azure Active Directory
-
-If you are planning to enable AAD for the dashboard you will need to set the following parameters as **arguments**:
-
-* AzureActiveDirectoryClientId
-* AzureActiveDirectoryTenantId
-* AzureActiveDirectoryClientSecret
-
-The option to login with AAD in the dashboard will only be possible if the above values are supplied.
-
-## Enable Sql Serverless
-
-To deploy the Dashboard database(coditcip) as Sql Servleress simply pass the value for the following parameter `isDashboardDatabaseServerless` as 1. The following parameters can be passed to the deployment but have default values set.
-
-* dashboardServerlessDatabaseMaxVCores
-* dashboardServerlessDatabaseSize
-* dashboardServerlessDatabaseaAutoPauseDelay
+[DETAILS HERE]
 
 ## ARM Template Parameters
 
@@ -126,13 +115,19 @@ The below table lists the parameters accepted by the ARM template.
 |Parameter Name|Required|Default Value|Description|
 | --- | :---: | --- | --- |
 |resourcePrefix|Yes||used as part of the default names for most resources.|
+|azureActiveDirectoryClientId|Yes|&nbsp;|Client AAD ID required to enable AAD for dashboard|
+|azureActiveDirectoryTenantId|Yes|&nbsp;|Tenant AAD ID required to enable AAD for dashboard|
+|azureActiveDirectoryClientSecret|Yes||&nbsp;|Required for AD Login|
+|AzureActiveDirectoryAudience|Yes||&nbsp;|Required for AD Login|
+|devOpsObjectId|Yes||The object-id associated with the service principal that's connected to the service connection on DevOps|
 |apiKey1|No|Generated value|The value used for basic authentication for the APIs|
 |apiKey2|No|Generated value|The value used for basic authentication for the APIs|
-|sqlServerName|No|invictus-{resourcePrefix}-sqlsvr|The name for the SQL Server that will host the databases|
-|sqlServerLogin|No|InvictusFrameworkAdmin|The default username set for SQL Server|
-|sqlServerLoginPassword|No|Generated value|The password that will be set to login into SQL Server|
-|dashboardDatabaseName|No|coditcip|The name of the Database used by the Dashboard|
-|invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard|Name for the dashboard web application|
+|sqlServerName|No|invictus-{resourcePrefix}-sqlsvr|The name for the SQL Server that will be migrated to Cosmos DB|
+|invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
+|cosmosAccountName|No|invictus-{resourcePrefix}-cosmos-serverless or invictus-{resourcePrefix}-cosmos-provisoned|Name for Cosmos account|
+|cosmosDatabaseName|No|InvictusDashboard|Name for Cosmos database|
+|isProvisionedCosmos|No|0|isProvisionedCosmos true or false|
+|JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
@@ -147,9 +142,6 @@ The below table lists the parameters accepted by the ARM template.
 |minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
 |maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
 |consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for ImportJob|
-|dashboardDbSkuName|No|S1|The SKU name of the CoditCip DB|
-|dashboardDbSkuTier|No|Standard|The Tier name for the CoditCip DB|
-|dashboardDbMaxSizeBytes|No|268435456000|Default size of CoditCip DB when created|
 |eventHubSkuName|No|Basic|The SKU name of the EventHub Namespace|
 |eventHubSkuTier|No|Basic|The Tier name for the EventHub Namespace|
 |eventHubSkuCapacity|No|1|The SKU capacity for the EventHub Namespace|
@@ -178,6 +170,8 @@ The below table lists the parameters accepted by the ARM template.
 |invictusFlowHandlerFunctionName|No|invictus-{resourcePrefix}-flowhandlerjob|Name for Azure Function|
 |invictusGenericReceiverFunctionName|No|invictus-{resourcePrefix}-genericreceiver|Name for Azure Function|
 |invictusHttpReceiverFunctionName|No|invictus-{resourcePrefix}-httpreceiver|Name for Azure Function|
+|invictusDashboardGatewayFunctionName|No|invictus-{resourcePrefix}-dashboardgateway|Name for Azure Function|
+|invictusDatabaseManagerFunctionName|No|invictus-{resourcePrefix}-database-storeimportjob|Name for Azure Function|
 |workflowEventHubName|No|invictus-{resourcePrefix}-workflow-evhb|EventHub name for the import job|
 |genericEventHubName|No|invictus-{resourcePrefix}-genericreceiver-evhb|EventHub name for the import job|
 |workFlowCleanupJobIntervalInMinutes|No|180|Interval in minutes for the workflowevent cleanup job|
@@ -189,7 +183,6 @@ The below table lists the parameters accepted by the ARM template.
 |dataCleanupMaxRetentionDays|No|90|Nr of days to keep the data|
 |dataCleanupMaxProcessingRows|No|5000|Maximum nr of rows to cleanup|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
-|devOpsObjectId|Yes||The object-id associated with the service principal that's connected to the service connection on DevOps|
 |logicAppsImportJobErrorFilters|No|actionfailed|error filter for the import job|
 |enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
 |vnetName|No|&nbsp;|The name of the VNET on Azure|
@@ -199,13 +192,6 @@ The below table lists the parameters accepted by the ARM template.
 |keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|sqlServerSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|azureActiveDirectoryClientId|No|&nbsp;|Client AAD ID required to enable AAD for dashboard|
-|azureActiveDirectoryTenantId|No|&nbsp;|Tenant AAD ID required to enable AAD for dashboard|
-|isDashboardDatabaseServerless|No|0|If set to 1 the dashboard database, coditcip is deployed as serverless|
-|dashboardServerlessDatabaseSize|No|21474836480|Size in bytes for Dashboard Serverless database|
-|dashboardServerlessDatabaseMaxVCores|No|1|Number of max cores allowed for the Dashboard Serverless database|
-|dashboardServerlessDatabaseaAutoPauseDelay|No|1440|The timeout before the database goes dormant in minutes|
 |invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
 |use32BitWorkerProcess |No|false|If set to true, webapps are deployed as 32bit|
-|azureActiveDirectoryClientSecret|No|false|Required for AD Login|
+
