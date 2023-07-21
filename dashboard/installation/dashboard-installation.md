@@ -20,4 +20,4 @@ Follow [this guide](dashboard-releasepipeline.md) to setup your release in Azure
 
 ## Migration Guide
 
-If you're migrating from a version previous to version 4.7.0 you might find our [migration guide](dashboard-migration.md) helpful.
+If you're migrating from Invictus V1 to Invictus V2 and wish to migrate your SQL data, please follow the [migration guide](dashboard-migration.md).
