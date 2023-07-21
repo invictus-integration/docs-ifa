@@ -1,35 +1,45 @@
-[home](../README.md) | [dashboard](dashboard.md) | [ForgotPassword](forgotpassword.md)
+[Home](../README.md) | [Dashboard](dashboard.md) | [Forgot Password](forgotpassword.md)
 
 # Forgot Password
 
-**Before you can use the forgot password, you need to create an email address with an open permission to apps. Like for example gmail, you can set it on for any app to use the account you are creating for the forgot password. This will give Invictus Dashboard access to use the email as a "sender" email.**
+Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and set it up with the Mail.Send API permissions. This is required because emails can only be sent through an OAuth 2.0 flow. Previously, emails were sent using an SMTP client with a username, password, and SMTP connection. However, Microsoft and Google no longer allow this and are deprecating this service.
 
-**When you create your email address you need to set it up in the dashboard.**
+Please note that the permission granted allows any email address within the organization to be used as the sender.
 
-## Setting up the email details
+To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](azureADSetup.md).
 
-First you need a system admin account to login in the dashboard and from the settings page you can find a new form with the details you need to fill in.
+## Setup Email Address as the Sender
 
-![forgotpassword](../images/dashboard/forgotpassword5.JPG)
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
 
-In here, you need to enter the host for example "smpt.gmail.com" if it's for a gmail email account. The port number, which by default is 587. The email api key and password api key is the key of the keyvault from which you need to retrieve the email address and password of the forgot password email you are going to send from. The last thing is if it's ssl enabled or not. It's better to use enable ssl as the major email providers need this as to be checked. You can proceed by clicking the save button and you are done.
+To set up the email address as the sender, follow these steps:
 
-## Forgot your password
+1. Log in with an administrator account or any user with the role of System Admin.
+2. Navigate to the settings page by clicking the controls located at the top right next to the account name.
+3. In the **Forgot Password Settings** section, enter the email address you want to use.
+4. Click on **Save password settings** to save the email address being used.
 
-If for some reason you forgot your password for Invictus Dashboard, you can click on the Forgot Password link in the login dialog.
+## Forgot Your Password
 
-![forgotpassword](../images/dashboard/forgotpassword1.JPG)
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_1.jpg)
 
-You will be taken to the forgot password page. Enter your email address that you registered with.
+To reset your password, follow these steps:
 
-![forgotpassword](../images/dashboard/forgotpassword2.JPG)
+1. Click on **Forgot Password?** to initiate the password reset process.
+2. The form will be displayed, and you need to enter the email address associated with your account.
 
-An email will be sent to you. The email is sent to the email that you registered with. Click on the button - Reset Password from the email.
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_2.jpg)
 
-![forgotpassword](../images/dashboard/forgotpassword3.JPG)
+3. After submitting the form, a confirmation message will be displayed, indicating that the reset password request has been sent to the provided email address.
 
-A new page is opened where you can enter your new password. Enter your password and confirm password and you will be taken to the login page after few seconds.
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_3.jpg)
 
-![forgotpassword](../images/dashboard/forgotpassword4.JPG)
+4. Access your email inbox and look for the email containing the reset password instructions. The email will have a template like the one shown below.
 
-You can login normally now.
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_4.jpg)
+
+5. In the email content, click on the **here** hyperlink. You will be redirected to the reset password form, where you can enter your new password.
+
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_5.jpg)
+
+6. Once you have successfully entered your new password, you can proceed to log in with the newly registered password.
