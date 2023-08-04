@@ -88,6 +88,7 @@ Use the following arguments for the fields of the azure powershell task:
   - AzureActiveDirectoryAudience (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup)
   - PerformSqlDataMigration (mandatory): If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](https://invictus-integration.github.io/docs-ifa/#/dashboard/installation/dashboard-migration) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
   - isProvisionedCosmos (optional): If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
+  - isAdDisabled (optional): If the value is 1, the option to log into the dashboard with AAD will be removed.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
 - **Azure PowerShell Version**: Latest installed version
 - Under the Advanced section: Ensure that **Use Powershell Core** is **disabled**.
@@ -160,6 +161,7 @@ The below table lists the parameters accepted by the ARM template.
 |cosmosAccountName|No|invictus-{resourcePrefix}-cosmos-serverless or invictus-{resourcePrefix}-cosmos-provisoned|Name for Cosmos account|
 |cosmosDatabaseName|No|InvictusDashboard|Name for Cosmos database|
 |isProvisionedCosmos|No|0|isProvisionedCosmos true or false|
+|isAdDisabled|No|0|isAdDisabled true or false|
 |JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
