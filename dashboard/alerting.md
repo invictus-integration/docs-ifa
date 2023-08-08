@@ -2,26 +2,9 @@
 
 # Alerting
 
+For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](accesscontrolrights.md) for more info.
 
-**It is required to allocate the flowhandler as "Monitoring Contributor" from the Access control (IAM) section for the Invictus resource group**
-
-To do this, goto the flowhandlerjob function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changes. Alternatively, the following ARM template can be used:
-```
-{
-  "type": "Microsoft.Authorization/roleAssignments",
-  "apiVersion": "2020-04-01-preview",
-  // Fixed GUID to make it idempotent
-  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobMonitoringContribute')]",
-  "properties": {
-    "description": "The Invictus FlowHandlerJob needs Monitoring Contribute permissions on the VMI invictus resource group to allow alert rules.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
-    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
-  },
-  "dependsOn": []
-}
-```
-
-**Please note that:**
+## Note
 
 - When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule.
 - The Alerting section will only be visible when editing a flow. This section will not be visible during the creation of a new flow.
