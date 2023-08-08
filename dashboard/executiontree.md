@@ -21,38 +21,9 @@ The Milestone and EventText are properties set and displayed by default. For the
 
 ### Message Content View
 
+For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](accesscontrolrights.md) for more info.
+
 The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the workflow events table. 
-
-**Both the DashboardGateway and FlowHandlerJob function needs Logic Apps Contributor rights on the resource group where the logic app is located.**
-
-To do this, goto the DashboardGateway Function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changes. Repeat this step for the FlowHandler function.
-Alternatively, the following template can be used:
-```
-{
-  "type": "Microsoft.Authorization/roleAssignments",
-  "apiVersion": "2020-04-01-preview",
-  // Fixed GUID to make it idempotent
-  "name": "[guid(subscription().subscriptionId, 'DashboardGatewayContribute')]",
-  "properties": {
-    "description": "The Invictus DashboardGateway needs Contribute permissions on the Logic App resource group to display the contents of the message.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-dashboardgateway')), '2021-01-15', 'full').identity.principalId]"
-  },
-  "dependsOn": []
-},
-{
-  "type": "Microsoft.Authorization/roleAssignments",
-  "apiVersion": "2020-04-01-preview",
-  // Fixed GUID to make it idempotent
-  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobContribute')]",
-  "properties": {
-    "description": "The Invictus FlowHandler needs Contribute permissions on the Logic App resource group to display the contents of the message.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
-  },
-  "dependsOn": []
-}
-```
 
 ![execution tree](../images/v2_events3.png)
 
