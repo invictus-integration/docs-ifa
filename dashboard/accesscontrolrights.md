@@ -2,11 +2,19 @@
 
 Various role assignments are required to be added to the below components for better harmonization within Invictus framework.
 
-### Flow Handler & Dashboard Gateway Functions
+## Flow Handler & Dashboard Gateway Functions
 
-- In the DashboardGateway function add the FlowHandlerJob with **Contributor** rights.
+### 1. Add FlowHandlerJob with **Contributor** rights to Dashboard Gateway.
 
-**Both the DashboardGateway and FlowHandlerJob functions need Logic Apps Contributor rights on the resource group where the logic apps are located.**
+To do this, follow these steps:
+
+1. Go to the DashboardGateway Function App and select Access control (IAM).
+2. Click on "+Add" and then "Add role assignment".
+3. Search for the **Contributor** role in the **Privileged administrator roles** section and click next.
+4. Assign access to **Managed Identity**. Select the FlowHandlerJob Function App when choosing the member.
+5. Save your changes
+   
+### 2. Setting "Logic Apps Contributor" rights for DashboardGateway and FlowHandlerJob functions on the resource group where the logic apps are located.
 
 To do this, follow these steps:
 
@@ -43,8 +51,7 @@ Alternatively, the following ARM template can be used:
   "dependsOn": []
 }
 ```
-
-**It is required to allocate the FlowHandler as "Monitoring Contributor" from the Access control (IAM) section for the Invictus resource group.**
+### 3. Setting "Monitoring Contributor" rights for the FlowHandlerJob function for the Invictus resource group.
 
 To do this, follow these steps:
 
