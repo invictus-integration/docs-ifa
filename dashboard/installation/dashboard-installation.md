@@ -21,3 +21,7 @@ Follow [this guide](dashboard-releasepipeline.md) to setup your release in Azure
 ## Migration Guide
 
 If you're migrating from Invictus V1 to Invictus V2 and wish to migrate your SQL data, please follow the [migration guide](dashboard-migration.md).
+
+## Access Control Setup
+
+Some Invictus components require various role assignments to function properly. Follow [this guide](../accesscontrolrights.md) for more info.
