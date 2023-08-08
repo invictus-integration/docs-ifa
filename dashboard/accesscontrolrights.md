@@ -1,0 +1,70 @@
+## Access Control Rights
+
+Various role assignments are required to be added to the below components for better harmonization within Invictus framework.
+
+### Flow Handler & Dashboard Gateway Functions
+
+- In the DashboardGateway function add the FlowHandlerJob with **Contributor** rights.
+
+**Both the DashboardGateway and FlowHandlerJob functions need Logic Apps Contributor rights on the resource group where the logic apps are located.**
+
+To do this, follow these steps:
+
+1. Go to the DashboardGateway Function App and select Identity.
+2. Click on "Azure role assignments" and then "Add role assignment".
+3. Assign the scope (subscription or resource group where logic apps are located) and set the role to **Logic App Contributor**.
+4. Repeat this step for the FlowHandler function.
+
+Alternatively, the following ARM template can be used:
+
+```json
+{
+  "type": "Microsoft.Authorization/roleAssignments",
+  "apiVersion": "2020-04-01-preview",
+  // Fixed GUID to make it idempotent
+  "name": "[guid(subscription().subscriptionId, 'DashboardGatewayContribute')]",
+  "properties": {
+    "description": "The Invictus DashboardGateway needs Contribute permissions on the Logic App resource group to display the contents of the message.",
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-dashboardgateway')), '2021-01-15', 'full').identity.principalId]"
+  },
+  "dependsOn": []
+},
+{
+  "type": "Microsoft.Authorization/roleAssignments",
+  "apiVersion": "2020-04-01-preview",
+  // Fixed GUID to make it idempotent
+  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobContribute')]",
+  "properties": {
+    "description": "The Invictus FlowHandler needs Contribute permissions on the Logic App resource group to display the contents of the message.",
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
+  },
+  "dependsOn": []
+}
+```
+
+**It is required to allocate the FlowHandler as "Monitoring Contributor" from the Access control (IAM) section for the Invictus resource group.**
+
+To do this, follow these steps:
+
+1. Go to the FlowHandlerJob Function App and select Identity.
+2. Click on "Azure role assignments" and then "Add role assignment".
+3. Assign the scope (subscription or resource group for the Invictus resource group) and set the role to **Monitoring Contributor**.
+
+Alternatively, the following ARM template can be used:
+
+```json
+{
+  "type": "Microsoft.Authorization/roleAssignments",
+  "apiVersion": "2020-04-01-preview",
+  // Fixed GUID to make it idempotent
+  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobMonitoringContribute')]",
+  "properties": {
+    "description": "The Invictus FlowHandlerJob needs Monitoring Contribute permissions on the VMI invictus resource group to allow alert rules.",
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
+  },
+  "dependsOn": []
+}
+```
