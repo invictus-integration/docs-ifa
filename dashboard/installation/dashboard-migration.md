@@ -4,6 +4,10 @@
 
 Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow data will **not** be migrated.
 
+## Build Pipeline Changes
+
+You will need to request a new SAS token in order to access the new V2 artifacts. Include this new SAS token in your build pipeline as described [here.](dashboard-buildpipeline.md)
+
 ## Release Pipeline Changes
 
 The data migration process forms part of the release pipeline. Please refer to [release pipeline](dashboard-releasepipeline.md) for more information. The deploy script parameter `PerformSqlDataMigration` must be set to `1`. The deploy script also accepts a few optional parameters to be able to connect to your SQL database:
