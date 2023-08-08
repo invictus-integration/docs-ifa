@@ -2,7 +2,7 @@
 
 # Administrator Account Setup Guide
 
-Welcome, administrators! This guide is intended for those who are logging in for the first time on a new fresh installation of the system using this version.Please note that this guide is not applicable to administrators who are migrating from version 1 to version 2.
+Welcome, administrators! This guide is intended for those who are logging in for the first time on a new fresh installation of the system using this version. Please note that this guide is not applicable to administrators who are migrating from Invictus V1 to Invictus V2 as you will be able to log in with you old credentials.
 
 ## Administrator Account Credentials
 
