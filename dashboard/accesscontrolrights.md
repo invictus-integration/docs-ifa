@@ -1,6 +1,6 @@
-## Access Control Rights
+# Access Control Rights
 
-Various role assignments are required to be added to the below components for better harmonization within Invictus framework.
+Some role assignments need to be added to a few Invictus components so that certain features function correctly.
 
 ## Flow Handler & Dashboard Gateway Functions
 
