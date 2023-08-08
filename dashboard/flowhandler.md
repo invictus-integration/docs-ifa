@@ -6,9 +6,7 @@ The FlowHandlerJob's main purpose it to listen on Servicebus for any Resubmit/Re
 
 ## Access Control Setup
 
-It is required to add the FlowHandlerJob as a **Logic Apps Contributor** to the subscription/resource group where the Logic Apps are located. The reason for this step is because the FlowHandlerJob uses MSI authentication which needs access rights to the LogicApps it Resubmits. 
-
-The FlowHandlerJob function also needs to be given **Contributor** rights to be accessed by the DashboardGateway function.
+For this function to work properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](accesscontrolrights.md) for more info.
 
 ## Resubmit
 
