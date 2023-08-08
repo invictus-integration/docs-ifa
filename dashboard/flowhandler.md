@@ -4,7 +4,11 @@
 
 The FlowHandlerJob's main purpose it to listen on Servicebus for any Resubmit/Resume/Ignore requests. The request can be triggered through the dashboard, either for a single message or in bulk.
 
-Please note that after installing the packages that include the FlowHandlerJob or if you are installing for the first time, it is required to add the FlowHandlerJob as a Logic Apps Contributor to the subscription/resource group where the Logic Apps are located. The reason for this step is because the FlowHandlerJob uses MSI authentication which needs access rights to the LogicApps it Resubmits.
+## Access Control Setup
+
+It is required to add the FlowHandlerJob as a **Logic Apps Contributor** to the subscription/resource group where the Logic Apps are located. The reason for this step is because the FlowHandlerJob uses MSI authentication which needs access rights to the LogicApps it Resubmits. 
+
+The FlowHandlerJob function also needs to be given **Contributor** rights to be accessed by the DashboardGateway function.
 
 ## Resubmit
 
