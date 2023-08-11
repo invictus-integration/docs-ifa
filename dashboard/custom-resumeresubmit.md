@@ -42,12 +42,6 @@ In this dialog, click the `Add Header` button to enter the HTTP headers. A heade
 
 ![Advanced settings headers dialog inputted header](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header.png)
 
-Here is an example of what is being sent when clicking the ![Advanced settings test url button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-button.png) button. Let's use the custom resubmit URL and Resubmit HTTP Headers as above. Clicking this button simply will send a `POST` request with no body to the URL, alongside the custom headers as specified.
-
-![Custom resume resubmit test url example request](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-example-request.png)
-
-All this applies to the Custom Resume as well.
-
 Once comfortable with the changes, do not forget to fill in the necessary inputs in the page and Save the flow.
 
 ## Resubmitting/Resuming a flow
