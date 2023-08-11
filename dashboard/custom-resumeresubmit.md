@@ -105,5 +105,3 @@ A `POST` request will be sent to the configured custom resubmit URL, with a body
   }
 ]
 ```
-
-The same applies for Resume, but the Resume button should be clicked on the flow actions for a flow run instead of Resubmit.
