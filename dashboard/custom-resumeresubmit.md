@@ -18,15 +18,15 @@ Clicking these buttons will redirect you to the create/edit flow page as per bel
 
 ![Create/Edit Flow example](../images/v2_custom-resumeresubmit-flowscreen.png)
 
-We will focus on the 'Advanced Settings' part of the screen, located on the right side of the page. To enable custom resume and resubmit for a flow, simply click the radio buttons of 'Custom resubmit URL' and 'Custom resume URL' respectively:
+We will focus on the `Advanced Settings` part of the screen, located on the right side of the page. To enable custom resume and resubmit for a flow, simply click the radio buttons of `Custom resubmit URL` and `Custom resume URL` respectively:
 
 ![Advanced Settings radio buttons](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings.png)
 
-Once enabled, the 'Resubmit URL (HTTPS)' and 'Resume URL (HTTPS)' input fields become editable. One may enter a URL in one of the fields to set a Resubmit/Resume URL. The ![Advanced settings test url button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-button.png) button can be clicked in order to test the inputted URL:
+Once enabled, the `Resubmit URL (HTTPS)` and `Resume URL (HTTPS)` input fields become editable. Enter a URL in one of the fields to set a Resubmit/Resume URL. The ![Advanced settings test url button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-button.png) button can be clicked in order to test the entered URL:
 
 ![Advanced settings test url button demo](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl.png)
 
-Clicking this button will test the URL to see if it is reachable. The URL needs to be an HTTPS URL. A toast will be displayed on screen to indicate if the URL fails or is successful.
+Clicking this button will test the URL to see if it is reachable. The URL needs to be an HTTPS URL. A message will be displayed on screen to indicate if the test failed or was successful.
 
 ![Advanced settings test url failure](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-failure.png)
 
