@@ -32,13 +32,13 @@ Clicking this button will test the URL to see if it is reachable. The URL needs 
 
 ![Advanced settings test url success](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
 
-You may need to have to use custom HTTP Headers when making the custom resubmit/resume request. To edit the HTTP headers, click the ![Advanced settings headers button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-button.png) to open the HTTP headers dialog box.
+You may need to use custom HTTP Headers when making the custom resubmit/resume request. To edit the HTTP headers, click the ![Advanced settings headers button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-button.png) button to open the HTTP headers dialog box.
 
 ![Advanced settings headers button demo](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers.png)
 
 ![Advanced settings headers dialog](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog.png)
 
-In this dialog, click the 'Add Header' button to enter the HTTP headers. A header consists of a key and a value. Click the ![Advanced settings headers dialog inputted header delete button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header-delete-icon.png) to delete a header. Click the 'Save Headers' button to save the headers. Duplicate keys will automatically be removed when this button is clicked.
+In this dialog, click the `Add Header` button to enter the HTTP headers. A header consists of a key and a value. Click the ![Advanced settings headers dialog inputted header delete button](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header-delete-icon.png) button to delete a header. Click the `Save Headers` button to save the headers. Duplicate keys will automatically be removed when this button is clicked.
 
 ![Advanced settings headers dialog inputted header](../images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header.png)
 
@@ -68,7 +68,7 @@ Confirm the resubmit by clicking the Resubmit button in the dialog that appears:
 
 ![Confirming resubmit for a flow run](../images/v2_flowpage_confirm_resubmit.png)
 
-If the resubmit is triggered successfully, a `POST` request should be sent to the configured custom resubmit URL, with a body containing information about the flow run. Below is an example of how this body might appear:
+A `POST` request will be sent to the configured custom resubmit URL, with a body containing information about the flow run. Below is an example of the body:
 
 ```json
 [
