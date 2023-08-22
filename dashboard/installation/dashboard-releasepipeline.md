@@ -14,7 +14,7 @@ Make sure the Project Collection Build Service has Administrator access to these
 
 > ![Library Security](../../images/ifa-library-security.png)
 
-## YAML Pipeline
+## YAML Release Pipeline
 Add the files and folders from [this](pipelines) location to your DevOps repo. 
 This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/v2-documentation/dashboard/installation/pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
 ``` yaml
@@ -35,9 +35,7 @@ If you need to overwrite more ARM Template parameters make sure to add this to t
 
 Afterwards add the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/v2-documentation/dashboard/installation/pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
-## Classic Pipeline
-### Release
-
+## Classic Release Pipeline
 Create a new release pipeline, starting with an empty template, with this naming: `{prefix}.Invictus.Dashboard`.
 
 Configure the release name format (Options) as `{prefix}.Invictus.Dashboard $(Build.BuildNumber)_$(rev:r)`.
@@ -67,12 +65,18 @@ Add an Azure PowerShell task to each stage. This task will take care of the foll
 - Deployment of the dashboard.
 - Deployment of the import job.
 
-Use the following arguments for the fields of the azure powershell task:
-
+Make sure the Azure Powershell task has the following properties:
 - **Task version**: 4
 - **Display name**: Deploy
 - **Azure Subscription**: the subscription to deploy to
 - **Script Path**: `$(ArtifactsPath)/Deploy.ps1`
+- **Azure PowerShell Version**: Latest installed version
+- Under the Advanced section: Ensure that **Use Powershell Core** is **disabled**.
+
+## Deploy Script Arguments
+
+The following script arguments are used in the deploy script:
+
 - **Script Arguments**
   - ArtifactsPath (mandatory): `$(ArtifactsPath)`
   - ArtifactsPathScripts (optional): uses ArtifactsPath when not specified.
@@ -90,8 +94,7 @@ Use the following arguments for the fields of the azure powershell task:
   - isProvisionedCosmos (optional): If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
   - isAdDisabled (optional): If the value is 1, the option to log into the dashboard with AAD will be removed.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
-- **Azure PowerShell Version**: Latest installed version
-- Under the Advanced section: Ensure that **Use Powershell Core** is **disabled**.
+
 
 **NOTE:** When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
 
