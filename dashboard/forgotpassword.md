@@ -4,6 +4,12 @@
 
 The forgot password feature can be set up using two different approaches: SMTP or Azure Active Directory with application registration and API permissions.
 
+In the below documentation the below topics are explained;
+
+- Setting up SMTP to send emails
+- Setting up Active directory with an application registration to send emails
+- Forgot password user flow procedure
+
 ## Forgot Password - SMTP 
 
 ### Setting up Email Details
@@ -49,7 +55,7 @@ To set up the email address as the sender, follow these steps:
 3. In the **Forgot Password Settings** section, enter the email address you want to use.
 4. Click on **Save password settings** to save the email address being used.
 
-## Forgot Your Password
+# Forgot Your Password - User Flow
 
 ![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_1.jpg)
 
