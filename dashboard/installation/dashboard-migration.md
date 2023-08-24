@@ -1,38 +1,24 @@
 [home](../../README.md) | [dashboard](../dashboard.md) | [dashboard installation](dashboard-installation.md)
 
-# Dashboard Migration Guide
+# Invictus Dashboard Data Migration Guide
 
-This document will guide you through the process of migrating the build & release pipelines to the new procedure associated with version 4.7.0 or greater.
+Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow data will **not** be migrated.
 
-## Build Pipeline
+## Release Pipeline Changes
 
-### Remove Backend
+The data migration process forms part of the release pipeline. Please refer to [release pipeline](dashboard-releasepipeline.md) for more information. The deploy script parameter `PerformSqlDataMigration` must be set to `1`. The deploy script also accepts a few optional parameters to be able to connect to your SQL database:
 
-Backend and Dashboard have now merged in one build, this means that Backend will no longer be used so this build pipeline can be safely deleted.
+- -sqlToMigrateServerName : Server name hosting the SQL DB you wish to migrate. Defaults to `invictus-{ResourcePrefix}-sqlsvr`
+- -sqlToMigrateDBName : Name of the SQL DB you wish to migrate. Defaults to `coditcip`
+- -sqlToMigrateUserName : The login username used to connect to the SQL Server. Defaults to `InvictusFrameworkAdmin`
 
-### New Storage container
+In addition to these values, the SQL server password **must** be stored as a secret in your Invictus Azure Key Vault with the name `invictussqlserverpassword`.
 
-The storage container has been renamed from **dashboardfrontend** to **dashboard**, which means that you need to request a new SAS token and update the variable accordingly.
+Thats it! The data migration will now run as part of your release pipeline. The resultant data in Cosmos DB will be validated against the original SQL data, with the validation results printed in the release logs. However it is still important to manually verify the migrated data. When complete, you will be able to login to the new Invictus V2 Dashboard with the same credentials as before.
 
-Next, navigate to the powershell task that pulls the resources from blob and change the StorageContainerName parameter value from **dashboardfrontend** to **dashboard**.
+Once you are satisfied with the migrated data, it is advised to change the `PerformSqlDataMigration` script paramter to `0` so that the migration process is entirely skipped in subsequent releases.
 
-Apart from this new storage container, nothing changes for the build pipeline.
+## Dashboard URL
+The Invictus V2 release pipeline will create a new App Service dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new dashboard. If instead you wish to maintain your current URLs for the dashboard, the old dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
 
-The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (powershells, resources, etc..), which greatly simplifies the release pipeline.
 
-## Release Pipeline
-
-The task group is now replaced by a single Azure Powershell task included in the build artifacts. Please refer to the [release pipeline](dashboard-releasepipeline.md) for more information.
-
-The following task group parameters should be used as the powershell's arguments:
-
-- ArtifactsPath: -ArtifactsPath
-- ResourcePrefix: -ResourcePrefix
-- AzureResourceGroup: -ResourceGroupName
-- Location: -ResourceGroupLocation
-
-The AdditionalTemplateParameters can simply be copied and added to the Script Arguments.
-
-If you are using the Azure PowerShell task to retrieve the access policies from key vault, then this task should also be removed from the release pipeline as it is now also included in the deployment script.
-
-You can copy the **-keyvaultName** argument to the new powershell arguments.
