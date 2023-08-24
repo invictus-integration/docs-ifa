@@ -4,7 +4,7 @@
 
 The forgot password feature can be set up using two different approaches: SMTP or Azure Active Directory with application registration and API permissions.
 
-## Forgot Password - SMTP Approach
+## Forgot Password - SMTP 
 
 ### Setting up Email Details
 
@@ -14,7 +14,7 @@ To configure the email settings, follow these steps:
 
 2. **Navigate to Settings**: Once logged in, navigate to the settings page. You'll find a form with the necessary details to complete.
 
-    ![forgotpassword](../images/dashboard/forgotpassword5.JPG)
+     ![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
 
 3. **Fill in Details**:
 
@@ -30,7 +30,7 @@ To configure the email settings, follow these steps:
    
 4. **Save Changes**: Click the save button to store your settings.
 
-# Forgot Password - Active Directory Application Registration
+## Forgot Password - Active Directory Application Registration
 
 Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and set it up with the Mail.Send API permissions. This is required because emails can only be sent through an OAuth 2.0 flow. Previously, emails were sent using an SMTP client with a username, password, and SMTP connection. However, Microsoft and Google no longer allow this and are deprecating this service.
 
