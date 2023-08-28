@@ -12,5 +12,5 @@ steps:
     azureSubscription: '${{parameters.azureSubscription}}'
     ScriptPath: '${{parameters.scriptPath}}'
     ScriptArguments: '${{parameters.deployScriptParameters}}'
-    azurePowerShellVersion: 2.6.0
-    pwsh: true
+    azurePowerShellVersion: 5.226.1
+    pwsh: false
