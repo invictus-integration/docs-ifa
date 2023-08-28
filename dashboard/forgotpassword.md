@@ -1,14 +1,34 @@
 [Home](../README.md) | [Dashboard](dashboard.md) | [Forgot Password](forgotpassword.md)
 
 # Forgot Password
-
-The forgot password feature can be set up using two different approaches: SMTP or Azure Active Directory with application registration and API permissions.
+a
+The forgot password feature can be set up using two different approaches: SMTP or Azure Active Directory with application registration and API permissions. The SMTP approach is to be used when Azure AD has not been enabled for your Invictus V2 installation.
 
 In the below documentation the below topics are explained;
 
 - Setting up SMTP to send emails
 - Setting up Active directory with an application registration to send emails
 - Forgot password user flow procedure
+
+
+## Forgot Password - Active Directory Application Registration
+
+Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and set it up with the Mail.Send API permissions. This is required because emails can only be sent through an OAuth 2.0 flow. Previously, emails were sent using an SMTP client with a username, password, and SMTP connection. However, Microsoft and Google no longer allow this and are deprecating this service.
+
+Please note that the permission granted allows any email address within the organization to be used as the sender.
+
+To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](azureADSetup.md).
+
+## Setup Email Address as the Sender
+
+![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
+
+To set up the email address as the sender, follow these steps:
+
+1. Log in with an administrator account or any user with the role of System Admin.
+2. Navigate to the settings page by clicking the controls located at the top right next to the account name.
+3. In the **Forgot Password Settings** section, enter the email address you want to use.
+4. Click on **Save password settings** to save the email address being used.
 
 ## Forgot Password - SMTP 
 
@@ -35,25 +55,6 @@ To configure the email settings, follow these steps:
    - **SSL Enabled**: It's recommended to enable SSL, as major email providers often require this setting. Ensure this option is checked.
    
 4. **Save Changes**: Click the save button to store your settings.
-
-## Forgot Password - Active Directory Application Registration
-
-Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and set it up with the Mail.Send API permissions. This is required because emails can only be sent through an OAuth 2.0 flow. Previously, emails were sent using an SMTP client with a username, password, and SMTP connection. However, Microsoft and Google no longer allow this and are deprecating this service.
-
-Please note that the permission granted allows any email address within the organization to be used as the sender.
-
-To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](azureADSetup.md).
-
-## Setup Email Address as the Sender
-
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
-
-To set up the email address as the sender, follow these steps:
-
-1. Log in with an administrator account or any user with the role of System Admin.
-2. Navigate to the settings page by clicking the controls located at the top right next to the account name.
-3. In the **Forgot Password Settings** section, enter the email address you want to use.
-4. Click on **Save password settings** to save the email address being used.
 
 # Forgot Your Password - User Flow
 
