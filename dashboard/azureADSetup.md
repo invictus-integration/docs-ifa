@@ -138,5 +138,5 @@ To obtain the Audience:
 1. Go to **Expose an API** from the side menu.
 2. Copy the `Application ID URI` value. This is the Audience value.
    
-![Audience Value](../images/dashboard/azureAD/aad15.JPG)
+![Audience Value](../images/dashboard/azureAD/aad15.jpg)
    
