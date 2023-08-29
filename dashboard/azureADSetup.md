@@ -118,12 +118,12 @@ To manage enterprise application permissions, follow these steps:
 
 Once you have completed the steps above, you will need to provide some values to your release pipeline deploy script as parameters. These required values are: 
 
-- Client ID
-- Tenant ID
-- Client Secret
-- Audience
-
-The Client ID and Tenant can be copied from the App Registration Overview page.
+- AzureActiveDirectoryClientId
+- AzureActiveDirectoryTenantId
+- AzureActiveDirectoryClientSecret
+- AzureActiveDirectoryAudience
+  
+The Client ID and Tenant ID can be copied from the App Registration Overview page.
    ![Tenant and client information](../images/dashboard/azureAD/aad7.JPG)
 
 To obtain the Client Secret: 
