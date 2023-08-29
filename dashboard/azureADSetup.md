@@ -25,16 +25,7 @@ To grant Access Token Permissions, follow these steps:
 
    ![Grant Access Token](../images/dashboard/azureAD/aad12.png)
 
-## Step 2: Certificates & Secrets
-
-To manage Certificates & Secrets, follow these steps:
-
-1. Go to **Certificates & Secrets** from the side menu.
-2. Create a new secret by clicking the **New client secret** button, and copy the generated value. This secret must be provided during the release along with the tenant ID and client ID.
-
-   ![Certificates and Secrets](../images/dashboard/azureAD/aad4.JPG)
-
-## Step 3: Expose an API
+## Step 2: Expose an API
 
 To expose an API, follow these steps:
 
@@ -44,13 +35,13 @@ To expose an API, follow these steps:
 
    ![Expose an API](../images/dashboard/azureAD/aad9.png)
 
-### Step 3.1: Add Scopes
+### Step 2.1: Add Scopes
 
 Fill in the form with the information shown in the above image, using **access_as_user** for each of the textboxes. Once finished, click **Add scope**.
 
    ![Add Scope](../images/dashboard/azureAD/aad10.png)
 
-## Step 4: API Permissions
+## Step 3: API Permissions
 
 To manage API permissions, follow these steps:
 
@@ -123,8 +114,29 @@ To manage enterprise application permissions, follow these steps:
 
    ![Grant consent permissions for enterprise applications](../images/dashboard/azureAD/aad6.JPG)
 
-## Step 7: Configuration Information
+## Step 7: Deploy Script Setup
 
-Once you have completed the steps above, you will be able to log in from the Invictus Dashboard. Make sure to provide the Tenant ID, Client ID, and client secret to connect your dashboard with Azure Active Directory.
+Once you have completed the steps above, you will need to provide some values to your release pipeline deploy script as parameters. These required values are: 
 
+- Client ID
+- Tenant ID
+- Client Secret
+- Audience
+
+The Client ID and Tenant can be copied from the App Registration Overview page.
    ![Tenant and client information](../images/dashboard/azureAD/aad7.JPG)
+
+To obtain the Client Secret: 
+
+1. Go to **Certificates & Secrets** from the side menu.
+2. Create a new secret by clicking the **New client secret** button, and copy the generated value.
+
+   ![Certificates and Secrets](../images/dashboard/azureAD/aad4.JPG)
+
+To obtain the Audience:
+
+1. Go to **Expose an API** from the side menu.
+2. Copy the `Application ID URI` value. This is the Audience value.
+   
+![Audience Value](../images/dashboard/azureAD/aad15.JPG)
+   
