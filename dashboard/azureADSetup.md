@@ -15,15 +15,24 @@ To set up Azure Active Directory from the Azure Portal Dashboard, follow these s
 4. The **Redirect URI** is the link to the front-end website of the dashboard (e.g., `https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login`). This is required for the Single Sign-On process on the login page.
 5. Click the **Register** button.
 
-## Step 1: Grant Access Token Permissions
+## Step 1: App Registration Authentication
+
+### Step 1.1: Add Redirect URI
+
+1. Go to the **Authentication** page from the left side menu.
+2. In the Redirect URI section, click on **Add URI**.
+3. Enter the link to your dashboard with the `/api/auth/callback/azure-ad` route (e.g. `https://invictus-dev-we-sft-invictusdashboard-v2.azurewebsites.net/api/auth/callback/azure-ad`)
+
+### Step 1.2: Grant Access Token Permissions
 
 To grant Access Token Permissions, follow these steps:
 
-1. Go to the **Authentication** page from the left side menu.
-2. Check the checkbox for **Access Tokens**.
-3. Click the **Save** button at the top.
+1. Check the checkbox for **Access Tokens**.
 
    ![Grant Access Token](../images/dashboard/azureAD/aad12.png)
+
+
+2. Click the **Save** button at the bottom.
 
 ## Step 2: Expose an API
 
