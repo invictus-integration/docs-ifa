@@ -157,7 +157,7 @@ The below table lists the parameters accepted by the ARM template.
 |azureActiveDirectoryTenantId|Yes|&nbsp;|Tenant AAD ID required to enable AAD for dashboard|
 |azureActiveDirectoryClientSecret|Yes||&nbsp;|Required for AD Login|
 |AzureActiveDirectoryAudience|Yes||&nbsp;|Required for AD Login|
-|devOpsObjectId|Yes||The object-id associated with the service principal that's connected to the service connection on DevOps|
+|devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
 |apiKey1|No|Generated value|The value used for basic authentication for the APIs|
 |apiKey2|No|Generated value|The value used for basic authentication for the APIs|
 |invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
