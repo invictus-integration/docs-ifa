@@ -12,7 +12,7 @@ The data migration process forms part of the release pipeline. Please refer to [
 - -sqlToMigrateDBName : Name of the SQL DB you wish to migrate. Defaults to `coditcip`
 - -sqlToMigrateUserName : The login username used to connect to the SQL Server. Defaults to `InvictusFrameworkAdmin`
 
-In addition to these values, the SQL server password **must** be stored as a secret in your Invictus Azure Key Vault with the name `invictussqlserverpassword`.
+In addition to these values, the SQL server password **must** be stored as a secret in your Invictus Azure Key Vault with the name `invictussqlserverpassword`. **You will also need to assign the role `Key Vault Secrets User` to your AzureDevops pipeline service principal for the same Key Vault.**
 
 Thats it! The data migration will now run as part of your release pipeline. The resultant data in Cosmos DB will be validated against the original SQL data, with the validation results printed in the release logs. However it is still important to manually verify the migrated data. When complete, you will be able to login to the new Invictus V2 Dashboard with the same credentials as before.
 
