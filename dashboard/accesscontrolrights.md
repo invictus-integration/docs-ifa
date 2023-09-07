@@ -14,7 +14,7 @@ To do this, follow these steps:
 4. Assign access to **Managed Identity**. Select the FlowHandlerJob Function App when choosing the member.
 5. Save your changes
    
-### 2. Setting "Logic Apps Contributor" rights for DashboardGateway and FlowHandlerJob functions on the resource group where the logic apps are located.
+### 2. Setting "Logic App Contributor" rights for DashboardGateway and FlowHandlerJob functions on the resource group where the logic apps are located.
 
 To do this, follow these steps:
 
