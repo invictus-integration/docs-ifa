@@ -42,6 +42,5 @@ Now that you have the necessary credentials, follow the steps below to log in to
 
    ![dashboard reset password](../images/dashboard/AdminAccount/adminAccount-5.png)
 
-4. Congratulations! You can now continue using the system with your new password.
-
+4. Congratulations! You have logged into the Invictus Dashboard for the first time. It is now recommended to create a new System Admin user personalized with your own email address.
 
