@@ -80,6 +80,7 @@ The following script arguments are used in the deploy script:
 - **Script Arguments**
   - ArtifactsPath (mandatory): `$(ArtifactsPath)`
   - ArtifactsPathScripts (optional): uses ArtifactsPath when not specified.
+  - devOpsObjectId (mandatory): The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection.
   - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName (mandatory): name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName (mandatory): The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
