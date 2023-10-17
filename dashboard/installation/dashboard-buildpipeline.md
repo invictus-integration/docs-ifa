@@ -66,6 +66,6 @@ or configure it with these:
 
 Add a Publish build artifacts task to the pipeline and name it **Publish Dashboard**, use `$(Build.ArtifactStagingDirectory)` as the path to publish (or the SaveLocation argument you specified in the previous task).
 
-Use **Dashboard** as the artifact name.
+Use `dashboard-v2` as the artifact name.
 
 Once you've saved the build pipeline you can create the [release pipeline](dashboard-releasepipeline.md).
