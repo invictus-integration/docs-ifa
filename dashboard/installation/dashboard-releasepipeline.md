@@ -42,7 +42,7 @@ Configure the release name format (Options) as `{prefix}.Invictus.Dashboard $(Bu
 
 Use the Artifacts from the build pipeline as a source for the release. Name the Source alias: "InvictusDashboard".
 
-Add a variable **ArtifactsPath** to the release with scope 'Release' and a value of `$(System.DefaultWorkingDirectory)/InvictusDashboard/Dashboard`.
+Add a variable **ArtifactsPath** to the release with scope 'Release' and a value of `$(System.DefaultWorkingDirectory)/InvictusDashboard/dashboard-v2`.
 
 Please Note that a current bug in the Az library might cause the release to fail for new installation. Simply re-deploy the failed release to resolve the issue.
 
