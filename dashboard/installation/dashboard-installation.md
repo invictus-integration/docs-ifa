@@ -18,9 +18,9 @@ Follow [this guide](dashboard-buildpipeline.md) to setup your build in Azure Dev
 
 Follow [this guide](dashboard-releasepipeline.md) to setup your release in Azure DevOps.
 
-## SQL Data Migration Guide
+## V1 to V2 Migration Guide
 
-If you're migrating from Invictus V1 to Invictus V2 and wish to migrate your SQL data, please follow the [migration guide](dashboard-migration.md).
+If you're migrating from Invictus V1 to Invictus V2, please follow the [migration guide](dashboard-migration.md).
 
 ## First Time Setup
 
