@@ -10,14 +10,13 @@ When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to
 
 ## Remove Existing Role Assignments
 
-Invictus V2 includes functionality to automatically deploy role assignments which were previously set manually. However, if these role assignments are already present, they will cause a conflict. In your Invictus resource group, remove any roles which are assigned to the Azure functions. Typically, this is just 2 role assignments: 
+Invictus V2 includes functionality to automatically deploy role assignments which were previously set manually. However, if these role assignments are already present, they will cause a conflict. In your Invictus resource group, remove any roles which are assigned to the Azure functions. Typically, this is just 1 role assignment: 
 
 - "Monitoring Contributor" rights for the FlowHandlerJob function for the Invictus resource group.
-- "Logic App Contributor" rights for the FlowHandlerJob functions for the Invictus resource group.
 
 ## Azure AD Setup
 
-If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](../azureADSetup.md) to update your app registration or set up a new one with the appropriate settings required for Invictus V2.
+If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](../azureADSetup.md) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
 
 ## SQL Data Migration
 
@@ -40,4 +39,7 @@ Once you are satisfied with the migrated data, it is advised to change the `Perf
 ## Dashboard URL
 The Invictus V2 release pipeline will create a new App Service dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new dashboard. If instead you wish to maintain your current URLs for the dashboard, the old dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
 
+## Common Issues When Migrating
+- `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`
 
+  If you are passing the `servicePlanName` parameter to the dashboard release pipeline, this must be updated by adding `-linux` to the end of its value (feel free to maintain your own naming conventions). *This change is required for the dashboard pipeline only*.
