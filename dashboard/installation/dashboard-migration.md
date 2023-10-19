@@ -6,7 +6,7 @@ Below is some useful information for when users are upgrading their Invictus ins
 
 ## Object ID Update
 
-When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to the release pipeline should be updated. This must be changed to the **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection (not of the App Registration).
+When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to the release pipeline should be updated. This must be changed to the **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection (not of the App Registration). This change is required for both Dashboard and Framework pipelines.
 
 ## Remove Existing Role Assignments
 
@@ -17,7 +17,7 @@ Invictus V2 includes functionality to automatically deploy role assignments whic
 
 ## Azure AD Setup
 
-If your Invictus installation integrates with Invictus V2, please follow the [Azure AD setup guide](../azureADSetup.md) to update your app registration or set up a new one with the appropriate settings required for Invictus V2.
+If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](../azureADSetup.md) to update your app registration or set up a new one with the appropriate settings required for Invictus V2.
 
 ## SQL Data Migration
 
