@@ -42,4 +42,4 @@ The Invictus V2 release pipeline will create a new App Service dashboard resourc
 ## Common Issues When Migrating
 - `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`
 
-  If you are passing the `servicePlanName` parameter to the dashboard release pipeline, this must be updated by adding `-linux` to the end of its value (feel free to maintain your own naming conventions). *This change is required for the dashboard pipeline only*.
+  If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the dashboard pipeline only*.
