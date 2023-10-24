@@ -44,47 +44,48 @@ The below Transco config is used to obtain the Customer Status from the DB and i
 *docs_config.json*
 
     {
-    	"instructions": [
-    		{   			
-    			"scopePath": "/persons",
-    			"destination": "//status",
-    			"command": {
-    				"databaseKeyVaultName": "transcoV2LocalDB",
-    				"commandValue": "SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active",
-    				"isMandatory": true,
-    				"defaultValue": "0",
-    				"parameters": [
-    					{
-    						"paramName": "Name",
-    						"value": "/name",
-    						"type": "nvarchar",
-    						"valueType": "path"
-    					},
-    					{
-    						"paramName": "Active",
-    						"value": "CustomerActive",
-    						"type": "bit",
-    						"valueType": "context"
-    					}
-    				],
-    				"cache": {
-    					"useCaching": true,
-    					"cachingTimeout": "01:30:15"
-    				}
-    			}
-    		},
-    		{
-    			"xsltTransform": "docs_transform.xslt",
-    			"extensions": []
-    		}
-    	],
-    	"options": {
-    		"configCache": {
-    			"useCaching": true,
-    			"cachingTimeout": "01:30:00"
-    		}
-    	}
-    }
+	"instructions": [
+		{
+			"type": "xml",
+			"scopePath": "/persons",
+			"destination": "/status",
+			"command": {
+				"databaseKeyVaultName": "transcodb",
+				"commandValue": "SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active",
+				"isMandatory": true,
+				"defaultValue": "0",
+				"parameters": [
+					{
+						"paramName": "Name",
+						"value": "/name",
+						"type": "nvarchar",
+						"valueType": "path"
+					},
+					{
+						"paramName": "Active",
+						"value": "CustomerActive",
+						"type": "bit",
+						"valueType": "context"
+					}
+				],
+				"cache": {
+					"useCaching": false,
+					"cachingTimeout": "01:30:15"
+				}
+			}
+		},
+		{
+			"xsltTransform": "docs_transform.xslt",
+			"extensions": []
+		}
+	],
+	"options": {
+		"configCache": {
+			"useCaching": false,
+			"cachingTimeout": "01:30:00"
+		}
+	}
+}
 
 
 
@@ -114,7 +115,7 @@ A POST request is sent to the Transco function URL and endpoint */api/TranscoXML
 
 
     { 
-	    "Content":  "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PHJvb3Q+PG5hbWUgc3RhdHVzPSJNZW1iZXIiPkpvaG4gRG9lPC9uYW1lPjwvcm9vdD4=",  
+	    "Content":  "PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KPHBlcnNvbnM+DQogIDxwZXJzb24+DQogICAgPG5hbWU+Sm9obiBEb2U8L25hbWU+DQogICAgPHN0YXR1cz48L3N0YXR1cz4NCiAgPC9wZXJzb24+DQo8L3BlcnNvbnM+",  
 	    "Context":  { 
 		    "CustomerActive":  "true"   
 	    },   
