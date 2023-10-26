@@ -67,9 +67,53 @@ The XSLT transform is also included in the logic app version. XSLT files should 
 
 > ![xslt](../../images/transco-xsltransform.png)
 
-The file displayed in the image above will the be retreived and the transformation is then applied on the message.
+The file displayed in the image above will the be retrieved and the transformation is then applied on the message.
 
-## JSON Support
+## BeforeMapping and AfterMapping
+
+You can apply a transformation to the document using a lookup in a database. This can be done before or after the XSLT is applied, hence the name BeforeMapping and AfterMapping.
+The following information applies to both BeforeMapping and AfterMapping.
+
+### Basic Table Mapping
+
+The easiest way to update a field in a document is when you have a table where 1 or more columns contains the source values and 1 column the destination value. This case, specify the table name in the Table attribute and the column names in the FieldName.
+
+```xml
+    <Transco DBAlias="FrameworkTest" Table="CustomerRequests" Mandatory="true" Active="true" DisableCaching="false" SQLCommand="" Scope_prefix="tst" Scope_xmlns="http://schemas.codit.eu/framework/tests" Scope="/tst:CustomerList/tst:Customer">
+      <Source FieldName="CustomerId" Source="Message" xPathValue="@Id" />
+      <Source FieldName="CountryCode" Source="Message" xPathValue="@Country" />
+      <Dest FieldName="CreationDate" Optional="true" DefaultValue="DEFAULT" xPathValue="." />
+    </Transco>
+```
+
+### Scope, Scope_prefix and Scope_xmlns
+Scope is an xpath expression which points to a section in the document. The xpath expressions in Source and Dest are relative to this scope. In Scope_prefix you specify the prefix which can be used in the Scope and xPathValue fields. Scope_xmlns must contain the namespace of the xml document.
+
+### Context Properties
+As the source field, you can also use a context property instead of a value from the message. You can access a context property by an xpath expression as shown in the following example:
+
+```xml
+<Source FieldName="" xPathValue="//MessageInfo/ContextInfo/Property[@Name='ContextPropertyName']/@Value" Source="Context" />
+```
+
+### SQL Query
+You can also specify an SQL query instead of a table. Placeholders enclosed by brackets are replaced by the Source values in the specified order. The following example does the same as the basic table mapping.
+```xml
+    <Transco DBAlias="FrameworkTest" Table="" Mandatory="true" Active="true" DisableCaching="false" SQLCommand="SELECT CreationDate WHERE CustomerId = '{0}' AND CountryCode = '{1}'" Scope_prefix="tst" Scope_xmlns="http://schemas.codit.eu/framework/tests" Scope="/tst:CustomerList/tst:Customer">
+      <Source FieldName="" Source="Message" xPathValue="@Id" />
+      <Source FieldName="" Source="Message" xPathValue="@Country" />
+      <Dest FieldName="" Optional="true" DefaultValue="DEFAULT" xPathValue="." />
+    </Transco>
+```
+
+### Stored Procedure
+You can also call a stored procedure instead of a SELECT statement. In the SQLCommand attribute, specify EXEC followed by the stored procedure name and the parameters of the stored procedure. For example:
+
+```
+EXEC MyStoredProcedure '{0}', '{1}', '{2}', '{3}', {4}, {5}
+```
+
+### JSON Support
 
 JSON support has also been added to the Transco Component. The Message content can now be in **JSON** format. Do keep in mind that the config still needs to remain in XML Format, the new change is that now you can switch xPathValue to jPathValue. The Scope must also match the type of the content, if using JPath, the value supplied in the scope must also be a JPath, the same applies for XML.
 
