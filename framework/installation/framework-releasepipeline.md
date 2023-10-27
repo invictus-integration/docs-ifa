@@ -14,7 +14,29 @@ Make sure the Project Collection Build Service has Administrator access to these
 
 > ![Library Security](../../images/ifa-library-security.png)
 
-## Release
+## YAML Pipeline
+Add the files and folders from [this](./pipelines) location to your DevOps repo. 
+This contains an example YAML pipeline to release the Invictus for Azure Framework, change the [framework.release.yaml](./pipelines/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+``` yaml
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the build pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.framework.build' 
+    trigger: true
+```
+
+**Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
+
+Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+
+If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+
+Afterwards add the [framework.release.yaml](./pipelines/framework.release.yaml) in your DevOps environment as a pipeline.
+
+## Classic Pipeline
+### Release
 
 Create a new release pipeline, starting with an empty template, with this naming: `{prefix}.Invictus.Framework`.
 
@@ -26,7 +48,7 @@ Add a variable **ArtifactsPath** to the release with scope 'Release' and a value
 
 Please Note that a current bug in the Az library might cause the release to fail for new installation. Simply re-deploy the failed release to resolve the issue.
 
-### Stages
+#### Stages
 
 Add a stage for each environment you wish to release to.
 
@@ -74,7 +96,9 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
 ```
 
-**ARM Template Parameters**
+A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+
+## ARM Template Parameters
 
 The below table lists the parameters accepted by the ARM template.
 
