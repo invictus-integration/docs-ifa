@@ -1,0 +1,118 @@
+name: $(Rev:r) # This is not used since we define it during the first stage
+
+pr: none
+
+trigger: none
+
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the build pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.framework.build' 
+    trigger: true
+
+variables:
+- name: Pipeline.Version
+  value: $(resources.pipeline._build.runName)
+
+pool:
+  vmImage: 'windows-latest'
+
+stages: 
+- stage: preparation
+  displayName: 'Prepare Deployment'
+  jobs:
+    - job: version
+      displayName: Determine Version
+      steps:
+      - powershell: |
+          $dateTime = $(Get-Date -format yyyyMMddHmmss)
+          Write-Host "##vso[build.updatebuildnumber]$(Pipeline.Version)-$dateTime"
+          Write-Host "Pipeline version is '$(Pipeline.Version)-$dateTime'"
+        displayName: 'Change pipeline version'
+- stage: deploy_dev
+  displayName: 'Deploy to Development'
+  dependsOn: preparation
+  variables:
+  - group: infra.dev
+  - group: invictus.dev
+  jobs:
+  - deployment: deploy_development
+    displayName: 'Deploy to Development'
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - template: ./Templates/framework-release-steps.yaml
+            parameters:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
+- stage: deploy_tst
+  displayName: 'Deploy to Test'
+  dependsOn: deploy_dev
+  variables:
+  - group: infra.tst
+  - group: invictus.tst
+  jobs:
+  - deployment: deploy_tst
+    displayName: 'Deploy to Test'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - template: ./Templates/framework-release-steps.yaml
+            parameters:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
+
+- stage: deploy_acc
+  displayName: 'Deploy to Acceptance'
+  dependsOn: deploy_tst
+  variables:
+  - group: infra.acc
+  - group: invictus.acc
+  jobs:
+  - deployment: deploy_acc
+    displayName: 'Deploy to Acceptance'
+    environment: Acceptance
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - template: ./Templates/framework-release-steps.yaml
+            parameters:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
+- stage: deploy_prd
+  displayName: 'Deploy to Production'
+  dependsOn: deploy_acc
+  variables:
+  - group: infra.prd
+  - group: invictus.prd
+  jobs:
+  - deployment: deploy_prd
+    displayName: 'Deploy to Production'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - template: ./Templates/framework-release-steps.yaml
+            parameters:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "true" -matrixWebAppAlwaysOn "true" -transcoWebAppAlwaysOn "true" -servicePlanSkuName "P1V2" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'

@@ -14,7 +14,29 @@ Make sure the Project Collection Build Service has Administrator access to these
 
 > ![Library Security](../../images/ifa-library-security.png)
 
-## Release
+## YAML Pipeline
+Add the files and folders from [this](pipelines) location to your DevOps repo. 
+This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+``` yaml
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.dashboard.build' 
+    trigger: true
+```
+
+**Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
+
+Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+
+If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+
+Afterwards add the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
+
+## Classic Pipeline
+### Release
 
 Create a new release pipeline, starting with an empty template, with this naming: `{prefix}.Invictus.Dashboard`.
 
@@ -26,7 +48,7 @@ Add a variable **ArtifactsPath** to the release with scope 'Release' and a value
 
 Please Note that a current bug in the Az library might cause the release to fail for new installation. Simply re-deploy the failed release to resolve the issue.
 
-### Stages
+#### Stages
 
 Add a stage for each environment you wish to release to.
 
@@ -77,9 +99,11 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
 ```
 
+A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+
 ## Azure Active Directory
 
-If you are planning to enable AAD for the dashboard you will need to set the following parameters as **arguments** within the **Deploy Powershell Task**
+If you are planning to enable AAD for the dashboard you will need to set the following parameters as **arguments**:
 
 * AzureActiveDirectoryClientId
 * AzureActiveDirectoryTenantId
@@ -89,7 +113,7 @@ The option to login with AAD in the dashboard will only be possible if the above
 
 ## Enable Sql Serverless
 
-To deploy the Dashboard database(coditcip) as Sql Servleress simply pass the value for the following paramter "isDashboardDatabaseServerless" as 1. The following parameters can be passed to the deployment but have default values set.
+To deploy the Dashboard database(coditcip) as Sql Servleress simply pass the value for the following parameter `isDashboardDatabaseServerless` as 1. The following parameters can be passed to the deployment but have default values set.
 
 * dashboardServerlessDatabaseMaxVCores
 * dashboardServerlessDatabaseSize
@@ -150,6 +174,7 @@ The below table lists the parameters accepted by the ARM template.
 |invictusImportJobFunctionName|No|invictus-{resourcePrefix}-invictusimportjob|Name for Azure Function|
 |invictusCacheImportJobFunctionName|No|invictus-{resourcePrefix}-cacheimportjob|Name for Azure Function|
 |invictusStoreImportJobFunctionName|No|invictus-{resourcePrefix}-storeimportjob|Name for Azure Function|
+|importjobAppInsightsName|No|invictus-{resourcePrefix}-importjobappins|Name for Application Insights used by importjob|
 |invictusFlowHandlerFunctionName|No|invictus-{resourcePrefix}-flowhandlerjob|Name for Azure Function|
 |invictusGenericReceiverFunctionName|No|invictus-{resourcePrefix}-genericreceiver|Name for Azure Function|
 |invictusHttpReceiverFunctionName|No|invictus-{resourcePrefix}-httpreceiver|Name for Azure Function|
