@@ -135,7 +135,7 @@ The encoding for the content of the message can be specified to the Transco Extr
 
 ## Database Setup
 
-The Transco component needs an SQL Database setup. Since the properties retreived are cells from a database everything needs to be setup prior to testing or using the component.
+The Transco component needs an SQL Database setup. Since the properties retrieved are cells from a database everything needs to be setup prior to testing or using the component.
 
 Please refer to the [DbAlias section](transco.md) for more information.
 
