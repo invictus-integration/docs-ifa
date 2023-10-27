@@ -18,7 +18,7 @@ Next, navigate to the powershell task that pulls the resources from blob and cha
 
 Apart from this new storage container, nothing changes for the build pipeline.
 
-The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (powershells, resources, etc..), which greatly simplyfies the release pipeline.
+The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (powershells, resources, etc..), which greatly simplifies the release pipeline.
 
 ## Release Pipeline
 

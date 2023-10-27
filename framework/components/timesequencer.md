@@ -6,7 +6,7 @@
 
 Timesequencer is a component that ensures that old entity updates will never overwrite newer updates to the same entity.  This is done, based on the timestamp that originates from the source system.
 
-The Timesequencer uses Function authorization, so the URL will contain all the authentication details, no Authentication is to be passed when calling the Function. Internally the timesequencer uses SQL Server to manage and queue all it's requests. A cleanup job is also added to DataFactory to cleanup the tables used by the function.
+The Timesequencer uses Function authorization, so the URL will contain all the authentication details, no Authentication is to be passed when calling the Function. Internally the timesequencer uses SQL Server to manage and queue all its requests. A cleanup job is also added to DataFactory to cleanup the tables used by the function.
 
 ### Functions
 
