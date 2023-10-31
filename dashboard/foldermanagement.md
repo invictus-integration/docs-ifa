@@ -34,7 +34,7 @@ Click on the "Assign a Group" button.
 
 ![folder1](../images/v2_folderpermissions2.png)
 
-Choose the desired group from the first drop down menu. Only enabled non-admin groups will be listed. Then, choose the role you want the group to have for that specific folder.
+Choose the desired group from the first drop down menu. Only **enabled** `Non Admin` groups will be listed. Then, choose the role you want the group to have for that specific folder.
 
 ![folder1](../images/v2_folderpermissions4.png)
 
