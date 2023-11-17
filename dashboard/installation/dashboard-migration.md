@@ -39,6 +39,8 @@ Once you are satisfied with the migrated data, it is advised to change the `Perf
 ## Dashboard URL
 The Invictus V2 release pipeline will create a new App Service dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new dashboard. If instead you wish to maintain your current URLs for the dashboard, the old dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
 
+**NOTE: By doing this you will lose access to the old dashboard and the ability to view and query its historic data.**
+
 ## Common Issues When Migrating
 - `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`
 
