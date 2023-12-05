@@ -155,7 +155,7 @@ The below table lists the parameters accepted by the ARM template.
 |matrixWebAppAlwaysOn|No|true|Always on Setting for WebApp|
 |transcoWebAppAlwaysOn|No|true|Always on Setting for WebApp|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
-|devOpsObjectId|Yes||The object-id associated with the service principal that's connected to the service connection on DevOps|
+|devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
 |enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
 |vnetName|No|&nbsp;|The name of the VNET on Azure|
 |vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|

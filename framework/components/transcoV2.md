@@ -190,9 +190,9 @@ This instruction is only available when calling the /TranscoXML endpoint.
 
 ## Storage Account
 
-All required files are to be saved in a storage account and in a container with name ***transcov2***. This container is automatically created on startup of the Transco function.
+All required files are to be saved in a storage account and in a container with name ***transcov2configstore***. This container is automatically created on startup of the Transco function.
 
-Within the _**transcov2**_ container:
+Within the _**transcov2configstore**_ container:
 
  - Transco config files must be saved in a folder named ***Configs***
  - Transformation files must be saved in a folder named ***XSLTs***

@@ -1,49 +1,58 @@
 [home](../README.md)
 
-# Invictus for Azure Architecture Diagram
+# Invictus for Azure Architecture Diagrams
 
-![Architecture diagram](../images/ifa-architecture-diagram.png "Invictus architecture diagram")
+## Invictus Dashboard Architecture
 
-## Component types
+![Architecture diagram](../images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
 
-The above components can be mainly split into 3 categories.
+### Dashboard Components
 
-* **Framework**
+- **Frontend:** Consists of the web application which is used to monitor all flows in the system.
+- **Dashboard Gateway:** Serves as the backend for the web application, handles all interactions with the database and other dependencies.
+- **Flow Handler:** Handles interactions with the Azure management api for the flow actions (Ignore, Resubmit, Resume, Reimport), flow alerts and message content view features.
+- **Import Functions:** Consist of ImportJob, CacheImportJob and StoreImportJob. The ImportJob functions are used to listen on EventHub for all LogicApp executions, all data is then merged and finally pushed to the Database.
+- **CosmosDB:** Stores all the data necessary for the frontend to function such as users, folders, settings. Flow data and workflowevents are also saved to the CosmosDB by the *DatabaseManager* function.
+- **Event Hub:** Logic App diagnostic messages are sent to event hub where they are picked up and processed by the Invictus import functions.
 
-   Consists of PubSubAPI, TranscoAPI, and MatrixAPI. These are the services which expose the functionality of each component, they are mainly used with LogicApps to execute the functions they expose.
+## Invictus Framework Architecture
 
-* **Dashboard**
+![Architecture diagram](../images/InvictusV2Diagram_Framework.jpg "Invictus framework architecture diagram")
 
-  * *Frontend*: Mainly consists of the database which is used to monitor all flows that have been saved to the database and their status.
+### Framework Components
 
-  * *Import*: The import which is mainly made up of the ImportJob, CacheImportJob, StoreImportJob, and FlowHandler. The ImportJob functions are used to listen on EventHub for all LogicApp executions, all data is then merged and finally pushed to the Database. The FlowHandler is used to handle Ignores, Resubmit and Resume requests for flows.
+Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](../framework/framework.md).
 
-## Usage of components
+- **PubSub API**
+- **Transco API**
+- **Matrix API**
+- **TimeSequencer Function**
+- **Sequence Controller Function**
+- **XML/JSON Convertor Function**
+- **XSD Validator Function**
+- **Regex Translator Function**
+- **TranscoV2 Function**
+
+## Shared Components
 
 ### Azure Service Bus
 
-- Used by PubSub API to push messages to Subscriptions
-- Used by ImportJob to push data to CacheImportJob after splitting data by ClientTrackingId
-- Used by Dashboard to queue requests for Ignore/Resume/Resubmit which are then picked up by the Flow Handler
+- Used by PubSub API to push messages to subscriptions.
+- Used by ImportJob function to push data to CacheImportJob function after splitting data by ClientTrackingId.
+- Used by the dashboard to queue requests for Ignore/Resume/Resubmit which are then picked up by the Flow Handler.
 
 ### Azure Storage
 
-- Used by PubSub to create Blobs for ClaimCheck pattern
-- Used by CacheImportJob to all events received from EventHub as a temporary cache
-
-### CoditCip
-
-- Database for Frontend, data is pushed by StoreImportJob
-
-### Azure Event Hubs
-
-- Diagnostic settings for LogicApps that are tracked is pushed there
-- The ImportJob listens on this Eventhub and reads these events which are then processed and mapped to a flow
+- Used by PubSub API to create Blobs for ClaimCheck pattern
+- Used by CacheImportJob to save all events received from EventHub as a temporary cache
+- Used by Transco API and Transco V2 function to store configs, XSLT files and assembly files.
+- Used by XML/JSON Convertor function to store configs.
+- Used by XSD Validator function to store configs.
  
 ### Azure Application Insights
 
-- All APIs, WebApps, and Functions point to a single AppInsights which contains all traces and logs that were created
+- All APIs, WebApps, and Functions point to a Application Insights resource which contains all traces and logs that were created.
  
 ### Azure Key Vault
 
-- Used to store passwords for Database, API keys, and Transco Connectionstring, etc
+- Used to store secrets such as function keys, API keys, connection strings, etc.

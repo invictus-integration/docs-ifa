@@ -2,57 +2,32 @@
 
 # Dashboard Execution Tree
 
-The Execution Tree or also commonly referred to as the "Clickthrough" corresponds to the detail of the execution followed by certain flow, which corresponds to all the executed Logic Apps inside the flow. 
+The Execution Tree or also commonly referred to as the "Clickthrough" or "Workflow Events" corresponds to the details of the execution following a certain flow, which corresponds to all the executed Logic Apps inside the flow. 
 
-To see the execution tree, choose any message and click on the blue icon to the left.
+To see the execution tree, choose any message and click on the downward chevron button.
 
-![execution tree](../images/dsb-executiontree.gif)
+![execution tree](../images/v2_events1.png)
 
 Within this view it is also possible:
 
-* To see if a certain logic app execution was either successful, failed or was resumed/resubmitted (1).
-* To see the tracked properties, errors on on logic app level and to navigate to the Azure portal (2). See Business audit trail for more details.
-
-![clickthrough](../images/dsb-clickthrough.png)
-
-In this example, the first two logic apps (in red) were resubmitted and ended in error.  Opossite to the last two child logic apps (in black) which completed succesfully.
-
-## Business Audit Trail
-
-For every logic app executed inside a flow, it is possible to see its business tracked properties.  The following information is available for business users to easily track flow execution and data on the execution tree level.
+* To see if a certain logic app execution was successful or failed.
+* To see the tracked properties, errors on the logic app level and to navigate to the Azure portal.
 
 ### Milestone and Event Text
 
-Milestone and EventText are properties set and displayed by default, they do not need to be set from the dashboard during the creation of a flow. For EventText if the value re-appears in several logic apps, instead of overwriting/updating its value, all data is appended as a single value, separated by comma.
+The Milestone and EventText are properties set and displayed by default. For the EventText, if the value re-appears in several logic apps, instead of overwriting/updating its value, all data is appended as a single value, separated by comma.
 
-![milestone](../images/dsb-auditmilestone.png)
+![execution tree](../images/v2_events2.png)
 
 ### Message Content View
 
-The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the Clickthrough(execution tree) table. 
+For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](accesscontrolrights.md) for more info.
 
-**The flowhandlerjob needs Logic Apps Contributor rights on the resource group where the logic app is located.**
+The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the workflow events table. 
 
-To do this, goto the flowhandlerjob Function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changes.
-Alternatively, the following template can be used:
-```
-{
-  "type": "Microsoft.Authorization/roleAssignments",
-  "apiVersion": "2020-04-01-preview",
-  // Fixed GUID to make it idempotent
-  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobContribute')]",
-  "properties": {
-    "description": "The Invictus FlowHandlerJob needs Contribute permissions on the Logic App resource group to display the contents of the message.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
-  },
-  "dependsOn": []
-}
-```
+![execution tree](../images/v2_events3.png)
 
-![milestone](../images/dashboard/mcv1.JPG)
-
-The links in the above image are the friendly names set in the tracked properties of the "tracked" action. Once any of the above names is clicked a new tab will open with the content of either the input or the output.
+The links in the above image are the friendly names set in the tracked properties of the "tracked" action. When one of the links is clicked, a new tab will open with the content of either the input or the output.
 
 **To track the input and output of an action in a logicapp the below tracked properties have to be set in an action.**
 
@@ -63,22 +38,20 @@ The links in the above image are the friendly names set in the tracked propertie
 |x-iv-messagecontent-output-name|Yes(if the output content type is present)|ActionOutput|This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word|
 |x-iv-messagecontent-output-content-type|Yes(if the output name is present)|application/json|This should have the same content type as the data type when opening the input link for an action|
 
-Please not that you can have one or the other, or both active, you do not need to have both input and output setup. The only requirment is that if the "-name" is present then the "-content-type" has to be also present for the desired output.
+The inputs and outputs content views can be set up independently or together. The only requirement is that if the "-name" is present then the "-content-type" has to be also present for the desired output.
 
 ### Tracked Properties
 
-To see the tracked properties on execution tree level, click on the "Details" link. A popup opens showing all the tracked properties available on every logic app inside the flow.
+To see the tracked properties of the workflow events, click on the "Logic App Details" button at the right of each event. A modal will popup showing all the tracked properties available on every logic app inside the flow.
 
-![properties](../images/dsb-audittrackedproperties.gif)
+![execution tree](../images/v2_events4.png)
 
 > Please note that search capabilities do not apply to this feature.
 
 ### Errors on Logic App level
 
-In the same popup that now displays the tracked properties on execution tree level,  it is possible to see the error description when an exception has ocurred on logic app level.
+If the corresponding logic app has resulted in an error, the error information can be seen in the within the "Logic App Details" modal.
 
-![errors](../images/dsb-auditerrors.gif)
+![execution tree](../images/v2_events5.png)
 
-And for additional details and follow up on technical errors,  the link to navigate to Azure Portal can be used.
-
-![error detail](../images/dsb-auditerrordetail.png)
+For any additional details or insights, the user can also navigate directly to the Azure Portal.

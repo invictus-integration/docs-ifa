@@ -1,121 +1,86 @@
-[home](../README.md) | [dashboard](dashboard.md) | [Group Management](groupmanagement.md)
+[Home](../README.md) | [Dashboard](dashboard.md) | [Group Management](groupmanagement.md)
 
 # Group Permission Management
 
-To setup permissions for Azure Active Directory groups on Invictus, there are three steps to follow:
-- Step 1: Setup App Registration on Microsoft Azure
-- Step 2: Add Secret Key to Invictus Configuration
-- Step 3: Sync Groups on Invictus
-- Step 4: Assign Groups to Folders
+To set up permissions for Azure Active Directory groups on Invictus, kindly follow the link [here](azureADSetup.md)
 
-## Step 1: Setup App Registration on Microsoft Azure
+# Group Management
 
-Create a new App Registration:
+If you want to create a group, go to **Groups** and click the **New group** button. Enter a group name and assign owners and members to the group for the AAD you just created.
 
-![aad1](../images/dashboard/aad_1.JPG)
+   ![Create Group](../images/dashboard/aad_12.JPG)
 
-Register a new Application:
+If you want to add a new user, go to **Users** and click the **New user** button. Enter all the required information and assign the desired groups to the user.
 
-![aad2](../images/dashboard/aad_2.JPG)
+   ![Add User](../images/dashboard/aad_13.JPG)
 
-Once registered, go to Authentication from the side menu and add these two new links and tick the checkboxes:- Access Tokens and ID Tokens and press save.
-
--	{url-to-app}/login?returnUrl=%2Fdashboard%2Fsettings
--	{url-to-app}/login?returnUrl=%2Fdashboard%2Foverview
-
-![aad3](../images/dashboard/aad_7.JPG)
-
-Go to API Permissions from the side menu and add all of these permissions and press the Grant admin consent for button.
-
-![aad4](../images/dashboard/aad_3.JPG)
-
-Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
-
-![aad5](../images/dashboard/aad_4.JPG)
-
-Now go to the manifest and change these:
-
-![aad6](../images/dashboard/aad_5.JPG)
-![aad7](../images/dashboard/aad_6.JPG)
-
-In the manifest add this wildcard like this:
-
-![aad8](../images/dashboard/aad_8.JPG)
-
-Now go to Enterprise Applications and go to Owners. Add an owner which have all rights.
-
-![aad9](../images/dashboard/aad_9.JPG)
-
-Go to users and groups and click on the Add user/group and add all the users that have access to login to the dashboard.
-
-![aad10](../images/dashboard/aad_10.JPG)
-
-Now go to Permissions from the side menu and click on the Grant admin consent for button. You should login using a full access (permission wise) account.
-
-![aad11](../images/dashboard/aad_11.JPG)
-
-If you want to create a group. Go to Groups and click on New group button which will lead you to this screen. Enter a group name and use the owners and members to assign it to the AAD you just created.
-
-![aad12](../images/dashboard/aad_12.JPG)
-
-If you want to add a new user, go to Users and click New user button and it will lead you to this screen. Enter all the input fields and don't forget to assign the Groups you want this user to be assigned to.
-
-![aad13](../images/dashboard/aad_13.JPG)
-## Step 2: Add Secret Key to Invictus' Configuration
-
-Copy the secret key created and pass the credentials as arguments to the Deploy.ps1 script (on release).
-
-```
-    -AzureActiveDirectoryTenantId "$(Invictus.Dashboard.AAD.TenantId)" -AzureActiveDirectoryClientId "$(Invictus.Dashboard.AAD.ClientId)" -AzureActiveDirectoryClientSecret "$(Invictus.Dashboard.AAD.ClientSecret)"
-```
 ## Step 3: Sync Groups on Invictus
 
-**Note that an app registration should be created before assigning group permissions**
+**Note: An app registration should be created before assigning group permissions**
 
-Click on the Groups Icon on the top left:
+Click on the **Groups** icon located in the top-middle menu:
 
-![folder1](../images/dashboard/groupman_9.png)
+   ![Sync Groups](../images/dashboard/Groups/groupman_1.jpg)
 
-Click the Sync Groups Icon on the Global Groups page:
+Click **Sync All Groups** on the **Global Groups** page:
 
-![folder1](../images/dashboard/groupman_10.png)
+   ![Sync All Groups](../images/dashboard/Groups/groupman_2.jpg)
 
-Once Synced, set the required groups as enabled to be used for permissions, and click the Save Enabled button:
+Once synced, enable the required groups to be used for permissions:
 
-![folder1](../images/dashboard/groupman_11.png)
+   ![Enable Groups](../images/dashboard/Groups/groupman_3.jpg)
  
-To add global roles to the groups, click the edit buttons and set the required role:
+To add global roles to the groups, click the **Edit** buttons and set the required role:
 
-![folder1](../images/dashboard/groupman_12.png)
+   ![Add Global Roles](../images/dashboard/Groups/groupman_4.jpg)
 
 ## Step 4: Assign Groups to Folders
 
-**Note that an app registration should be created before assigning group permissions**
+**Note: An app registration should be created before assigning group permissions**
 
-Click on the 3 dots next to the folder name:
+Click on the three dots next to the folder name:
 
-![folder1](../images/dashboard/groupman_13.png)
+   ![Folder Options](../images/dashboard/Groups/groupman_5.jpg)
 
-Several options will pop-up. Click on the 'Manage permissions' link:
+Several options will appear. Click on the **Edit Folder Permissions** link:
 
-![folder1](../images/dashboard/groupman_14.png)
+   ![Edit Folder Permissions](../images/dashboard/Groups/groupman_6.jpg)
 
-Click on the "Add Groups" button.
+Click on the **Assign a group** button.
 
-![folder1](../images/dashboard/groupman_15.png)
+   ![Assign a Group](../images/dashboard/Groups/groupman_7.jpg)
 
-An Assign Group Popup will show up:
-![folder1](../images/dashboard/groupman_16.png)
+An **Assign Group** popup will appear:
 
-Choose the group from the first drop down menu. And choose the role you want the group users to have for that specific folder. You can see that you have 3 options:
-- Folder Admin
-- Operator
-- Reader
+   ![Assign Group Popup](../images/dashboard/Groups/groupman_8.jpg)
 
-**Folder Admin** can assign users to specific folder, remove users from specific folder, create flows in specific folder, delete flows in specific folder, see messages from flows in specific folder, see flows from specific folder, resume/resubmit/ignore messages from specific folders, see flow statistics, edit flow in specific folder.
+Choose the group from the first dropdown menu and select the role you want the group users to have for that specific folder. You have three options:
 
-**Operator** can see messages from flows in specific folder, see flows from specific folder, resume/resubmit/ignore messages from specific folders, see flow statistics.
+- **Folder Admin**
+- **Operator**
+- **Reader**
 
-**Reader** can see messages from flows in specific folder, see flows from specific folder, see flow statistics.
+**Folder Admin** has the following permissions:
+- Assign users to a specific folder
+- Remove users from a specific folder
+- Create flows in a specific folder
+- Delete flows in a specific folder
+- View messages from flows in a specific folder
+- View flows from a specific folder
+- Resume, resubmit, and ignore messages from specific folders
+- View flow statistics
+- Edit flow in a specific folder
 
-![folder1](../images/dashboard/groupman_17.png)
+**Operator** has the following permissions:
+- View messages from flows in a specific folder
+- View flows from a specific folder
+- Resume, resubmit, and ignore messages from specific folders
+- View flow statistics
+
+**Reader** has the following permissions:
+- View messages from flows in a specific folder
+- View flows from a specific folder
+- View flow statistics
+
+   ![Assign Group](../images/dashboard/Groups/groupman_9.jpg)
+```

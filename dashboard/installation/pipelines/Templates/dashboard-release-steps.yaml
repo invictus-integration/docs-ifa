@@ -4,7 +4,7 @@ parameters:
   scriptPath: ''
 
 steps:
-- task: AzurePowerShell@4
+- task: AzurePowerShell@5
   displayName: 'Azure PowerShell'
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
@@ -12,5 +12,5 @@ steps:
     azureSubscription: '${{parameters.azureSubscription}}'
     ScriptPath: '${{parameters.scriptPath}}'
     ScriptArguments: '${{parameters.deployScriptParameters}}'
-    azurePowerShellVersion: 2.6.0
-    pwsh: true
+    azurePowerShellVersion: LatestVersion
+    pwsh: false

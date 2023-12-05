@@ -2,96 +2,57 @@
 
 # Alerting
 
-This is a step by step on how to set up alerting. The following functionality is covered in this document:
+For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](accesscontrolrights.md) for more info.
 
-- Create a Rule
-- Update a Rule
-- Delete a Rule
-- Setup Activity check for a flow
-- Setup Error check for a flow
-
-**It is required to allocate the flowhandler as "Monitoring Contributor" from the Access control (IAM) section for the Invictus resource group**
-
-To do this, goto the flowhandlerjob Function App and select Identity. Click on "Azure role assignments" and then "Add role assignment". Choose the correct values and save the changed. Alternatively, the following ARM template can be used:
-```
-{
-  "type": "Microsoft.Authorization/roleAssignments",
-  "apiVersion": "2020-04-01-preview",
-  // Fixed GUID to make it idempotent
-  "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobMonitoringContribute')]",
-  "properties": {
-    "description": "The Invictus FlowHandlerJob needs Monitoring Contribute permissions on the VMI invictus resource group to allow alert rules.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
-    "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
-  },
-  "dependsOn": []
-}
-```
-
-**Please note that:**
+## Note
 
 - When creating the a rule, the name will always automatically have the flowname as the prefix set, example: {{flowname}}-AdrianRule.
-- The Alerting tab will only be visible after a flow has been created. This tab will not be visible during the creation of a new flow.
+- The Alerting section will only be visible when editing a flow. This section will not be visible during the creation of a new flow.
 
 ## Add Alert Rule
 
 To Add a rule, start by editing a flow.
 
-![alerting](../images/dashboard/alerting1.JPG)
+![alerting](../images/v2_alerting1.png)
 
-As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab.
+In the bottom right of the edit flow page, there is the alerting section. 
 
-![alerting](../images/dashboard/alerting2.JPG)
+![alerting](../images/v2_alerting2.png)
 
-To add a rule, you need to click on the "Add Rule" tab and start inserting the rule information. For more information regarding the parameters refer to the section "**Parameters Description**" below.
+To add a rule, click on the + icon button. Fill in the form with all your rule information, making sure to include all required information.
 
-![alerting](../images/dashboard/alerting3.JPG)
+![alerting](../images/v2_alerting3.png)
 
-As soon as you are ready from the first tab, you can click on the "**Set Recipient**" button underneath. 
+In the recipients section, you can enter the email subject and the email addresses of any individuals who need to be prompted.
 
-![alerting](../images/dashboard/alerting4.JPG)
+![alerting](../images/v2_alerting4.png)
 
-In here you can enter the email subject and the emails of those individuals who need to be prompted.
+When you are done, click on the "**Save Alert**" button. The new rule will then be listed in the alerts section.
 
-When you are done, you can click on the "**Save Rule**". When the rule is saved it will take you to the Rules tab with the new rule being visible there.
-
-![alerting](../images/dashboard/alerting6.JPG)
+![alerting](../images/v2_alerting5.png)
 
 ## Edit Alert Rule
 
 To Edit a rule, start by editing a flow.
 
-![alerting](../images/dashboard/alerting1.JPG)
+![alerting](../images/v2_alerting1.png)
 
-As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab.
+In the alerts section, click on the pencil icon button next to the rule you wish to edit. A modal will appear with all the current rule information. Modify the rule as required.
 
-![alerting](../images/dashboard/alerting5.JPG)
+![alerting](../images/v2_alerting6.png)
 
-Click on the Rule you want to edit. In this case I will be editing the **{{FlowName}}-AdrianRule**.
-
-![alerting](../images/dashboard/alerting6.JPG)
-
-Change any information and click on the "**Set Recepients**" button underneath and click on the "**Update Rule**" button.
-
-![alerting](../images/dashboard/alerting7.JPG)
 
 ## Delete Alert Rule
 
-To Delete a rule, start by editing a rule. Once the modal opens go to the "**Alerting**" tab.
+To Edit a rule, start by editing a flow.
 
-![alerting](../images/dashboard/alerting1.JPG)
+![alerting](../images/v2_alerting1.png)
 
-As soon as the Edit Flow modal pop up opens, go to the "**Alerting**" tab.
+In the alerts section, click on the trash icon button next to the alert you wish to delete.
 
-![alerting](../images/dashboard/alerting5.JPG)
+![alerting](../images/v2_alerting5.png)
 
-Click on the Rule you want to delete. In this case I will be deleting the {{FlowName}}-AdrianRule one.
-
-![alerting](../images/dashboard/alerting6.JPG)
-
-At the bottom, you will see a red button Delete Rule. Click on it and it will be deleted.
-
-![alerting](../images/dashboard/alerting8.JPG)
+Confirm your action in the confirmation pop up.
 
 ## Parameters Description
 
@@ -114,7 +75,7 @@ Query Type|Yes|This value is used to select which type of query the alert rule w
 
 ### Invictus Activity Check
 
-This query type will filter logs on Azure Logs by the "InvictusImportJobFlowActivityAlert" property. The ImportJob will every hour log activity for any flows that are active. An example how the alert settings for this flow could be set:
+This query type will filter logs on Azure Logs by the "InvictusImportJobFlowActivityAlert" property. The ImportJob will log activity for any flows that are active every hour. An example of how the alert settings for this flow could be set:
 
 - Frequency: 60
 - Time Window: 60
@@ -127,16 +88,15 @@ Please note that the importjob will not increment the activity for each message 
 
 ### Invictus Error Check
 
-This query type will filter logs on Azure Logs by the "InvictusImportJobFlowErrorAlert" property. The ImportJob will log a message for each Flow that triggers an error. An example how the alert settings for this flow could be set:
+This query type will filter logs on Azure Logs by the "InvictusImportJobFlowErrorAlert" property. The ImportJob will log a message for each Flow that triggers an error. An example of how the alert settings for this flow could be set:
 
 - Frequency: 10
 - Time Window: 10
 - Trigger Threshold Operator: GreaterThan
 - Threshold: 0
 
-This will create a rule to run every 10 minutes, scans the logs for the last 10 minutes and if the returned value is greater than the threshold, it means that the flow has failing messages, thus triggers the alert on Azure.
+This will create a rule to run every 10 minutes, scans the logs for the last 10 minutes and if the returned value is greater than the threshold, it means that the flow has failed messages, thus triggers the alert on Azure.
 
 ### AzureResultCount
 
-This basically enables the Script field which will accept custom Azure Alert Syntax. If you require further information about this type of syntax please refer to the official documentation by Microsoft.
-
+This will enable custom scripts with the Azure Alert syntax. If you require further information about this type of syntax please refer to the official documentation by Microsoft.
