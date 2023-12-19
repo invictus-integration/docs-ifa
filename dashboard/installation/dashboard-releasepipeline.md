@@ -169,15 +169,16 @@ The below table lists the parameters accepted by the ARM template.
 |JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
+|serviceBusSkuName|No|Standard|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
-|servicePlanName|No|invictus-{resourcePrefix}-appplan|Name for the service plan which will host the APIs|
+|servicePlanName|No|invictus-{resourcePrefix}-appplan-linux|Name for the service plan which will host the APIs|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
 |storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
 |servicePlanSkuName|No|S1|Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
 |servicePlanSkuCapacity|No|1|The SKU capacity setting  for the App Plan|
 |eventHubNamespaceName|No|invictus-{resourcePrefix}-evnm|Name for the Event Hub Namespace resource|
 |eventHubName|No|invictus-{resourcePrefix}-evhb|Name for the Event Hub created on the Namespace|
-|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name for the autoscale function|
+|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale-linux|Name of the autoscale rules for linux app plan|
 |minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
 |maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
 |consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for ImportJob|
@@ -223,14 +224,23 @@ The below table lists the parameters accepted by the ARM template.
 |dataCleanupMaxProcessingRows|No|5000|Maximum nr of rows to cleanup|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
 |logicAppsImportJobErrorFilters|No|actionfailed|error filter for the import job|
-|enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
-|vnetName|No|&nbsp;|The name of the VNET on Azure|
-|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|aseName|No|&nbsp;|The name of the ASE on Azure|
-|aseResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the ASE is located|
-|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
 |use32BitWorkerProcess |No|false|If set to true, webapps are deployed as 32bit|
 
+### VNET Specific Parameters
+
+|Parameter Name|Required|Default Value|Description|
+| --- | :---: | --- | --- |
+|enableVnetSupport|No|false|Used to toggle VNET functionality on or off|
+|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|cosmosDbSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|eventHubSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
+|dashboardSubnetName|No||The name of the subnet to be used to connect the dashboard resource|
+|functionsSubnetName|No||The name of the subnet to be used to connect the azure function resources|
+|privateEndpointSubnetName|No||The name of the subnet to be used to connect the private endpoint resources|
+|windowsPlanName|No|invictus-{resourcePrefix}-appplan|The name for the windows plan which the azure functions will run on|
+|autoscaleForPlanWindows|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name of the autoscale rules for windows app plan|
+|isPrivateDashboardVnet|No|false|If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.|
