@@ -233,6 +233,7 @@ The below table lists the parameters accepted by the ARM template.
 | --- | :---: | --- | --- |
 |enableVnetSupport|No|false|Used to toggle VNET functionality on or off|
 |vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|vnetName|No|&nbsp;|The name of the VNET resource|
 |keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
