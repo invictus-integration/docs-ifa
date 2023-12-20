@@ -24,7 +24,7 @@ Invictus includes functionality which allows all its resources to run within an 
   - privatelink.table.cosmos.azure.com
   - privatelink.vaultcore.azure.net
     
-  An ARM template for these DNS Zones can be found [here](../scripts/invictusVnetDNSZones.json)
+  An ARM template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.json)
 
 - To be able to deploy the app code from an Azure DevOps pipeline:
   - A self hosted agent running on the same VNET with the following software intalled:
