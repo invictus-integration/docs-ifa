@@ -181,7 +181,7 @@ The below table lists the parameters accepted by the ARM template.
 |autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale-linux|Name of the autoscale rules for linux app plan|
 |minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
 |maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
-|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for ImportJob|
+|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for all functions|
 |eventHubSkuName|No|Basic|The SKU name of the EventHub Namespace|
 |eventHubSkuTier|No|Basic|The Tier name for the EventHub Namespace|
 |eventHubSkuCapacity|No|1|The SKU capacity for the EventHub Namespace|
@@ -242,6 +242,8 @@ The below table lists the parameters accepted by the ARM template.
 |dashboardSubnetName|Yes||The name of the subnet to be used to connect the dashboard resource|
 |functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
 |privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
-|windowsPlanName|No|invictus-{resourcePrefix}-appplan|The name for the windows plan which the azure functions will run on|
+|windowsPlanName|No|invictus-{resourcePrefix}-appplan|The name for the windows plan which the azure functions will run on instead of a consumption plan|
+|serviceWindowsPlanSkuName|No|S1|Name of the Windows App Plan size|
+|serviceWindowsPlanSkuCapacity|No|1|The SKU capacity setting  for the Windows App Plan|
 |autoscaleForPlanWindows|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name of the autoscale rules for windows app plan|
 |isPrivateDashboardVnet|No|false|If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.|
