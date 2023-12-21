@@ -156,13 +156,16 @@ The below table lists the parameters accepted by the ARM template.
 |transcoWebAppAlwaysOn|No|true|Always on Setting for WebApp|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
 |devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
-|enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
-|vnetName|No|&nbsp;|The name of the VNET on Azure|
-|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|aseName|No|&nbsp;|The name of the ASE on Azure|
-|aseResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the ASE is located|
-|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|sqlServerSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|invictusDataFactoryName|No|invictus-{resourcePrefix}-datafactory|The name of the Data factory service.|
+
+### VNET Specific Parameters
+
+|Parameter Name|Required for VNET|Default Value|Description|
+| --- | :---: | --- | --- |
+|enableVnetSupport|Yes|false|Used to toggle VNET functionality on or off|
+|vnetResourceGroupName|Yes|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|vnetName|Yes|&nbsp;|The name of the VNET resource|
+|keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
+|privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
