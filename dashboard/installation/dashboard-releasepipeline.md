@@ -229,19 +229,19 @@ The below table lists the parameters accepted by the ARM template.
 
 ### VNET Specific Parameters
 
-|Parameter Name|Required|Default Value|Description|
+|Parameter Name|Required for VNET|Default Value|Description|
 | --- | :---: | --- | --- |
-|enableVnetSupport|No|false|Used to toggle VNET functionality on or off|
-|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|vnetName|No|&nbsp;|The name of the VNET resource|
-|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|cosmosDbSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|eventHubSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|dashboardSubnetName|No||The name of the subnet to be used to connect the dashboard resource|
-|functionsSubnetName|No||The name of the subnet to be used to connect the azure function resources|
-|privateEndpointSubnetName|No||The name of the subnet to be used to connect the private endpoint resources|
+|enableVnetSupport|Yes|false|Used to toggle VNET functionality on or off|
+|vnetResourceGroupName|Yes|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|vnetName|Yes|&nbsp;|The name of the VNET resource|
+|keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|cosmosDbSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|eventHubSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|dashboardSubnetName|Yes||The name of the subnet to be used to connect the dashboard resource|
+|functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
+|privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
 |windowsPlanName|No|invictus-{resourcePrefix}-appplan|The name for the windows plan which the azure functions will run on|
 |autoscaleForPlanWindows|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name of the autoscale rules for windows app plan|
 |isPrivateDashboardVnet|No|false|If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.|
