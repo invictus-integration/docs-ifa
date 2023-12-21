@@ -26,7 +26,7 @@ Invictus includes functionality which allows all its resources to run within an 
     
   An ARM template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.json)
 
-- To be able to deploy the app code from an Azure DevOps pipeline:
+- To be able to deploy the app code from an Azure DevOps pipeline you will need:
   - A self hosted agent running on the same VNET with the following software intalled:
     - Powershell
     - Azure Powershell
