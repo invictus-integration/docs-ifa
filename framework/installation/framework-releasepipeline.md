@@ -116,6 +116,7 @@ The below table lists the parameters accepted by the ARM template.
 |matrixWebAppName|No|invictus-{resourcePrefix}-matrixapp|Name for the Matrix Web API|
 |transcoWebAppName|No|invictus-{resourcePrefix}-transcoapp|Name for the Transco Web API|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
+|serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
 |keyVaultEnablePurgeProtection|No|false|If true, enables key vault purge protection|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
