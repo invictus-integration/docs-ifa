@@ -171,6 +171,7 @@ The below table lists the parameters accepted by the ARM template.
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
 |serviceBusSkuName|No|Standard|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
+|keyVaultEnablePurgeProtection|No|false|If true, enables key vault purge protection|
 |servicePlanName|No|invictus-{resourcePrefix}-appplan-linux|Name for the service plan which will host the APIs|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
 |storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
