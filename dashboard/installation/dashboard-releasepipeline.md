@@ -169,7 +169,7 @@ The below table lists the parameters accepted by the ARM template.
 |JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
-|serviceBusSkuName|No|Standard|Name for the Service Bus SKU|
+|serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
 |keyVaultEnablePurgeProtection|No|false|If true, enables key vault purge protection|
 |servicePlanName|No|invictus-{resourcePrefix}-appplan-linux|Name for the service plan which will host the APIs|
