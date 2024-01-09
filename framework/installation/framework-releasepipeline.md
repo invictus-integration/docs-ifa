@@ -117,6 +117,7 @@ The below table lists the parameters accepted by the ARM template.
 |transcoWebAppName|No|invictus-{resourcePrefix}-transcoapp|Name for the Transco Web API|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
+|keyVaultEnablePurgeProtection|No|false|If true, enables key vault purge protection|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
 |blobContainerPrefix|No|invictus|Prefix set for blob containers for pubsub|
 |approvedMessageSizeInBytesKey|No|200000|The max allowed message size before pushing message to Blob when using PubSub|
