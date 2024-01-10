@@ -20,8 +20,8 @@ Alternatively, the following ARM template can be used:
   // Fixed GUID to make it idempotent
   "name": "[guid(subscription().subscriptionId, 'DashboardGatewayContribute')]",
   "properties": {
-    "description": "The Invictus DashboardGateway needs Contribute permissions on the Logic App resource group to display the contents of the message.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "description": "The Invictus DashboardGateway needs Logic App Contributor permissions on the Logic App resource group to display the contents of the message.",
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '87a39d53-fc1b-424a-814c-f7e04687dc9e')]",
     "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-dashboardgateway')), '2021-01-15', 'full').identity.principalId]"
   },
   "dependsOn": []
@@ -32,8 +32,8 @@ Alternatively, the following ARM template can be used:
   // Fixed GUID to make it idempotent
   "name": "[guid(subscription().subscriptionId, 'FlowHandlerJobContribute')]",
   "properties": {
-    "description": "The Invictus FlowHandler needs Contribute permissions on the Logic App resource group to display the contents of the message.",
-    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "description": "The Invictus FlowHandler needs Logic App Contributor permissions on the Logic App resource group to display the contents of the message.",
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '87a39d53-fc1b-424a-814c-f7e04687dc9e')]",
     "principalId": "[reference(resourceId(concat(parameters('infra').environment.customerShortName, '-', parameters('infra').environment.shortName, '-invictus'), 'Microsoft.Web/sites', concat('invictus-', parameters('infra').environment.resourcePrefix, '-flowhandlerjob')), '2021-01-15', 'full').identity.principalId]"
   },
   "dependsOn": []
