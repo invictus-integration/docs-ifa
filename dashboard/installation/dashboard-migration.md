@@ -4,8 +4,15 @@
 
 Below is some useful information for when users are upgrading their Invictus installation from V1 to V2. To update your build and release pipelines, please refer to the [build pipeline](dashboard-buildpipeline.md) and [release pipeline](dashboard-releasepipeline.md) guides.
 
-## Download Location
+## Build pipeline
 The storage container for Dashboard V2 is `dashboard-v2`, so update the `StorageContainerName` parameter you use in the build pipeline.
+
+## Release pipeline
+Make sure that the PowerShell script in the release pipeline which runs Deploy.ps1 has the following parameters:
+```
+    azurePowerShellVersion: LatestVersion
+    pwsh: false
+```
 
 ## Object ID Update
 
@@ -16,9 +23,6 @@ When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to
 Invictus V2 includes functionality to automatically deploy role assignments which were previously set manually. However, if these role assignments are already present, they will cause a conflict. In your Invictus resource group, remove any roles which are assigned to the Azure functions. Typically, this is just 1 role assignment: 
 
 - "Monitoring Contributor" rights for the FlowHandlerJob function for the Invictus resource group.
-
-If you previously has version 4.17 installed, you might have a lot of role assignments at the Invictus resource group level.
-You must remove all these role assignments. 
 
 ## Azure AD Setup
 
@@ -38,11 +42,6 @@ The data migration process forms part of the release pipeline. Please refer to [
 
 In addition to these values, the SQL server password **must** be stored as a secret in your Invictus Azure Key Vault with the name `invictussqlserverpassword`.
 
-Make sure that the PowerShell script in the release pipeline which runs Deploy.ps1 has the following parameters:
-```
-    azurePowerShellVersion: LatestVersion
-    pwsh: false
-```
 Thats it! The data migration will now run as part of your release pipeline. The resultant data in Cosmos DB will be validated against the original SQL data, with the validation results printed in the release logs. However it is still important to manually verify the migrated data. When complete, you will be able to login to the new Invictus V2 Dashboard with the same credentials as before.
 
 Once you are satisfied with the migrated data, it is advised to change the `PerformSqlDataMigration` script paramter to `0` so that the migration process is entirely skipped in subsequent releases.
@@ -57,15 +56,15 @@ The Invictus V2 release pipeline will create a new App Service dashboard resourc
 In addition to the flowhandlerjob function, in V2 also the dashboardgateway must have Logic App Contribute access on the resource group or subscription which contains the Logic Apps.
 See also [Access Control Rights](../accesscontrolrights.md)
 
-## Clear migrated AzureAD users from CosmosDB container
-After migration, you must delete all users with filter {"IsAadUser" : true} from the Users collection in the CosmosDB database.
-These users will be recreated at first login with the correct UserId.
-
 ## Common Issues When Migrating
 - `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`
 
   If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the dashboard pipeline only*.
 
-## Invictus artifacts deployment
+- `The role assignment already exists`
+
+  If you have role assignments conflicts during deployment, you might have multiple role assignments defined at the Invictus resource group. This case, remove all role assignments defined at the Invictus resource group level.
+ 
+## Invictus Configure Dashboard Script Update
 If you are using the PowerShell script Invictus-ConfigureDashboard.ps1 to deploy flows, etc, you must replace this script with the V2 version.
 This version can be found [here](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1)
