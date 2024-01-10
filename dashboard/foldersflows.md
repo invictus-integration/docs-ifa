@@ -8,15 +8,15 @@ The functional structure of the dashboard is like a directory structure containi
 
 ### Folder
 
-A folder is a collection/hierarchy of flows. Each folder can exist of unlimited flows.
+A folder is a collection/hierarchy of flows. Each folder can contain an unlimited number of flows.
 
 ### Subfolder
 
-Inside each folder, the user can create multiple subfolders which can exist of unlimited flows. **Each subfolder must have the folder as a parent, you cannot create a subfolder of a subfolder!**
+Inside each folder, the user can create multiple subfolders which can can contain an unlimited number of flows. A subfolder may also host other subfolders to further subdivide your directory structure.
 
 ### Flows
 
-Flows (= message chain) are an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value. Flows have a number of predefined properties where you are interested in that are shown in the results grid.
+Flows (= message chain) are an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value. Flows have a number of predefined properties which you are interested in that are shown in the results grid.
 
 ### Tree Structure
 
@@ -47,7 +47,7 @@ When creating a subfolder the user will have to specify the following informatio
 
 ### Update Folder
 
-Depending on its rights, a user can edit the following information:
+Depending on their rights, a user can edit the following information:
 
 * Folder name
 * Subfolder name
@@ -55,7 +55,7 @@ Depending on its rights, a user can edit the following information:
 
 ### Delete Folder
 
-Depending on its rights, a user can delete the following:
+Depending on their rights, a user can delete the following:
 
 * Folders
 * Subfolders
@@ -76,31 +76,27 @@ When creating a new flow the user will have to specify the following information
 * **Business properties**: each mapping type contains a list of fields or properties pertinent to that type.
 * **Settings**
   * Connected Dashboard: if the flow has multiple dashboards and it needs to connect to another dashboard then this needs to be checked.  For this setting to apply, the Connected Dashboard needs to be enabled by your Admin through the settings page of the dashboard in order to switch on this feature.
+  * Show milestone and event text: Checking this option will enable the flow milestone and event text data to be displayed.
+  * Custom resubmit/resume URLs: Check these options and provide the necessary URLs to use your own resume and resubmit logic.
 * **Folder**: attach a flow to a specific folder
 
-> ![create flow](../images/dsb-createflow.png)
+> ![create flow](../images/v2_dsb-createflow.png)
 
 ### Update Flow
 
-Depending on its rights, a user can edit the following information:
+Depending on their rights, a user can edit the following information:
 
 * Flow name
-* Flow settings: mappings, properties, folder, connected dashboard
+* Flow settings: mappings, properties, folder, connected dashboard, show milestone and event text, custom resume and resubmit URLs
 
 ### Delete Flow
 
-Depending on its rights, a user can delete the following:
+Depending on their rights, a user can delete the following:
 
 * Folders
 * Subfolders
 * Flows
 
-### Move Flow
-
-Depending on its rights, a user can move the following:
-
-* Flows
-
 ### Moving a Flow to another Folder
 
-If you need to move a flow from one folder to another one, you need to enter in the edit flow screen. At the bottom of tab 1 (Details), you have a drop down list of all the Folders and Sub Folders that you have rights to access. You just need to choose a folder which you want to move the current flow to and just click submit.
+A flow may be moved to another folder by entering the edit flow page and selecting the desired folder from the dropdown. Then save your changes.

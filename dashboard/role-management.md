@@ -2,22 +2,33 @@
 
 # Role Management
 
-There are four roles to control the user access to folders and flows and perform certain tasks whithin the dashboard:
+Roles in the invictus dashboard are separated into two categories: Global roles and folder level roles.
+
+## Global Roles
 
 ### System Admin
-Automatically has all rights and access to all flows and folders, users with this role can also manage users and grant/deny access on folder level to other users. This role is assigned from the user management page on the Dashboard when either adding or editing a user by indicating if such user is System Admin or not. When a user is not System Admin, the user will be assigned the role and permissions on folder level. 
+A user with this role automatically has all rights and access to all flows and folders. Users with this role can also manage users and grant/deny access on folder level to other users. System admins may also setup group permissions, view audits and set up dashboard settings. 
+
+### Non Admin
+A user with the non-admin role will have not have access to any folder or flow by default and cannot perform any system wide operations. However, these users may then be granted folder level roles per folder.
+
+## Folder Level Roles
 
 ### Folder Admin
-Does not have access to any folder/flow by default. This role is assigned to users on folder level by a System Admin user by selecting the users that will have Folder Admin privileges. This role can perform certain administrative tasks only within the folder where he/she is assigned to, and cannot manage users on the dashboard in general. 
+Does not have access to any folder/flow by default. This role is assigned to non-admin users at a folder level by a System Admin. This role can perform certain administrative tasks only within the folder where they are assigned to but cannot manage users on the dashboard in general. 
 
 ### Operator
-Does not have access to any folder/flow by default.  This role is assigned on folder level by selecting the users that need to have operator privileges on the folder.  Users with this role can perform certain tasks within the folder and its flows.
+Does not have access to any folder/flow by default.  This role is assigned to non-admin users at folder level.  Users with this role have access to perform certain tasks within the folder and its flows.
 
 ### Reader
-Does not have access to any folder/flow by default. This role is assgned on folder level by selecting the users that need to have reader privileges on the folder. Users with this role can only see certain information and perform limited tasks within the folders and its flows. 
+Does not have access to any folder/flow by default. This role is assigned to non-admin users at folder level. Users with this role only have permission to view flow data but cannot perform any operations. 
 
-The following tables contain the list of functionalities and the differences regarding privileges between the four roles:
+## Permissions per role
 
-![user mgmt](../images/dashboard/role1.JPG)
+### System Wide Functionality Permissions
 
-![user mgmt](../images/dashboard/role2.JPG)
+![user mgmt](../images/v2_role_management1.png)
+
+### Folder-Level Functionality Permissions
+
+![user mgmt](../images/v2_role_management2.png)

@@ -4,37 +4,28 @@
 
 ## Access user management page
 
-Only users with System Admin privileges can access this feature.
+In the top navbar, click on the Users button. Only users with the System Admin role may access this page.
 
-1. To access the user management screen you have to click on the icon in the upper right corner.
-
-![user mgmt](../images/dashboard/userman_1.JPG)
-
-2. You will now see an overview of all the Invictus Integration Dashboard users. You will also see the options to Add, edit or delete users. 
+This page displays an overview of all the Invictus Dashboard users. There is the option to Add, edit or delete users. 
 
 ### Create a user
 
-1. Click on the "Add User" button.
+1. Click on the "Add a new user" button.
 
-![user mgmt](../images/dashboard/userman_2.JPG)
-By default, the only available user after installing the dashboard is the user that configured it . By default, this user is a System Admin.
+![user mgmt](../images/v2_users1.png)
 
-2. Specify all the user information + user role (System Admin or Non admin). Non admin users will be assigned a specific role on folder level.
+2. Specify all the user information and the user role (System Admin or Non admin). Non Admin users can later be assigned a specific role at a folder level.
 
-![user mgmt](../images/dashboard/userman_3.JPG)
+![user mgmt](../images/v2_users2.png)
 
 ### Delete a user
 
-1. To delete a user click on the delete icon next to the user in the user list
-
-![user mgmt](../images/dashboard/userman_4.JPG)
+1. To delete a user click on the delete icon next to the user in the user list. Confirm your decision in the confirmation box.
 
 ### Edit a user role
 
-1. To edit a user click on the edit icon next to the user in the user list
-
-![user mgmt](../images/dashboard/userman_5.JPG)
+1. To edit a user click on the pencil edit icon next to the user in the user list
 
 2. You can change the role of the user and save the changes. 
 
-![user mgmt](../images/dashboard/userman_6.JPG)
+![user mgmt](../images/v2_users3.png)

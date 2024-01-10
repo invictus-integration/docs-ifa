@@ -1,4 +1,4 @@
-![logo](images/invictus.png)
+![logo](images/v2_logo_horizontal.png)
 
 **For smart business monitoring and better control of your integrations.**
 

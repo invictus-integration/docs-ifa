@@ -51,7 +51,7 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true" -AzureActiveDirectoryClientId "" -AzureActiveDirectoryTenantId "" -AzureActiveDirectoryClientSecret "" -AzureActiveDirectoryAudience "" -PerformSqlDataMigration 0 -isProvisionedCosmos 0'
 - stage: deploy_tst
   displayName: 'Deploy to Test'
   dependsOn: deploy_dev
@@ -72,7 +72,7 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true" -AzureActiveDirectoryClientId "" -AzureActiveDirectoryTenantId "" -AzureActiveDirectoryClientSecret "" -AzureActiveDirectoryAudience "" -PerformSqlDataMigration 0 -isProvisionedCosmos 0'
 
 - stage: deploy_acc
   displayName: 'Deploy to Acceptance'
@@ -94,7 +94,7 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true" -AzureActiveDirectoryClientId "" -AzureActiveDirectoryTenantId "" -AzureActiveDirectoryClientSecret "" -AzureActiveDirectoryAudience "" -PerformSqlDataMigration 0 -isProvisionedCosmos 0'
 - stage: deploy_prd
   displayName: 'Deploy to Production'
   dependsOn: deploy_acc
@@ -115,4 +115,4 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "P1V2" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -servicePlanSkuName "P1V2" -eventHubSkuName "Standard" -eventHubSkuTier "Standard" -enableStatisticsFunction "true" -AzureActiveDirectoryClientId "" -AzureActiveDirectoryTenantId "" -AzureActiveDirectoryClientSecret "" -AzureActiveDirectoryAudience "" -PerformSqlDataMigration 0 -isProvisionedCosmos 0'

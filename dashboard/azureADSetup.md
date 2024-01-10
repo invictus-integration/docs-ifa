@@ -1,42 +1,151 @@
-[home](../README.md) | [dashboard](dashboard.md) | [Azure AD Setup](azureADSetup.md)
+[Home](../README.md) | [Dashboard](dashboard.md) | [Azure AD Setup](azureADSetup.md)
 
 # Azure Active Directory Setup
 
-## Setting up the Azure Active Directory setup from the Azure Portal Dashboard 
+## Setting up Azure Active Directory from the Azure Portal Dashboard
 
-First, go to "Azure Active Directory" and from the left side menu click on the "App Registrations" and click on the "New Registration" button on top of the page. 
+To set up Azure Active Directory from the Azure Portal Dashboard, follow these steps:
 
-1. Enter a name for your app registration.
-2. Choose the "Accounts in any organizational directory (Any Azure AD directory - Multitenant)".
-3. Now for the "Redirect URI" enter links that you are going to use from where you are going to login from. Such as "https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login". This will ensure that from where you are loging is legit and no one can use your tenant id from another domain or so.
-4. Click on Register button.
+1. Go to **Azure Active Directory** and select **App Registrations** from the left side menu. Click the **New Registration** button at the top of the page.
 
-![aad1](../images/dashboard/azureAD/aad1.JPG)
+   ![Register AAD](../images/dashboard/azureAD/aad1.JPG)
 
-Now go to "Authentication" page from the left side menu and check the 2 check boxes which are "Access Tokens" and "ID Tokens" and click on Save button from the top.
+2. Provide a name for your app registration.
+3. Choose **Accounts in any organizational directory (Any Azure AD directory - Multitenant)**.
+4. The **Redirect URI** is the link to the front-end website of the dashboard (e.g., `https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login`). This is required for the Single Sign-On process on the login page.
+5. Click the **Register** button.
 
-![aad2](../images/dashboard/azureAD/aad2.JPG)
+## Step 1: App Registration Authentication
 
-Now go to the "Manifest" link from the left side menu and in the replyUrlsWithType node, insert the your url from which you are going to login plus * (wildcard), like the picture underneath.
+### Step 1.1: Add Redirect URI
 
-![aad3 ](../images/dashboard/azureAD/aad3.JPG)
+1. Go to the **Authentication** page from the left side menu.
+2. In the Redirect URI section, click on **Add URI**.
+3. Enter the link to your dashboard with the `/api/auth/callback/azure-ad` route (e.g. `https://invictus-dev-we-sft-invictusdashboard-v2.azurewebsites.net/api/auth/callback/azure-ad`)
 
-Go to Certificates & secrets from the side menu and create a secret. Click on the New client secret button and copy the value. This must be pass when you do a release along with the tenant id and client id.
+### Step 1.2: Grant Access Token Permissions
 
-![aad4](../images/dashboard/azureAD/aad4.JPG)
+To grant Access Token Permissions, follow these steps:
 
-Now go to "API Permissions" from the left side menu and click on "Add a permission" button. Click on "Microsoft Graph" and click on "Delegated permissions" and search for Directory. Choose the Directory.Read.All and click on Add permissions button. Now click the "Grant admin consent for Codit" and it must turn as Granted the status of the new permission you added. 
+1. Check the checkbox for **Access Tokens**.
 
-![aad8](../images/dashboard/azureAD/aad8.JPG)
+   ![Grant Access Token](../images/dashboard/azureAD/aad12.png)
 
-Now go back to "Azure Active Directory" and from the left side menu click on the "Enterprise Application" and search for the one you just created and click on it. Now from the left hand side, click on "Owners" and Add yourself or whoever you want to be the owner of the application.
 
-![aad5](../images/dashboard/azureAD/aad5.JPG)
+2. Click the **Save** button at the bottom.
 
-Now go to the "Permissions" page from the left side menu and click on the "Admin consent" "User consent" tab and click on the "Grant admin consent for Codit" button and continue with what it's telling you.
+## Step 2: Expose an API
 
-![aad6](../images/dashboard/azureAD/aad6.JPG)
+To expose an API, follow these steps:
 
-Once you are done from this, you are able to login from Invictus Dashboard. Obviously you need to provide the Tenant ID, Client ID and the client secret to the dashboard to connect your dashboard with the AAD.
+1. Go to **Expose an API**.
+2. Add the Application ID URI as `api://{client-id}` (also known as the application ID). You can find this in the **Overview** section.
+3. Click **Add a scope**.
 
-![aad7](../images/dashboard/azureAD/aad7.JPG)
+   ![Expose an API](../images/dashboard/azureAD/aad9.png)
+
+### Step 2.1: Add Scopes
+
+Fill in the form with the information shown in the above image, using **access_as_user** for each of the textboxes. Once finished, click **Add scope**.
+
+   ![Add Scope](../images/dashboard/azureAD/aad10.png)
+
+## Step 3: API Permissions
+
+To manage API permissions, follow these steps:
+
+1. Go to **API Permissions** from the left side menu.
+2. Click the **Add a permission** button.
+3. Select **Microsoft Graph** and choose **Delegated permissions**.
+4. Search for **Directory** and choose **Directory.Read.All**.
+5. Click **Add permissions**.
+6. Click **Grant admin consent for Codit**. The status of the new permission should change to **Granted**.
+
+![Grant consent to delegated / admin permissions](../images/dashboard/azureAD/aad8.JPG)
+
+### Step 4: API Permissions - Group Management 
+
+To Add Group Management APi Permissions follow these steps:
+
+1. Go to **API Permissions** from the left side menu.
+2. Click the **Add a permission** button.
+3. For each of the permissions listed, insert the name in search box and the permission will be displayed. Click on the permission to add.
+4. Click **Add permissions**.
+5. Click **Grant admin consent for Codit**. The status of the new permission should change to **Granted**.
+
+N.B - Some of the permissions requires Admin consent, this requires an admin privileged user to grant permissions.
+
+![API Permissions](../images/dashboard/aad_3.JPG)
+
+### API Permissions - Sending Mail Notifications for forgot password
+
+1. Go to **API Permissions** from the left side menu.
+2. Click the **Add a permission** button.
+3. Select **Microsoft Graph** and choose **Application permissions**.
+4. Search for **Mail** and choose **Mail.Send**.
+5. Click **Add permissions**.
+6. Click **Grant admin consent for Codit**. The status of the new permission should change to **Granted**.
+
+N.B - This permission requires Admin consent, this requires an admin privileged user to grant permissions.
+
+![API Permissions](../images/dashboard/azureAD/aad13.jpg)
+
+### API Permissions - Add Scope
+
+Click **Add a permission** again.
+1. Select **My APIs**.
+2. Click on the app registration name you created.
+3. Choose **access_as_user** from the permissions list.
+4. Click **Add permissions**.
+
+The image below shows the result of the above actions.
+
+![Add Scope to API Permissions](../images/dashboard/azureAD/aad11.png)
+
+## Step 5: Enterprise Application Setup
+
+To set up the enterprise application, follow these steps:
+
+1. Go back to **Azure Active Directory** and select **Enterprise Application** from the left side menu.
+2. Search for the application you just created and click on it.
+3. Click on **Owners** from the left hand side.
+4. Add yourself or the desired owner of the application.
+
+   ![Add Ownership to enterprise application](../images/dashboard/azureAD/aad5.JPG)
+
+## Step 6: Enterprise Application Permissions
+
+To manage enterprise application permissions, follow these steps:
+
+1. Go to the **Permissions** page from the left side menu.
+2. Click on the **Admin consent** or **User consent** tab.
+3. Click the **Grant admin consent for Codit** button and follow the instructions.
+
+   ![Grant consent permissions for enterprise applications](../images/dashboard/azureAD/aad6.JPG)
+
+## Step 7: Deploy Script Setup
+
+Once you have completed the steps above, you will need to provide some values to your release pipeline deploy script as parameters. These required values are: 
+
+- AzureActiveDirectoryClientId
+- AzureActiveDirectoryTenantId
+- AzureActiveDirectoryClientSecret
+- AzureActiveDirectoryAudience
+  
+The Client ID and Tenant ID can be copied from the App Registration Overview page.
+   ![Tenant and client information](../images/dashboard/azureAD/aad7.JPG)
+
+To obtain the Client Secret: 
+
+1. Go to **Certificates & Secrets** from the side menu.
+2. Create a new secret by clicking the **New client secret** button, and copy the generated value.
+
+   ![Certificates and Secrets](../images/dashboard/azureAD/aad4.JPG)
+
+To obtain the Audience:
+
+1. Go to **Expose an API** from the side menu.
+2. Copy the `Application ID URI` value. This is the Audience value.
+   
+![Audience Value](../images/dashboard/azureAD/aad15.jpg)
+   

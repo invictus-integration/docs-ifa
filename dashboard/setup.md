@@ -1,58 +1,46 @@
 [home](../README.md) | [dashboard](dashboard.md)
 
-# Dashboard Setup
+# Administrator Account Setup Guide
 
-To begin the one time setup of the dashboard, browse to `https://{yourdashboardurl}/setup`.
+Welcome, administrators! This guide is intended for those who are logging in for the first time on a new fresh installation of the system using this version. Please note that this guide is not applicable to administrators who are migrating from Invictus V1 to Invictus V2 as you will be able to log in with you old credentials.
 
-## Step 1 - Select Database
+## Administrator Account Credentials
 
-![step one](../images/setup-step1.png)
+During the deployment of the system, an administrator account has been generated for your initial login to the dashboard.
 
-|Field|Description|
-|--- |--- |
-|Server name|The name of your database server instance. If the database is an Azure SQL database make sure the servername is entered as follows: tcp:servername.database.windows.net,1433|
-|Username|The name of the user account to use for database authentication. If using default Username from ARM template use: InvictusFrameworkAdmin|
-|Password|The password for the user account to use for database authentication.|
-|Database|Select the database you want to connect to. By default coditcip will be selected, in a default setup you can leave this value|
+### Credentials
 
-## Step 2 - Authentication
+- **Username**: admin
 
-![step two](../images/setup-step2.png)
+To obtain the password for the administrator account, follow these steps:
 
-|Field|Description|
-|--- |--- |
-|Username|The name of the user to use to login. This can be an e-mail address.|
-|E-mail|The e-mail address of the user.|
-|First name|The first name of the user.|
-|Last name|The last name of the user.|
-|Password|The password for the user. Should consist of minimum 8 characters, which should include 1 uppercase, 1 number and 1 special character.|
+1. Go to the Azure Key Vault "secrets" page, where the password is stored.
 
-## Step 3 - Logging
+   ![Azure Key Vault secrets page](../images/dashboard/AdminAccount/adminAccount-1.jpg)
 
-![step three](../images/setup-step3.png)
+2. Locate and click on the "tempAdminPassword" field, then select the current version.
 
-|Field| Description |
-|--- |--- |
-|Logging directory|A directory that is available to write log files to. As default use: d:\home\site\wwwroot\logs|
-|Logging levels|There are 6 pre-defined logging levels available.|
+   ![secret property page version](../images/dashboard/AdminAccount/adminAccount-2.jpg)
 
-### Log levels
+3. Scroll to the bottom of the page and click on "Show Secret Value" to reveal the password.
 
-|Level|Description|
-|--- |--- |
-|Fatal|Highest level: important stuff down|
-|Error|For example application crashes / exceptions.|
-|Warn|Incorrect behavior but the application can continue|
-|Info|Normal behavior like mail sent, user updated profile etc.|
-|Debug|Executed queries, user authenticated, session expired|
-|Trace|Begin method X, end method X etc|
+   ![secret property page](../images/dashboard/AdminAccount/adminAccount-3.jpg)
 
-Logging targets: More information [here](https://github.com/nlog/nlog/wiki/Targets)
+4. Copy the password to use it for logging in with the administrator account.
 
-Levels can be customized: More information [here](https://github.com/NLog/NLog/wiki/Configuration-file)
+Now that you have the necessary credentials, follow the steps below to log in to the dashboard:
 
-## Step 4 - Summary
+1. Navigate to the dashboard by visiting `https://{yourdashboardurl}` in your web browser.
 
-![step four](../images/setup-step4.png)
+2. Enter the following credentials:
+   - **Username**: admin (as provided above)
+   - **Password**: (the password you copied from the Azure Key Vault)
 
-Click 'Finish configuration' to complete the setup and start initializing the dashboard, once the initialization is complete you will be redirected to the login page where you then can login with the user you created in step 2.
+   ![dashboard login page](../images/dashboard/AdminAccount/adminAccount-4.jpg)
+
+3. After successfully logging in, you will be prompted to reset your password to one of your choice.
+
+   ![dashboard reset password](../images/dashboard/AdminAccount/adminAccount-5.png)
+
+4. Congratulations! You have logged into the Invictus Dashboard for the first time. It is now recommended to create a new System Admin user personalized with your own email address.
+
