@@ -226,7 +226,8 @@ The below table lists the parameters accepted by the ARM template.
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
 |logicAppsImportJobErrorFilters|No|actionfailed|error filter for the import job|
 |invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
-|use32BitWorkerProcess |No|false|If set to true, webapps are deployed as 32bit|
+|use32BitWorkerProcess|No|false|If set to true, webapps are deployed as 32bit|
+|maxHttpHeaderSizeInBytes|No|24576|Maximum allowed HTTP header size for dashboard requests (in bytes)|
 
 ### VNET Specific Parameters
 
