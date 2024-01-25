@@ -179,6 +179,7 @@ The below table lists the parameters accepted by the ARM template.
 |servicePlanSkuCapacity|No|1|The SKU capacity setting  for the App Plan|
 |eventHubNamespaceName|No|invictus-{resourcePrefix}-evnm|Name for the Event Hub Namespace resource|
 |eventHubName|No|invictus-{resourcePrefix}-evhb|Name for the Event Hub created on the Namespace|
+|eventHubNameV2|No|invictus-{resourcePrefix}-evhb-v2|Name for the Event Hub for standard LA's created on the Namespace|
 |autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale-linux|Name of the autoscale rules for linux app plan|
 |minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
 |maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
