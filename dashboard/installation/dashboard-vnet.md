@@ -5,7 +5,11 @@ Invictus includes functionality which allows all its resources to run within an 
 ## Prerequisites
 
 - An Azure Virtual Network
-  - Including one or more subnets with the following services enabled
+  - Including three subnets, one each for:
+    - Private Endpoints
+    - Dashboard
+    - Functions     
+  - The subnets must have the following services enabled
     - Microsoft.AzureCosmosDB
     - Microsoft.EventHub
     - Microsoft.KeyVault
@@ -24,7 +28,7 @@ Invictus includes functionality which allows all its resources to run within an 
   - privatelink.table.cosmos.azure.com
   - privatelink.vaultcore.azure.net
     
-  An Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
+  A Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
 
 - To be able to deploy the app code from an Azure DevOps pipeline you will need:
   - A self hosted agent running on the same VNET with the following software intalled:
