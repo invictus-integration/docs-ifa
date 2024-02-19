@@ -29,9 +29,9 @@ resources:
 
 **Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
 
-Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+Also make sure to change the Bicep template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
 
-If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+If you need to overwrite more Bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
 Afterwards add the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
@@ -60,7 +60,7 @@ Add an Azure PowerShell task to each stage. This task will take care of the foll
 
 - Get the keyvault access policies, so they are preserved in consequent deployments.
 - Stop any datafactory triggers related to the framework.
-- ARM deployment.
+- Bicep deployment.
 - Start any datafactory triggers.
 - Deployment of the dashboard.
 - Deployment of the import job.
@@ -147,9 +147,9 @@ Always evaluate your application's needs and monitor performance to ensure the c
 |WorkflowEvent|2000|Yes|
 
 
-## ARM Template Parameters
+## Bicep Template Parameters
 
-The below table lists the parameters accepted by the ARM template.
+The below table lists the parameters accepted by the Bicep template.
 
 |Parameter Name|Required|Default Value|Description|
 | --- | :---: | --- | --- |
