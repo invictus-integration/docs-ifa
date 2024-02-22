@@ -16,6 +16,8 @@ If you want to add a new user, go to **Users** and click the **New user** button
 
 ## Step 3: Sync Groups on Invictus
 
+The Sync Groups function operates by retrieving the group memberships of users who have logged in at least once via Active Directory login. This process gathers all the groups that users are members of. In case a specific group is not found, a member of that group needs to log in via Active Directory login. Afterward, the Sync Groups process must be run again to obtain the groups of that particular member and the groups of other members who have previously logged in.
+
 **Note: An app registration should be created before assigning group permissions**
 
 Click on the **Groups** icon located in the top-middle menu:

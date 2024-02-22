@@ -4,6 +4,16 @@
 
 Below is some useful information for when users are upgrading their Invictus installation from V1 to V2. To update your build and release pipelines, please refer to the [build pipeline](dashboard-buildpipeline.md) and [release pipeline](dashboard-releasepipeline.md) guides.
 
+## Build pipeline
+The storage container for Dashboard V2 is `dashboard-v2`, so update the `StorageContainerName` parameter you use in the build pipeline.
+
+## Release pipeline
+Make sure that the PowerShell script in the release pipeline which runs Deploy.ps1 has the following parameters:
+```
+    azurePowerShellVersion: LatestVersion
+    pwsh: false
+```
+
 ## Object ID Update
 
 When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to the release pipeline should be updated. This must be changed to the **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection (not of the App Registration). This change is required for both Dashboard and Framework pipelines.
@@ -41,7 +51,20 @@ The Invictus V2 release pipeline will create a new App Service dashboard resourc
 
 **NOTE: By doing this you will lose access to the old dashboard and the ability to view and query its historic data.**
 
+## Add Role Assignments
+
+In addition to the flowhandlerjob function, in V2 also the dashboardgateway must have Logic App Contribute access on the resource group or subscription which contains the Logic Apps.
+See also [Access Control Rights](../accesscontrolrights.md)
+
 ## Common Issues When Migrating
 - `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`
 
   If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the dashboard pipeline only*.
+
+- `The role assignment already exists`
+
+  If you have role assignments conflicts during deployment, you might have multiple role assignments defined at the Invictus resource group. This case, remove all role assignments defined at the Invictus resource group level.
+ 
+## Invictus Configure Dashboard Script Update
+If you are using the PowerShell script Invictus-ConfigureDashboard.ps1 to deploy flows, etc, you must replace this script with the V2 version.
+This version can be found [here](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1)
