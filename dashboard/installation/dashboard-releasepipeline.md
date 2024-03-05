@@ -16,7 +16,7 @@ Make sure the Project Collection Build Service has Administrator access to these
 
 ## YAML Release Pipeline
 Add the files and folders from [this](pipelines) location to your DevOps repo. 
-This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/v2-documentation/dashboard/installation/pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
 ``` yaml
 resources:
   pipelines:
@@ -29,11 +29,11 @@ resources:
 
 **Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
 
-Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+Also make sure to change the Bicep template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
 
-If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+If you need to overwrite more Bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
-Afterwards add the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/v2-documentation/dashboard/installation/pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
+Afterwards add the [dashboard.release.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
 ## Classic Release Pipeline
 Create a new release pipeline, starting with an empty template, with this naming: `{prefix}.Invictus.Dashboard`.
@@ -60,7 +60,7 @@ Add an Azure PowerShell task to each stage. This task will take care of the foll
 
 - Get the keyvault access policies, so they are preserved in consequent deployments.
 - Stop any datafactory triggers related to the framework.
-- ARM deployment.
+- Bicep deployment.
 - Start any datafactory triggers.
 - Deployment of the dashboard.
 - Deployment of the import job.
@@ -147,9 +147,9 @@ Always evaluate your application's needs and monitor performance to ensure the c
 |WorkflowEvent|2000|Yes|
 
 
-## ARM Template Parameters
+## Bicep Template Parameters
 
-The below table lists the parameters accepted by the ARM template.
+The below table lists the parameters accepted by the Bicep template.
 
 |Parameter Name|Required|Default Value|Description|
 | --- | :---: | --- | --- |
@@ -169,18 +169,21 @@ The below table lists the parameters accepted by the ARM template.
 |JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
+|serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
-|servicePlanName|No|invictus-{resourcePrefix}-appplan|Name for the service plan which will host the APIs|
+|keyVaultEnablePurgeProtection|No|null|If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
+|servicePlanName|No|invictus-{resourcePrefix}-appplan-linux|Name for the service plan which will host the APIs|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
 |storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
 |servicePlanSkuName|No|S1|Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
 |servicePlanSkuCapacity|No|1|The SKU capacity setting  for the App Plan|
 |eventHubNamespaceName|No|invictus-{resourcePrefix}-evnm|Name for the Event Hub Namespace resource|
 |eventHubName|No|invictus-{resourcePrefix}-evhb|Name for the Event Hub created on the Namespace|
-|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name for the autoscale function|
+|eventHubNameV2|No|invictus-{resourcePrefix}-evhb-v2|Name for the Event Hub for standard LA's created on the Namespace|
+|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale-linux|Name of the autoscale rules for linux app plan|
 |minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
 |maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
-|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for ImportJob|
+|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for all functions|
 |eventHubSkuName|No|Basic|The SKU name of the EventHub Namespace|
 |eventHubSkuTier|No|Basic|The Tier name for the EventHub Namespace|
 |eventHubSkuCapacity|No|1|The SKU capacity for the EventHub Namespace|
@@ -223,14 +226,27 @@ The below table lists the parameters accepted by the ARM template.
 |dataCleanupMaxProcessingRows|No|5000|Maximum nr of rows to cleanup|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
 |logicAppsImportJobErrorFilters|No|actionfailed|error filter for the import job|
-|enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
-|vnetName|No|&nbsp;|The name of the VNET on Azure|
-|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|aseName|No|&nbsp;|The name of the ASE on Azure|
-|aseResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the ASE is located|
-|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
 |invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
-|use32BitWorkerProcess |No|false|If set to true, webapps are deployed as 32bit|
+|use32BitWorkerProcess|No|false|If set to true, webapps are deployed as 32bit|
+|maxHttpHeaderSizeInBytes|No|24576|Maximum allowed HTTP header size for dashboard requests (in bytes)|
 
+### VNET Specific Parameters
+
+|Parameter Name|Required for VNET|Default Value|Description|
+| --- | :---: | --- | --- |
+|enableVnetSupport|Yes|false|Used to toggle VNET functionality on or off|
+|vnetResourceGroupName|Yes|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|vnetName|Yes|&nbsp;|The name of the VNET resource|
+|keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|cosmosDbSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|eventHubSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|dashboardSubnetName|Yes||The name of the subnet to be used to connect the dashboard resource|
+|functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
+|privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
+|windowsPlanName|No|invictus-{resourcePrefix}-appplan|The name for the windows plan which the azure functions will run on instead of a consumption plan|
+|serviceWindowsPlanSkuName|No|S1|Name of the Windows App Plan size|
+|serviceWindowsPlanSkuCapacity|No|1|The SKU capacity setting  for the Windows App Plan|
+|autoscaleForPlanWindows|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name of the autoscale rules for windows app plan|
+|isPrivateDashboardVnet|No|false|If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.|
