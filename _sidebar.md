@@ -51,6 +51,7 @@
     * [XSD validator](/framework/components/xsd-validator.md)
     * [Regex translator](/framework/components/regextranslation.md)
     * [XML/Json convertor](/framework/components/xmljsonconverter.md)
+    * [Sequence controller](/framework/components/sequencecontroller.md)
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
     * [DataFactory diagnostics](/framework/datafactorydiagnostics.md) 
