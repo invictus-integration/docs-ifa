@@ -112,7 +112,7 @@ A JSON Transco config file is required to specify details about the instruction 
     			"useCaching": [If true, config file is cached],
     			"cachingTimeout": [Cache timeout timespan]
     		},
-                "indentResult": [If true, transco results will be formatted and indented]
+                     "indentResult": [If true, transco results will be formatted and indented]
     	}
     }
 
