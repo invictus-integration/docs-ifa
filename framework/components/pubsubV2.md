@@ -26,4 +26,4 @@ The acknowledge function is used to pick up a message via its sequence number (r
 ---
 
 
-*This was done due to restrictions within the modern Azure Service Bus SDK's which impose that a message can only be settled by the same receiver which received the message. Deferring a message allows it to be picked up by any receiver.
+*This was done due to restrictions within the modern Azure Service Bus SDK's which impose that a message can only be settled by the same receiver instance which received the message. Deferring a message allows it to be picked up by any receiver.
