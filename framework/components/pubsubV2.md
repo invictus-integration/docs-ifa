@@ -36,6 +36,7 @@ Once a message has been received, it is then deferred so that the deferred messa
 - TimeoutMilliseconds: The maximum amount of time the receiver should wait before it receives any messages. Default = 60000
 - BatchSize: The maximum amount of messages to receive at once. Default = 10
 - ShouldDeleteOnReceive: If true, messages will be deleted upon retrieval. Default = false
+- SkipSubscriptionUpsert: If true, the function will not run the subscription and filter rule upsert logic.
 
 ## Acknowledge
 
@@ -60,3 +61,11 @@ The acknowledge function is used to pick up a message via its sequence number (r
 
 
 *This was done due to restrictions within the modern Azure Service Bus SDK's which impose that a message can only be settled by the same receiver instance which received the message. Deferring a message allows it to be picked up by any receiver.
+
+## General Info
+
+- Default topic name: `pubsubv2router`.
+- Default claim-checked messages blob container name: `invictuspubsubv2router`.
+- Subscription filter rules are assigned the same name as the subscription.
+- Default message time to live: 30 days
+- Default subscription lock timeout: 1 minute
