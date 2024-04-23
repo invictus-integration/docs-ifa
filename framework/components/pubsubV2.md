@@ -38,6 +38,28 @@ Once a message has been received, it is then deferred so that the deferred messa
 - ShouldDeleteOnReceive: If true, messages will be deleted upon retrieval. Default = false
 - SkipSubscriptionUpsert: If true, the function will not run the subscription and filter rule upsert logic.
 
+### Subscribe Response Example
+
+```
+[
+    {
+        "subscription": "AllMessages",
+        "content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+        "context": {
+            "x-applicationName": "InvoiceApp",
+            "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
+            "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
+            "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
+            "x-ms-client-tracking-id": "test",
+            "Diagnostic-Id": "00-0cc7ed09eeaa51b0e835d90890aefb60-b0a02deac9f6fe6d-00"
+        },
+        "sequenceNumber": 1
+    },
+    ...
+]
+```
+
+
 ## Acknowledge
 
 The acknowledge function is used to pick up a message via its sequence number (returned by the subscribe). The message is then settled via one of the available settle methods:
