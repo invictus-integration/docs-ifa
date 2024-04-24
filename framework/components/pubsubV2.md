@@ -1,6 +1,6 @@
 # PubSub V2
 
-PubSub has been rewritten in .Net 6.0 to modernise it and implement the latest Microsoft SDKs. This function is used to send messages to a Service Bus Topic. The Subscribe function can then be used to receive the appropriate messages based on a filter. Finally, messages may then be settled (acknowledged) once processing is complete.
+PubSub has been redeveloped to modernise it and implement the latest Microsoft SDKs. This function is used to send messages to a Service Bus Topic. The Subscribe function can then be used to receive the appropriate messages based on a filter. Finally, messages may then be settled (acknowledged) once processing is complete.
 
 ## Publish
 
@@ -53,7 +53,7 @@ Once a message has been received, it is then deferred so that the deferred messa
             "x-ms-client-tracking-id": "test",
             "Diagnostic-Id": "00-0cc7ed09eeaa51b0e835d90890aefb60-b0a02deac9f6fe6d-00"
         },
-        "sequenceNumber": 1
+        "sequenceNumber": 99
     },
     ...
 ]
