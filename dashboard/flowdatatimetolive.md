@@ -10,3 +10,7 @@ The TTL value must be set by passing a positive integer value to the `FlowDataTT
 which the pipeline will not execute without, therefore you will have to choose an appropriate value for your scenario. 
 
 The TTL value can later be updated by passing a different integer to the `FlowDataTTLInDays` parameter. The previous TTL index will be automatically dropped and recreated with the new value.
+
+## First time run
+
+The first time Invictus V2 is updated to include the TTL functionality, there may be a large accumulation of outdated records which will require deletion (depending on your scenario). This could cause a high load on the CosmosDB. Therefore, we recommend that such an upgrade takes place during the best off-peak hours for your system.
