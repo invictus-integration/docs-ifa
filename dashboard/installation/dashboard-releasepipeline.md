@@ -92,6 +92,7 @@ The following script arguments are used in the deploy script:
   - AzureActiveDirectoryClientSecret (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup). Leave empty if AD will be disabled. 
   - AzureActiveDirectoryAudience (mandatory): Value can be obtained by following this guide: [Azure AD Setup](https://invictus-integration.github.io/docs-ifa/#/dashboard/azureADSetup). Leave empty if AD will be disabled.
   - PerformSqlDataMigration (mandatory): If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](https://invictus-integration.github.io/docs-ifa/#/dashboard/installation/dashboard-migration) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
+  - FlowDataTTLInDays (mandatory): A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flowdatatimetolive.md).
   - isProvisionedCosmos (optional): If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
   - isAdDisabled (optional): If the value is 1, the option to log into the dashboard with AAD will be removed.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
@@ -159,6 +160,7 @@ The below table lists the parameters accepted by the Bicep template.
 |azureActiveDirectoryClientSecret|Yes||&nbsp;|Required for AD Login|
 |AzureActiveDirectoryAudience|Yes||&nbsp;|Required for AD Login|
 |devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
+|FlowDataTTLInDays|Yes||A positive integer value which represents the amount of days flow data can live in the database|
 |apiKey1|No|Generated value|The value used for basic authentication for the APIs|
 |apiKey2|No|Generated value|The value used for basic authentication for the APIs|
 |invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
