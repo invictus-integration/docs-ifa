@@ -16,6 +16,8 @@ The parameters of the SQL query can be populated from 3 sources:
  - Request context
  - Fixed value
 
+The SQL query result will inserted at the specified `destination` XPath or JPath. For XPaths ending at an attribute, e.g. `/persons/person/@name`, the value will be inserted in that attribute. Otherwise, it will be inserted in the inner text.
+
 **XML Transformation**
 
 Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation.  Any required assemblies and dependencies used by the transformation can also be specfied, while the respective DLL files are to be in the storage account.
