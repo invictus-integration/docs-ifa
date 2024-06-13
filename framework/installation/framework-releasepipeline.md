@@ -29,9 +29,9 @@ resources:
 
 **Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
 
-Also make sure to change the ARM template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
+Also make sure to change the Bicep template parameters. In these example files we are deploying to DEV, TST and ACC using a `B1` service plan SKU and a `P1V2` service plan SKU to PRD. Make sure to change and parameterize this according to your needs.
 
-If you need to overwrite more ARM Template parameters make sure to add this to the `deployScriptParameters`. A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+If you need to overwrite more Bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
 Afterwards add the [framework.release.yaml](./pipelines/framework.release.yaml) in your DevOps environment as a pipeline.
 
@@ -62,7 +62,7 @@ Add an Azure PowerShell task to each stage. This task will take care of the foll
 
 - Get the keyvault access policies, so they are preserved in consequent deployments.
 - Stop any datafactory triggers related to the framework.
-- ARM deployment.
+- Bicep deployment.
 - Start any datafactory triggers.
 - Deployment of the framework components.
 
@@ -81,12 +81,12 @@ Use the following arguments for the fields of the azure powershell task:
   - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
-  - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
+  - AdditionalTemplateParameters (optional): Additional named parameters for the Bicep template you wish to override. More on this below.
 - **Azure PowerShell Version**: Specify other version : **2.6.0**
 
 **NOTE:** When passing the ApiKey1 and ApiKey2 to the Deploy.ps as arguments, please remember to enclose them in single quotes ''. This prevents any operator characters from breaking the ps script.
 
-The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-servicePlanSkuName "S1"` to the arguments of the powershell script.
+The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-servicePlanSkuName "S1"` to the arguments of the powershell script.
 
 > Note that **accessPolicies** are overridden by the script, so no need to include that in the arguments.
 
@@ -96,11 +96,11 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
 ```
 
-A complete list of ARM Template parameters can be found [here](#ARM-Template-Parameters). 
+A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
-## ARM Template Parameters
+## Bicep Template Parameters
 
-The below table lists the parameters accepted by the ARM template.
+The below table lists the parameters accepted by the Bicep template.
 
 |Parameter Name|Required|Default Value|Description|
 | --- | :---: | --- | --- |
@@ -116,7 +116,9 @@ The below table lists the parameters accepted by the ARM template.
 |matrixWebAppName|No|invictus-{resourcePrefix}-matrixapp|Name for the Matrix Web API|
 |transcoWebAppName|No|invictus-{resourcePrefix}-transcoapp|Name for the Transco Web API|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
+|serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
+|keyVaultEnablePurgeProtection|No|null|If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
 |blobContainerPrefix|No|invictus|Prefix set for blob containers for pubsub|
 |approvedMessageSizeInBytesKey|No|200000|The max allowed message size before pushing message to Blob when using PubSub|
@@ -156,13 +158,16 @@ The below table lists the parameters accepted by the ARM template.
 |transcoWebAppAlwaysOn|No|true|Always on Setting for WebApp|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
 |devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
-|enableVnetSupport|No|0|this value is used for conditions within the ARM template to switch between non VNET and VNET installation. The parameters below are ignored if this value is set to 0|
-|vnetName|No|&nbsp;|The name of the VNET on Azure|
-|vnetResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|aseName|No|&nbsp;|The name of the ASE on Azure|
-|aseResourceGroupName|No|&nbsp;|The name of the resource group on Azure where the ASE is located|
-|keyVaultSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|sqlServerSubnets|No|[]|An array of string. The values need to match the subnet names on the VNET|
-|invictusDataFactoryName|No|invictus-{resourcePrefix}-datafactory|The name of the Data factory service.|
+
+### VNET Specific Parameters
+
+|Parameter Name|Required for VNET|Default Value|Description|
+| --- | :---: | --- | --- |
+|enableVnetSupport|Yes|false|Used to toggle VNET functionality on or off|
+|vnetResourceGroupName|Yes|&nbsp;|The name of the resource group on Azure where the VNET is located|
+|vnetName|Yes|&nbsp;|The name of the VNET resource|
+|keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
+|functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
+|privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|

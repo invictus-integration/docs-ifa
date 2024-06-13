@@ -8,6 +8,7 @@
     * [Build Pipeline](/dashboard/installation/dashboard-buildpipeline.md)
     * [Release Pipeline :rocket:](/dashboard/installation/dashboard-releasepipeline.md)
     * [Migration Guide](/dashboard/installation/dashboard-migration.md)
+    * [VNET Support](/dashboard/installation/dashboard-vnet.md)
     * [Azure Active Directory Setup](/dashboard/azureADSetup.md)
     * [Group Management Azure Setup](/dashboard/groupmanagement.md)
   * Frontend Documentation
@@ -50,6 +51,7 @@
     * [XSD validator](/framework/components/xsd-validator.md)
     * [Regex translator](/framework/components/regextranslation.md)
     * [XML/Json convertor](/framework/components/xmljsonconverter.md)
+    * [Sequence controller](/framework/components/sequencecontroller.md)
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
     * [DataFactory diagnostics](/framework/datafactorydiagnostics.md) 
