@@ -110,7 +110,8 @@ The MessageId property in the Publish will be used for duplicate detection. This
     * The previous Subscribe connector returns the subscription value supplied as a parameter, as output, use that in the acknowledge connector to avoid typing the wrong subscription value
     * Lock token is also supplied with the data returned by the Subscribe Connector
     * Choose the AcknowledgeType, normally it would always be Complete
-    * Set IgnoreLockLost exception if you do not want to throw an error if the lock is not found
+    * Set IgnoreLockLostException if you do not want to throw an error if the lock is not found. For example in case of a Resubmit of the Logic App.
+    * Set the MessageReadTime to @trigger()['startTime'] when IgnoreLockLost=true and you want to avoid duplicate messages. Invictus will resend the message when it has not received an Acknowledgement within the lock timeout. By setting this parameter, the Acknowledge will not ignore the LockLostException if this startTime is more than the set lock timeout on the message (default 1 minute). The exception should be catched and handled.
     * Set the authentication the same as you did in the previous connectors 
 
       ![acknowledge](../../images/pubsub-ackconnector.png)
