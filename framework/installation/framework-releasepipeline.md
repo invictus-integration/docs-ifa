@@ -171,3 +171,7 @@ The below table lists the parameters accepted by the Bicep template.
 |serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
 |functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
 |privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
+|disableStorageAccountPublicNetworkAccess|No|false|If true, the Invictus storage account will not be accessible from a public network.|
+|storageAccountMinimumTLSVersion |No|TLS1_2|Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2|
+|dnsZoneSubscriptionId|No|Subscription ID of scope|The subscription ID of the private DNS zones.|
+|dnsZoneResourceGroupName|No|VNET RG name|The resource group name of where the private DNS zones are located.|
