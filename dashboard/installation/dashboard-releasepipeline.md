@@ -252,3 +252,7 @@ The below table lists the parameters accepted by the Bicep template.
 |serviceWindowsPlanSkuCapacity|No|1|The SKU capacity setting  for the Windows App Plan|
 |autoscaleForPlanWindows|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name of the autoscale rules for windows app plan|
 |isPrivateDashboardVnet|No|false|If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.|
+|disableStorageAccountPublicNetworkAccess|No|false|If true, the Invictus storage account will not be accessible from a public network.|
+|storageAccountMinimumTLSVersion |No|TLS1_2|Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2|
+|dnsZoneSubscriptionId|No|Subscription ID of scope|The subscription ID of the private DNS zones.|
+|dnsZoneResourceGroupName|No|VNET RG name|The resource group name of where the private DNS zones are located.|
