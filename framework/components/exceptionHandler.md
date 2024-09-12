@@ -177,3 +177,56 @@ A good way to implement the Exception Handler is to create a common exception ha
 See an example of how to call the common exception handler Logic App and process the response:
 
 ![logic-app](../../images/exceptionhandler-logic-app.png)
+
+The code for the `Scope Exception Handling` is shown below, pay attention to the `Terminate` action as this uses the information from the Exception Handler function and is nicely shown in the Invictus for Azure dashboard.
+
+![dashboard](../../images/exceptionhandler-logic-app-dashboard.png)
+
+``` json
+"Scope_ExceptionHandling": {
+  "actions": {
+	"ResolveException": {
+	  "inputs": {
+		"subscribe": {
+		  "body": {
+			"callbackurl": "@{listCallbackUrl()}",
+			"logicApp": "@{workflow().name}",
+			"resourceGroup": "@{parameters('resourceGroupName')}",
+			"run": "@{workflow()['run']['name']}",
+			"subscription": "@{parameters('subscriptionId')}",
+			"correlationId": "@trigger().clientTrackingId"
+		  },
+		  "method": "POST",
+		  "uri": "[listCallbackUrl(resourceId(variables('exceptionHandlerResourceGroupName'), 'Microsoft.Logic/workflows/triggers', variables('exceptionHandlerLogicAppName'), 'manual'), providers('Microsoft.Logic', 'workflows').apiVersions[0]).value]"
+		},
+		"unsubscribe": {}
+	  },
+	  "runAfter": {},
+	  "type": "HttpWebhook"
+	},
+	"Terminate": {
+	  "inputs": {
+		"runError": {
+		  "code": "@{if(equals(body('ResolveException').Status, 'Failed'), body('ResolveException').code, null)}",
+		  "message": "@{if(equals(body('ResolveException').Status, 'Failed'), body('ResolveException').description, null)}"
+		},
+		"runStatus": "@{body('ResolveException').Status}"
+	  },
+	  "runAfter": {
+		"ResolveException": [
+		  "Succeeded"
+		]
+	  },
+	  "type": "Terminate"
+	}
+  },
+  "runAfter": {
+	"Scope": [
+	  "Failed",
+	  "Skipped",
+	  "TimedOut"
+	]
+  },
+  "type": "Scope"
+}
+```
