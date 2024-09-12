@@ -168,6 +168,12 @@ This will result in the following response:
 
 ## Guideline On How To Implement The Exception Handler
 
-A good way to implement the Exception Handler is to create a common Exception Handler Logic App that will call the Exception Handler function and return the response. This common Logic App can then be called by all other Logic Apps, this is a good way to centralize your exception handling functionality.
+A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler function and return the response. This common Logic App can then be called by all other Logic Apps, this is a nice way to centralize your exception handling functionality.
+
+:bulb: use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.
 
 ![diagram](exceptionhandler.drawio.svg)
+
+See an example of how to call the common exception handler Logic App and process the response:
+
+![logic-app](../../images/exceptionhandler-logic-app.png)
