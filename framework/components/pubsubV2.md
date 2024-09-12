@@ -75,9 +75,11 @@ The acknowledge function is used to pick up a message via its sequence number (r
 {
     "Subscription": "subscriptionName",
     "AcknowledgementType":"Complete",
-    "SequenceNumber": 99
+    "SequenceNumber": 99,
+    "IgnoreNotFoundException": false,
 }
 ```
+The acknowledge function will fail if the deferred message could not be found. If this is normal and expected for your scenario, the error can be ignored by setting the `IgnoreNotFoundException` property to `true`.
 
 ---
 
