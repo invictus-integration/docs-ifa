@@ -170,4 +170,4 @@ This will result in the following response:
 
 A good way to implement the Exception Handler is to create a common Exception Handler Logic App that will call the Exception Handler function and return the response. This common Logic App can then be called by all other Logic Apps, this is a good way to centralize your exception handling functionality.
 
-![diagram](.\exceptionhandler.drawio.svg)
+![diagram](exceptionhandler.drawio.svg)
