@@ -104,7 +104,7 @@ These translations must be set up in the `RegexTranslator` table in your Invictu
 Some examples:
 
 | PartitionKey                                   | RowKey | MatchPattern                                                                    | OutputPattern                                                |
-|------------------------------------------------|------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+|------------------------------------------------|--------|---------------------------------------------------------------------------------|--------------------------------------------------------------|
 | cdt-dev-we-somelogicapp.CallHTTP               | 1      | No such host is known                                                           | code(Availability)Application is not reachable               |
 | cdt-dev-we-somelogicapp.Create                 | 1      | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found |
 | cdt-dev-we-somelogicapp.ParseJSON              | 1      | Invalid JSON schema type: int                                                   | code(Data)The field is not an integer                        |
@@ -152,7 +152,7 @@ Let's take an example where we have a Logic App that picks up a file from a netw
 To achieve this we can configure the translation as follows:
 
 | PartitionKey                       | RowKey | MatchPattern               | OutputPattern |
-|------------------------------------|-------------------------------------|---------------|
+|------------------------------------|--------|----------------------------|---------------|
 | cdt-dev-we-somelogicapp.DeleteFile | 1      | There is no file with name | ignore        |
 
 This will result in the following response:
