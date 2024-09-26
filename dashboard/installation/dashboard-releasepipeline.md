@@ -166,7 +166,7 @@ The below table lists the parameters accepted by the Bicep template.
 |invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
 |cosmosAccountName|No|invictus-{resourcePrefix}-cosmos-serverless or invictus-{resourcePrefix}-cosmos-provisoned|Name for Cosmos account|
 |cosmosDatabaseName|No|InvictusDashboard|Name for Cosmos database|
-|isProvisionedCosmos|No|0|isProvisionedCosmos true or false|
+|isProvisionedCosmos|Yes|0|isProvisionedCosmos true or false|
 |isAdDisabled|No|0|isAdDisabled true or false|
 |JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
