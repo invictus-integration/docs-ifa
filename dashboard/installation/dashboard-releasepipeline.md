@@ -191,6 +191,7 @@ The below table lists the parameters accepted by the Bicep template.
 |eventHubSkuCapacity|No|1|The SKU capacity for the EventHub Namespace|
 |eventHubAutoInflate|No|false|The EventHub setting to enable auto-inflate|
 |eventHubMaxThroughputUnits|No|0|Max throughput setting for EventHub|
+|eventHubMessageRetentionInDays |No|1|The number of days EventHub will retain messages. Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention.|
 |mTriggerCpuTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
 |mTriggerCpuTimeGrainAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
 |mTriggerRamTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
