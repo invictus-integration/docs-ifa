@@ -144,9 +144,9 @@ Always evaluate your application's needs and monitor performance to ensure the c
 |Groups|500|No|
 |Statistics|500|No|
 |FolderFlows|500|No|
-|FlowData| 2000|Yes|
+|FlowData|2000|Yes|
 |WorkflowEvent|2000|Yes|
-
+|MessageContent|2000|Yes|
 
 ## Bicep Template Parameters
 
@@ -166,10 +166,14 @@ The below table lists the parameters accepted by the Bicep template.
 |invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
 |cosmosAccountName|No|invictus-{resourcePrefix}-cosmos-serverless or invictus-{resourcePrefix}-cosmos-provisoned|Name for Cosmos account|
 |cosmosDatabaseName|No|InvictusDashboard|Name for Cosmos database|
-|isProvisionedCosmos|No|0|isProvisionedCosmos true or false|
+|isProvisionedCosmos|Yes|0|isProvisionedCosmos true or false|
 |isAdDisabled|No|0|isAdDisabled true or false|
 |JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
 |appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
+|alertingAppInsightsName|No|invictus-{resourcePrefix}-alertingappins|Name for the Application Insights resource used for alerting|
+|importjobAppInsightsName|No|invictus-{resourcePrefix}-importjobappins|Name for Application Insights used by importjob|
+|AppInsightsSamplingPercentage|No|1|The sampling percentage for the Application Insights resource|
+|ImportJobAppInsightsSamplingPercentage|No|1|The sampling percentage for the import job Application Insights resource|
 |serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
 |serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
 |keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
@@ -191,6 +195,7 @@ The below table lists the parameters accepted by the Bicep template.
 |eventHubSkuCapacity|No|1|The SKU capacity for the EventHub Namespace|
 |eventHubAutoInflate|No|false|The EventHub setting to enable auto-inflate|
 |eventHubMaxThroughputUnits|No|0|Max throughput setting for EventHub|
+|eventHubMessageRetentionInDays |No|1|The number of days EventHub will retain messages. Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention.|
 |mTriggerCpuTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
 |mTriggerCpuTimeGrainAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
 |mTriggerRamTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
@@ -210,13 +215,15 @@ The below table lists the parameters accepted by the Bicep template.
 |invictusImportJobFunctionName|No|invictus-{resourcePrefix}-invictusimportjob|Name for Azure Function|
 |invictusCacheImportJobFunctionName|No|invictus-{resourcePrefix}-cacheimportjob|Name for Azure Function|
 |invictusStoreImportJobFunctionName|No|invictus-{resourcePrefix}-storeimportjob|Name for Azure Function|
-|importjobAppInsightsName|No|invictus-{resourcePrefix}-importjobappins|Name for Application Insights used by importjob|
 |invictusFlowHandlerFunctionName|No|invictus-{resourcePrefix}-flowhandlerjob|Name for Azure Function|
 |invictusGenericReceiverFunctionName|No|invictus-{resourcePrefix}-genericreceiver|Name for Azure Function|
 |invictusHttpReceiverFunctionName|No|invictus-{resourcePrefix}-httpreceiver|Name for Azure Function|
 |invictusDashboardGatewayFunctionName|No|invictus-{resourcePrefix}-dashboardgateway|Name for Azure Function|
 |invictusDatabaseManagerFunctionName|No|invictus-{resourcePrefix}-database-storeimportjob|Name for Azure Function|
 |workflowEventHubName|No|invictus-{resourcePrefix}-workflow-evhb|EventHub name for the import job|
+|dataMergeWorkflowEventHubName|No|invictus-{resourcePrefix}-mergeddata-evhb|EventHub name for the data merge import job|
+|sideTasksWorkflowEventHubName|No|invictus-{resourcePrefix}-sidetasks-evhb|EventHub name for the side tasks|
+|dataFactoryEventHubName|No|invictus-{resourcePrefix}-df-evhb|EventHub name for the data factory import job|
 |genericEventHubName|No|invictus-{resourcePrefix}-genericreceiver-evhb|EventHub name for the import job|
 |workFlowCleanupJobIntervalInMinutes|No|180|Interval in minutes for the workflowevent cleanup job|
 |dataWorkFlowCleanupMaxRetentionDays|No|90|Max number of days the WorkFlowEvent data is stored|
@@ -231,6 +238,9 @@ The below table lists the parameters accepted by the Bicep template.
 |invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
 |use32BitWorkerProcess|No|false|If set to true, webapps are deployed as 32bit|
 |maxHttpHeaderSizeInBytes|No|24576|Maximum allowed HTTP header size for dashboard requests (in bytes)|
+|messageStatusCacheDeleteAfterDays|No|30|The number of days without modification for the message status cache to be deleted|
+|storeImportJobScaleLimit|No|0|The scale limit for the store import job function app|
+|statisticsCutOffDays|No|-3|The number of days in the past that homepage statistics will recalculate|
 
 ### VNET Specific Parameters
 
