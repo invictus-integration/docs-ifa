@@ -17,15 +17,15 @@ Create a variable group named {prefix}.Invictus.Installation and add these varia
 Once you have the variable group, we can now proceed to creating the build pipeline.
 
 ## YAML Pipeline
-Add the files and folders from [this](./pipelines) location to your DevOps repo. 
-This contains an example YAML pipelines to build the Invictus for Azure Framework, change the [framework.build.yaml](./pipelines/framework.build.yaml) file according to your needs, for example change the trigger path:
+Add the files and folders from [this](https://github.com/invictus-integration/docs-ifa/tree/master/framework/installation/pipelines) location to your DevOps repo. 
+This contains an example YAML pipelines to build the Invictus for Azure Framework, change the [framework.build.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/framework/installation/pipelines/framework.build.yaml) file according to your needs, for example change the trigger path:
 ``` yaml
   paths:
     include:
     - /src/customer.azure.invictus
 ```
 
-Afterwards add the [framework.build.yaml](./pipelines/framework.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](framework-releasepipeline.md).
+Afterwards add the [framework.build.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/framework/installation/pipelines/framework.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](framework-releasepipeline.md).
 
 ## Classic Pipeline
 ### Create the build pipeline

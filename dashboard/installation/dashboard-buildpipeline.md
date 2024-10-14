@@ -17,15 +17,15 @@ Create a variable group named {prefix}.Invictus.Installation and add these varia
 Once you have the variable group, we can now proceed to creating the build pipeline.
 
 ## YAML Pipeline
-Add the files and folders from [this](pipelines) location to your DevOps repo. 
-This contains an example YAML pipelines to build the Invictus for Azure Dashboard, change the [dashboard.build.yaml](https://github.com/invictus-integration/docs-ifa/blob/v2-documentation/dashboard/installation/pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
+Add the files and folders from [this](https://github.com/invictus-integration/docs-ifa/tree/master/dashboard/installation/pipelines) location to your DevOps repo. 
+This contains an example YAML pipelines to build the Invictus for Azure Dashboard, change the [dashboard.build.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
 ``` yaml
   paths:
     include:
     - /src/customer.azure.invictus
 ```
 
-Afterwards add the [dashboard.build.yaml](https://github.com/invictus-integration/docs-ifa/blob/v2-documentation/dashboard/installation/pipelines/dashboard.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](dashboard-releasepipeline.md).
+Afterwards add the [dashboard.build.yaml](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/pipelines/dashboard.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](dashboard-releasepipeline.md).
 
 ## Classic Pipeline
 ### Create the build pipeline
