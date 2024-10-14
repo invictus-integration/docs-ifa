@@ -52,7 +52,7 @@
     * [Regex translator](/framework/components/regextranslation.md)
     * [XML/Json convertor](/framework/components/xmljsonconverter.md)
     * [Sequence controller](/framework/components/sequencecontroller.md)
-    * [Sequence controller](/framework/components/regextranslation.md)
+    * [Exception Handler](/framework/components/exceptionHandler.md)
   * Related Documentation
     * [LogicApps diagnostics](/framework/logicappsdiagnostics.md) 
     * [DataFactory diagnostics](/framework/datafactorydiagnostics.md) 
