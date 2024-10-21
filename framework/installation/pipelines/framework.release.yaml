@@ -51,7 +51,7 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn $false -matrixWebAppAlwaysOn $false -transcoWebAppAlwaysOn $false -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
 - stage: deploy_tst
   displayName: 'Deploy to Test'
   dependsOn: deploy_dev
@@ -72,7 +72,7 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn $false -matrixWebAppAlwaysOn $false -transcoWebAppAlwaysOn $false -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
 
 - stage: deploy_acc
   displayName: 'Deploy to Acceptance'
@@ -94,7 +94,7 @@ stages:
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn "false" -matrixWebAppAlwaysOn "false" -transcoWebAppAlwaysOn "false" -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
+              deployScriptParameters: '-resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.CustomerPrefix)-$(Infra.Environment.ShortName)-invictus -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -pubSubWebAppAlwaysOn $false -matrixWebAppAlwaysOn $false -transcoWebAppAlwaysOn $false -servicePlanSkuName "B1" -eventHubSkuName "Standard" -eventHubSkuTier "Standard"'
 - stage: deploy_prd
   displayName: 'Deploy to Production'
   dependsOn: deploy_acc
