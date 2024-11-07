@@ -111,7 +111,14 @@ The below table lists the parameters accepted by the Bicep template.
 |sqlServerLogin|No|InvictusFrameworkAdmin|The default username set for SQL Server|
 |sqlServerLoginPassword|No|Generated value|The password that will be set to login into SQL Server|
 |dashboardDatabaseName|No|coditcip|The name of the Database used by the Dashboard|
-|timesequencerFunctionName|No|invictus-{resourcePrefix}-timesequencer|Name for the time sequencer Web API|
+|timesequencerFunctionName|No|invictus-{resourcePrefix}-timesequencer|Name for the time sequencer function|
+|sequenceControllerFunctionName|No|invictus-{resourcePrefix}-sequencecontroller|Name for the Sequence Controller function|
+|xmlJsonConverterFunctionName|No|invictus-{resourcePrefix}-xmljsonconverter|Name for the XmlJson Converter function|
+|xsdValidatorFunctionName|No|invictus-{resourcePrefix}-xsdvalidator|Name for the XSD Validator function|
+|regexTranslatorFunctionName|No|invictus-{resourcePrefix}-regextranslator|Name for the Regex Translator function|
+|transcoV2FunctionName|No|invictus-{resourcePrefix}-transco-v2|Name for the TranscoV2 function|
+|pubsubV2FunctionName|No|invictus-{resourcePrefix}-pubsub-v2|Name for the PubSubV2 function|
+|exceptionHandlerFunctionName|No|invictus-{resourcePrefix}-exceptionhandler|Name for the Exception Handler function|
 |pubSubWebAppName|No|invictus-{resourcePrefix}-pubsubapp|Name for the PubSub Web API|
 |matrixWebAppName|No|invictus-{resourcePrefix}-matrixapp|Name for the Matrix Web API|
 |transcoWebAppName|No|invictus-{resourcePrefix}-transcoapp|Name for the Transco Web API|
