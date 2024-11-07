@@ -21,7 +21,8 @@ If you want to resolve the exception of a Logic App Consumption use the followin
   "WorkflowName": "<the name of your Logic App>",
   "SubscriptionId": "<your subscription id>",
   "ResourceGroupName": "<the resourcegroup name of the failed Logic App>",
-  "Type": "Consumption"
+  "Type": "Consumption",
+  "SiteName": null
 }
 ```
 
@@ -32,7 +33,8 @@ An example:
   "WorkflowName": "cdt-dev-we-somelogicapp",
   "SubscriptionId": "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
   "ResourceGroupName": "some-resource-group",
-  "Type": "Consumption"
+  "Type": "Consumption",
+  "SiteName": null
 }
 ```
 
