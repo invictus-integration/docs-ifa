@@ -109,7 +109,7 @@ The AdditionalTemplateParameters argument are named arguments you can use to ove
 Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
 
 ```powershell
--ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) -PerformSqlDataMigration 0 -isProvisionedCosmos 0 -AzureActiveDirectoryClientId "[YOUR_CLIENT_ID_HERE]" -AzureActiveDirectoryTenantId "[YOUR_TENANT_ID_HERE]" -AzureActiveDirectoryClientSecret "[YOUR_SECRET_HERE]" -AzureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]"
+-ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) -PerformSqlDataMigration 0 -isProvisionedCosmos 0 -AzureActiveDirectoryClientId "[YOUR_CLIENT_ID_HERE]" -AzureActiveDirectoryTenantId "[YOUR_TENANT_ID_HERE]" -AzureActiveDirectoryClientSecret "[YOUR_SECRET_HERE]" -AzureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]" -IdentityProviderApplicationId "[YOUR_CONTAINER_AUTH_APPLICATION_ID_HERE]" -IdentityProviderClientSecret "[YOUR_CONTAINER_AUTH_SECRET_HERE]"
 ```
 
 ## Provisoned Throughput vs Serverless Cosmos DB
@@ -243,6 +243,8 @@ The below table lists the parameters accepted by the Bicep template.
 |messageStatusCacheDeleteAfterDays|No|30|The number of days without modification for the message status cache to be deleted|
 |storeImportJobScaleLimit|No|0|The scale limit for the store import job function app|
 |statisticsCutOffDays|No|-3|The number of days in the past that homepage statistics will recalculate|
+|IdentityProviderClientSecret|Yes||AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
+|IdentityProviderApplicationId|Yes||AAD Application ID for MSI Authentication of Azure Container Apps Functions|
 
 ### VNET Specific Parameters
 
