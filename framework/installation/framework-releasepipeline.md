@@ -78,6 +78,8 @@ Use the following arguments for the fields of the azure powershell task:
   - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName (mandatory): name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName (mandatory): The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
+  - IdentityProviderClientSecret (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/framework/containerAuthentication).
+  - IdentityProviderApplicationId (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/framework/containerAuthentication).
   - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
