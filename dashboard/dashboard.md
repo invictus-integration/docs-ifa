@@ -30,6 +30,7 @@ The following documentation pages are related to the backend of the dashboard an
 * [Access Control Rights](accesscontrolrights.md): Detailed information about access right controls.
 * [Flow Handler](flowhandler.md): How resume/resubmit is handled.
 * [Import Job](importjob.md): Detailed information on the import job.
+* [Container Authentication](containerAuthentication.md) : Detailed information for App Registration setup.
 
 ## Release Notes
 
