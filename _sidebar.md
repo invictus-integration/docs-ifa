@@ -40,7 +40,7 @@
     * [Build Pipeline](/framework/installation/framework-buildpipeline.md)
     * [Release Pipeline :rocket:](/framework/installation/framework-releasepipeline.md)
     * [Migration Guide](/framework/installation/framework-migration.md)
-    * [Container Authentication Setup](/framework/containerAuthentication.md)
+    * [Container Authentication Setup](/dashboard/containerAuthentication.md)
   * Components
     * [Publish and Subscribe](/framework/components/pubsub.md)
     * [PubSubV2](/framework/components/pubsubV2.md)
