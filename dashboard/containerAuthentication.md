@@ -4,7 +4,7 @@
 
 ## Purpose
 
-This guide provides a quick setup for registering an Azure Active Directory (AAD) application. It includes creating a client secret, setting up API permissions, and preparing variables for pipeline use. This will allow for containers to authenticate the requests tht are being received.
+This guide provides a quick setup for registering an Azure Active Directory (AAD) application. It includes creating a client secret, setting up API permissions, and preparing variables for pipeline use. This will allow for containers to authenticate the requests that are being received.
 
 ### 1. **Create an App Registration**
 1. In the [Azure portal](https://portal.azure.com), navigate to **Azure Active Directory** > **App registrations**.
