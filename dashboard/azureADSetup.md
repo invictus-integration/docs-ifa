@@ -1,17 +1,15 @@
 [Home](../README.md) | [Dashboard](dashboard.md) | [Azure AD Setup](azureADSetup.md)
 
-# Azure Active Directory Setup
+# Microsoft Entra ID for Invictus
 
-## Setting up Azure Active Directory from the Azure Portal Dashboard
+To set up Microsoft Entra ID from the Azure Portal, follow these steps:
 
-To set up Azure Active Directory from the Azure Portal Dashboard, follow these steps:
-
-1. Go to **Azure Active Directory** and select **App Registrations** from the left side menu. Click the **New Registration** button at the top of the page.
+1. Go to **Microsoft Entra ID** and select **App Registrations** from the left side menu. Click the **New Registration** button at the top of the page.
 
    ![Register AAD](../images/dashboard/azureAD/aad1.JPG)
 
 2. Provide a name for your app registration.
-3. Choose **Accounts in any organizational directory (Any Azure AD directory - Multitenant)**.
+3. Choose **Accounts in any organizational directory (Any Microsoft Entra ID directory - Multitenant)**.
 4. The **Redirect URI** is the link to the front-end website of the dashboard (e.g., `https://invictus-dev-we-sft-invictusdashboard.azurewebsites.net/login`). This is required for the Single Sign-On process on the login page.
 5. Click the **Register** button.
 
@@ -106,7 +104,7 @@ The image below shows the result of the above actions.
 
 To set up the enterprise application, follow these steps:
 
-1. Go back to **Azure Active Directory** and select **Enterprise Application** from the left side menu.
+1. Go back to **Microsoft Entra ID** and select **Enterprise Application** from the left side menu.
 2. Search for the application you just created and click on it.
 3. Click on **Owners** from the left hand side.
 4. Add yourself or the desired owner of the application.
