@@ -13,6 +13,8 @@ Create a variable group named {prefix}.Invictus.Installation and add these varia
 - **Invictus.Installation.StorageAccount.Name**: invictusreleases
 - **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software
 - **Invictus.Installation.StorageAccount.Framework.SasToken**: value provided by Codit Software
+- **Infra.Environment.ACRUsername**: value provided by Codit Software
+- **Infra.Environment.ACRPassword**: value provided by Codit Software
 
 Once you have the variable group, we can now proceed to creating the build pipeline.
 
