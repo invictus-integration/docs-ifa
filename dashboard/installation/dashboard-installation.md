@@ -2,7 +2,7 @@
 
 # Dashboard Installation
 
-This document lists the steps required to perform an installation of the Invictus dashboard in you Azure environment.
+This document lists the steps required to perform an installation of the Invictus Dashboard in you Azure environment.
 
 ## 1. Obtain Access
 
