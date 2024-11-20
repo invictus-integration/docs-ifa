@@ -4,7 +4,7 @@
 
 ## Purpose
 
-This guide provides a quick setup for registering an Azure Entra ID application. It includes creating a client secret, setting up API permissions, and preparing variables for pipeline use. This will allow the container apps to authenticate the requests that are received.
+This guide provides a quick setup for registering a Microsoft Entra ID application. It includes creating a client secret, setting up API permissions, and preparing variables for pipeline use. This will allow the container apps to authenticate the requests that are received.
 
 ### 1. **Create an App Registration**
 1. In the [Azure portal](https://portal.azure.com), navigate to **Microsoft Entra ID** > **App registrations**.
