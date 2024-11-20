@@ -54,6 +54,8 @@ The following script arguments are used in the deploy script:
   - AzureActiveDirectoryAudience (mandatory): Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup). Leave empty if AD will be disabled.
   - PerformSqlDataMigration (mandatory): If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](https://invictus-integration.github.io/docs-ifa/#/dashboard/installation/dashboard-migration) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
   - FlowDataTTLInDays (mandatory): A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flowdatatimetolive.md).
+  - IdentityProviderClientSecret (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/dashboard/containerAuthentication).
+  - IdentityProviderApplicationId (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/dashboard/containerAuthentication).
   - isProvisionedCosmos (optional): If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
   - isAdDisabled (optional): If the value is 1, the option to log into the dashboard with AAD will be removed.
   - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
@@ -161,6 +163,8 @@ The below table lists the parameters accepted by the Bicep template.
 |maxHttpHeaderSizeInBytes|No|100000|Maximum allowed HTTP header size for dashboard requests (in bytes)|
 |messageStatusCacheDeleteAfterDays|No|30|The number of days without modification for the message status cache to be deleted|
 |statisticsCutOffDays|No|-3|The number of days in the past that homepage statistics will recalculate|
+|IdentityProviderClientSecret|Yes||AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
+|IdentityProviderApplicationId|Yes||AAD Application ID for MSI Authentication of Azure Container Apps Functions|
 
 ### VNET Specific Parameters
 

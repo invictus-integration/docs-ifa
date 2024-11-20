@@ -78,6 +78,8 @@ Use the following arguments for the fields of the azure powershell task:
   - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName (mandatory): name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName (mandatory): The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
+  - IdentityProviderClientSecret (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/framework/containerAuthentication).
+  - IdentityProviderApplicationId (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/framework/containerAuthentication).
   - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
   - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
   - KeyVaultAccessPoliciesVariableName (optional): uses _Infra.KeyVault.AccessPolicies_ when not specified.
@@ -93,7 +95,7 @@ The AdditionalTemplateParameters argument are named arguments you can use to ove
 Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
 
 ```powershell
--ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id)
+-ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) --IdentityProviderApplicationId "[YOUR_CONTAINER_AUTH_APPLICATION_ID_HERE]" -IdentityProviderClientSecret "[YOUR_CONTAINER_AUTH_SECRET_HERE]"
 ```
 
 A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
@@ -165,6 +167,8 @@ The below table lists the parameters accepted by the Bicep template.
 |transcoWebAppAlwaysOn|No|true|Always on Setting for WebApp|
 |accessPolicies|No|[]|A list of Azure Key vault access policies|
 |devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
+|IdentityProviderClientSecret|Yes||AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
+|IdentityProviderApplicationId|Yes||AAD Application ID for MSI Authentication of Azure Container Apps|
 
 ### VNET Specific Parameters
 

@@ -11,6 +11,7 @@
     * [VNET Support](/dashboard/installation/dashboard-vnet.md)
     * [Azure Active Directory Setup](/dashboard/azureADSetup.md)
     * [Group Management Azure Setup](/dashboard/groupmanagement.md)
+    * [Container Authentication Setup](/dashboard/containerAuthentication.md)
   * Frontend Documentation
     * [Setup](/dashboard/setup.md)
     * [Home page](/dashboard/home.md)
@@ -39,6 +40,7 @@
     * [Build Pipeline](/framework/installation/framework-buildpipeline.md)
     * [Release Pipeline :rocket:](/framework/installation/framework-releasepipeline.md)
     * [Migration Guide](/framework/installation/framework-migration.md)
+    * [Container Authentication Setup](/dashboard/containerAuthentication.md)
   * Components
     * [Publish and Subscribe](/framework/components/pubsub.md)
     * [PubSubV2](/framework/components/pubsubV2.md)
