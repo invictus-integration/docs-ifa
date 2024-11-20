@@ -43,8 +43,8 @@ The following script arguments are used in the deploy script:
   - ResourcePrefix: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - IdentityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/framework/containerAuthentication).
-  - IdentityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/framework/containerAuthentication).
+  - IdentityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
+  - IdentityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
     
 - **Optional Arguments**
   - ArtifactsPathScripts: uses ArtifactsPath when not specified.
