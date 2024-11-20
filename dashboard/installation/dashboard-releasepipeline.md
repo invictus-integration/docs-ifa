@@ -4,8 +4,6 @@
 
 The release pipeline will use the artifacts created from the build pipeline and publish this to the stage(s) you define. Each stage will deploy the resources to the Azure subscription and resource group you specify in the deployment tasks.
 
-The release uses variable groups and edits/adds variables to the groups, we will begin by creating a new variable group.
-
 ## Variable Group
 
 Create a variable group named {prefix}.Invictus.{stage} for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
@@ -27,7 +25,7 @@ resources:
     trigger: true
 ```
 
-**Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
+> Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized
 
 Also make sure to change the Bicep template parameters according to your needs.
 
@@ -39,30 +37,30 @@ Afterwards add the [dashboard.release.yaml](./pipelines/dashboard.release.yaml) 
 
 The following script arguments are used in the deploy script:
 
-- **Script Arguments**
-  - ArtifactsPath (mandatory): `$(ArtifactsPath)`
-  - ArtifactsPathScripts (optional): uses ArtifactsPath when not specified.
-  - devOpsObjectId (mandatory): The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection.
-  - ResourcePrefix (mandatory): `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
-  - ResourceGroupName (mandatory): name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - VariableGroupName (mandatory): The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - ResourceGroupLocation (optional): `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
-  - KeyVaultName (optional): uses `invictus-$ResourcePrefix-vlt` when not specified.
-  - AzureActiveDirectoryClientId (mandatory): Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup). Leave empty if AD will be disabled. 
-  - AzureActiveDirectoryTenantId (mandatory): Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup). Leave empty if AD will be disabled.
-  - AzureActiveDirectoryClientSecret (mandatory): Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup). Leave empty if AD will be disabled. 
-  - AzureActiveDirectoryAudience (mandatory): Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup). Leave empty if AD will be disabled.
-  - PerformSqlDataMigration (mandatory): If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](https://invictus-integration.github.io/docs-ifa/#/dashboard/installation/dashboard-migration) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
-  - FlowDataTTLInDays (mandatory): A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flowdatatimetolive.md).
-  - IdentityProviderClientSecret (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/dashboard/containerAuthentication).
-  - IdentityProviderApplicationId (mandatory): Value can be obtained by following this guide: [Container Authentication](https://invictus-integration.github.io/docs-ifa/#/dashboard/containerAuthentication).
-  - isProvisionedCosmos (optional): If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
-  - isAdDisabled (optional): If the value is 1, the option to log into the dashboard with AAD will be removed.
-  - AdditionalTemplateParameters (optional): Additional named parameters for the arm template you wish to override. More on this below.
+- **Mandatory Arguments**
+  - ArtifactsPath: `$(ArtifactsPath)`
+  - devOpsObjectId: The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection.
+  - ResourcePrefix: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
+  - ResourceGroupName: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
+  - VariableGroupName: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
+  - AzureActiveDirectoryClientId: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
+  - AzureActiveDirectoryTenantId: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled.
+  - AzureActiveDirectoryClientSecret: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
+  - AzureActiveDirectoryAudience: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled.
+  - PerformSqlDataMigration: If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
+  - FlowDataTTLInDays: A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flowdatatimetolive.md).
+  - IdentityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](../containerAuthentication.md).
+  - IdentityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](../containerAuthentication.md).
+    
+- **Optional Arguments**
+  - ArtifactsPathScripts: uses ArtifactsPath when not specified.
+  - ResourceGroupLocation: `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
+  - KeyVaultName: uses `invictus-$ResourcePrefix-vlt` when not specified.
+  - isProvisionedCosmos: If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
+  - isAdDisabled: If the value is 1, the option to log into the dashboard with AAD will be removed.
+  - AdditionalTemplateParameters: Additional named parameters for the arm template you wish to override. More on this below.
 
 The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
-
-> Note that **resourcePrefix** and **accessPolicies** are overridden by the script, so no need to include that in the arguments.
 
 Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
 
@@ -76,16 +74,16 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 
 **Serverless**: Capacity scales automatically based on actual usage, paying only for resources used per request. Cost-effective for variable traffic (high / low usage) and infrequently accessed data.
 
-## When to use Provisioned Throughput vs Serverless Cosmos DB
+### When to use Provisioned Throughput vs Serverless Cosmos DB
 
 
-### Serverless in Production
+#### Serverless in Production
 
 - Cost-Efficiency for Variable Workloads: Suitable for scenarios with varying input volume loads, automatically scaling down during periods of low activity to optimize cost.
 - Sporadic Traffic: Ideal for situations where the volume fluctuates or experiences occasional bursts of traffic, such as higher volume during specific hours and lower volume at other times.
 - Agile and Scalable: Collections are auto-scaled, with FlowData and WorkFlowEvents being the most affected collections when data is inserted.
 
-### Provisioned Throughput in Production
+#### Provisioned Throughput in Production
 
 - Fixed RU/s Allocation: Collections are allocated a defined RU/s, requiring consistent usage to make the most of the provisioned capacity.
 - Adjustable RU/s for High Volume Processing: RU/s can be increased to accommodate very high volume processing requirements, ensuring optimal performance.
