@@ -43,10 +43,10 @@ The following script arguments are used in the deploy script:
   - ResourcePrefix: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - ResourceGroupName: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - VariableGroupName: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - AzureActiveDirectoryClientId: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
-  - AzureActiveDirectoryTenantId: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled.
-  - AzureActiveDirectoryClientSecret: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
-  - AzureActiveDirectoryAudience: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled.
+  - AzureActiveDirectoryClientId: Value can be obtained by following this guide: [Entra ID Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
+  - AzureActiveDirectoryTenantId: Value can be obtained by following this guide: [Entra ID Setup](../azureADSetup.md). Leave empty if AD will be disabled.
+  - AzureActiveDirectoryClientSecret: Value can be obtained by following this guide: [Entra ID Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
+  - AzureActiveDirectoryAudience: Value can be obtained by following this guide: [Entra ID Setup](../azureADSetup.md). Leave empty if AD will be disabled.
   - PerformSqlDataMigration: If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
   - FlowDataTTLInDays: A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flowdatatimetolive.md).
   - IdentityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](../containerAuthentication.md).
