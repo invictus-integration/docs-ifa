@@ -1,13 +1,13 @@
 [Home](../README.md) | [Dashboard](dashboard.md) | [Container Authentication](containerAuthentication.md)
 
-# Azure Active Directory App Registration Setup
+# Container App Authentication - App Registration Setup
 
 ## Purpose
 
-This guide provides a quick setup for registering an Azure Active Directory (AAD) application. It includes creating a client secret, setting up API permissions, and preparing variables for pipeline use. This will allow for containers to authenticate the requests that are being received.
+This guide provides a quick setup for registering an Azure Entra ID application. It includes creating a client secret, setting up API permissions, and preparing variables for pipeline use. This will allow the container apps to authenticate the requests that are received.
 
 ### 1. **Create an App Registration**
-1. In the [Azure portal](https://portal.azure.com), navigate to **Azure Active Directory** > **App registrations**.
+1. In the [Azure portal](https://portal.azure.com), navigate to **Microsoft Entra ID** > **App registrations**.
 2. Click on **New registration**.
 3. Fill in:
    - **Name**: Enter a meaningful name for your app.
@@ -24,7 +24,7 @@ This guide provides a quick setup for registering an Azure Active Directory (AAD
 
 > **Important**: Copy the **Client Secret Value** now, as you won't be able to see it again.
 
-- **Save the following details in Notepad**:
+- **Save the following details somewhere safe**:
   - **Application (client) ID** (found on the Overview page)
   - **Client Secret Value**
 
