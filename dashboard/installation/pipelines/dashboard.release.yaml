@@ -27,6 +27,7 @@ stages:
   variables:
   - group: infra.dev
   - group: invictus.dev
+  - group: invictus.installation
   jobs:
   - deployment: deploy_development
     displayName: 'Deploy to Development'
@@ -49,6 +50,7 @@ stages:
   variables:
   - group: infra.tst
   - group: invictus.tst
+  - group: invictus.installation
   jobs:
   - deployment: deploy_tst
     displayName: 'Deploy to Test'
@@ -71,6 +73,7 @@ stages:
   variables:
   - group: infra.acc
   - group: invictus.acc
+  - group: invictus.installation
   jobs:
   - deployment: deploy_acc
     displayName: 'Deploy to Acceptance'
@@ -93,6 +96,7 @@ stages:
   variables:
   - group: infra.prd
   - group: invictus.prd
+  - group: invictus.installation
   jobs:
   - deployment: deploy_prd
     displayName: 'Deploy to Production'
