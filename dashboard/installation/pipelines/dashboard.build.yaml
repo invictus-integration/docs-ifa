@@ -35,7 +35,7 @@ stages:
       clean: true
       persistCredentials: true
 
-    - template: ./templates/build-steps.yml
+    - template: ./templates/build-steps.yaml
       parameters:
         type: 'dashboard-v2'
         useBeta: '${{ parameters.useBeta }}'
