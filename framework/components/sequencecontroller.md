@@ -12,11 +12,11 @@ The Invictus Framework provides a **Sequence Controller** component that allows 
 
 The **Sequence Controller** component is available as a HTTP endpoint in your Logic App workflow. To include sequence processing to your workflow, these three HTTP interaction tasks should normally be added:
 
-* [Get sequence number](#1-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
-* [Wait for sequence](#2-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
+* [Get sequence number](#_1-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
+* [Wait for sequence](#_2-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
 * [Complete sequence](#3-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
 
-> ⚡ There also exists a [Reset sequence](#4-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
+> ⚡ There also exists a [Reset sequence](#_4-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
 
 The idea is that workflows are processed in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 gets triggered before workflow 2, the second workflow will wait for the first workflow.
 
@@ -26,7 +26,7 @@ The idea is that workflows are processed in sequence after the **Wait**. The pla
 
 First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
 
-> 💡 This step can be circumvented in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#2-wait-for-sequence).
+> 💡 This step can be circumvented in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#_2-wait-for-sequence).
 
 The most simple request body only contains the name of the sequence. This name can be seen as the transactional group that chain all related workflows. Assuming this is the first workflow, it will receive number 1 in the response body; the second workflow will receive number 2, and so forth.
 
@@ -37,7 +37,7 @@ The most simple request body only contains the name of the sequence. This name c
 }
 ```
 
-The response body containing this counter is required for the next step: [Wait for sequence](#2-wait-for-sequence)
+The response body containing this counter is required for the next step: [Wait for sequence](#_2-wait-for-sequence)
 
 #### Customization
 
@@ -81,7 +81,7 @@ The following image shows a screenshot of how this HTTP-callback task can be mad
 
 ### 3. Complete sequence
 
-The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This will allow the next workflow to proceed. To facilitate this, the counter collected from the previous [Get sequence number](#1-get-sequence-number) step is required.
+The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This will allow the next workflow to proceed. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
 To complete the in-sequence work of the workflow, a HTTP task is required that sends this request.
 
