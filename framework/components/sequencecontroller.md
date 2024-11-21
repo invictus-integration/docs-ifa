@@ -58,7 +58,7 @@ The following image shows a screenshot of how this HTTP call can be made in a Lo
 
 ### 2. Wait for sequence
 
-The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#1-get-sequence-number) step is required.
+The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
 To make the workflow wait, a HTTP-callback task is required in the workflow. This allows you to pass in a webhook that the deployed **Sequence Controller** can call when its the workflow's turn to proceed.
 
