@@ -1,52 +1,115 @@
 # Sequence Controller
 
-## Overview
+## Motivation
 
-The Sequence controller will be mainly used to process LogicApp runs in order. The Sequence Controller exposes 3 actions:
+Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially can be a solution, at the cost of a big performance impact. If the processing or sending of a single message is too big, serial is still not the solution.
 
-- GetSequenceNumber
-- WaitForExecution
-- CompleteExecution
+The Invictus Framework provides a **Sequence Controller** component that allows you to process Logic App workflow runs in a specified order. This way, even though workflows might be triggered in parallel, the dependent external system is not overblown with messages.
 
-### GetSequenceNumber
+> 🔗 See also the [Message Sequence](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageSequence.html) integration pattern.
 
-This call is not required but we do request that it is used if possible. This call will basically check with the Database what sequence number is next in line. So assuming the process is going upwards starting from 1, if the sequence has reached number 6, then as expected the number 7 will be returned as the next sequence number. This call eliminates the need for the user to track/manage the sequence.
+## Usage
 
-|Name|Required|Sample Value|Description|
-| --- | :---: | --- | --- |
-|sequenceName|Yes|SampleSequence1|This is the name given to a sequence, this has to be unique per sequence when processing a chain of requests|
-|sequenceStart|Yes|1|This is the starting value of the sequence, this in reality is only required on the very first call to GetSequenceNumber but has no effect and should still be passed on subsequent calls|
+The **Sequence Controller** component is available as a HTTP endpoint in your Logic App workflow. To include sequence processing to your workflow, these three HTTP interaction tasks should normally be added:
+
+* [Get sequence number](#1-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
+* [Wait for sequence](#2-wait-for-sequence): allows the workflow to wait its turn;
+* [Complete sequence](#3-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
+
+> ⚡ There also exists a [Reset sequence](#4-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
+
+The idea is that workflows are processed in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 gets triggered before workflow 2, the second workflow will wait for the first workflow.
+
+![Pseudo Logic App workflow with Sequence Controller](../../images/framework/pseudo-logic-app-w-sequence-controller.png)
+
+### 1. Get sequence number
+
+First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
+
+> 💡 This step can be circumvented in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#2-wait-for-sequence).
+
+The most simple request body only contains the name of the sequence. This name can be seen as the transactional group that chain all related workflows. Assuming this is the first workflow, it will receive number 1 in the response body; the second workflow will receive number 2, and so forth.
+
+```json
+// POST /api/GetSequenceNumber
+{
+  "sequenceName": "<my-sequence-name>",
+}
+```
+
+The response body containing this counter is required for the next step: [Wait for sequence](#2-wait-for-sequence)
+
+#### Customization
+
+If you want to start the sequence at a later point, you can also pass the `sequenceStart` with your own start number. Only make sure that you pass this along subsequent calls.
+```json
+// POST /api/GetSequenceNumber
+{
+  "sequenceName": "<my-sequence-name>",
+  "sequenceStart": 10
+}
+```
+
+#### Logic App workflow example
+
+The following image shows a screenshot of how this HTTP call can be made in a Logic App workflow.
 
 > ![sequencecontroller-get-number-execution](../../images/seqcont-getseqnum.jpg)
 
-### WaitForExecution
+### 2. Wait for sequence
 
-This call will check if the request should be processed or if it should be queued. This is done by checking if the counter assigned to the request is within sequence and by also checking if the previous counter in the sequence was processed. As stated earlier, you are not required to use GetSequenceNumber and can directly use WaitForExecution by managing the counter yourself, although this is not suggested.
+The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#1-get-sequence-number) step is required.
 
-|Name|Required|Sample Value|Description|
-| --- | :---: | --- | --- |
-|sequenceName|Yes|SampleSequence1|This is the name given to a sequence, this has to be unique per sequence when processing a chain of requests|
-|counter|Yes|1|This is the value assigned to the call, this has to be also unique per call|
-|callBackUri|Yes|1|This is the callbackUrl available for the Webhook via logicapps|
+To make the workflow wait, a HTTP-callback task is required in the workflow. This allows you to pass in a webhook that the deployed **Sequence Controller** can call when its the workflow's turn to proceed.
+
+The following request needs to be send in this HTTP callback task:
+
+```json
+// POST /api/WaitForExecution
+{
+  "sequenceName": "<my-sequence-name>",
+  "counter": @sequenceCounter, // Collected via /api/GetSequenceNumber.
+  "callbackUri": @listCallbackUrl() // Available through the HTTP-callback task.
+}
+```
+
+#### Logic App workflow example
+
+The following image shows a screenshot of how this HTTP-callback task can be made in the Logic App workflow.
 
 > ![sequencecontroller-wait-execution](../../images/seqcont-waitforexec.jpg)
 
-### CompleteExecution
+### 3. Complete sequence
 
-This call will mark the "currentCounter" as completed. This will then trigger a process to check if any other sequence item is queued. If the next item in the sequence is found and is in a queued state, the action will trigger it to be processed. 
+The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This will allow the next workflow to proceed. To facilitate this, the counter collected from the previous [Get sequence number](#1-get-sequence-number) step is required.
 
-|Name|Required|Sample Value|Description|
-| --- | :---: | --- | --- |
-|sequenceName|Yes|SampleSequence1|This is the name given to a sequence, this has to be unique per sequence when processing a chain of requests|
-|currentCounter|Yes|1|This is the counter value that has been processed|
-|status|Yes|Completed|This value marks the item as Completed, although no other values are currently present, this has been included in case other statuses are requested in the future, as of now just pass "Completed". A "Processing" status is also used in the background but should never be passed.|
+To complete the in-sequence work of the workflow, a HTTP task is required that sends this request.
+
+```json
+// POST /api/ConfirmExecutionCompleted
+{
+  "sequenceName": "<my-sequence-name>",
+  "currentCounter": @sequenceCounter, // Collected via /api/GetSequenceNumber
+}
+```
+
+#### Logic App workflow example
+
+The following image shows a screenshot of how this HTTP call can be made in a Logic App workflow.
 
 > ![sequencecontroller-complete-execution](../../images/seqcont-compexec.jpg)
 
-### ResetSequenceFunction
+### (4.) Reset sequence
 
-This call will reset the sequence and delete all form of data related to it. This should only be used by admins and should not be part of any flow unless you are completely aware of its repercussions.
+The deployed **Sequence Controller** allows admins to reset previously stored sequences. This could be useful if certain sequence names should be reused for other purposes, or for cleaning references.
 
-|Name|Required|Sample Value|Description|
-| --- | :---: | --- | --- |
-|sequenceName|Yes|SampleSequence1|This is the name given to a sequence, this has to be unique per sequence when processing a chain of requests|
+> ⚠️ This action **SHOULD NOT** be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.
+
+Resetting can be done with sending the following request:
+
+```json
+// POST /api/ResetSequence
+{
+  "sequenceName": "<my-sequence-name>"
+}
+```
