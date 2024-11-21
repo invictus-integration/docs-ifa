@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially can be a solution, at the cost of a big performance impact. If the processing or sending of a single message is too big, serial is still not the solution.
+Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially (for example by setting the concurrency on a Logic App to `1`) can be a solution, at the cost of a big performance impact. If the processing or sending of a single message is too big, serial is still not the solution.
 
 The Invictus Framework provides a **Sequence Controller** component that allows you to process Logic App workflow runs in a specified order. This way, even though workflows might be triggered in parallel, the dependent external system is not overblown with messages.
 
