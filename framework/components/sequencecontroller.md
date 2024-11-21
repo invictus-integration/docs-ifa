@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially can be a solution, at the cost of a big performance impact.
+Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially (for example, by setting the concurrency on a Logic App to `1`) can be a solution, at the cost of a big performance impact.
 
 > 🌍 **A customer story from the trenches**
 > 
@@ -18,7 +18,7 @@ The **Sequence Controller** component is available as a HTTP endpoint in your Lo
 
 * [Get sequence number](#_1-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
 * [Wait for sequence](#_2-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
-* [Complete sequence](#3-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
+* [Complete sequence](#_3-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
 
 > ⚡ There also exists a [Reset sequence](#_4-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
 
@@ -62,7 +62,7 @@ The following image shows a screenshot of how this HTTP call can be made in a Lo
 
 ### 2. Wait for sequence
 
-The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#1-get-sequence-number) step is required.
+The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
 To make the workflow wait, a HTTP-callback task is required in the workflow. This allows you to pass in a webhook that the deployed **Sequence Controller** can call when its the workflow's turn to proceed.
 
