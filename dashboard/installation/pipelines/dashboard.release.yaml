@@ -37,7 +37,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yml
+          - template: ./templates/dashboard-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
@@ -59,7 +59,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yml
+          - template: ./templates/dashboard-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
@@ -81,7 +81,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yml
+          - template: ./templates/dashboard-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
@@ -103,7 +103,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yml
+          - template: ./templates/dashboard-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
