@@ -7,7 +7,7 @@ Invictus includes functionality which allows all its resources to run within an 
 - An Azure Virtual Network
   - Including two subnets, one each for:
     - Private Endpoints
-    - Container Apps
+    - Container App Environment
   - The subnets must have the following services enabled
     - Microsoft.AzureCosmosDB
     - Microsoft.EventHub
