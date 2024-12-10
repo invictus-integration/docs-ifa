@@ -5,17 +5,17 @@ Invictus includes functionality which allows all its resources to run within an 
 ## Prerequisites
 
 - An Azure Virtual Network
-  - Including three subnets, one each for:
+  - Including two subnets, one each for:
     - Private Endpoints
-    - Dashboard
-    - Functions     
+    - Container Apps
   - The subnets must have the following services enabled
     - Microsoft.AzureCosmosDB
     - Microsoft.EventHub
     - Microsoft.KeyVault
     - Microsoft.ServiceBus
     - Microsoft.Storage
-    - Microsoft.Web
+  - The container app subnet must also have the delegation `Microsoft.App/environments`
+        
 - 10 Private DNS Zones
   - privatelink.azurecr.io
   - privatelink.azurewebsites.net
