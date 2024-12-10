@@ -18,7 +18,6 @@ Invictus includes functionality which allows all its resources to run within an 
         
 - 10 Private DNS Zones
   - privatelink.azurecr.io
-  - privatelink.azurewebsites.net
   - privatelink.blob.core.windows.net
   - privatelink.file.core.windows.net
   - privatelink.mongo.cosmos.azure.com
@@ -27,6 +26,7 @@ Invictus includes functionality which allows all its resources to run within an 
   - privatelink.table.core.windows.net
   - privatelink.table.cosmos.azure.com
   - privatelink.vaultcore.azure.net
+  - privatelink.{regionName}.azurecontainerapps.io
     
   A Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
 
