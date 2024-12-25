@@ -1,4 +1,4 @@
-# Regex Transalation
+# Regex Translation
 
 ## Introduction
 
@@ -8,7 +8,7 @@ This documentation will give you an overview of the Regex Translation component 
 
 ### Overview
 
-The scope of the Regex Translator is to translate a given message using regex and based on the **MacthKey** provided an entity will be retrieved from an Azure Table Storage with the associated translation of the message.
+The scope of the Regex Translator is to translate a given message using regex and based on the **MatchKey** provided an entity will be retrieved from an Azure Table Storage with the associated translation of the message.
 
 ### Parameters
 
@@ -25,7 +25,7 @@ By default the table will consist of 3 properties.
 
 - PartitionKey
 - RowKey
-- Timetamp
+- Timestamp
 
 Within the table 2 properties of type string have to be added when creating a new entity:
 
@@ -41,7 +41,7 @@ Within the table 2 properties of type string have to be added when creating a ne
 ### Sample Request Schema
 
 `{
-  "Content": "The provided host name 'asdfasdfaasdfasdfasdfasdfasdfasdfsdf.com' could not be resolved",
+  "Content": "The provided host name 'website.com' could not be resolved",
   "MatchKey": ["OrderService", "InvoiceService"]
 }`
 
@@ -58,13 +58,13 @@ The request is then followed by the execution of the function **RegexTranslation
 After the message is translated, the result for a successful translation returns the translated message:
 
 `{
-    "content": "System X could not be reached at endpoint 'asdfasdfaasdfasdfasdfasdfasdfasdfsdf.com', contact John"
+    "content": "System X could not be reached at endpoint 'website.com', contact John"
 }`
 
 If the translation is unsuccessful, the output returned will either be the original message or specific error message:
 
 `{
-    "content": "The provided host name asdfasdfaasdfasdfasdfasdfasdfasdfsdf.com could not be resolved"
+    "content": "The provided host name website.com could not be resolved"
 }`
 
 The response to the function **RegexTranslation** is to be setup as follows:

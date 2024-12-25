@@ -22,7 +22,7 @@ This framework component can be used to transform either XML to JSON or JSON to 
 
 {
 "configName":"IDD038-inbound.xsl",
-"content": "eyJFbnZlbG9wZSI6IHsiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." 
+"content": "eyJFbnZlbG9wZSI6IHiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." 
 "context": {"x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"},
 "xpath": "",
 "jpath" "$.Envelope"

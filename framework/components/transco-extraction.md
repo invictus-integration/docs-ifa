@@ -141,7 +141,7 @@ Please refer to the [DbAlias section](transco.md) for more information.
 
 ## Testing
 
-This section will explain how to setup the Codit.FrameworkTests database. _You can skip this part if you are not planning to do the Test section as this is just for demostration purposes only_.
+This section will explain how to setup the Codit.FrameworkTests database. _You can skip this part if you are not planning to do the Test section as this is just for demonstration purposes only_.
 
 After creating the new database on your SQL Server make sure to add the DBAlias to the keyvault as mentioned in the previous section. Before moving on make sure that the credentials are correct.
 

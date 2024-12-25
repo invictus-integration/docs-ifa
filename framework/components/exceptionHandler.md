@@ -147,7 +147,7 @@ By using the translation functionality we will get back the following response:
 
 ### Ignoring Errors
 
-By using the translation functionality we can also ignore errors. This can be very usefull for scenario's where Logic Apps can generate an error that is not relevant to the business and the flow can be seen as successfull. 
+By using the translation functionality we can also ignore errors. This can be very useful for scenario's where Logic Apps can generate an error that is not relevant to the business and the flow can be seen as successful. 
 
 Let's take an example where we have a Logic App that picks up a file from a network location and after it has been published will delete the file. We have seen situations at customers where this delete action will fail because the file has already been removed by another instance of the Logic App, this error can be safely ignored since the message is processed anyway.
 
