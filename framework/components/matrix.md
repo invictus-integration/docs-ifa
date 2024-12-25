@@ -2,6 +2,13 @@
 
 # Matrix
 
+> ## ⚠️ Attention
+> This is the V1 version of the Matrix, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco Matrix V2](transcoV2-Matrix.md)
+
 ## Introduction
 
 The Matrix connector will be mainly used to promote properties from the content to the context using a promote config. The Matrix now also support JSON content and will promote any property to the context using JPath. All configs are to be stored in the storage container setup by the Resources ARM Template. The container which will house all configs is named: matrixconfigsstore.
