@@ -16,9 +16,5 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: Shemnei/reviewdog-action-typos@v0
-        with:
-          reporter: github-check
-          level: error
-          fail_on_error: true
-          config: '.github/workflows/_typos.toml'
+      - name: Check spelling of file.txt
+        uses: crate-ci/typos@master
