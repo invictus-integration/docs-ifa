@@ -1,0 +1,24 @@
+name: Search typos on PR
+on:
+  push:
+    branches:
+    - "master"
+  pull_request:
+    branches:
+    - "master"
+
+jobs:
+  typos:
+    name: runner / typos
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Shemnei/reviewdog-action-typos@v0
+        with:
+          reporter: github-check
+          level: error
+          fail_on_error: true
+          config: '.github/workflows/_typos.toml'

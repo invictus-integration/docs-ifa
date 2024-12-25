@@ -1,0 +1,23 @@
+name: Search broken links in PR
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ master ]
+jobs:
+  check-links:
+    name: runner / linkspector
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run linkspector
+        uses: umbrelladocs/action-linkspector@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          fail_on_error: true
