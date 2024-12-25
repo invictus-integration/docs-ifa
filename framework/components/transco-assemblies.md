@@ -2,6 +2,8 @@
 
 # Transco - Custom Assemblies
 
+> ⚠️ **DEPRECATED**: use the [TranscoV2](transcoV2.md) functionality instead.
+
 ## Introduction
 
 This documentation will give you an overview of the Transco custom assemblies and how to trigger a basic call. To use this feature you will need to have the below files, these will be explained in detail individually. It is suggested to go through the [Transco Extraction](transco-extraction.md) section first to get a better understanding of how to use and call the Transco API/Function.

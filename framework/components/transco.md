@@ -2,6 +2,8 @@
 
 # Transco
 
+> ⚠️ **DEPRECATED**: use the [TranscoV2](transcoV2.md) functionality instead.
+
 ## Introduction
 
 The Transco connector will be mainly used to promote properties from the database, it will use the content or the context to form the query and retreive the data from the specified tables. The Transco now also support JSON content and will promote any key & value to the specified JPath. All configs are to be stored in the storage container setup by the Resources ARM Template. The container which will house all configs is named: transcoconfigsstore.

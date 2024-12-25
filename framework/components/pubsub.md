@@ -2,6 +2,8 @@
 
 # Publish / Subscribe
 
+> ⚠️ **DEPRECATED**: use the [PubSubV2](pubsubV2.md.md) functionality instead.
+
 ## Introduction
 
 This documentation will give you an overview of the PubSub and will help you setup a Logic app and use all 3 PubSub Connectors.

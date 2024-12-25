@@ -2,6 +2,8 @@
 
 # Matrix
 
+> ⚠️ **DEPRECATED**: use the [TranscoV2 Matrix](transcoV2-Matrix.md) functionality instead.
+
 ## Introduction
 
 The Matrix connector will be mainly used to promote properties from the content to the context using a promote config. The Matrix now also support JSON content and will promote any property to the context using JPath. All configs are to be stored in the storage container setup by the Resources ARM Template. The container which will house all configs is named: matrixconfigsstore.

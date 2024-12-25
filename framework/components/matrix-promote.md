@@ -2,6 +2,8 @@
 
 # Matrix - Promotion
 
+> ⚠️ **DEPRECATED**: use the [TranscoV2 Matrix](transcoV2-Matrix.md) functionality instead.
+
 ## Introduction
 
 This documentation will give you an overview of the Matrix and will help you setup a Logic app and use the Promote Action

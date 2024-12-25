@@ -2,6 +2,8 @@
 
 # Matrix - Basic Promotion
 
+> ⚠️ **DEPRECATED**: use the [TranscoV2 Matrix](transcoV2-Matrix.md) functionality instead.
+
 ## Introduction
 
 The basic promote is a simplified version of the Matrix component. This version does not accept a config it just simple accept a list of parameters and promotes them to the Context. Values are not mandatory, any values not supplied will not be present in the response object and will be ignored

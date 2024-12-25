@@ -2,6 +2,8 @@
 
 # Transco - Extraction
 
+> ⚠️ **DEPRECATED**: use the [TranscoV2](transcoV2.md) functionality instead.
+
 ## Introduction
 
 This documentation will give you an overview of the Transo component and will help you setup a Logic app and use the Transco Action.
