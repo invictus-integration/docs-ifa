@@ -1,4 +1,4 @@
-name: Search broken links in PR
+name: Search broken links on PR
 on:
   push:
     branches: [ master ]
