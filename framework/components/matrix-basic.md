@@ -63,7 +63,7 @@ Sample request:
         "w": 3,
         "l": 10.2,
         "h": 1,
-        "wth": 200,
+        "w": 200,
     },
       "Flow": "fl1",
       "Service": "sr1",
@@ -105,7 +105,7 @@ Expected Response:
         "w": 3,
         "l": 10.2,
         "h": 1,
-        "wth": 200
+        "w": 200
     },
     "ConversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
     "CorrelationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",

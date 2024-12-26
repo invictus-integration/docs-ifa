@@ -14,7 +14,7 @@ This framework component can be used to transform either XML to JSON or JSON to 
 |--- |--- |--- |
 |Content|Yes|A base64 string with either xml or json|
 |Context|No|A dictionary of key,object collection|
-|ConfigName|Yes|The name of the config which wil be used during the transform|
+|ConfigName|Yes|The name of the config which will be used during the transform|
 |XPath|No|Used to focus on part of the content/result|
 |JPath|No|Used to focus on part of the content/result|
 

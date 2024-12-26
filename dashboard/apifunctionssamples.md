@@ -43,7 +43,7 @@ $FolderId = $folderObject.id
 $SubFolderName = "SubFolder" + $randomValue
 $createSubFolderJson = '{"friendlyName":"'+$SubFolderName+'","parentFolderId":'+$FolderId+'}'
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
-$createSubFolderRespone = Invoke-WebRequest -Uri $createFolderUrl -Method POST -Body $createSubFolderJson -Headers $headers
+$createSubFolderResponse = Invoke-WebRequest -Uri $createFolderUrl -Method POST -Body $createSubFolderJson -Headers $headers
 
 ##GET ALL FOLDERS
 $headers = @{Authorization=$authHeader;'Content-Type'="application/json"}
