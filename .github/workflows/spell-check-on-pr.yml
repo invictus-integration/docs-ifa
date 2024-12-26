@@ -19,4 +19,4 @@ jobs:
       - name: Check spelling of file.txt
         uses: crate-ci/typos@master
         with:
-          config: './.github/workflows_typos.toml'
+          config: './.github/workflows/_typos.toml'
