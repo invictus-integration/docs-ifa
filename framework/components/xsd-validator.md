@@ -16,7 +16,7 @@ The **XSD Validator** is available as a HTTP endpoint in your Logic App workflow
 
 ### Input
 
-The request to the HTTP endpoint should contain both the `BASE64` formatted XML input file, as the name of the XSD schema file, stored in the Azure Blob storage container.
+The request to the HTTP endpoint should contain both the `BASE64` formatted XML input file, as well as the name of the XSD schema file, stored in the Azure Blob storage container.
 
 ```json
 // POST -> /api/ValidateXmlAgainstXsd
