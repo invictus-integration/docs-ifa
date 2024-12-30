@@ -2,13 +2,12 @@
 
 # Transco
 
-## Attention
-This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
-
-Maximum supported Dotnet version is .NET Framework 4.7.1                                                    
-
-For the supported version, please see [Transco V2](transcoV2.md)                                            
-
+> ## ⚠️ Attention
+> This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco V2](transcoV2.md)
 
 ## Introduction
 

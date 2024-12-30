@@ -2,6 +2,13 @@
 
 # Transco - Custom Assemblies
 
+> ## ⚠️ Attention
+> This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco V2](transcoV2.md)
+
 ## Introduction
 
 This documentation will give you an overview of the Transco custom assemblies and how to trigger a basic call. To use this feature you will need to have the below files, these will be explained in detail individually. It is suggested to go through the [Transco Extraction](transco-extraction.md) section first to get a better understanding of how to use and call the Transco API/Function.

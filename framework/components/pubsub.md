@@ -2,6 +2,13 @@
 
 # Publish / Subscribe
 
+> ## ⚠️ Attention
+> This is the V1 version of the PubSub, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [PubSub V2](pubsubV2.md)
+
 ## Introduction
 
 This documentation will give you an overview of the PubSub and will help you setup a Logic app and use all 3 PubSub Connectors.

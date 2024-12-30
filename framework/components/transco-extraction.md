@@ -2,6 +2,13 @@
 
 # Transco - Extraction
 
+> ## ⚠️ Attention
+> This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco V2](transcoV2.md)
+
 ## Introduction
 
 This documentation will give you an overview of the Transo component and will help you setup a Logic app and use the Transco Action.
