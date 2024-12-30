@@ -4,7 +4,7 @@
 
 When processing XML files in Logic App workflows, XSD validation is a necessary pre-processing step to catch errors beforehand. [Microsoft currently only supports XSD validation within Logic App workflows on top of **Azure Integration Accounts**](https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-enterprise-integration-schemas?tabs=consumption). This kind of resource is rather expensive and therefore not always available within the cost boundaries of client projects.
 
-The Invictus Framework provides a **XSD Validator** component that allows you to validate XML files within you Logic App workflow by storing the XSD schemas in an Azure storage account. Circumventing the need of an expensive **Azure Integration Account**.
+The Invictus Framework provides a **XSD Validator** component that allows you to validate XML files within your Logic App workflow by storing the XSD schemas in an Azure storage account. Circumventing the need of an expensive **Azure Integration Account**.
 
 ## Usage
 
