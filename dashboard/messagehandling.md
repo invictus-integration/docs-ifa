@@ -19,7 +19,7 @@ Select the desired messages via their respective checkbox. At the bottom of the 
 
 ## Custom Resume and Resubmit and Reimport
 
-It's possible to use a custom resubmit and resume, see [this page](custom-resumeresubmit.md) for more infromation.
+It's possible to use a custom resubmit and resume, see [this page](custom-resumeresubmit.md) for more information.
 
 ## Resubmit
 

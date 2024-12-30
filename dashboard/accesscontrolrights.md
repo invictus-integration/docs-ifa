@@ -11,7 +11,7 @@ To do this, follow these steps:
 1. Go to the DashboardGateway Function App and select `Identity`.
 2. Click on `Azure role assignments` and then `Add role assignment`.
 3. Assign the scope (subscription or resource group where Logic Apps are located) and set the role to `Logic App Contributor`.
-4. Repeat this step for the FlowHandler function and if neccesary the `Website Contributor` role.
+4. Repeat this step for the FlowHandler function and if necessary the `Website Contributor` role.
 
 Alternatively, the following Bicep template can be used:
 

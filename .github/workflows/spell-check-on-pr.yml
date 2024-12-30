@@ -1,0 +1,19 @@
+name: Search typos on PR
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  typos:
+    name: runner / typos
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check spelling of file.txt
+        uses: crate-ci/typos@master
+        with:
+          config: './.github/workflows/_typos.toml'
