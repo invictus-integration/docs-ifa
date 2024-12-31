@@ -31,8 +31,8 @@ POST Request Object:
 ```
 {
   "callbackUri": "@{listCallbackUrl()}", //This property is exposed by the Webhook LogicApp action, this value should be supplied to the Timesequencer
-  "instanceId": "[STRING]", //The ID assosited to the request. SequenceName and InstanceId form the PrimaryKey for the request
-  "sequenceName": "[STRING]", //The ID used to group requests togheter, //SequenceName and InstanceId form the PrimaryKey for the request
+  "instanceId": "[STRING]", //The ID associated to the request. SequenceName and InstanceId form the PrimaryKey for the request
+  "sequenceName": "[STRING]", //The ID used to group requests together, //SequenceName and InstanceId form the PrimaryKey for the request
   "timestamp": "[DATETIME]" //The time the request was generated ex: file last update time
 }
 ```
@@ -45,8 +45,8 @@ POST Request Object:
 
 ```
 {
- "instanceId": "[STRING]", //The ID assosited to the request. SequenceName and InstanceId form the PrimaryKey for the request
- "sequenceName": "[STRING]"The ID used to group requests togheter, //SequenceName and InstanceId form the PrimaryKey for the request
+ "instanceId": "[STRING]", //The ID associated to the request. SequenceName and InstanceId form the PrimaryKey for the request
+ "sequenceName": "[STRING]"The ID used to group requests together, //SequenceName and InstanceId form the PrimaryKey for the request
 }
 ```
 

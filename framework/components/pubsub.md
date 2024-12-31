@@ -2,6 +2,13 @@
 
 # Publish / Subscribe
 
+> ## ⚠️ Attention
+> This is the V1 version of the PubSub, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [PubSub V2](pubsubV2.md)
+
 ## Introduction
 
 This documentation will give you an overview of the PubSub and will help you setup a Logic app and use all 3 PubSub Connectors.
@@ -20,7 +27,7 @@ The PubSub connector will be mainly used to push messages to service bus using t
 * Each request can have a max size of 100mb
 * Delete on Receive is only there in case anyone really needs it. By default the connector will use PeekLock.
 * Topic name used by PubSub API will be "PubSubRouter"
-* Servicebus Rule name will use the follwing pattern: `$"{subscriptionName}-{DateTime.Now:yyyyMMddHHmm}"` ex: PublishLogicApp-201803211534
+* Servicebus Rule name will use the following pattern: `$"{subscriptionName}-{DateTime.Now:yyyyMMddHHmm}"` ex: PublishLogicApp-201803211534
 * Timeout for Subscribe is set to 75 seconds by default
 * Blob Storage will only be used when message is greater than 256kb. This is configurable at API level.
 * Connectors can both be added using Http+Swagger and Azure App Services connector 
@@ -111,7 +118,7 @@ The MessageId property in the Publish will be used for duplicate detection. This
     * Lock token is also supplied with the data returned by the Subscribe Connector
     * Choose the AcknowledgeType, normally it would always be Complete
     * Set IgnoreLockLostException if you do not want to throw an error if the lock is not found. For example in case of a Resubmit of the Logic App.
-    * Set the MessageReadTime to @trigger()['startTime'] when IgnoreLockLost=true and you want to avoid duplicate messages. Invictus will resend the message when it has not received an Acknowledgement within the lock timeout. By setting this parameter, the Acknowledge will not ignore the LockLostException if this startTime is more than the set lock timeout on the message (default 1 minute). The exception should be catched and handled.
+    * Set the MessageReadTime to @trigger()['startTime'] when IgnoreLockLost=true and you want to avoid duplicate messages. Invictus will resend the message when it has not received an Acknowledgement within the lock timeout. By setting this parameter, the Acknowledge will not ignore the LockLostException if this startTime is more than the set lock timeout on the message (default 1 minute). The exception should be caught and handled.
     * Set the authentication the same as you did in the previous connectors 
 
       ![acknowledge](../../images/pubsub-ackconnector.png)

@@ -2,17 +2,16 @@
 
 # Transco
 
-## Attention
-This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
-
-Maximum supported Dotnet version is .NET Framework 4.7.1                                                    
-
-For the supported version, please see [Transco V2](transcoV2.md)                                            
-
+> ## ⚠️ Attention
+> This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco V2](transcoV2.md)
 
 ## Introduction
 
-The Transco connector will be mainly used to promote properties from the database, it will use the content or the context to form the query and retreive the data from the specified tables. The Transco now also support JSON content and will promote any key & value to the specified JPath. All configs are to be stored in the storage container setup by the Resources ARM Template. The container which will house all configs is named: transcoconfigsstore.
+The Transco connector will be mainly used to promote properties from the database, it will use the content or the context to form the query and retrieve the data from the specified tables. The Transco now also support JSON content and will promote any key & value to the specified JPath. All configs are to be stored in the storage container setup by the Resources ARM Template. The container which will house all configs is named: `transcoconfigsstore`.
 
 This container will be made available on Startup of the Transco API. All Logic apps using this connector will have a dropdown available which loads all configs located in the storage blob container.
 

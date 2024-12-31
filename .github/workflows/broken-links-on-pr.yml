@@ -1,0 +1,20 @@
+name: Search broken links on PR
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  check-links:
+    name: runner / dead link check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run dead link check
+        uses: AlexanderDokuchaev/md-dead-link-check@v0.9
+        with:
+          config: '.github/workflows/_links.toml'

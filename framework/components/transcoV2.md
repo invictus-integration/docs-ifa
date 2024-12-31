@@ -20,7 +20,7 @@ The SQL query result will inserted at the specified `destination` XPath or JPath
 
 **XML Transformation**
 
-Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation.  Any required assemblies and dependencies used by the transformation can also be specfied, while the respective DLL files are to be in the storage account.
+Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation.  Any required assemblies and dependencies used by the transformation can also be specified, while the respective DLL files are to be in the storage account.
 
 Transco supports XSLT 1.0 syntax.
 
@@ -118,7 +118,7 @@ A JSON Transco config file is required to specify details about the instruction 
 
 **SQL Command Instruction**
 
-This instruction can be added to the Transco config to promote values from the database into XML or JSON content, or into the requst Context. Scope path can be defined so that the command affects only nodes within that path. In the command section, a connection to the DB must be provided either via a connection string or via the Key Vault secret name. The SQL query itself is also defined in this section. Parameters in the SQL query must be denoted with an '@' symbol. Parameters may be given a name or indexed with a number.
+This instruction can be added to the Transco config to promote values from the database into XML or JSON content, or into the request Context. Scope path can be defined so that the command affects only nodes within that path. In the command section, a connection to the DB must be provided either via a connection string or via the Key Vault secret name. The SQL query itself is also defined in this section. Parameters in the SQL query must be denoted with an '@' symbol. Parameters may be given a name or indexed with a number.
 
 Example:
 *SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*

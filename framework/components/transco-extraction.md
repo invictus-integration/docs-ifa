@@ -2,6 +2,13 @@
 
 # Transco - Extraction
 
+> ## ⚠️ Attention
+> This is the V1 version of the Transco, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco V2](transcoV2.md)
+
 ## Introduction
 
 This documentation will give you an overview of the Transo component and will help you setup a Logic app and use the Transco Action.
@@ -141,7 +148,7 @@ Please refer to the [DbAlias section](transco.md) for more information.
 
 ## Testing
 
-This section will explain how to setup the Codit.FrameworkTests database. _You can skip this part if you are not planning to do the Test section as this is just for demostration purposes only_.
+This section will explain how to setup the Codit.FrameworkTests database. _You can skip this part if you are not planning to do the Test section as this is just for demonstration purposes only_.
 
 After creating the new database on your SQL Server make sure to add the DBAlias to the keyvault as mentioned in the previous section. Before moving on make sure that the credentials are correct.
 

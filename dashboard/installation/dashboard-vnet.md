@@ -31,7 +31,7 @@ Invictus includes functionality which allows all its resources to run within an 
   A Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
 
 - To be able to deploy the app code from an Azure DevOps pipeline you will need:
-  - A self hosted agent running on the same VNET with the following software intalled:
+  - A self hosted agent running on the same VNET with the following software installed:
     - Powershell
     - Azure Powershell
     - Bicep CLI
