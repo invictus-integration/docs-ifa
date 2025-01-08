@@ -42,8 +42,8 @@
     * v1
       * [Publish and Subscribe](/framework/components/pubsub.md)
       * [Matrix](/framework/components/matrix.md)
-      * [Basic Promotion](/framework/components/matrix-basic.md)
-      * [Matrix Promotion](/framework/components/matrix-promote.md)
+        * [Basic Promotion](/framework/components/matrix-basic.md)
+        * [Matrix Promotion](/framework/components/matrix-promote.md)
     * [Transco](/framework/components/transco.md)
       * [Transco Extraction](/framework/components/transco-extraction.md)
       * [Transco Custom Assemblies](/framework/components/transco-assemblies.md)
