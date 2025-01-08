@@ -29,41 +29,41 @@ The below table applied to: ConversationId, CorrelationId, BatchId
 1. Start by creating a new Blank Logic App From Azure Portal
 2. Click on Edit to open the LogicApp Designer, if asked what type of template you want, choose blank
 
-   ![template](../../images/pubsub-template.png)
+   ![template](../../../images/pubsub-template.png)
 
 3. The first step when starting a new Logic app is to add a **Trigger.** A logic app must always start with a Trigger connector.
 4. Since the publish is **not** a **trigger** but an action we will need to choose a trigger from the list available. For this example we will add a **Request** trigger
 5. Setup the HTTP Request as seen in the image below. The Request Body is basically the schema of the json you will be Posting to this connector
 
-   ![http request](../../images/pubsub-httprequest.png)
+   ![http request](../../../images/pubsub-httprequest.png)
 
 6. After setting up the above trigger, we will now add an action connector. We will now use the Publish connector which uses the InvictusFramework API. All this is abstracted but in reality, all calls act exactly like API calls
 7. Click on **New Step** and select **Add an action**
 8. Choose Http+Swagger and enter the swagger url for the Transco API.
 
-   ![transco swagger](../../images/transco-swagger.png)
+   ![transco swagger](../../../images/transco-swagger.png)
 
 9. Then choose the function you wish to use as a connector. For this example choose **TranscoExecution**
 10. Populate the fields with the parameters you wish to pass to Transco Extract Function.
 
-    ![transco execution](../../images/transco-execution.png)
+    ![transco execution](../../../images/transco-execution.png)
 
 11. Notice that Content was wrapped in base64. The reason this needs to be done is because Publish takes a byte\[\] as input for **Message Content**. The Context object is simply passed without modification, this is expected to be a key value pair list.
 
-    ![jsoncontext](../../images/pubsub-jsoncontext.png)
+    ![jsoncontext](../../../images/pubsub-jsoncontext.png)
 
 12. Also set the **Transco Config**. This list is loaded from the Azure Blob Storage container **transcoconfigsstore**. If no items are present in the list simply import the desired configs to the container. Make sure that the configs are valid Transco Config xml files. Enter custom value is also possible if the selection of the file is dynamic, but you must ensure that this value matches the name of the desired blob.
 13. By clicking _Show advanced options_, you will get to see more properties which most of the time are not required.
 
-    ![json](../../images/transco-executionadvanced.png)
+    ![json](../../../images/transco-executionadvanced.png)
 
 14. Although Authentication can be found under advanced, since the API which is exposing the custom connectors is using Basic Authentication, this has to always be populated. Use the below Json structure to setup Basic Auth for the connector.
 
-     ![authentication](../../images/pubsub-authentication.png)
+     ![authentication](../../../images/pubsub-authentication.png)
 
 15. The password for the API can be retrieved from AzureKeyVault by using either ApiKey1 or ApiKey2
 
-     ![key vault](../../images/pubsub-keyvaultapikey.png)
+     ![key vault](../../../images/pubsub-keyvaultapikey.png)
 
 16. At this point you can continue adding more actions if required. For this example this will conclude the use of the Transco Connector.
 17. Click Save.
@@ -72,7 +72,7 @@ The below table applied to: ConversationId, CorrelationId, BatchId
 
 The XSLT transform is also included in the logic app version. XSLT files should be stored in the same location as the config files: **transcoconfigsstore**.
 
-> ![xslt](../../images/transco-xsltransform.png)
+> ![xslt](../../../images/transco-xsltransform.png)
 
 The file displayed in the image above will the be retrieved and the transformation is then applied on the message.
 
@@ -134,7 +134,7 @@ EXEC MyStoredProcedure '{0}', '{1}', '{2}', '{3}', {4}, {5}
 
 JSON support has also been added to the Transco Component. The Message content can now be in **JSON** format. Do keep in mind that the config still needs to remain in XML Format, the new change is that now you can switch xPathValue to jPathValue. The Scope must also match the type of the content, if using JPath, the value supplied in the scope must also be a JPath, the same applies for XML.
 
-> ![xslt](../../images/transco-configjson.png)
+> ![xslt](../../../images/transco-configjson.png)
 
 ## Encoding
 

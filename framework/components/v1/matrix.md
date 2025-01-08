@@ -1,5 +1,3 @@
-[home](../../README.md) | [framework](../framework.md)
-
 # Matrix
 
 > ## ⚠️ Attention

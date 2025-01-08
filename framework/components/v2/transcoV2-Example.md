@@ -115,7 +115,7 @@ The below Transco config is used to obtain the Customer Status from the DB and i
 
 A POST request is sent to the Transco function URL and endpoint */api/TranscoXML* with the following Body. An application such as Postman can be used for this.
 
-![Postman Request](../../images/transcoV2Postman.png)
+![Postman Request](../../../images/transcoV2Postman.png)
 
 
     {   

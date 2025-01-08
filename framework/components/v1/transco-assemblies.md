@@ -43,7 +43,7 @@ To execute functions within your Transco function you will need to include the d
 
 Sample code to be used later in the sample call:
 
-> ![sample code](../../images/transco-samplecode.png)
+> ![sample code](../../../images/transco-samplecode.png)
 
 ## XSLT File
 

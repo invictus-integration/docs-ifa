@@ -202,7 +202,7 @@ Within the _**transcov2configstore**_ container:
  - Assembly and dependency DLL files must be saved in a folder named
    ***Assemblies***
   
-![transcov2 Storage Account](../../images/transcoV2Storage.png)
+![transcov2 Storage Account](../../../images/transcoV2Storage.png)
   
 ## Transco Request Object
 
@@ -229,12 +229,12 @@ Example payload:
  3. Choose a trigger of your choice, we will use a *Request* trigger
  4. Add a "Azure Function" action
  
- ![Azure Function Action](../../images/transcoV2LAAction.png)
+ ![Azure Function Action](../../../images/transcoV2LAAction.png)
  
  5. Select the appropriate TranscoV2 function from the list
  6. Select the Function endpoint you wish to use
  7. Set the Request Body to a valid Transco Request
  
-![Function Request](../../images/transcoV2LA.png)
+![Function Request](../../../images/transcoV2LA.png)
 
  8. Add any other actions you require and save
