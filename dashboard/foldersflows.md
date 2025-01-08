@@ -66,7 +66,7 @@ Depending on their rights, a user can delete the following:
 
 When creating a new flow the user will have to specify the following information:
 
-* **Flow name**: case insensitive name of the flow (example: ex. invoice request, invoice approval, …)
+* **Flow name**: case sensitive name of the flow (example: ex. invoice request, invoice approval, …)
 * **Mapping**: define how a flow, and the messages it contains, are stored and indexed, using the following properties:
   * Workflow Name - The workflow name of the flow.
   * Domain - The domain of the flow.
