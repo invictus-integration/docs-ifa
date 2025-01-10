@@ -17,7 +17,7 @@ Permissions in the Invictus Dashboard are separated into two categories: user ro
   | CRUD alerts          | 🔴          | 🟢            |
   | CRUD folder/flows    | 🟡          | 🟢            |
   | View audits          | 🔴          | 🟢            |
-  | View flow data       | 🟢          | 🟢            |
+  | View flow data       | 🟡          | 🟢            |
   | View statistics      | 🟢          | 🟢            |
 
 
