@@ -56,33 +56,9 @@ An **Assign Group** popup will appear:
 
    ![Assign Group Popup](../images/dashboard/Groups/groupman_8.jpg)
 
-Choose the group from the first dropdown menu and select the role you want the group users to have for that specific folder. You have three options:
+Choose the group from the first dropdown menu and select the role you want the group users to have for that specific folder.
 
-- **Folder Admin**
-- **Operator**
-- **Reader**
-
-**Folder Admin** has the following permissions:
-- Assign users to a specific folder
-- Remove users from a specific folder
-- Create flows in a specific folder
-- Delete flows in a specific folder
-- View messages from flows in a specific folder
-- View flows from a specific folder
-- Resume, resubmit, and ignore messages from specific folders
-- View flow statistics
-- Edit flow in a specific folder
-
-**Operator** has the following permissions:
-- View messages from flows in a specific folder
-- View flows from a specific folder
-- Resume, resubmit, and ignore messages from specific folders
-- View flow statistics
-
-**Reader** has the following permissions:
-- View messages from flows in a specific folder
-- View flows from a specific folder
-- View flow statistics
+> 💡 For more information on the different roles, see [Role management](./role-management.md).
 
    ![Assign Group](../images/dashboard/Groups/groupman_9.jpg)
 ```
