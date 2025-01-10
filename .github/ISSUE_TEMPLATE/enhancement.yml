@@ -29,17 +29,17 @@ body:
     attributes:
       label: Additional context
       placeholder: Add the link to the page(s) or any other context/screenshots related to the enhancement request here.
-  on:
-    issues:
-      types:
-        - opened
-  jobs:
-    move-issue-to-project:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Move issue to project column
-          uses: actions/add-to-project@v1
-          with:
-            project-url: https://github.com/orgs/invictus-integration/projects/2
-            column-name: 'To evaluate'
-            github-token: ${{ secrets.GITHUB_TOKEN }}     
+on:
+  issues:
+    types:
+      - opened
+jobs:
+  move-issue-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move issue to project column
+        uses: actions/add-to-project@v1
+        with:
+          project-url: https://github.com/orgs/invictus-integration/projects/2
+          column-name: 'To evaluate'
+          github-token: ${{ secrets.GITHUB_TOKEN }}     
