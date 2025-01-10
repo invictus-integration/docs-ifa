@@ -48,4 +48,31 @@ A full list of VNET parameters can be found [here](dashboard-releasepipeline.md#
 
 ### Full Deploy Script Parameters Example
 
-  `-ArtifactsPath "$(ArtifactsPath)" -ArtifactsPathScripts "$(ArtifactsPathScripts)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) -AzureActiveDirectoryClientId "********-****-****-****-********" -AzureActiveDirectoryTenantId "********-****-****-****-********" -use32BitWorkerProcess $false -AzureActiveDirectoryClientSecret "*************************" -AzureActiveDirectoryAudience "api://********-****-****-****-********" -PerformSqlDataMigration 0 -enableVnetSupport $true -vnetName "invictus-vnet" -vnetResourceGroupName "invictus-vnet" -keyVaultSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") -storageAccountSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") -serviceBusSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") -cosmosDbSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") -eventHubSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") -dashboardSubnetName "snet-invictusdashboard" -functionsSubnetName "snet-invictus" -privateEndpointSubnetName "snet-privateendpoints" -isPrivateDashboardVnet $true`
+```powershell
+PS> $(ArtifactsPath)/Deploy.ps1 `
+  -ArtifactsPath "$(ArtifactsPath)" `
+  -ArtifactsPathScripts "$(ArtifactsPathScripts)" `
+  -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" `
+  -ResourceGroupName "$(Infra.Environment.ResourceGroup)" `
+  -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" `
+  -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" `
+  -devOpsObjectId $(Infra.DevOps.Object.Id) `
+  -AzureActiveDirectoryClientId "********-****-****-****-********" `
+  -AzureActiveDirectoryTenantId "********-****-****-****-********" `
+  -use32BitWorkerProcess $false `
+  -AzureActiveDirectoryClientSecret "*************************" `
+  -AzureActiveDirectoryAudience "api://********-****-****-****-********" `
+  -PerformSqlDataMigration 0 `
+  -enableVnetSupport $true `
+  -vnetName "invictus-vnet" `
+  -vnetResourceGroupName "invictus-vnet" `
+  -keyVaultSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
+  -storageAccountSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
+  -serviceBusSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
+  -cosmosDbSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
+  -eventHubSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
+  -dashboardSubnetName "snet-invictusdashboard" `
+  -functionsSubnetName "snet-invictus" `
+  -privateEndpointSubnetName "snet-privateendpoints" `
+  -isPrivateDashboardVnet $true
+```

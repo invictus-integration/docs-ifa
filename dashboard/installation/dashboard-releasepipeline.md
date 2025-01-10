@@ -107,7 +107,19 @@ The AdditionalTemplateParameters argument are named arguments you can use to ove
 Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
 
 ```powershell
--ArtifactsPath "$(ArtifactsPath)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) -PerformSqlDataMigration 0 -isProvisionedCosmos 0 -AzureActiveDirectoryClientId "[YOUR_CLIENT_ID_HERE]" -AzureActiveDirectoryTenantId "[YOUR_TENANT_ID_HERE]" -AzureActiveDirectoryClientSecret "[YOUR_SECRET_HERE]" -AzureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]"
+PS> $(ArtifactsPath)/Deploy.ps1 `
+  -ArtifactsPath "$(ArtifactsPath)" `
+  -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" `
+  -ResourceGroupName "$(Infra.Environment.ResourceGroup)" `
+  -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" `
+  -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" `
+  -devOpsObjectId $(Infra.DevOps.Object.Id) `
+  -PerformSqlDataMigration 0 `
+  -isProvisionedCosmos 0 `
+  -AzureActiveDirectoryClientId "[YOUR_CLIENT_ID_HERE]" `
+  -AzureActiveDirectoryTenantId "[YOUR_TENANT_ID_HERE]" `
+  -AzureActiveDirectoryClientSecret "[YOUR_SECRET_HERE]" `
+  -AzureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]"
 ```
 
 ## Provisoned Throughput vs Serverless Cosmos DB
