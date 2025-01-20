@@ -1,4 +1,4 @@
-# Add Invictus Dashboard to build pipeline
+# Add Invictus Dashboard to release package
 To deploy the Invictus Dashboard together with your customer solution, the first step is to include the Dashboard in your release package.
 
 ## 1. Save `Invictus-GetSources.ps1` script to your repository
