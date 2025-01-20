@@ -165,6 +165,7 @@ Always evaluate your application's needs and monitor performance to ensure the c
 The below tables lists the parameters accepted by the Bicep template.
 
 ## Top-level parameters
+Resource-independent parameters that affect all resources in the deployed resource group.
 
 | Parameter                              | Required | Default             | Description                       |
 | -------------------------------------- | :------: | ------------------- | --------------------------------- |
@@ -174,23 +175,25 @@ The below tables lists the parameters accepted by the Bicep template.
 | Parameter                              | Required | Default                        | Description                                                              |
 | -------------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------------------ |
 | **`enableVnetSupport` (VNET)**         | **Yes**  | **`false`**                   | **Used to toggle VNET functionality on or off** |
-| **`vnetResourceGroupName` (VNET)**     | **Yes**  | **&nbsp;**                    | **The name of the resource group on Azure where the VNET is located** |
-| **`vnetName` (VNET)**                  | **Yes**  | **&nbsp;**                    | **The name of the VNET resource** |
+| **`vnetResourceGroupName` (VNET)**     | **Yes**  |                               | **The name of the resource group on Azure where the VNET is located** |
+| **`vnetName` (VNET)**                  | **Yes**  |                               | **The name of the VNET resource** |
 | **`privateEndpointSubnetName` (VNET)** | **Yes**  |                               | **The name of the subnet to be used to connect the private endpoint resources** |
 | **`dnsZoneSubscriptionId` (VNET)**     | **No**   | **Subscription ID of scope**  | **The subscription ID of the private DNS zones.** |
 | **`dnsZoneResourceGroupName` (VNET)**  | **No**   | **VNET RG name**              | **The resource group name of where the private DNS zones are located.** |
 
 ### Active Directory parameters
+Parameters related to the Azure Active Directory where the groups are synced from.
 
 | Parameter                              | Required | Default | Description |
 | -------------------------------------- | : ------ | ------- | ----------------------------------------------------- |
-| `azureActiveDirectoryClientId`         | Yes      | &nbsp;  | Client AAD ID required to enable AAD for dashboard    |
-| `azureActiveDirectoryTenantId`         | Yes      | &nbsp;  | Tenant AAD ID required to enable AAD for dashboard    |
-| `azureActiveDirectoryClientSecret`     | Yes      | &nbsp;  | Required for AD Login                                 |
-| `AzureActiveDirectoryAudience`         | Yes      | &nbsp;  | Required for AD Login                                 | 
+| `azureActiveDirectoryClientId`         | Yes      |         | Client AAD ID required to enable AAD for dashboard    |
+| `azureActiveDirectoryTenantId`         | Yes      |         | Tenant AAD ID required to enable AAD for dashboard    |
+| `azureActiveDirectoryClientSecret`     | Yes      |         | Required for AD Login                                 |
+| `AzureActiveDirectoryAudience`         | Yes      |         | Required for AD Login                                 | 
 | `isAdDisabled`                         | No       | `0`     | isAdDisabled true or false                            |
 
 ## App service parameters
+Parameters related to the applications that are deployed, mostly Azure Functions.
 
 | Parameter                                 | Required | Default                                             | Description                                     |
 | ----------------------------------------- | :------: | --------------------------------------------------- | ----------------------------------------------- |
@@ -224,12 +227,13 @@ The below tables lists the parameters accepted by the Bicep template.
 | **`isPrivateDashboardVnet` (VNET)**        | **No**  | **`false`**                             | **If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.** |
 
 ## Storage parameters
+Parameters related to the data that is stored throughout Invictus.
 
 | Parameter                                              | Required | Default                                                  | Description                                                                |
 | ------------------------------------------------------ | :------: | -------------------------------------------------------- | -------------------------------------------------------------------------- |
 | `cosmosAccountName`                                    | No       | `invictus-{resourcePrefix}-cosmos-serverless/provisoned` | Name for Cosmos account                                                    |
 | `cosmosDatabaseName`                                   | No       | `InvictusDashboard`                                      | Name for Cosmos database                                                   |
-| `isProvisionedCosmos`                                  | Yes      | `0` (: true)                                             | isProvisionedCosmos true or false                                          |
+| `isProvisionedCosmos`                                  | Yes      | `0` (: `true`)                                             | isProvisionedCosmos true or false                                          |
 | **`cosmosDbSubnets` (VNET)**                           | **Yes**  | **`[]`**                                                | **An array of string. The values need to match the subnet names on the VNET.** |
 
 | Parameter                                              | Required | Default                         | Description
@@ -251,6 +255,7 @@ The below tables lists the parameters accepted by the Bicep template.
 | `dataWorkFlowCleanupMaxRetentionDays`                  | No       |  `90`   | Max number of days the WorkFlowEvent data is stored    |
 
 ## Messaging parameters
+Parameters related to the messaging resources that import the flow information into storage.
 
 | Parameter                           | Required | Default                         | Description                                              |
 | ----------------------------------- | :------: | ------------------------------- | -------------------------------------------------------- |
@@ -283,6 +288,7 @@ The below tables lists the parameters accepted by the Bicep template.
 | `genericEventHubName`               | No       | `invictus-{resourcePrefix}-genericreceiver-evhb` | EventHub name for the import job |
 
 ## Secret parameters
+Parameters related to the security of the deployed applications. 
 
 | Parameter                           | Required | Default                         | Description                                |
 | ----------------------------------- | :------: | ------------------------------- | ------------------------------------------ |
@@ -293,6 +299,7 @@ The below tables lists the parameters accepted by the Bicep template.
 | **`keyVaultSubnets` (VNET)**        | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
 
 ## Observability parameters
+Parameters related to the observability of the deployed applications.
 
 | Parameter                                     | Required | Default                                     | Description                                                  |
 | -------------------------------------------   | :------: | ------------------------------------------- | ------------------------------------------------------------ |
@@ -303,6 +310,7 @@ The below tables lists the parameters accepted by the Bicep template.
 | `ImportJobAppInsightsSamplingPercentage`      | No       | `1`                                         | The sampling percentage for the import job Application Insights resource |
 
 ## Scaling parameters
+Parameters to manipulate how the deployed applications scale.
 
 | Parameter                                     | Required | Default                   | Description                           |
 | --------------------------------------------- | :------: | ------------------------- | ------------------------------------- |
@@ -312,18 +320,18 @@ The below tables lists the parameters accepted by the Bicep template.
 | `mTriggerCpuTimeGrainAutoScaleIncrease`       | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
 | `mTriggerCpuTimeGrainAutoScaleDecrease`       | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
 | `mTriggerRamTimeGrainAutoScaleIncrease`       | No       | PT5M                      | Time evaluated when factoring enabling autoscale for RAM |
-| `mTriggerRamTimeGrainAutoScaleDecrease`       | No       | 50                      | Percentage when rule is triggered |
+| `mTriggerRamTimeGrainAutoScaleDecrease`       | No       | `50`                      | Percentage when rule is triggered |
 | `mTriggerCpuTimeWindowAutoScaleIncrease`      | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
 | `mTriggerCpuTimeWindowAutoScaleDecrease`      | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
-| `mTriggerCpuThresholdAutoScaleIncrease`       | No       | 70                      | Percentage when rule is triggered |
-| `mTriggerCpuThresholdAutoScaleDecrease`       | No       | 50                      | Percentage when rule is triggered |
+| `mTriggerCpuThresholdAutoScaleIncrease`       | No       | `70`                      | Percentage when rule is triggered |
+| `mTriggerCpuThresholdAutoScaleDecrease`       | No       | `50`                      | Percentage when rule is triggered |
 | `mTriggerRamTimeWindowAutoScaleIncrease`      | No       | PT5M                      | Time evaluated when rule is triggered |
 | `mTriggerRamTimeWindowAutoScaleDecrease`      | No       | PT5M                      | Time evaluated when rule is triggered |
-| `mTriggerRamThresholdAutoScaleIncrease`       | No       | 70                      | Percentage when rule is triggered |
-| `mTriggerRamThresholdAutoScaleDecrease`       | No       | 50                      | Percentage when rule is triggered |
+| `mTriggerRamThresholdAutoScaleIncrease`       | No       | `70`                      | Percentage when rule is triggered |
+| `mTriggerRamThresholdAutoScaleDecrease`       | No       | `50`                      | Percentage when rule is triggered |
 | `scaleActionCpuCooldownTimeAutoScaleIncrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
 | `scaleActionCpuCooldownTimeAutoScaleDecrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
 | `scaleActionRamCooldownTimeAutoScaleIncrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for RAM |
 | `scaleActionRamCooldownTimeAutoScaleDecrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for RAM |
 | `storeImportJobScaleLimit`                    | No       | `0`                       | The scale limit for the store import job function app |
-| **`autoscaleForPlanWindows` (VNET)**          | **No**   | **`invictus-{resourcePrefix}-CPU-RAM-Autoscale`** | Name of the autoscale rules for windows app plan |
+| **`autoscaleForPlanWindows` (VNET)**          | **No**   | **`invictus-{resourcePrefix}-CPU-RAM-Autoscale`** | **Name of the autoscale rules for windows app plan** |
