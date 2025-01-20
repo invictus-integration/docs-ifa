@@ -1,0 +1,4 @@
+/* Prevent expanding of sidebar items */
+.sidebar-nav .collapse {
+  display: block !important; /* Force items to always be expanded */
+}
