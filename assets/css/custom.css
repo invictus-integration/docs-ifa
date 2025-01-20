@@ -1,5 +1,0 @@
-/* Prevent expanding of sidebar items */
-.app-sub-sidebar {
-  display: none;
-  visibility: hidden;
-}
