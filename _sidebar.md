@@ -18,14 +18,14 @@
       * [Add flow alert rule](/dashboard/alerting.md)
       * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
-  * Security
-    * [Forgot Password](/dashboard/forgotpassword.md)
-    * [Users](/dashboard/usermanagement.md)
-    * [Roles](/dashboard/role-management.md)
-  * Other
-    * [Settings](/dashboard/settings.md)
-    * [Flow Handler](/dashboard/flowhandler.md)
-    * [Import Job](/dashboard/importjob.md)
+    * Security
+      * [Forgot Password](/dashboard/forgotpassword.md)
+      * [Users](/dashboard/usermanagement.md)
+      * [Roles](/dashboard/role-management.md)
+    * Other
+      * [Settings](/dashboard/settings.md)
+      * [Flow Handler](/dashboard/flowhandler.md)
+      * [Import Job](/dashboard/importjob.md)
 * Framework components
   * [Overview](/framework/framework.md)
   * [Installation](/framework/installation/framework-installation.md)
