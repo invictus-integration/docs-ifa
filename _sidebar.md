@@ -32,15 +32,10 @@
   * Deprecated components
     * [PubSub V1](/framework/components/pubsub.md)
     * [Matrix](/framework/components/matrix.md)
-      * [Basic Promotion](/framework/components/matrix-basic.md)
-      * [Matrix Promotion](/framework/components/matrix-promote.md)
     * [Transco V1](/framework/components/transco.md)
-      * [Transco Extraction](/framework/components/transco-extraction.md)
-      * [Transco Custom Assemblies](/framework/components/transco-assemblies.md)
   * Active components
-    * [Publish and Subscribe ](/framework/components/pubsubV2.md)
+    * [Publish and Subscribe](/framework/components/pubsubV2.md)
     * [Transco](/framework/components/transcoV2.md)
-      * [Transco Matrix](/framework/components/transcoV2-Matrix.md)
       * [Transco Example](/framework/components/transcoV2-Example.md)
     * [Time sequencer](/framework/components/timesequencer.md)
     * [XSD validator](/framework/components/xsd-validator.md)
