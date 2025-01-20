@@ -14,7 +14,7 @@ The following YAML tasks show how the `Invictus-GetSources.ps1` script is used t
 
 ```yaml
 - task: PowerShell@2
-  displayName: 'Pull Sources'
+  displayName: 'Pull Invictus Dashboard sources'
   inputs:
     targetType: filePath
     filePath: './Invictus-GetSources.ps1'
