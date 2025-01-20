@@ -1,4 +1,5 @@
 /* Prevent expanding of sidebar items */
-.sidebar-nav .collapse {
-  display: block !important; /* Force items to always be expanded */
+.app-sub-sidebar {
+  display: none;
+  visibility: hidden;
 }
