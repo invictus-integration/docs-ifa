@@ -24,7 +24,6 @@
       * [Roles](/dashboard/role-management.md)
     * Other
       * [Settings](/dashboard/settings.md)
-      * [Flow Handler](/dashboard/flowhandler.md)
       * [Import Job](/dashboard/importjob.md)
 * Framework components
   * [Overview](/framework/framework.md)
