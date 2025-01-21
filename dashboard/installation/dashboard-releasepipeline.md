@@ -162,119 +162,176 @@ Always evaluate your application's needs and monitor performance to ensure the c
 
 ## Bicep Template Parameters
 
-The below table lists the parameters accepted by the Bicep template.
+The below tables lists the parameters accepted by the Bicep template.
 
-|Parameter Name|Required|Default Value|Description|
-| --- | :---: | --- | --- |
-|resourcePrefix|Yes||used as part of the default names for most resources.|
-|azureActiveDirectoryClientId|Yes|&nbsp;|Client AAD ID required to enable AAD for dashboard|
-|azureActiveDirectoryTenantId|Yes|&nbsp;|Tenant AAD ID required to enable AAD for dashboard|
-|azureActiveDirectoryClientSecret|Yes||&nbsp;|Required for AD Login|
-|AzureActiveDirectoryAudience|Yes||&nbsp;|Required for AD Login|
-|devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
-|FlowDataTTLInDays|Yes||A positive integer value which represents the amount of days flow data can live in the database|
-|apiKey1|No|Generated value|The value used for basic authentication for the APIs|
-|apiKey2|No|Generated value|The value used for basic authentication for the APIs|
-|invictusDashboardWebAppName|No|invictus-{resourcePrefix}-invictusdashboard-v2|Name for the dashboard web application|
-|cosmosAccountName|No|invictus-{resourcePrefix}-cosmos-serverless or invictus-{resourcePrefix}-cosmos-provisoned|Name for Cosmos account|
-|cosmosDatabaseName|No|InvictusDashboard|Name for Cosmos database|
-|isProvisionedCosmos|Yes|0|isProvisionedCosmos true or false|
-|isAdDisabled|No|0|isAdDisabled true or false|
-|JWTSecretToken|No|Random 40 character string|JWT Secret used for login|
-|appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
-|alertingAppInsightsName|No|invictus-{resourcePrefix}-alertingappins|Name for the Application Insights resource used for alerting|
-|importjobAppInsightsName|No|invictus-{resourcePrefix}-importjobappins|Name for Application Insights used by importjob|
-|AppInsightsSamplingPercentage|No|1|The sampling percentage for the Application Insights resource|
-|ImportJobAppInsightsSamplingPercentage|No|1|The sampling percentage for the import job Application Insights resource|
-|serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
-|serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
-|keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
-|keyVaultEnablePurgeProtection|No|null|If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
-|servicePlanName|No|invictus-{resourcePrefix}-appplan-linux|Name for the service plan which will host the APIs|
-|storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
-|storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
-|servicePlanSkuName|No|S1|Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
-|servicePlanSkuCapacity|No|1|The SKU capacity setting  for the App Plan|
-|eventHubNamespaceName|No|invictus-{resourcePrefix}-evnm|Name for the Event Hub Namespace resource|
-|eventHubName|No|invictus-{resourcePrefix}-evhb|Name for the Event Hub created on the Namespace|
-|eventHubNameV2|No|invictus-{resourcePrefix}-evhb-v2|Name for the Event Hub for standard LA's created on the Namespace|
-|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale-linux|Name of the autoscale rules for linux app plan|
-|minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
-|maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
-|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan used for all functions|
-|eventHubSkuName|No|Basic|The SKU name of the EventHub Namespace|
-|eventHubSkuTier|No|Basic|The Tier name for the EventHub Namespace|
-|eventHubSkuCapacity|No|1|The SKU capacity for the EventHub Namespace|
-|eventHubAutoInflate|No|false|The EventHub setting to enable auto-inflate|
-|eventHubMaxThroughputUnits|No|0|Max throughput setting for EventHub|
-|eventHubMessageRetentionInDays |No|1|The number of days EventHub will retain messages. Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention.|
-|mTriggerCpuTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
-|mTriggerCpuTimeGrainAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
-|mTriggerRamTimeGrainAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
-|mTriggerRamTimeGrainAutoScaleDecrease|No|50|Percentage when rule is triggered|
-|mTriggerCpuTimeWindowAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
-|mTriggerCpuTimeWindowAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
-|mTriggerCpuThresholdAutoScaleIncrease|No|70|Percentage when rule is triggered|
-|mTriggerCpuThresholdAutoScaleDecrease|No|50|Percentage when rule is triggered|
-|mTriggerRamTimeWindowAutoScaleIncrease|No|PT5M|Time evaluated when rule is triggered|
-|mTriggerRamTimeWindowAutoScaleDecrease|No|PT5M|Time evaluated when rule is triggered|
-|mTriggerRamThresholdAutoScaleIncrease|No|70|Percentage when rule is triggered|
-|mTriggerRamThresholdAutoScaleDecrease|No|50|Percentage when rule is triggered|
-|scaleActionCpuCooldownTimeAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
-|scaleActionCpuCooldownTimeAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for CPU|
-|scaleActionRamCooldownTimeAutoScaleIncrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
-|scaleActionRamCooldownTimeAutoScaleDecrease|No|PT5M|Time evaluated when factoring enabling autoscale for RAM|
-|invictusImportJobFunctionName|No|invictus-{resourcePrefix}-invictusimportjob|Name for Azure Function|
-|invictusCacheImportJobFunctionName|No|invictus-{resourcePrefix}-cacheimportjob|Name for Azure Function|
-|invictusStoreImportJobFunctionName|No|invictus-{resourcePrefix}-storeimportjob|Name for Azure Function|
-|invictusFlowHandlerFunctionName|No|invictus-{resourcePrefix}-flowhandlerjob|Name for Azure Function|
-|invictusGenericReceiverFunctionName|No|invictus-{resourcePrefix}-genericreceiver|Name for Azure Function|
-|invictusHttpReceiverFunctionName|No|invictus-{resourcePrefix}-httpreceiver|Name for Azure Function|
-|invictusDashboardGatewayFunctionName|No|invictus-{resourcePrefix}-dashboardgateway|Name for Azure Function|
-|invictusDatabaseManagerFunctionName|No|invictus-{resourcePrefix}-database-storeimportjob|Name for Azure Function|
-|workflowEventHubName|No|invictus-{resourcePrefix}-workflow-evhb|EventHub name for the import job|
-|dataMergeWorkflowEventHubName|No|invictus-{resourcePrefix}-mergeddata-evhb|EventHub name for the data merge import job|
-|sideTasksWorkflowEventHubName|No|invictus-{resourcePrefix}-sidetasks-evhb|EventHub name for the side tasks|
-|dataFactoryEventHubName|No|invictus-{resourcePrefix}-df-evhb|EventHub name for the data factory import job|
-|genericEventHubName|No|invictus-{resourcePrefix}-genericreceiver-evhb|EventHub name for the import job|
-|workFlowCleanupJobIntervalInMinutes|No|180|Interval in minutes for the workflowevent cleanup job|
-|dataWorkFlowCleanupMaxRetentionDays|No|90|Max number of days the WorkFlowEvent data is stored|
-|cleanupJobIntervalInMinutes|No|1440|Interval in minutes for the cleanup job|
-|reIndexIntervalInHours|No|24|Interval in hours for the re-indexing|
-|reIndexStartTime|No|2019-05-30T02:00:00.000Z|Start time for the re-indexing|
-|invictusDataFactoryName|No|invictus-{resourcePrefix}-datafactory|The name of the Data factory service.|
-|dataCleanupMaxRetentionDays|No|90|Nr of days to keep the data|
-|dataCleanupMaxProcessingRows|No|5000|Maximum nr of rows to cleanup|
-|accessPolicies|No|[]|A list of Azure Key vault access policies|
-|logicAppsImportJobErrorFilters|No|actionfailed|error filter for the import job|
-|invictusDataFactoryReceiverFunctionName|No|invictus-{resourcePrefix}-datafactoryreceiver|Name for Azure Function|
-|use32BitWorkerProcess|No|false|If set to true, webapps are deployed as 32bit|
-|maxHttpHeaderSizeInBytes|No|24576|Maximum allowed HTTP header size for dashboard requests (in bytes)|
-|messageStatusCacheDeleteAfterDays|No|30|The number of days without modification for the message status cache to be deleted|
-|storeImportJobScaleLimit|No|0|The scale limit for the store import job function app|
-|statisticsCutOffDays|No|-3|The number of days in the past that homepage statistics will recalculate|
+## Top-level parameters
+Resource-independent parameters that affect all resources in the deployed resource group.
 
-### VNET Specific Parameters
+| Parameter                              | Required | Default             | Description                       |
+| -------------------------------------- | :------: | ------------------- | --------------------------------- |
+| `resourcePrefix`                       | Yes      |                     | used as part of the default names for most resources |
+| `devOpsObjectId`                       | Yes      |                     | The object-id associated with the service principal that's connected to the service connection on DevOps |
 
-|Parameter Name|Required for VNET|Default Value|Description|
-| --- | :---: | --- | --- |
-|enableVnetSupport|Yes|false|Used to toggle VNET functionality on or off|
-|vnetResourceGroupName|Yes|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|vnetName|Yes|&nbsp;|The name of the VNET resource|
-|keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|cosmosDbSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|eventHubSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|dashboardSubnetName|Yes||The name of the subnet to be used to connect the dashboard resource|
-|functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
-|privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
-|windowsPlanName|No|invictus-{resourcePrefix}-appplan|The name for the windows plan which the azure functions will run on instead of a consumption plan|
-|serviceWindowsPlanSkuName|No|S1|Name of the Windows App Plan size|
-|serviceWindowsPlanSkuCapacity|No|1|The SKU capacity setting  for the Windows App Plan|
-|autoscaleForPlanWindows|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name of the autoscale rules for windows app plan|
-|isPrivateDashboardVnet|No|false|If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.|
-|disableStorageAccountPublicNetworkAccess|No|false|If true, the Invictus storage account will not be accessible from a public network.|
-|storageAccountMinimumTLSVersion |No|TLS1_2|Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2|
-|dnsZoneSubscriptionId|No|Subscription ID of scope|The subscription ID of the private DNS zones.|
-|dnsZoneResourceGroupName|No|VNET RG name|The resource group name of where the private DNS zones are located.|
+| Parameter                              | Required | Default                        | Description                                                              |
+| -------------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------------------ |
+| **`enableVnetSupport` (VNET)**         | **Yes**  | **`false`**                   | **Used to toggle VNET functionality on or off** |
+| **`vnetResourceGroupName` (VNET)**     | **Yes**  |                               | **The name of the resource group on Azure where the VNET is located** |
+| **`vnetName` (VNET)**                  | **Yes**  |                               | **The name of the VNET resource** |
+| **`privateEndpointSubnetName` (VNET)** | **Yes**  |                               | **The name of the subnet to be used to connect the private endpoint resources** |
+| **`dnsZoneSubscriptionId` (VNET)**     | **No**   | **Subscription ID of scope**  | **The subscription ID of the private DNS zones.** |
+| **`dnsZoneResourceGroupName` (VNET)**  | **No**   | **VNET RG name**              | **The resource group name of where the private DNS zones are located.** |
+
+### Active Directory parameters
+Parameters related to the Azure Active Directory where the groups are synced from.
+
+| Parameter                              | Required | Default | Description |
+| -------------------------------------- | : ------ | ------- | ----------------------------------------------------- |
+| `azureActiveDirectoryClientId`         | Yes      |         | Client AAD ID required to enable AAD for dashboard    |
+| `azureActiveDirectoryTenantId`         | Yes      |         | Tenant AAD ID required to enable AAD for dashboard    |
+| `azureActiveDirectoryClientSecret`     | Yes      |         | Required for AD Login                                 |
+| `AzureActiveDirectoryAudience`         | Yes      |         | Required for AD Login                                 | 
+| `isAdDisabled`                         | No       | `0`     | isAdDisabled true or false                            |
+
+## App service parameters
+Parameters related to the applications that are deployed, mostly Azure Functions.
+
+| Parameter                                 | Required | Default                                             | Description                                     |
+| ----------------------------------------- | :------: | --------------------------------------------------- | ----------------------------------------------- |
+| `invictusDashboardWebAppName`             | No       | `invictus-{resourcePrefix}-invictusdashboard-v2`    | Name for the dashboard web application          |
+| `invictusDashboardGatewayFunctionName`    | No       | `invictus-{resourcePrefix}-dashboardgateway`        | Name for Azure Function                         |
+| `invictusImportJobFunctionName`           | No       | `invictus-{resourcePrefix}-invictusimportjob`       | Name for Azure Function                         |
+| `invictusCacheImportJobFunctionName`      | No       | `invictus-{resourcePrefix}-cacheimportjob`          | Name for Azure Function                         |
+| `invictusStoreImportJobFunctionName`      | No       | `invictus-{resourcePrefix}-storeimportjob`          | Name for Azure Function                         |
+| `invictusFlowHandlerFunctionName`         | No       | `invictus-{resourcePrefix}-flowhandlerjob`          | Name for Azure Function                         |
+| `invictusGenericReceiverFunctionName`     | No       | `invictus-{resourcePrefix}-genericreceiver`         | Name for Azure Function                         |
+| `invictusHttpReceiverFunctionName`        | No       | `invictus-{resourcePrefix}-httpreceiver`            | Name for Azure Function                         |
+| `invictusDatabaseManagerFunctionName`     | No       | `invictus-{resourcePrefix}-database-storeimportjob` | Name for Azure Function                         |
+| `invictusDataFactoryReceiverFunctionName` | No       | `invictus-{resourcePrefix}-datafactoryreceiver`     | Name for Azure Function                         |
+
+| Parameter                                  | Required | Default | Description                                                              |
+| ------------------------------------------ | :------: | ------- | ------------------------------------------------------------------------ |
+| `statisticsCutOffDays`                     | No       | `-3`    | The number of days in the past that homepage statistics will recalculate |
+
+| Parameter                                  | Required | Default                                     | Description                                         |
+| ------------------------------------------ | :------: | ------------------------------------------- | --------------------------------------------------- |
+| `consumptionPlanName`                      | No       | `invictus-{resourcePrefix}-consumptionplan` | Name of consumption app plan used for all functions |
+| `use32BitWorkerProcess`                    | No       | `false`                                     | If set to true, webapps are deployed as 32bit       |
+
+| Parameter                                  | Required | Default                                 | Description                                                                                                 |
+| ------------------------------------------ | :------: | --------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **`dashboardSubnetName` (VNET)**           | **Yes** |                                         | **The name of the subnet to be used to connect the dashboard resource** |
+| **`functionsSubnetName` (VNET)**           | **Yes** |                                         | **The name of the subnet to be used to connect the azure function resources** |
+| **`windowsPlanName` (VNET)**               | **No**  | **`invictus-{resourcePrefix}-appplan`** | **The name for the windows plan which the azure functions will run on instead of a consumption plan** |
+| **`serviceWindowsPlanSkuName` (VNET)**     | **No**  | **S1**                                  | **Name of the Windows App Plan size** |
+| **`serviceWindowsPlanSkuCapacity` (VNET)** | **No**  | **`1`**                                 | **The SKU capacity setting for the Windows App Plan** |
+| **`isPrivateDashboardVnet` (VNET)**        | **No**  | **`false`**                             | **If true, the Dashboard and DashboardGateway resources will be connected to a private endpoint and not be accessible from a public network.** |
+
+## Storage parameters
+Parameters related to the data that is stored throughout Invictus.
+
+| Parameter                                              | Required | Default                                                  | Description                                                                |
+| ------------------------------------------------------ | :------: | -------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `cosmosAccountName`                                    | No       | `invictus-{resourcePrefix}-cosmos-serverless/provisoned` | Name for Cosmos account                                                    |
+| `cosmosDatabaseName`                                   | No       | `InvictusDashboard`                                      | Name for Cosmos database                                                   |
+| `isProvisionedCosmos`                                  | Yes      | `0` (: `true`)                                             | isProvisionedCosmos true or false                                          |
+| **`cosmosDbSubnets` (VNET)**                           | **Yes**  | **`[]`**                                                | **An array of string. The values need to match the subnet names on the VNET.** |
+
+| Parameter                                              | Required | Default                         | Description
+| ------------------------------------------------------ | :------: | ------------------------------- | --------------------------------------------------------------------------------------- |
+| `storageAccountName`                                   | No       | `invictus{resourcePrefix}store` | Name for the Azure Storage resource. Dashes (-) will be removed from `{resourcePrefix}` |
+| `storageAccountType`                                   | No       | Standard_LRS                    | The Storage account StorageAccountSkuType                                                   |
+| `messageStatusCacheDeleteAfterDays`                    | No       | `30`                            | The number of days without modification for the message status cache to be deleted          |
+| **`storageAccountSubnets` (VNET)**                     | **Yes**  | **`[]`**                        | **An array of string. The values need to match the subnet names on the VNET**               |
+| **`disableStorageAccountPublicNetworkAccess` (VNET)**  | **No**   | **`false`**   | **If true, the Invictus storage account will not be accessible from a public network.**     |
+| **`storageAccountMinimumTLSVersion` (VNET)** | **No**  | **TLS1_2** | **Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2**         |
+
+| Parameter                                              | Required | Default | Description                                            |
+| ------------------------------------------------------ | :------: | ------- | ------------------------------------------------------ |
+| `FlowDataTTLInDays`                                    | Yes      |         | A positive integer value which represents the amount of days flow data can live in the database |
+| `dataCleanupMaxRetentionDays`                          | No       |  `90`   | Nr of days to keep the data                            |
+| `dataCleanupMaxProcessingRows`                         | No       |  `5000` | Maximum nr of rows to cleanup                          |
+| `cleanupJobIntervalInMinutes`                          | No       |  `1440` | Interval in minutes for the cleanup job                |
+| `workFlowCleanupJobIntervalInMinutes`                  | No       |  `180`  | Interval in minutes for the workflowevent cleanup job  |
+| `dataWorkFlowCleanupMaxRetentionDays`                  | No       |  `90`   | Max number of days the WorkFlowEvent data is stored    |
+
+## Messaging parameters
+Parameters related to the messaging resources that import the flow information into storage.
+
+| Parameter                           | Required | Default                         | Description                                              |
+| ----------------------------------- | :------: | ------------------------------- | -------------------------------------------------------- |
+| `serviceBusNamespaceName`           | No       | `invictus-{resourcePrefix}-sbs` | Name for the Service Bus Namespace resource |
+| `serviceBusSkuName`                 | No       | Standard or Premium if VNET enabled | Name for the Service Bus SKU |
+| `servicePlanName`                   | No       | `invictus-{resourcePrefix}-appplan-linux` | Name for the service plan which will host the APIs |
+| `servicePlanSkuName`                | No       | S1                              | Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
+| `servicePlanSkuCapacity`            | No       | `1`                             | The SKU capacity setting for the App Plan   |
+| **`serviceBusSubnets` (VNET)**      | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
+
+| Parameter                           | Required | Default                             | Description                               |
+| ----------------------------------- | :------: | ----------------------------------- | ----------------------------------------- |
+| `eventHubNamespaceName`             | No       | `invictus-{resourcePrefix}-evnm`    | Name for the Event Hub Namespace resource |
+| `eventHubSkuName`                   | No       | Basic                               | The SKU name of the EventHub Namespace    |
+| `eventHubSkuTier`                   | No       | Basic                               | The Tier name for the EventHub Namespace  |
+| `eventHubSkuCapacity`               | No       | `1`                                 | The SKU capacity for the EventHub Namespace |
+| `eventHubAutoInflate`               | No       | `false`                             | The EventHub setting to enable auto-inflate |
+| `eventHubMaxThroughputUnits`        | No       | `0`                                 | Max throughput setting for EventHub         |
+| `eventHubMessageRetentionInDays`    | No       | `1`                                 | The number of days EventHub will retain messages. Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention. |
+| **`eventHubSubnets` (VNET)**        | **Yes** | `[]`                               | **An array of string. The values need to match the subnet names on the VNET** |
+
+| Parameter                           | Required | Default                                          | Description                                             |
+| ----------------------------------- | :------: | ------------------------------------------------ | ------------------------------------------------------- |
+| `eventHubName`                      | No       | `invictus-{resourcePrefix}-evhb`                 | Name for the Event Hub created on the Namespace |
+| `eventHubNameV2`                    | No       | `invictus-{resourcePrefix}-evhb-v2`              | Name for the Event Hub for standard LA's created on the Namespace |
+| `workflowEventHubName`              | No       | `invictus-{resourcePrefix}-workflow-evhb`        | EventHub name for the import job |
+| `dataMergeWorkflowEventHubName`     | No       | `invictus-{resourcePrefix}-mergeddata-evhb`      | EventHub name for the data merge import job |
+| `sideTasksWorkflowEventHubName`     | No       | `invictus-{resourcePrefix}-sidetasks-evhb`       | EventHub name for the side tasks |
+| `dataFactoryEventHubName`           | No       | `invictus-{resourcePrefix}-df-evhb`              | EventHub name for the data factory import job |
+| `genericEventHubName`               | No       | `invictus-{resourcePrefix}-genericreceiver-evhb` | EventHub name for the import job |
+
+## Secret parameters
+Parameters related to the security of the deployed applications. 
+
+| Parameter                           | Required | Default                         | Description                                |
+| ----------------------------------- | :------: | ------------------------------- | ------------------------------------------ |
+| `keyVaultName`                      | No       | `invictus-{resourcePrefix}-vlt` | Name for the Key Vault Service Namespace resource |
+| `keyVaultEnablePurgeProtection`     | No       | `null`                          | If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
+| `JWTSecretToken`                    | No       | Generated on first use          | JWT Secret used for login                  |
+| `accessPolicies`                    | No       | `[]`                            | A list of Azure Key vault access policies  |
+| **`keyVaultSubnets` (VNET)**        | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
+
+## Observability parameters
+Parameters related to the observability of the deployed applications.
+
+| Parameter                                     | Required | Default                                     | Description                                                  |
+| -------------------------------------------   | :------: | ------------------------------------------- | ------------------------------------------------------------ |
+| `appInsightsName`                             | No       | `invictus-{resourcePrefix}-appins`          | Name for the Application Insights resource                   |
+| `alertingAppInsightsName`                     | No       | `invictus-{resourcePrefix}-alertingappins`  | Name for the Application Insights resource used for alerting |
+| `importjobAppInsightsName`                    | No       | `invictus-{resourcePrefix}-importjobappins` | Name for Application Insights used by importjob              |
+| `AppInsightsSamplingPercentage`               | No       | `1`                                         | The sampling percentage for the Application Insights resource |
+| `ImportJobAppInsightsSamplingPercentage`      | No       | `1`                                         | The sampling percentage for the import job Application Insights resource |
+
+## Scaling parameters
+Parameters to manipulate how the deployed applications scale.
+
+| Parameter                                     | Required | Default                   | Description                           |
+| --------------------------------------------- | :------: | ------------------------- | ------------------------------------- |
+| `autoscaleForPlanName`                        | No       | `invictus-{resourcePrefix}-CPU-RAM-Autoscale-linux` | Name of the autoscale rules for linux app plan |
+| `minPlanInstanceAutoScale`                    | No       | `1`                       | The minimum number of instances for the AutoScale function |
+| `maxPlanInstanceAutoScale`                    | No       | `5`                       | The maximum number of instances for the AutoScale function |
+| `mTriggerCpuTimeGrainAutoScaleIncrease`       | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
+| `mTriggerCpuTimeGrainAutoScaleDecrease`       | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
+| `mTriggerRamTimeGrainAutoScaleIncrease`       | No       | PT5M                      | Time evaluated when factoring enabling autoscale for RAM |
+| `mTriggerRamTimeGrainAutoScaleDecrease`       | No       | `50`                      | Percentage when rule is triggered |
+| `mTriggerCpuTimeWindowAutoScaleIncrease`      | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
+| `mTriggerCpuTimeWindowAutoScaleDecrease`      | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
+| `mTriggerCpuThresholdAutoScaleIncrease`       | No       | `70`                      | Percentage when rule is triggered |
+| `mTriggerCpuThresholdAutoScaleDecrease`       | No       | `50`                      | Percentage when rule is triggered |
+| `mTriggerRamTimeWindowAutoScaleIncrease`      | No       | PT5M                      | Time evaluated when rule is triggered |
+| `mTriggerRamTimeWindowAutoScaleDecrease`      | No       | PT5M                      | Time evaluated when rule is triggered |
+| `mTriggerRamThresholdAutoScaleIncrease`       | No       | `70`                      | Percentage when rule is triggered |
+| `mTriggerRamThresholdAutoScaleDecrease`       | No       | `50`                      | Percentage when rule is triggered |
+| `scaleActionCpuCooldownTimeAutoScaleIncrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
+| `scaleActionCpuCooldownTimeAutoScaleDecrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for CPU |
+| `scaleActionRamCooldownTimeAutoScaleIncrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for RAM |
+| `scaleActionRamCooldownTimeAutoScaleDecrease` | No       | PT5M                      | Time evaluated when factoring enabling autoscale for RAM |
+| `storeImportJobScaleLimit`                    | No       | `0`                       | The scale limit for the store import job function app |
+| **`autoscaleForPlanWindows` (VNET)**          | **No**   | **`invictus-{resourcePrefix}-CPU-RAM-Autoscale`** | **Name of the autoscale rules for windows app plan** |
