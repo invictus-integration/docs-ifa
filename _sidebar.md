@@ -27,7 +27,6 @@
     * [Role Management](/dashboard/role-management.md)
     * [Manage folder permissions](/dashboard/foldermanagement.md)
   * Backend Documentation
-    * [Flow Handler](/dashboard/flowhandler.md)
     * [Import Job](/dashboard/importjob.md)
   * Support
     * [Release Notes 🔥](https://github.com/invictus-integration/docs-ifa/releases)
