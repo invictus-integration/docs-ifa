@@ -28,7 +28,6 @@ The following documentation pages are related on the use of the dashboard.
 The following documentation pages are related to the backend of the dashboard and can help you set up or troubleshoot.
 
 * [Access Control Rights](accesscontrolrights.md): Detailed information about access right controls.
-* [Flow Handler](flowhandler.md): How resume/resubmit is handled.
 * [Import Job](importjob.md): Detailed information on the import job.
 
 ## Release Notes
