@@ -20,6 +20,10 @@ Azure Active Directory users can sign in automatically into the Invictus Dashboa
 ### Delete an Active Directory from the Dashboard
 Since the users are not managed by Invictus, users that were added via signin cannot be deleted via the Dashboard. A way to remove access is to remove the user from the Azure Active Directory group that is used to authenticate the user.
 
+1. To delete a user click on the delete icon next to the user in the user list. Confirm your decision in the confirmation box.
+  ![delete azure user](../images/delete-azure-user.PNG)
+    > 👀 Linked Active Directory users can be distinguished as they do not have a personal role assigned. The role is determined by the group the user is a member of.
+
 ### Edit an Active Directory user's role in the Dashboard
 Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](./groupmanagement.md), so will the user. 
 
@@ -42,6 +46,7 @@ To manage local users, go to the top navigation bar and click on the `Users` but
 
 1. To delete a user click on the delete icon next to the user in the user list. Confirm your decision in the confirmation box.
   ![delete local user](../images/delete-local-user.PNG)
+    > 👀 Local users can be distinguished as they have a personal role assigned.
 
 ### Edit a local user's role in the Dashboard
 
