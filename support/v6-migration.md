@@ -331,7 +331,7 @@ v2 example:
 
 #### Migrating Transco v1 to v2
 
-We need to do is change the authentication and endpoint and remove the metadata links.
+We need to change the authentication and endpoint and remove the metadata links.
 
 Transco v1 example:
 ``` json
