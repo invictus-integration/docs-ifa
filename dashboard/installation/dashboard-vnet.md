@@ -48,4 +48,29 @@ A full list of VNET parameters can be found [here](dashboard-releasepipeline.md#
 
 ### Full Deploy Script Parameters Example
 
-  `-ArtifactsPath "$(ArtifactsPath)" -ArtifactsPathScripts "$(ArtifactsPathScripts)" -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" -ResourceGroupName "$(Infra.Environment.ResourceGroup)" -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" -devOpsObjectId $(Infra.DevOps.Object.Id) -AzureActiveDirectoryClientId "********-****-****-****-********" -AzureActiveDirectoryTenantId "********-****-****-****-********" -use32BitWorkerProcess $false -AzureActiveDirectoryClientSecret "*************************" -AzureActiveDirectoryAudience "api://********-****-****-****-********" -PerformSqlDataMigration 0 -enableVnetSupport $true -vnetName "invictus-vnet" -vnetResourceGroupName "invictus-vnet" -keyVaultSubnets @("snet-privateendpoints", "snet-cae") -storageAccountSubnets @("snet-privateendpoints", "snet-cae") -serviceBusSubnets @("snet-privateendpoints", "snet-cae") -cosmosDbSubnets @("snet-privateendpoints", "snet-cae") -eventHubSubnets @("snet-privateendpoints", "snet-cae") -containerAppEnvironmentSubnetName "snet-cae" -privateEndpointSubnetName "snet-privateendpoints"`
+```powershell
+PS> $(ArtifactsPath)/Deploy.ps1 `
+-artifactsPath "$(ArtifactsPath)" `
+-artifactsPathScripts "$(ArtifactsPathScripts)" `
+-resourcePrefix "$(Infra.Environment.ResourcePrefix)" `
+-resourceGroupName "$(Infra.Environment.ResourceGroup)" `
+-variableGroupName "Software.Infra.$(Infra.Environment.ShortName)" `
+-resourceGroupLocation "$(Infra.Environment.Region.Primary)" `
+-devOpsObjectId $(Infra.DevOps.Object.Id) `
+-azureActiveDirectoryClientId "********-****-****-****-********" `
+-azureActiveDirectoryTenantId "********-****-****-****-********" `
+-use32BitWorkerProcess $false `
+-azureActiveDirectoryClientSecret "*************************" `
+-azureActiveDirectoryAudience "api://********-****-****-****-********" `
+-performSqlDataMigration 0 `
+-enableVnetSupport $true `
+-vnetName "invictus-vnet" `
+-vnetResourceGroupName "invictus-vnet" `
+-keyVaultSubnets @("snet-privateendpoints", "snet-cae") `
+-storageAccountSubnets @("snet-privateendpoints", "snet-cae") `
+-serviceBusSubnets @("snet-privateendpoints", "snet-cae") `
+-cosmosDbSubnets @("snet-privateendpoints", "snet-cae") `
+-eventHubSubnets @("snet-privateendpoints", "snet-cae") `
+-containerAppEnvironmentSubnetName "snet-cae" `
+-privateEndpointSubnetName "snet-privateendpoints"
+```
