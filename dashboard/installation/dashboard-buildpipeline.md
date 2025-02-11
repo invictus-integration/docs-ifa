@@ -1,14 +1,15 @@
-[home](../../README.md) | [dashboard](../dashboard.md) | [dashboard installation](dashboard-installation.md)
+# Add Invictus Dashboard to release package
+To deploy the Invictus Dashboard together with your customer solution, the first step is to include the Dashboard in your release package.
 
-# Dashboard Build Pipeline
+## 1. Save `Invictus-GetSources.ps1` script to your repository
+The `Invictus-GetSources.ps1` script will pull the latest Invictus resources needed to deploy the Dashboard.
 
-The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded from [here](https://invictusreleases.blob.core.windows.net/devops/prod/Invictus-GetSources.ps1?sp=r&st=2023-07-31T05:31:04Z&se=2060-07-31T13:31:04Z&spr=https&sv=2022-11-02&sr=b&sig=9xVYMoiiPjTgGXHfuA0UQcBo0g028U0fs1Wf0DCtsX4%3D). Make sure to include it in your Git repository (e.g. in the deploy folder).
+> [⬇️ Download `Invictus-GetSources.ps1`](https://invictusreleases.blob.core.windows.net/devops/prod/Invictus-GetSources.ps1?sp=r&st=2023-07-31T05:31:04Z&se=2060-07-31T13:31:04Z&spr=https&sv=2022-11-02&sr=b&sig=9xVYMoiiPjTgGXHfuA0UQcBo0g028U0fs1Wf0DCtsX4%3D)
 
-The pipeline will use variables stored in a variable group, so before creating the build pipeline open the DevOps Library page and create a new variable group.
+## 2. Add variables to variable group.
+To deploy Invictus, you will need some secrets for authentication. These secrets should be provided to you by **Codit Software**.
 
-## Variable Group
-
-Create a variable group named {prefix}.Invictus.Installation and add these variables:
+Once you have obtained these values, create a variable group named {prefix}.Invictus.Installation and add the below variables.
 
 - **Invictus.Installation.StorageAccount.Name**: invictusreleases
 - **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software
@@ -16,9 +17,7 @@ Create a variable group named {prefix}.Invictus.Installation and add these varia
 - **Infra.Environment.ACRUsername**: value provided by Codit Software
 - **Infra.Environment.ACRPassword**: value provided by Codit Software
 
-Once you have the variable group, we can now proceed to creating the build pipeline.
-
-## YAML Pipeline
+## 3. Add YAML build pipeline
 Add the files and folders from [this](./pipelines) location to your DevOps repo. 
 This contains an example YAML pipelines to build the Invictus for Azure Dashboard, change the [dashboard.build.yaml](./pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
 ``` yaml
@@ -27,4 +26,4 @@ This contains an example YAML pipelines to build the Invictus for Azure Dashboar
     - /src/customer.azure.invictus
 ```
 
-Afterwards add the [dashboard.build.yaml](./pipelines/dashboard.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](dashboard-releasepipeline.md).
+Afterwards add it in your DevOps environment as a pipeline. You may now proceed to the [release pipeline](dashboard-releasepipeline.md).
