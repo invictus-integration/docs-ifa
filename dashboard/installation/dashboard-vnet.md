@@ -31,7 +31,7 @@ Invictus includes functionality which allows all its resources to run within an 
   A Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
 
 - To be able to deploy the app code from an Azure DevOps pipeline you will need:
-  - A self hosted agent running on the same VNET with the following software intalled:
+  - A self hosted agent running on the same VNET with the following software installed:
     - Powershell
     - Azure Powershell
     - Bicep CLI
@@ -44,7 +44,7 @@ If the Invictus resources and the VNET are on different resource groups, then th
 
 The release pipeline remains the same as explained [here](dashboard-releasepipeline.md), but with a set of VNET specific parameters. The `enableVnetSupport` parameter must be set to `$true` to enable the functionality. The name of the resource group containing the VNET, as well as the VNET name itself must be passed to the `vnetResourceGroupName` and `vnetName` parameters. An array containing the names of the desired subnets must be passed to the `keyVaultSubnets`, `storageAccountSubnets`, `serviceBusSubnets`, `cosmosDbSubnets`, `eventHubSubnets` parameters. You will also need to pass the subnet names to connect the Container App Environment and private endpoints. These parameters are `containerAppEnvironmentSubnetName`, `privateEndpointSubnetName`.
 
-A full list of VNET parameters can be found [here](dashboard-releasepipeline.md#vnet-specific-parameters).
+A full list of VNET parameters can be found [here](dashboard-releasepipeline.md).
 
 ### Full Deploy Script Parameters Example
 

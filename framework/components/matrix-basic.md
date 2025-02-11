@@ -2,6 +2,13 @@
 
 # Matrix - Basic Promotion
 
+> ## ⚠️ Attention
+> This is the V1 version of the Matrix, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco Matrix V2](transcoV2-Matrix.md)
+
 ## Introduction
 
 The basic promote is a simplified version of the Matrix component. This version does not accept a config it just simple accept a list of parameters and promotes them to the Context. Values are not mandatory, any values not supplied will not be present in the response object and will be ignored
@@ -63,7 +70,7 @@ Sample request:
         "w": 3,
         "l": 10.2,
         "h": 1,
-        "wth": 200,
+        "w": 200,
     },
       "Flow": "fl1",
       "Service": "sr1",
@@ -105,7 +112,7 @@ Expected Response:
         "w": 3,
         "l": 10.2,
         "h": 1,
-        "wth": 200
+        "w": 200
     },
     "ConversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
     "CorrelationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",

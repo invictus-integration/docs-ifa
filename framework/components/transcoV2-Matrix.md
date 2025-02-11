@@ -1,6 +1,6 @@
 # Transco V2 - Matrix Functionality
 
-Matrix functionality has been rewritten in .NET 6.0 to modernize its capabalities. This functionality has now been included within the Transco V2 function, instead of its own standalone API.
+Matrix functionality has been rewritten in .NET 6.0 to modernize its capabilities. This functionality has now been included within the Transco V2 function, instead of its own standalone API.
 
 This functionality is used to promote properties from the content and from an SQL DB to the context. Unlike the older version of Matrix. a dedicated Matrix config file is no longer required as this functionality has been moved to the Transco configs and endpoints.
 
@@ -45,7 +45,7 @@ Example Request:
 		    "w":  3,
 		    "l":  10.2,
 		    "h":  1,
-		    "wth":  200,
+		    "t":  200,
 	    },
 	    "Flow":  "fl1",
 	    "Service":  "sr1",
@@ -85,7 +85,7 @@ Expected Response:
             "w": 3,
             "l": 10.2,
             "h": 1,
-            "wth": 200
+            "t": 200
         },
         "conversationId": null,
         "correlationId": null,

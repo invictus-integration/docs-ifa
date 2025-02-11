@@ -2,6 +2,13 @@
 
 # Matrix - Promotion
 
+> ## ⚠️ Attention
+> This is the V1 version of the Matrix, which is deprecated and will thus no longer be extended.
+> 
+> Maximum supported .NET version is .NET Framework 4.7.1
+> 
+> For the supported version, please see [Transco Matrix V2](transcoV2-Matrix.md)
+
 ## Introduction
 
 This documentation will give you an overview of the Matrix and will help you setup a Logic app and use the Promote Action

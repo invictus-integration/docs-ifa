@@ -6,7 +6,7 @@ The Generic receiver will use the same technology but will be listening on the e
 
 # HTTP Receiver
 
-The Http receiver epxoses it's functionality through the function ending with "-httpreceiver". To send requests to this function simply find the function in Azure and retreive the url from there. The below JSON schema is expected to generate events.
+The Http receiver exposes it's functionality through the function ending with "-httpreceiver". To send requests to this function simply find the function in Azure and retrieve the url from there. The below JSON schema is expected to generate events.
 
 ## Json Schema
 
@@ -65,7 +65,7 @@ As you can see the above examples have only 1 entry in the execution tree, to in
 Name | Description | Type | Default Values | IsRequired
 -- | -- | -- | -- | --
 Id | The unique ID assigned to an event, this should be UNIQUE per event. We suggest passing GUIDs as values. | String |   | True
-ChainId | An ID used to link events togheter. We suggest passing GUIDS as values. Events with the same ChainId will be merged into a single row | String |   | True
+ChainId | An ID used to link events together. We suggest passing GUIDS as values. Events with the same ChainId will be merged into a single row | String |   | True
 Time | The time when the event was executing. We suggest passing the UTC time as a value | DateTime |   | True
 Step | Step object which contains details for current step | Object |   | True
 Step:Id | Used to group events belonging to the same step together. We suggest passing GUIDs as values. | String |   | True
@@ -83,7 +83,7 @@ Properties:Milestone | The Milestone property | String |   | False
 Properties:Data | Values passed in this Array as KeyValuePairs will be mapped to Business Properties in the Dashboard | Dictionary |   | False
 Source | Used to identify the source of the event | String |   | True
 Azure | The Azure object which will hold Azure related data | Object |   | False
-Azure:ResouceId | The Subscription and Resource Ids for an event | String |   | False
+Azure:ResourceId | The Subscription and Resource Ids for an event | String |   | False
 Azure:PortalLink | A link to the azure resource | String |   | False
 Error | Error object which will contain the code and message of the error being reported | Object |   | False
 Error:Code | The code value within the Error Object | String |   | False

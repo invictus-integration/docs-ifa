@@ -2,13 +2,13 @@
 
 # Import Job
 
-The Invictus Import Job's main purpose it to listen on EventHub for any messages pushed by Logic Apps. After the messages are captured by the import job they are again pushed to the Invictus Gateway API, which will eventualy be saved to the database thus making them available in the dashboard.
+The Invictus Import Job's main purpose it to listen on EventHub for any messages pushed by Logic Apps. After the messages are captured by the import job they are again pushed to the Invictus Gateway API, which will eventually be saved to the database thus making them available in the dashboard.
 
-The import job will parse each message and extract all relevant information such as: Timestamps, Tracked Properties, ErrorLogs, Statuses etc. After the messages are sucessfully parsed they will be merged based on their ClientTrackingId.
+The import job will parse each message and extract all relevant information such as: Timestamps, Tracked Properties, ErrorLogs, Statuses etc. After the messages are successfully parsed they will be merged based on their ClientTrackingId.
 
 Also note that all merged messages are pushed to the Generic WorkFlow, even if no mapping match is found.
 
-Regarding custom properties it is important to know that you will need to use **Tracked Properties in your Logic Apps** if you wish to track specific data. The name of the tracked property must always match the property set in the flow during creation in the dashboard. For documentation regarding tracked properties refer to the official documenation by Mictosoft. Note that objects are not yet supported as TrackedProperties.
+Regarding custom properties it is important to know that you will need to use **Tracked Properties in your Logic Apps** if you wish to track specific data. The name of the tracked property must always match the property set in the flow during creation in the dashboard. For documentation regarding tracked properties refer to the official documentation by Microsoft. Note that objects are not yet supported as TrackedProperties.
 
 ## Execution tree
 
@@ -34,7 +34,7 @@ This section will explain how the ImportJob will handle Resumes and Resubmits. *
 
 This will ensure that the execution tree is built properly and will also eliminate a lot of edge cases which we have not foreseen if we had simply designed this using a time-based approach.
 
-The below examples are a represenation of the Flow Row and the Execution tree with different Resume and Resubmit scenarios.
+The below examples are a representation of the Flow Row and the Execution tree with different Resume and Resubmit scenarios.
 
 ### Scenario One
 
