@@ -51,4 +51,3 @@
   * [Migrate to Dashboard V2](/dashboard/installation/dashboard-migration.md)
   * [Migrate to Framework V2](/framework/installation/framework-migration.md)
   * [FAQ ❓](/dashboard/support/faq.md)
-
