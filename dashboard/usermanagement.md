@@ -17,7 +17,7 @@ Azure Active Directory users can sign in automatically into the Invictus Dashboa
 
 ![Active Directory user sign in](../images/dashboard/AdminAccount/adminAccount-4.jpg)
 
-### Delete an Active Directory from the Dashboard
+### Delete an Active Directory user from the Dashboard
 > 👤 Requires group membership with `System admin` role to delete users
 
 1. To delete a user click on the delete icon next to the user in the user list. Confirm your decision in the confirmation box.
