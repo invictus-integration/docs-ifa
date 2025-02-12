@@ -59,7 +59,7 @@ Complete example of the arguments (note the use of -devOpsObjectId as an additio
 -Version ${{parameters.Version}} -location "West Europe" -UseBeta ${{parameters.UseBeta}} -ACRPath "invictusreleases.azurecr.io" -ACRUsername $(Infra.Environment.ACRUsername) -ACRPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.ResourceGroup) -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -IdentityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -IdentityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -ContainerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"
 ```
 
-A complete list of Bicep Template parameters can be found here [here](#Bicep-Template-Parameters). 
+A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
 ## Bicep Template Parameters
 
