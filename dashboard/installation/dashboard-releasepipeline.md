@@ -39,7 +39,7 @@ Afterwards add the [dashboard.release.yaml](./pipelines/dashboard.release.yaml) 
 
 The following script arguments are used in the deploy script:
 
-**Mandatory Arguments**
+- **Mandatory Arguments**
   - artifactsPath: `$(ArtifactsPath)`
   - devOpsObjectId: The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection.
   - acrUsername: The ACR username provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step. 
