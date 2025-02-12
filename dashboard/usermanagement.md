@@ -28,7 +28,7 @@ Since the users are not managed by Invictus, users that were added via signin ca
 Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](./groupmanagement.md), so will the user. 
 
 ## Local Invictus Dashboard users
-> 👤 Requires `System admin` role
+> 👤 `System admin` role required to manage local users.
 
 Local users are entirely managed by the Invictus Dashboard. They can have their own personal permissions assigned and can be deleted at anytime.
 
