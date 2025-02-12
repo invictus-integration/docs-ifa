@@ -2,7 +2,7 @@
 
 # Framework Installation
 
-This document lists the steps required to perform an installation of the Invictus Framework in you Azure environment.
+This document lists the steps required to perform an installation of the Invictus Framework in your Azure environment.
 
 ## 1. Obtain Access
 
