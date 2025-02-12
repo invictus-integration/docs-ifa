@@ -27,10 +27,10 @@ resources:
 
 :warning: Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized.
 
-Also make sure to change the Bicep template parameters according to your needs.
+Also make sure to change the bicep template parameters according to your needs.
 
 
-If you need to overwrite more Bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
+If you need to overwrite more bicep template parameters make sure to add this to the `deployScriptParameters`. A complete list of bicep template parameters can be found [here](#bicep-template-parameters). 
 
 Afterwards add the [framework.release.yaml](./pipelines/framework.release.yaml) in your DevOps environment as a pipeline.
 
@@ -39,27 +39,39 @@ Afterwards add the [framework.release.yaml](./pipelines/framework.release.yaml) 
 The following script arguments are used in the deploy script:
 
 - **Mandatory Arguments**
-  - ArtifactsPath: `$(ArtifactsPath)`
-  - ResourcePrefix: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
-  - ResourceGroupName: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - VariableGroupName: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - IdentityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
-  - IdentityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
+  - `artifactsPath`: `$(ArtifactsPath)`
+  - `resourcePrefix`: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
+  - `resourceGroupName`: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
+  - `variableGroupName`: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
+  - `identityProviderClientSecret`: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
+  - `identityProviderApplicationId`: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
     
 - **Optional Arguments**
-  - ArtifactsPathScripts: uses ArtifactsPath when not specified.
-  - ResourceGroupLocation: `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
-  - AdditionalTemplateParameters: Additional named parameters for the Bicep template you wish to override. More on this below.
+  - `artifactsPathScripts`: uses ArtifactsPath when not specified.
+  - `resourceGroupLocation`: `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
+  - `additionalTemplateParameters`: Additional named parameters for the Bicep template you wish to override. More on this below.
 
-The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
+The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
 
-Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
+Complete example of the arguments (note the use of `-devOpsObjectId` as an additional parameter):
 
 ```powershell
--Version ${{parameters.Version}} -location "West Europe" -UseBeta ${{parameters.UseBeta}} -ACRPath "invictusreleases.azurecr.io" -ACRUsername $(Infra.Environment.ACRUsername) -ACRPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -ArtifactsPath $(Pipeline.Workspace)/_build/framework -ResourceGroupName $(Infra.Environment.ResourceGroup) -VariableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -IdentityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -IdentityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -ContainerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"
+PS> $(ArtifactsPath)/Deploy.ps1 `
+-version ${{parameters.Version}} `
+-location "West Europe" `
+-useBeta ${{parameters.UseBeta}} `
+-acrPath "invictusreleases.azurecr.io" `
+-acrUsername $(Infra.Environment.ACRUsername) `
+-acrPassword $(Infra.Environment.ACRPassword) `
+-resourcePrefix $(Infra.Environment.ResourcePrefix) `
+-artifactsPath $(Pipeline.Workspace)/_build/framework `
+-resourceGroupName $(Infra.Environment.ResourceGroup) `
+-variableGroupName invictus.$(Infra.Environment.ShortName) `
+-devOpsObjectId "$(Infra.DevOps.Object.Id)" `
+-identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)" `
+-identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" `
+-containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"
 ```
-
-A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
 ## Bicep Template Parameters
 
@@ -87,8 +99,8 @@ The below table lists the parameters accepted by the Bicep template.
 |serviceBusMessageTimeToLiveMinutes|No|-1|Time messages should be stored on service bus before being archived|
 |storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
 |devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
-|IdentityProviderClientSecret|Yes||AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
-|IdentityProviderApplicationId|Yes||AAD Application ID for MSI Authentication of Azure Container Apps|
+|identityProviderClientSecret|Yes||AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
+|identityProviderApplicationId|Yes||AAD Application ID for MSI Authentication of Azure Container Apps|
 
 ### VNET Specific Parameters
 
@@ -100,8 +112,8 @@ The below table lists the parameters accepted by the Bicep template.
 |keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
 |storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
 |serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|functionsSubnetName|Yes||The name of the subnet to be used to connect the azure function resources|
 |privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
+|containerAppEnvironmentSubnetName|Yes|                               |The name of the subnet to be used to connect the container app environment|
 |disableStorageAccountPublicNetworkAccess|No|false|If true, the Invictus storage account will not be accessible from a public network.|
 |storageAccountMinimumTLSVersion |No|TLS1_2|Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2|
 |dnsZoneSubscriptionId|No|Subscription ID of scope|The subscription ID of the private DNS zones.|
