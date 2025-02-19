@@ -34,7 +34,7 @@ Create a client secret and make sure to save the application id and client secre
 
 ### Update Invictus-GetSources.ps1
 
-Update the `Invictus-GetSources.ps1` file with the latest version supplied [here]().
+Update the `Invictus-GetSources.ps1` file with the latest version.
 
 ### Update Your Invictus for Azure Pipelines
 
