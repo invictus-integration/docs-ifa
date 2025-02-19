@@ -1,4 +1,4 @@
-# v6 Migration Guide
+﻿# v6 Migration Guide
 
 This document will guide you through the process of migrating to version 6 of Invictus for Azure.
 
@@ -26,7 +26,7 @@ Create a list of locations where the PubSub v1, Transco v1 and Matrix v1 compone
 
 ### Create an Application Registration in Entra ID
 
-Go to Entra ID and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 
+Go to Entra ID and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 👉🏼 A detailed description for this can be found [here](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/containerAuthentication.md). 
 
 Create a client secret and make sure to save the application id and client secret as you will need them later.
 
