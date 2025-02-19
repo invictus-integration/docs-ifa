@@ -4,7 +4,7 @@ This document will guide you through the process of migrating to version 6 of In
 
 ## Preparing Your Environment
 
-In version 6 we are using containerized API's instead of Web API's and Azure Functions, this means that the endpoints for the Invictus for Azure API's such as the PubSub and Transco components will change.
+In version 6 we are using containerized API's instead of Web API's and Azure Functions, this means that the endpoints for the Invictus for Azure Dashboard and API's such as the PubSub and Transco components will change.
 
 Furthermore, the PubSub v1, Transco v1 and Matrix v1 components have been deprecated and will not be available in version 6 anymore.
 
