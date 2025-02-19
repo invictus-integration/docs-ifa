@@ -32,6 +32,12 @@ Create a client secret and make sure to save the application id and client secre
 
 ## Deploying version 6 of Invictus for Azure
 
+### Update Invictus-GetSources.ps1
+
+Update the `Invictus-GetSources.ps1` file with the latest version supplied [here]().
+
+### Update Your Invictus for Azure Pipelines
+
 Update your Invictus for Azure pipelines as follows:
 * Remove the following parameters (if present)
   * `servicePlanSkuName`
@@ -51,9 +57,44 @@ Update your Invictus for Azure pipelines as follows:
   * `containerAppsEnvironmentLocation` - typically this should be set to `West Europe` or `North Europe`
   * `customApplicationIds` - here you can optionally specify a list of application id's that are allowed to call the Invictus for Azure API's, for example the application id of a managed identity used by your Logic Apps
 
+### Deploy Invictus for Azure v6
+
+Now comes the time to deploy Invictus for Azure v6. Run your Invictus for Azure pipelines 🚀
+
+After deployment the following components can be removed:
+- `invictus-{prefix}-dashboard`
+- `invictus-{prefix}-dashboardgateway`
+- `invictus-{prefix}-cacheimportjob`
+- `invictus-{prefix}-database-storeimportjob`
+- `invictus-{prefix}-datafactoryreceiver`
+- `invictus-{prefix}-flowhandlerjob`
+- `invictus-{prefix}-invictusimportjob`
+- `invictus-{prefix}-storeimportjob`
+- `invictus-{prefix}-appplan-linux`
+- `invictus-{prefix}-importjobappins`
+
+⚠️ Only after migrating all of your interfaces to version 6 of Invictus for Azure you can remove the following components:
+- `invictus-{prefix}-matrixapp`
+- `invictus-{prefix}-pubsubapp`
+- `invictus-{prefix}-transcoapp`
+- `invictus-{prefix}-exceptionhandler`
+- `invictus-{prefix}-genericreceiver`
+- `invictus-{prefix}-httpreceiver`
+- `invictus-{prefix}-pubsub-v2`
+- `invictus-{prefix}-timesequencer`
+- `invictus-{prefix}-regextranslator`
+- `invictus-{prefix}-sequencecontroller`
+- `invictus-{prefix}-transco-v2`
+- `invictus-{prefix}-xmljsonconverter`
+- `invictus-{prefix}-xsdvalidator`
+- `invictus-{prefix}-appplan`
+- `invictus-{prefix}-consumptionplan`
+
+Ofcourse, if you are not using certain components you can remove these already since no migration is necessary.
+
 ## Migrating Your Interfaces
 
-## Update Devops Library References
+### Update Devops Library References
 
 Make sure that your Devops pipelines are using the new libraries that you created in [this](#Set-up-new-Azure-Devops-libraries-for-Invictus-for-Azure-version-6) section.
 
