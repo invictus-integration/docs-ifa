@@ -43,12 +43,12 @@ Update your Invictus for Azure pipelines as follows:
   * `transcoWebAppAlwaysOn`
 
 * Add the following parameters
-  * `ACRPath` - this should be set to `invictusreleases.azurecr.io`
-  * `ACRUsername` - contact Codit Products for the username
-  * `ACRPassword` - contact Codit Products for the password
-  * `IdentityProviderApplicationId` - this should contain the application id of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID), it will be used as an allowed audience on the Invictus for Azure API's
-  * `IdentityProviderClientSecret` - this should contain the client secret of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID)
-  * `ContainerAppsEnvironmentLocation` - typically this should be set to `West Europe` or `North Europe`
+  * `acrPath` - this should be set to `invictusreleases.azurecr.io`
+  * `acrUsername` - contact Codit Products for the username
+  * `acrPassword` - contact Codit Products for the password
+  * `identityProviderApplicationId` - this should contain the application id of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID), it will be used as an allowed audience on the Invictus for Azure API's
+  * `identityProviderClientSecret` - this should contain the client secret of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID)
+  * `containerAppsEnvironmentLocation` - typically this should be set to `West Europe` or `North Europe`
   * `customApplicationIds` - here you can optionally specify a list of application id's that are allowed to call the Invictus for Azure API's, for example the application id of a managed identity used by your Logic Apps
 
 ## Migrating Your Interfaces
@@ -143,7 +143,7 @@ The Invictus for Azure API's now require an access token to be passed in the Aut
 }
 ```
 
-In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the [newly created App Registration](#Create-an-Application-Registration-in-Entra-ID) as the audience audience.
+In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the [newly created App Registration](#Create-an-Application-Registration-in-Entra-ID) as the audience.
 
 ### Deprecated Components
 
