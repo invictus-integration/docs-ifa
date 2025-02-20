@@ -65,7 +65,7 @@ A JSON Transco config file is required to specify details about the instruction 
     				"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
     				"commandValue": [SQL query to be executed],
     				"isMandatory": [If true, will throw error when result is null],
-    				"defaultValue": [Default value of result],
+    				"defaultValue": [Fallback value of result when the command does not return any rows],
     				"parameters": [
     					{
     						"paramName": [Name of param in query],
@@ -143,7 +143,7 @@ or
     		"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
     		"commandValue": [SQL query to be executed],
     		"isMandatory": [If true, will throw error when result is null],
-    		"defaultValue": [Default value of result],
+    		"defaultValue": [Fallback value of result when the command does not return any rows],
     		"parameters": [
     					{
     						"paramName": [Name of param in query],
