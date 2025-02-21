@@ -92,6 +92,10 @@ After deployment the following components can be removed:
 
 Ofcourse, if you are not using certain components you can remove these already since no migration is necessary.
 
+### Additional steps
+- Assign the role assignments as shown in this [guide](../dashboard/accesscontrolrights.md) for the new DashboardGateway and FlowHandler container apps.
+- Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
+
 ## Migrating Your Interfaces
 
 ### Update Devops Library References
