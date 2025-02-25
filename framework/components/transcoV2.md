@@ -61,10 +61,11 @@ A JSON Transco config file is required to specify details about the instruction 
     			"destination": [XPath/JPath of the results destination, or Context key if promoteToContext = true],
 			"promoteToContext":[If true query result is saved to Context at key destination],
     			"command": {
-	    			"databaseConnectionString":[Raw connection string to DB],
+	    				"databaseConnectionString":[Raw connection string to DB],
     				"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
     				"commandValue": [SQL query to be executed],
     				"isMandatory": [If true, will throw error when result is null],
+					"columnName": [Obtain value from specified column if query returns multiple fields. If empty, value from first column is obtained],
     				"defaultValue": [Default value of result],
     				"parameters": [
     					{
@@ -143,6 +144,7 @@ or
     		"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
     		"commandValue": [SQL query to be executed],
     		"isMandatory": [If true, will throw error when result is null],
+      		"columnName": [Obtain value from specified column if query returns multiple fields. If empty, value from first column is obtained],
     		"defaultValue": [Default value of result],
     		"parameters": [
     					{

@@ -2,16 +2,16 @@
 
 Some role assignments need to be added to a few Invictus for Azure components so that certain features function correctly.
    
-### Setting `Logic App Contributor` and `Website Contributor` rights for DashboardGateway and FlowHandlerJob functions on the resource group where the Logic Apps are located.
+### Setting `Logic App Contributor` and `Website Contributor` rights for DashboardGateway and FlowHandlerJob container apps on the resource group where the Logic Apps are located.
 
 :point_right: The `Website Contributor` role assignment is only necessary when using Logic Apps Standard.
 
 To do this, follow these steps:
 
-1. Go to the DashboardGateway Function App and select `Identity`.
+1. Go to the DashboardGateway Container App and select `Identity`.
 2. Click on `Azure role assignments` and then `Add role assignment`.
 3. Assign the scope (subscription or resource group where Logic Apps are located) and set the role to `Logic App Contributor`.
-4. Repeat this step for the FlowHandler function and if necessary the `Website Contributor` role.
+4. Repeat this step for the FlowHandler Container App and if necessary the `Website Contributor` role.
 
 Alternatively, the following Bicep template can be used:
 
@@ -29,13 +29,13 @@ resource websiteContributorRoleDefinition 'Microsoft.Authorization/roleDefinitio
   name: 'de139f84-1756-47ae-9be6-808fbbe84772'
 }
  
-resource dashboardGatewayFunction 'Microsoft.Web/sites@2022-09-01' existing = {
-  name: 'invictus-${resourcePrefix}-dashboardgateway'
+resource dashboardGatewayFunction 'Microsoft.App/containerApps@2022-10-01' existing = {
+  name: 'inv-${resourcePrefix}-dashboardgateway'
   scope: resourceGroup(invictusResourceGroup)
 }
 
-resource flowhandlerjobFunction 'Microsoft.Web/sites@2022-09-01' existing = {
-  name: 'invictus-${resourcePrefix}-flowhandlerjob'
+resource flowhandlerjobFunction 'Microsoft.App/containerApps@2022-10-01' existing = {
+  name: 'inv-${resourcePrefix}-flowhandlerjob'
   scope: resourceGroup(invictusResourceGroup)
 }
  
