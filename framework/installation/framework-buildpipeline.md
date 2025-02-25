@@ -2,7 +2,7 @@
 
 # Framework Build Pipeline
 
-The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded from [here](https://invictusreleases.blob.core.windows.net/devops/prod/Invictus-GetSources.ps1?st=2019-07-04T04%3A23%3A07Z&se=2050-07-05T04%3A23%3A00Z&sp=rl&sv=2017-07-29&sr=b&sig=QBgU4yCVEXeV4CHWlaA9fgTYO6y88hnFlYhsmEJVM1c%3D). Make sure to include it in your Git repository (e.g. in the deploy folder).
+The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded from [here](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/installation/scripts/Invictus-GetSources.ps1). Make sure to include it in your Git repository (e.g. in the deploy folder).
 
 The pipeline will use variables stored in a variable group, so before creating the build pipeline open the DevOps Library page and create a new variable group.
 
