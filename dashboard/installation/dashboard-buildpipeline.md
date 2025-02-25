@@ -4,7 +4,7 @@ To deploy the Invictus Dashboard together with your customer solution, the first
 ## 1. Save `Invictus-GetSources.ps1` script to your repository
 The `Invictus-GetSources.ps1` script will pull the latest Invictus resources needed to deploy the Dashboard.
 
-> [⬇️ Download `Invictus-GetSources.ps1`](https://invictusreleases.blob.core.windows.net/devops/prod/Invictus-GetSources.ps1?sp=r&st=2023-07-31T05:31:04Z&se=2060-07-31T13:31:04Z&spr=https&sv=2022-11-02&sr=b&sig=9xVYMoiiPjTgGXHfuA0UQcBo0g028U0fs1Wf0DCtsX4%3D)
+> [⬇️`Invictus-GetSources.ps1`](./scripts/Invictus-GetSources.ps1)
 
 ## 2. Add variables to variable group.
 To deploy Invictus, you will need some secrets for authentication. These secrets should be provided to you by **Codit Software**.
