@@ -14,6 +14,7 @@ Supported data parameters in request:
 
 -   KeyValueCollection: Key-Value collection
 -   Flow: string
+-   Domain: string
 -   Service: string
 -   Action: string
 -   Version: string
@@ -48,6 +49,7 @@ Example Request:
 		    "t":  200,
 	    },
 	    "Flow":  "fl1",
+	    "Domain":  "do",
 	    "Service":  "sr1",
 	    "Action":  "Ac",
 	    "Version":  "Vs",
@@ -73,6 +75,7 @@ Expected Response:
             "x-applicationName": "InvoiceApp",
             "filter": "endtoendintegrationtests",
             "Flow": "fl1",
+            "Domain": "do",	    
             "Service": "sr1",
             "Action": "Ac",
             "Version": "Vs",
