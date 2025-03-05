@@ -239,7 +239,7 @@ Example payload:
 
  8. Add any other actions you require and save
 
- ## Migrating Transco v1 to v2
+## Migrating Transco v1 to v2
 
 We need to change the authentication and endpoint and remove the metadata links.
 
