@@ -38,24 +38,13 @@ Update the [`Invictus-GetSources.ps1`](https://github.com/invictus-integration/d
 
 ### Update Your Invictus for Azure Pipelines
 
-Update your Invictus for Azure pipelines as follows:
-* Remove the following parameters (if present)
-  * `servicePlanSkuName`
-  * `servicePlanName`
-  * `consumptionPlanName`
-  * `transcoWebAppName`
-  * `pubSubWebAppAlwaysOn`
-  * `matrixWebAppAlwaysOn`
-  * `transcoWebAppAlwaysOn`
+The Azure build and release pipelines have been updated with new pipeline and script parameters. Some of the pipeline tasks have also been changed. You will need to update your pipelines to match these changes.
 
-* Add the following parameters
-  * `acrPath` - this should be set to `invictusreleases.azurecr.io`
-  * `acrUsername` - contact Codit Products for the username
-  * `acrPassword` - contact Codit Products for the password
-  * `identityProviderApplicationId` - this should contain the application id of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID), it will be used as an allowed audience on the Invictus for Azure API's
-  * `identityProviderClientSecret` - this should contain the client secret of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID)
-  * `containerAppsEnvironmentLocation` - typically this should be set to `West Europe` or `North Europe`
-  * `customApplicationIds` - here you can optionally specify a list of application id's that are allowed to call the Invictus for Azure API's, for example the application id of a managed identity used by your Logic Apps
+The newly updated pipelines and template can be found here:
+
+[Dashboard Pipelines](../dashboard/installation/pipelines)
+
+[Framework Pipelines](../framework/installation/pipelines)
 
 ### Deploy Invictus for Azure v6
 
