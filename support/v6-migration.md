@@ -198,7 +198,9 @@ We need to replace the PubSub v1, Transco v1 and Matrix v1 components with the n
 
 #### Migrating PubSub v1 to v2
 
-Basically all we need to do is change the authentication and endpoint and remove the metadata links.
+We need to change the authentication, endpoint and remove the metadata links.
+
+Also we need to use a POST on the subscribe endpoint instead of a GET.
 
 ##### Publish
 
@@ -380,6 +382,8 @@ v2 example:
 
 We need to change the authentication and endpoint and remove the metadata links.
 
+Also we need to change the transco configuration files, for this you can use the migration tool from Codit's integration practice that can be found [here](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-transco--matrix-migration-tools).
+
 Transco v1 example:
 ``` json
 "Transform_XML": {
@@ -423,8 +427,6 @@ Transco v2 example:
     "runAfter": {}
 }
 ```
-
-Also we need to change the transco configuration files, for this you can use the migration tool from Codit's integration practice that can be found [here](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-transco--matrix-migration-tools).
 
 #### Migrating Matrix v1 to Transco v2
 
