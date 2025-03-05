@@ -9,7 +9,7 @@
 > 
 > For the supported version, please see [Transco Matrix V2](transcoV2-Matrix.md)
 >
-> > For the migration guide from Matrix v1 to Transco v2 see [here](transcoV2.md#Migrating-Matrix-v1-to-Transco-v2)
+> For the migration guide from Matrix v1 to Transco v2 see [here](transcoV2.md#Migrating-Matrix-v1-to-Transco-v2)
 
 ## Introduction
 
