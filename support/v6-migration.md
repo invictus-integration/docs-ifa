@@ -42,9 +42,9 @@ The Azure build and release pipelines have been updated with new pipeline and sc
 
 The newly updated pipelines and template can be found here:
 
-[Dashboard Pipelines](../dashboard/installation/pipelines)
+[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/dashboard/installation/pipelines)
 
-[Framework Pipelines](../framework/installation/pipelines)
+[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/framework/installation/pipelines)
 
 ### Deploy Invictus for Azure v6
 
