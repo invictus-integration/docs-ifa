@@ -240,3 +240,127 @@ Example payload:
 ![Function Request](../../images/transcoV2LA.png)
 
  8. Add any other actions you require and save
+
+## Migrating Transco v1 to v2
+
+We need to change the authentication and endpoint and remove the metadata links.
+
+Also we need to change the transco configuration files, for this you can use the migration tool from Codit's integration practice that can be found [here](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-transco--matrix-migration-tools).
+
+Transco v1 example:
+``` json
+"Transform_XML": {
+    "type": "Http",
+    "inputs": {
+        "method": "POST",
+        "uri": "[parameters('invictus').Framework.Transco.v1.transcoXmlUrl]",
+        "authentication": {
+            "password": "@parameters('invictusPassword')",
+            "type": "Basic",
+            "username": "Invictus"
+        },
+        "body": {
+            "Content": "@triggerBody()?['Content']",
+            "Context": "",
+            "TranscoConfig": "EFACT_D96A_ORDERS-to-Generic_Order.xml"
+        }
+    },
+    "runAfter": {}
+}
+```
+
+Transco v2 example:
+``` json
+"Transform_XML": {
+    "type": "Http",
+    "inputs": {
+        "method": "POST",
+        "uri": "[parameters('invictus').Framework.Transco.v2.transcoXmlUrl]",
+        "authentication": {
+            "audience": "[parameters('invictus').authentication.audience]",
+            "identity": "[parameters('infra').managedIdentity.id]",
+            "type": "ManagedServiceIdentity"
+        },
+        "body": {
+            "Content": "@triggerBody()?['Content']",
+            "Context": "",
+            "TranscoConfig": "EFACT_D96A_ORDERS-to-Generic_Order.json"
+        }
+    },
+    "runAfter": {}
+}
+```
+
+## Migrating Matrix v1 to Transco v2
+
+The Matrix component's functionality has been placed in the Transco v2 API. 
+
+Basically all we need to do is change the authentication and endpoint and remove the metadata links.
+
+Matrix v1 example:
+``` json
+"Extract_Message_Context": {
+    "type": "Http",
+    "inputs": {
+        "method": "post",
+        "uri": "[parameters('invictus').framework.matrix.v1.basicMatrixUrl]",
+        "body": {
+            "Domain": "B2B-Gateway",
+            "Service": "@{concat('AS2-Receive-', body('Decode_AS2_message')?.aS2Message?.aS2To)}",
+            "Action": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PayloadFormat}",
+            "Version": "1.0",
+            "Sender": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PartyName}",
+            "Content": "@{base64(body('Decode_AS2_message')?.AS2Message?.Content)}",
+            "KeyValueCollection": {
+                "ReceiveFileName": "@{body('Decode_AS2_message')?['AS2Message']?['FileName']}",
+                "ReceiveProtocol": "AS2",
+                "ReceiveProtocolDetails": "@{body('Decode_AS2_message')?['AS2Message']?['AS2From']} > @{body('Decode_AS2_message')?['AS2Message']?['AS2To']}",
+                "ReceiveReference": "@{body('Decode_AS2_message')?['AS2Message']?['OriginalMessageId']}",
+                "ReceiveTimeUtc": "@{utcNow()}"
+            }
+        },
+        "authentication": {
+            "type": "Basic",
+            "username": "Invictus",
+            "password": "@parameters('invictusPassword')"
+        }
+    },
+    "runAfter": {},
+    "metadata": {
+        "apiDefinitionUrl": "[parameters('invictus').framework.matrix.v1.definitionUrl]",
+        "swaggerSource": "custom"
+    }
+}
+```
+
+Transco v2 example:
+``` json
+"Extract_Message_Context": {
+    "type": "Http",
+    "inputs": {
+        "method": "post",
+        "uri": "[parameters('invictus').framework.transco.v2.basicMatrixUrl]",
+        "body": {
+            "Domain": "B2B-Gateway",
+            "Service": "@{concat('AS2-Receive-', body('Decode_AS2_message')?.aS2Message?.aS2To)}",
+            "Action": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PayloadFormat}",
+            "Version": "1.0",
+            "Sender": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PartyName}",
+            "Content": "@{base64(body('Decode_AS2_message')?.AS2Message?.Content)}",
+            "KeyValueCollection": {
+                "ReceiveFileName": "@{body('Decode_AS2_message')?['AS2Message']?['FileName']}",
+                "ReceiveProtocol": "AS2",
+                "ReceiveProtocolDetails": "@{body('Decode_AS2_message')?['AS2Message']?['AS2From']} > @{body('Decode_AS2_message')?['AS2Message']?['AS2To']}",
+                "ReceiveReference": "@{body('Decode_AS2_message')?['AS2Message']?['OriginalMessageId']}",
+                "ReceiveTimeUtc": "@{utcNow()}"
+            }
+        },
+        "authentication": {
+            "audience": "[parameters('invictus').authentication.audience]",
+            "identity": "[parameters('infra').managedIdentity.id]",
+            "type": "ManagedServiceIdentity"
+        }
+    },
+    "runAfter": {}
+}
+```
