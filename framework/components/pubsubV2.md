@@ -93,3 +93,185 @@ The acknowledge function will fail if the deferred message could not be found. I
 - Subscription filter rules are assigned the same name as the subscription.
 - Default message time to live: 30 days
 - Default subscription lock timeout: 1 minute
+
+## Migrating PubSub v1 to v2
+
+We need to change the authentication, endpoint and remove the metadata links.
+
+Also we need to use a POST on the subscribe endpoint instead of a GET.
+
+### Publish
+
+v1 example:
+``` json
+"Publish_Message": {
+    "type": "Http",
+    "inputs": {
+        "method": "post",
+        "uri": "[parameters('invictus').framework.pubSub.v1.publishUrl]",
+        "body": {
+            "Content": "@{decodeBase64(body('Extract_Message_Context')['Content'])}",
+            "Context": "@body('Extract_Message_Context')?['Context']"
+        },
+        "authentication": {
+            "type": "Basic",
+            "username": "Invictus",
+            "password": "@parameters('invictusPassword')"
+        }
+    },
+    "runAfter": {
+        "Extract_Message_Context": [
+            "Succeeded"
+        ]
+    },
+    "metadata": {
+        "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.v1.definitionUrl]",
+        "swaggerSource": "custom"
+    }
+}
+```
+
+v2 example:
+``` json
+"Publish_Message": {
+    "type": "Http",
+    "inputs": {
+        "method": "post",
+        "uri": "[parameters('invictus').framework.pubSub.v2.publishUrl]",
+        "body": {
+            "Content": "@{base64ToString(body('Extract_Message_Context')['Content'])}",
+            "Context": "@body('Extract_Message_Context')?['Context']"
+        },
+        "authentication": {
+            "audience": "[parameters('invictus').authentication.audience]",
+            "identity": "[parameters('infra').managedIdentity.id]",
+            "type": "ManagedServiceIdentity"
+        }
+    },
+    "runAfter": {
+        "Extract_Message_Context": [
+            "Succeeded"
+        ]
+    }
+}
+```
+
+### Subscribe
+
+v1 example:
+``` json
+"SubscribeMessage": {
+    "inputs": {
+        "authentication": {
+            "password": "@parameters('invictusPassword')",
+            "type": "basic",
+            "username": "Invictus"
+        },
+        "method": "get",
+        "queries": {
+            "deleteOnReceive": false,
+            "filter": "Domain = 'B2B-Gateway' AND Action = 'EDI' AND Version = '1.0'",
+            "subscription": "[concat(substring(variables('logicAppName'), max(createarray(0, sub(length(variables('logicAppName')), 36)))), '-', uniquestring(variables('logicAppName')))]"
+        },
+        "uri": "[parameters('invictus').framework.pubSub.v1.subscribeUrl]"
+    },
+    "metadata": {
+        "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.v1.definitionUrl]",
+        "swaggerSource": "custom"
+    },
+    "recurrence": {
+        "frequency": "Second",
+        "interval": 1
+    },
+    "splitOn": "@triggerBody()",
+    "splitOnConfiguration": {
+        "correlation": {
+            "clientTrackingId": "@triggerBody()['Context']['x-ms-client-tracking-id']"
+        }
+    },
+    "type": "Http"
+}
+```
+
+v2 example:
+``` json
+"SubscribeMessage": {
+    "inputs": {
+        "authentication": {
+            "audience": "[parameters('invictus').authentication.audience]",
+            "identity": "[parameters('infra').managedIdentity.id]",
+            "type": "ManagedServiceIdentity"
+        },
+        "method": "post",
+        "queries": {
+            "filter": "Domain = 'B2B-Gateway' AND Action = 'EDI' AND Version = '1.0'",
+            "subscription": "[concat(substring(variables('logicAppName'), max(createarray(0, sub(length(variables('logicAppName')), 36)))), '-', uniquestring(variables('logicAppName')))]"
+        },
+        "uri": "[parameters('invictus').framework.pubSub.v2.subscribeUrl]"
+    },
+    "recurrence": {
+        "frequency": "Second",
+        "interval": 1
+    },
+    "splitOn": "@triggerBody()",
+    "splitOnConfiguration": {
+        "correlation": {
+            "clientTrackingId": "@triggerBody()['Context']['x-ms-client-tracking-id']"
+        }
+    },
+    "type": "Http"
+}
+```
+
+### Acknowledge
+
+v1 example:
+``` json
+"AcknowledgeMessage": {
+    "inputs": {
+        "authentication": {
+            "password": "@parameters('invictusPassword')",
+            "type": "Basic",
+            "username": "Invictus"
+        },
+        "body": {
+            "AcknowledgementType": "Complete",
+            "IgnoreLockLostException": true,
+            "LockToken": "@triggerBody()?['LockToken']",
+            "MessageReadTime": "@trigger()['startTime']",
+            "Subscription": "@triggerBody()?['Subscription']"
+        },
+        "method": "post",
+        "uri": "[parameters('invictus').framework.pubSub.v1.acknowledgeUrl]"
+    },
+    "metadata": {
+        "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.v1.definitionUrl]",
+        "swaggerSource": "custom"
+    },
+    "runAfter": {},
+    "type": "Http"
+}
+```
+
+v2 example:
+``` json
+"AcknowledgeMessage": {
+    "inputs": {
+        "authentication": {
+            "audience": "[parameters('invictus').authentication.audience]",
+            "identity": "[parameters('infra').managedIdentity.id]",
+            "type": "ManagedServiceIdentity"
+        },
+        "body": {
+            "AcknowledgementType": "Complete",
+            "Subscription": "@triggerBody()?['subscription']",
+            "SequenceNumber": "@triggerBody()?['sequenceNumber']",
+            "IgnoreNotFoundException": true
+        },
+        "method": "post",
+        "uri": "[parameters('invictus').framework.pubSub.v2.acknowledgeUrl]"
+    },
+    "runAfter": {},
+    "type": "Http"
+}
+```
