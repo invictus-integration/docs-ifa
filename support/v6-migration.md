@@ -38,7 +38,13 @@ Update the [`Invictus-GetSources.ps1`](https://github.com/invictus-integration/d
 
 ### Update Your Invictus for Azure Pipelines
 
-The Azure build and release pipelines have been updated with new pipeline and script parameters. Some of the pipeline tasks have also been changed. You will need to update your pipelines to match these changes.
+The Azure build and release pipelines have been overhauled and you will need to update your pipelines to match these changes. 
+
+The changes include:
+- Updated pipeline parameters
+- Updated script parameters
+- Different pipeline tasks
+- Release pipeline agent must be Ubuntu
 
 The newly updated pipelines and template can be found here:
 
