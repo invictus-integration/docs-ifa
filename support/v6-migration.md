@@ -202,3 +202,13 @@ See the documentation [here](../framework/components/transcoV2.md#Migrating-Tran
 #### Migrating Matrix v1 to Transco v2
 
 See the documentation [here](../framework/components/transcoV2.md#Migrating-Matrix-v1-to-Transco-v2).
+
+## Common Migration Issues
+- **Pipeline Error**: `Operating system not supported`
+
+  Your release pipeline agent must be a linux agent, for example `vmImage: 'ubuntu-latest'`
+  
+
+- **Pipeline Error**: `Invalid ContainerApp name....The length must be between 2 and 32 characters inclusive.`
+
+  If you are overriding the default app names, the provided name might be too long, as the container app name limit is lower than for function apps.
