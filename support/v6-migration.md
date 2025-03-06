@@ -34,28 +34,23 @@ Create a client secret and make sure to save the application id and client secre
 
 ### Update Invictus-GetSources.ps1
 
-Update the `Invictus-GetSources.ps1` file with the latest version.
+Update the [`Invictus-GetSources.ps1`](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
 
 ### Update Your Invictus for Azure Pipelines
 
-Update your Invictus for Azure pipelines as follows:
-* Remove the following parameters (if present)
-  * `servicePlanSkuName`
-  * `servicePlanName`
-  * `consumptionPlanName`
-  * `transcoWebAppName`
-  * `pubSubWebAppAlwaysOn`
-  * `matrixWebAppAlwaysOn`
-  * `transcoWebAppAlwaysOn`
+The Azure build and release pipelines have been overhauled and you will need to update your pipelines to match these changes. 
 
-* Add the following parameters
-  * `acrPath` - this should be set to `invictusreleases.azurecr.io`
-  * `acrUsername` - contact Codit Products for the username
-  * `acrPassword` - contact Codit Products for the password
-  * `identityProviderApplicationId` - this should contain the application id of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID), it will be used as an allowed audience on the Invictus for Azure API's
-  * `identityProviderClientSecret` - this should contain the client secret of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID)
-  * `containerAppsEnvironmentLocation` - typically this should be set to `West Europe` or `North Europe`
-  * `customApplicationIds` - here you can optionally specify a list of application id's that are allowed to call the Invictus for Azure API's, for example the application id of a managed identity used by your Logic Apps
+The changes include:
+- Updated pipeline parameters
+- Updated script parameters
+- Different pipeline tasks
+- Release pipeline agent must be Ubuntu
+
+The newly updated pipelines and template can be found here:
+
+[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/dashboard/installation/pipelines)
+
+[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/framework/installation/pipelines)
 
 ### Deploy Invictus for Azure v6
 
