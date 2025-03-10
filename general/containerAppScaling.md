@@ -49,4 +49,4 @@ These values can be overriden in your release pipeline by passing the updated ob
 
 Example:
 
-`-exceptionHandlerScaling @{cpuResources='0.5';memoryResources='1.0Gi';scaleMaxReplicas=1;scaleMinReplicas=1}`
+`-exceptionHandlerScaling @{cpuResources="0.5";memoryResources="1.0Gi";scaleMaxReplicas=1;scaleMinReplicas=1}`
