@@ -43,7 +43,7 @@ Each of the above parameters accepts an object:
 - `scaleMinReplicas`: The lowest number of replicas the Container App will scale in to.
 - `scaleMaxReplicas`: The highest number of replicas the Container App will scale out to.
 - `cpuResources`: The amount of cpu resources to dedicate for the container resource. See [here](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for allowed values.
-- `memoryResources`: The amount of cpu resources to dedicate for the container resource. See [here](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for allowed values.
+- `memoryResources`: The amount of memory resources to dedicate for the container resource. See [here](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for allowed values.
 
 These values can be overriden in your release pipeline by passing the updated object to the respective parameter. 
 
