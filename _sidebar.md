@@ -5,8 +5,8 @@
 * Dashboard
   * [Overview](/dashboard/dashboard.md)
   * [Installation](/dashboard/installation/dashboard-installation.md)
-    * [Azure Active Directory Sync](/dashboard/azureADSetup.md)
-    * [Group Management Azure Setup](/dashboard/groupmanagement.md)
+    * [Give Invictus access to your Active Directory](/dashboard/azureADSetup.md)
+    * [Sync your Active Directory groups into Invictus](/dashboard/groupmanagement.md)
     * [First-time login](/dashboard/setup.md)
   * Usage
     * [Homepage](/dashboard/home.md)

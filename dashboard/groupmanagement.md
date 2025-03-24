@@ -1,64 +1,21 @@
-[Home](../README.md) | [Dashboard](dashboard.md) | [Group Management](groupmanagement.md)
+# Sync your Azure Active Directory groups to Invictus
+> 👉 [Make sure that Invictus can access your Azure Active Directory](./azureADSetup.md)
 
-# Group Permission Management
+Groups available in your Azure Active Directory will be used to determine whether users can access certain flows in the Invictus Dashboard. (See [flow permissions](./foldermanagement.md)).
 
-To set up permissions for Azure Active Directory groups on Invictus, kindly follow the link [here](azureADSetup.md)
+* [Add Azure Active Directory group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
+* [Add Azure Active Directory user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
 
-# Group Management
+To synchronize Azure Active Directory groups, go to **Groups** and click on **Sync all groups**.
 
-If you want to create a group, go to **Groups** and click the **New group** button. Enter a group name and assign owners and members to the group for the AAD you just created.
+> ☝️ Only groups of active users (Active Directory users that have already signed into the Dashboard) will be synced within the Dashboard.
 
-   ![Create Group](../images/dashboard/aad_12.JPG)
+## Enable only required groups
+Once the groups are synced within the Dashboard, you have to manually enable the required groups which you want to use for [flow permissions](./foldermanagement.md).
 
-If you want to add a new user, go to **Users** and click the **New user** button. Enter all the required information and assign the desired groups to the user.
+![Enable Groups](../images/dashboard/Groups/groupman_3.jpg)
 
-   ![Add User](../images/dashboard/aad_13.JPG)
+## Assign user role to required groups
+Each enabled group requires a user role permission to indicate what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](./role-management.md).
 
-## Step 3: Sync Groups on Invictus
-
-The Sync Groups function operates by retrieving the group memberships of users who have logged in at least once via Active Directory login. This process gathers all the groups that users are members of. In case a specific group is not found, a member of that group needs to log in via Active Directory login. Afterward, the Sync Groups process must be run again to obtain the groups of that particular member and the groups of other members who have previously logged in.
-
-**Note: An app registration should be created before assigning group permissions**
-
-Click on the **Groups** icon located in the top-middle menu:
-
-   ![Sync Groups](../images/dashboard/Groups/groupman_1.jpg)
-
-Click **Sync All Groups** on the **Global Groups** page:
-
-   ![Sync All Groups](../images/dashboard/Groups/groupman_2.jpg)
-
-Once synced, enable the required groups to be used for permissions:
-
-   ![Enable Groups](../images/dashboard/Groups/groupman_3.jpg)
- 
-To add global roles to the groups, click the **Edit** buttons and set the required role:
-
-   ![Add Global Roles](../images/dashboard/Groups/groupman_4.jpg)
-
-## Step 4: Assign Groups to Folders
-
-**Note: An app registration should be created before assigning group permissions**
-
-Click on the three dots next to the folder name:
-
-   ![Folder Options](../images/dashboard/Groups/groupman_5.jpg)
-
-Several options will appear. Click on the **Edit Folder Permissions** link:
-
-   ![Edit Folder Permissions](../images/dashboard/Groups/groupman_6.jpg)
-
-Click on the **Assign a group** button.
-
-   ![Assign a Group](../images/dashboard/Groups/groupman_7.jpg)
-
-An **Assign Group** popup will appear:
-
-   ![Assign Group Popup](../images/dashboard/Groups/groupman_8.jpg)
-
-Choose the group from the first dropdown menu and select the role you want the group users to have for that specific folder.
-
-> 💡 For more information on the different roles, see [Role management](./role-management.md).
-
-   ![Assign Group](../images/dashboard/Groups/groupman_9.jpg)
-```
+![Add Global Roles](../images/dashboard/Groups/groupman_4.jpg)
