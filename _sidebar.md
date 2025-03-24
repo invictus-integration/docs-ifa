@@ -11,7 +11,7 @@
   * Usage
     * [Homepage](/dashboard/home.md)
     * Flows
-      * [Manage flows](/dashboard/foldersflows.md)
+      * [Organize flows](/dashboard/foldersflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
       * [Flow execution tree](/dashboard/executiontree.md)
