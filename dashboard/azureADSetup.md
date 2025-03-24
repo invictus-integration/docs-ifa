@@ -26,7 +26,7 @@ To use your Azure Active Directory groups as a way of authentication and flow au
    * <u>My API's</u> **Delegated** (the scoped API permission you've created in the previous step)
 
 4. **Pass app registration values to Invictus deployment**
-   * `AzureActiveDirectoryClientId` (**App registration > overview**)
-   * `AzureActiveDirectoryTenantId` (**App registration > overview**)
-   * `AzureActiveDirectoryClientSecret` (paste from previous generation)
-   * `AzureActiveDirectoryAudience` (default <u>Application ID URI</u>)
+   * `azureActiveDirectoryClientId` (**App registration > overview**)
+   * `azureActiveDirectoryTenantId` (**App registration > overview**)
+   * `azureActiveDirectoryClientSecret` (paste from previous generation)
+   * `azureActiveDirectoryAudience` (default <u>Application ID URI</u>)
