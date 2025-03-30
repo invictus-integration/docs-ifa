@@ -12,10 +12,10 @@
     * [Homepage](/dashboard/home.md)
     * Flows
       * [Organize flows](/dashboard/foldersflows.md)
+      * [Edit flows](/dashboard/editflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
       * [Flow execution tree](/dashboard/executiontree.md)
-      * [Add flow alert rule](/dashboard/alerting.md)
       * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
     * Security
