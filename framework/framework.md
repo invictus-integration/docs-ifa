@@ -22,7 +22,7 @@ Invictus for Azure currently offers the following components:
 * [XML/Json convertor](/framework/components/xmljsonconverter.md)
 * [XSD validator](/framework/components/xsd-validator.md)
 * [Regex translator](/framework/components/regextranslation.md)
-* [Exeption Handler](/framework/components/exceptionHandler.md))
+* [Exception Handler](/framework/components/exceptionHandler.md))
 
 ## Release Notes
 
