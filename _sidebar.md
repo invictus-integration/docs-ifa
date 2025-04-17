@@ -18,6 +18,9 @@
       * [Flow execution tree](/dashboard/executiontree.md)
       * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
+      * Import flows
+        * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
+        * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
     * Security
       * [Forgot Password](/dashboard/forgotpassword.md)
       * [Users](/dashboard/usermanagement.md)
@@ -42,9 +45,6 @@
     * [XML/Json convertor](/framework/components/xmljsonconverter.md)
     * [Sequence controller](/framework/components/sequencecontroller.md)
     * [Exception Handler](/framework/components/exceptionHandler.md)
-* Related Documentation
-  * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
-  * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
 * Support
   * [Release Notes 🔥](https://github.com/invictus-integration/docs-ifa/releases)
   * [VNET Support](/dashboard/installation/dashboard-vnet.md)
