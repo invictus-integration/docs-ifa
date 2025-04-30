@@ -5,19 +5,22 @@
 * Dashboard
   * [Overview](/dashboard/dashboard.md)
   * [Installation](/dashboard/installation/dashboard-installation.md)
-    * [Azure Active Directory Sync](/dashboard/azureADSetup.md)
-    * [Group Management Azure Setup](/dashboard/groupmanagement.md)
+    * [Give Invictus access to your Active Directory](/dashboard/azureADSetup.md)
+    * [Sync your Active Directory groups into Invictus](/dashboard/groupmanagement.md)
     * [First-time login](/dashboard/setup.md)
   * Usage
     * [Homepage](/dashboard/home.md)
     * Flows
-      * [Manage flows](/dashboard/foldersflows.md)
+      * [Organize flows](/dashboard/foldersflows.md)
+      * [Edit flows](/dashboard/editflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
       * [Flow execution tree](/dashboard/executiontree.md)
-      * [Add flow alert rule](/dashboard/alerting.md)
       * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
+      * Import flows
+        * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
+        * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
     * Security
       * [Forgot Password](/dashboard/forgotpassword.md)
       * [Users](/dashboard/usermanagement.md)
@@ -42,9 +45,6 @@
     * [XML/Json convertor](/framework/components/xmljsonconverter.md)
     * [Sequence controller](/framework/components/sequencecontroller.md)
     * [Exception Handler](/framework/components/exceptionHandler.md)
-* Related Documentation
-  * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
-  * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
 * Support
   * [Release Notes 🔥](https://github.com/invictus-integration/docs-ifa/releases)
   * [VNET Support](/dashboard/installation/dashboard-vnet.md)
