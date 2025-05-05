@@ -1,4 +1,4 @@
-# Import flows via LogicApp workflows
+# Import flow traces via LogicApp workflows
 Invictus is fully supported to import flows from LogicApps. It allows to keep track of the **execution tree** of the ran workflows, plus with **tracked properties** you can trace specific data for your needs besides the general **diagnostic settings**.
 
 ## Enable workflow diagnostics
