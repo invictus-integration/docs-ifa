@@ -18,7 +18,7 @@
       * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
       * Import flows
-        * [Import flows via LogicApps](/dashboard/import-flows-via-la.md)
+        * [Import via LogicApps](/dashboard/import-flows-via-la.md)
         * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
     * Security
       * [Forgot Password](/dashboard/forgotpassword.md)
