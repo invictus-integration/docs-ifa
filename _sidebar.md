@@ -21,6 +21,8 @@
       * Import flows
         * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
         * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
+        * [Import prog. via HTTP](/dashboard/import-flow-prog-via-http.md)
+        * [Import prog. via EventHubs](/dashboard/import-flow-prog-via-eh.md)
     * Security
       * [Forgot Password](/dashboard/forgotpassword.md)
       * [Users](/dashboard/usermanagement.md)
