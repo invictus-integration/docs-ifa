@@ -1,5 +1,5 @@
-# Import flows from external sources
-Invictus allows 'flows' to be imported from various different sources (LogicApp workflows, DataFactory, HTTP...). Via diagnostic information, these traces are collected in Invictus' backend storage.
+# Import flow traces from external sources
+Invictus allows 'flow traces' to be imported from various different sources (LogicApp workflows, DataFactory, HTTP...). Via diagnostic information, these traces are collected in Invictus' backend storage.
 
 ## Automatic deletion of flow traces
 To keep the backend storage clean, there exists a possibility to automatic delete diagnostic traces. This can be done by setting the time-to-live (TTL).
