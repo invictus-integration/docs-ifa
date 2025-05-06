@@ -18,7 +18,7 @@
       * [Flow execution tree](/dashboard/executiontree.md)
       * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
-      * Import flows
+      * [Import flow traces](/dashboard/import-flows.md)
         * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
         * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
     * Security
