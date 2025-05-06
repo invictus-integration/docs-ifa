@@ -15,15 +15,18 @@
       * [Edit flows](/dashboard/editflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
-      * [Audit flows](/dashboard/flowauditing.md)
+      * [Flow execution tree](/dashboard/executiontree.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
-      * Import flows
+      * [Import flow traces](/dashboard/import-flows.md)
         * [Import via LogicApps](/dashboard/import-flows-via-la.md)
         * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
+        * [Import prog. via HTTP](/dashboard/import-flow-prog-via-http.md)
+        * [Import prog. via EventHubs](/dashboard/import-flow-prog-via-eh.md)
     * Security
       * [Forgot Password](/dashboard/forgotpassword.md)
       * [Users](/dashboard/usermanagement.md)
       * [Roles](/dashboard/role-management.md)
+      * [Auditing](/dashboard/auditing.md)
     * Other
       * [Settings](/dashboard/settings.md)
 * Framework components
