@@ -15,7 +15,6 @@
       * [Edit flows](/dashboard/editflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
-      * [Flow execution tree](/dashboard/executiontree.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
       * [Import flow traces](/dashboard/import-flows.md)
         * [Import via LogicApps](/dashboard/import-flows-via-la.md)
