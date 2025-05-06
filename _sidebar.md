@@ -16,7 +16,6 @@
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
       * [Flow execution tree](/dashboard/executiontree.md)
-      * [Audit flows](/dashboard/flowauditing.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
       * [Import flow traces](/dashboard/import-flows.md)
         * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
@@ -27,6 +26,7 @@
       * [Forgot Password](/dashboard/forgotpassword.md)
       * [Users](/dashboard/usermanagement.md)
       * [Roles](/dashboard/role-management.md)
+      * [Auditing](/dashboard/auditing.md)
     * Other
       * [Settings](/dashboard/settings.md)
       * [Import Job](/dashboard/importjob.md)
