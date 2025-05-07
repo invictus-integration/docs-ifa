@@ -15,11 +15,9 @@ Follow [this guide](installation/dashboard-installation.md) to setup your build 
 The following documentation pages are related on the use of the dashboard.
 
 * [Setup](setup.md): A one time setup procedure.
-* [Home page](home.md): An overview of the home page.
-* [Folders & Flows](foldersflows.md): Information on folders and flows.
+* [Home page](home.md): A quick overview of flow statuses.
 * [Search](search.md): Information on the search functionality.
 * [Message handling](messagehandling.md): Resubmit, resume and handle.
-* [Execution Tree](executiontree.md): Detail of flow execution.
 * [Settings](settings.md): An overview of the settings page.
 * [User management](usermanagement.md): More info on user management.
 
@@ -28,7 +26,7 @@ The following documentation pages are related on the use of the dashboard.
 The following documentation pages are related to the backend of the dashboard and can help you set up or troubleshoot.
 
 * [Access Control Rights](accesscontrolrights.md): Detailed information about access right controls.
-* [Import Job](importjob.md): Detailed information on the import job.
+* [Import flows via LogicApp workflows](import-flows-via-la.md): Detailed information on the import job.
 
 ## Release Notes
 
