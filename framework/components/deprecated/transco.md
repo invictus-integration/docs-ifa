@@ -7,9 +7,9 @@
 > 
 > Maximum supported .NET version is .NET Framework 4.7.1
 > 
-> For the supported version, please see [Transco V2](transcoV2.md)
+> For the supported version, please see [Transco V2](../transcoV2.md)
 >
-> For the migration guide from v1 to v2 see [here](transcoV2.md#Migrating-Transco-v1-to-v2)
+> For the migration guide from v1 to v2 see [here](../transcoV2.md#Migrating-Transco-v1-to-v2)
 
 ## Introduction
 
@@ -33,4 +33,4 @@ The Transco component for IfA uses KeyVault to retrieve the DBAlias connection s
 3. Go to KeyVault that is located in the IfA setup in Azure
 4. Go to Secrets and Add a secret: Remember to use the DbAlias property value as the Name and the configured connection string as the Value.
 
-> ![dbalias](../../images/transco-dbalias.png)
+> ![dbalias](../../../images/transco-dbalias.png)
