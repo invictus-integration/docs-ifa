@@ -1,5 +1,7 @@
 # Deprecated Framework components
-The following listed components are considered deprecated Invictus Framework components and will stop receiving support. Please follow the migration instructions to upgrade where necessary.
+The following listed components are considered deprecated Invictus Framework components and will stop receiving support.
+
+Please follow the migration instructions to upgrade where necessary.
 
 * [PubSub v1](./pubsub.md)
   * ➡️ [Migrate to PubSub V2](../pubsubV2.md#migrating-pubsub-v1-to-v2)
