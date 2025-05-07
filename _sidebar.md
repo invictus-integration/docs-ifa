@@ -15,10 +15,9 @@
       * [Edit flows](/dashboard/editflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
-      * [Flow execution tree](/dashboard/executiontree.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
       * [Import flow traces](/dashboard/import-flows.md)
-        * [LogicApps diagnostics](/framework/logicappsdiagnostics.md)
+        * [Import via LogicApps](/dashboard/import-flows-via-la.md)
         * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
         * [Import prog. via HTTP](/dashboard/import-flow-prog-via-http.md)
         * [Import prog. via EventHubs](/dashboard/import-flow-prog-via-eh.md)
@@ -29,7 +28,6 @@
       * [Auditing](/dashboard/auditing.md)
     * Other
       * [Settings](/dashboard/settings.md)
-      * [Import Job](/dashboard/importjob.md)
 * Framework components
   * [Overview](/framework/framework.md)
   * [Installation](/framework/installation/framework-installation.md)
