@@ -9,9 +9,7 @@
     * [Sync your Active Directory groups into Invictus](/dashboard/groupmanagement.md)
     * [First-time login](/dashboard/setup.md)
   * Usage
-    * [Homepage](/dashboard/home.md)
-    * Flows
-      * [Organize flows](/dashboard/foldersflows.md)
+    * [Flows](/dashboard/home.md)
       * [Edit flows](/dashboard/editflows.md)
       * [Search flows](/dashboard/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
