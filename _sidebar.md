@@ -33,7 +33,7 @@
 * Framework components
   * [Overview](/framework/framework.md)
   * [Installation](/framework/installation/framework-installation.md)
-  * [Deprecated components](/framework/components/deprecated-components.md)
+  * [Deprecated components](/framework/components/dreprecated/deprecated-components.md)
   * Active components
     * [Publish and Subscribe](/framework/components/pubsubV2.md)
     * [Transco](/framework/components/transcoV2.md)
