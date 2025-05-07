@@ -27,10 +27,3 @@ Invictus for Azure currently offers the following components:
 ## Release Notes
 
 The release notes for the framework can be found [here](https://github.com/invictus-integration/docs-ifa/releases).
-
-## Related Documentation
-
-The following documentation pages are related to the use of the framework and can help you set up or troubleshoot.
-
-* [LogicApps diagnostics](logicappsdiagnostics.md): A sample ARM template for enabling diagnostics for your Logic App.
-* [DataFactory diagnostics](datafactorydiagnostics.md): A sample ARM template for enabling diagnostics for your Data Factory.
