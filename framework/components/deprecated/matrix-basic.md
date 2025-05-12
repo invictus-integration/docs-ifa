@@ -1,5 +1,3 @@
-[home](../../README.md) | [framework](../framework.md) | [matrix](matrix.md)
-
 # Matrix - Basic Promotion
 
 > ## ⚠️ Attention
@@ -7,7 +5,7 @@
 > 
 > Maximum supported .NET version is .NET Framework 4.7.1
 > 
-> For the supported version, please see [Transco Matrix V2](transcoV2-Matrix.md)
+> For the supported version, please see [Transco Matrix V2](../transcoV2-Matrix.md)
 
 ## Introduction
 
@@ -34,21 +32,21 @@ List of data objects supported:
 
 1. To setup this component follow the same steps as in the [Matrix Promotion](matrix-promote.md). The only difference is that when choosing the function, this time choose Basic Extract Message Context.
 
-   ![operations](../../images/matrix-operation.png)
+   ![operations](../../../images/matrix-operation.png)
 
 2. After choosing Basic Extract Message Context, you will notice the difference from the normal extract function. This one has more parameters but is limited to those only. Any value passed in the parameter boxes will be now automatically pushed to the Context. All new parameters added except an object value, anything passed here will be promoted to the Context as a KeyValue. **The only exception is the KeyValueCollection**.  This works exactly like the current Message Context property, it accepts a list of KeyValue items, but instead of promoting the object as a whole, it pushes each item within KeyValueCollection to the Message Context. Refer to section below for more information.
 
-   ![extract](../../images/matrix-basicextract.png)
+   ![extract](../../../images/matrix-basicextract.png)
 
 ## KeyValueCollection
 
 As stated above the KeyValue collection acts exactly like the Context. It takes a key value pair collection and promotes each item to the context. In the images below notice how all the items in KeyValueCollection have individually been pushed to the Context. **Do keep in mind that no Key collisions can occur since internally this is using a Dictionary**.
 
 Request:
-![request](../../images/matrix-basicrequest.png)
+![request](../../../images/matrix-basicrequest.png)
 
 Response:
-![response](../../images/matrix-basicresponse.png)
+![response](../../../images/matrix-basicresponse.png)
 
 ## Testing
 

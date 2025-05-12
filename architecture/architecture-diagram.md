@@ -10,7 +10,7 @@
 
 - **Frontend:** Consists of the web application which is used to monitor all flows in the system.
 - **Dashboard Gateway:** Serves as the backend for the web application, handles all interactions with the database and other dependencies.
-- **Flow Handler:** Handles interactions with the Azure management api for the flow actions (Ignore, Resubmit, Resume, Reimport), flow alerts and message content view features.
+- **Flow Handler:** Handles interactions with the Azure management api for the flow actions (Ignore, Resubmit, Resume), flow alerts and message content view features.
 - **Import Functions:** Consist of ImportJob, CacheImportJob and StoreImportJob. The ImportJob functions are used to listen on EventHub for all LogicApp executions, all data is then merged and finally pushed to the Database.
 - **CosmosDB:** Stores all the data necessary for the frontend to function such as users, folders, settings. Flow data and workflowevents are also saved to the CosmosDB by the *DatabaseManager* function.
 - **Event Hub:** Logic App diagnostic messages are sent to event hub where they are picked up and processed by the Invictus import functions.
