@@ -1,5 +1,8 @@
 param invictus_vnet_name string = 'invictus-vnet'
 
+var location = resourceGroup().location
+var lowerLocation = replace(toLower(location), ' ', '')
+
 resource privatelink_azurecr_io 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   name: 'privatelink.azurecr.io'
   location: 'global'
@@ -12,20 +15,6 @@ resource privatelink_azurecr_io 'Microsoft.Network/privateDnsZones@2018-09-01' =
     numberOfVirtualNetworkLinksWithRegistration: 0
   }
 }
-
-resource privatelink_azurewebsites_net 'Microsoft.Network/privateDnsZones@2018-09-01' = {
-  name: 'privatelink.azurewebsites.net'
-  location: 'global'
-  properties: {
-    maxNumberOfRecordSets: 25000
-    maxNumberOfVirtualNetworkLinks: 1000
-    maxNumberOfVirtualNetworkLinksWithRegistration: 100
-    numberOfRecordSets: 1
-    numberOfVirtualNetworkLinks: 1
-    numberOfVirtualNetworkLinksWithRegistration: 0
-  }
-}
-
 resource privatelink_blob_core_windows_net 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   name: 'privatelink.blob.core.windows.net'
   location: 'global'
@@ -130,20 +119,21 @@ resource privatelink_mongo_cosmos_azure_com 'Microsoft.Network/privateDnsZones@2
   }
 }
 
-resource privatelink_azurecr_io_vnet_link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  parent: privatelink_azurecr_io
-  name: 'vnet-link'
+resource privatelink_region_azurecontainerapps_io 'Microsoft.Network/privateDnsZones@2018-09-01' = {
+  name: 'privatelink.${lowerLocation}.azurecontainerapps.io'
   location: 'global'
   properties: {
-    registrationEnabled: false
-    virtualNetwork: {
-      id: resourceId('Microsoft.Network/virtualNetworks', invictus_vnet_name)
-    }
+    maxNumberOfRecordSets: 25000
+    maxNumberOfVirtualNetworkLinks: 1000
+    maxNumberOfVirtualNetworkLinksWithRegistration: 100
+    numberOfRecordSets: 1
+    numberOfVirtualNetworkLinks: 1
+    numberOfVirtualNetworkLinksWithRegistration: 0
   }
 }
 
-resource privatelink_azurewebsites_net_vnet_link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  parent: privatelink_azurewebsites_net
+resource privatelink_azurecr_io_vnet_link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+  parent: privatelink_azurecr_io
   name: 'vnet-link'
   location: 'global'
   properties: {
@@ -249,3 +239,16 @@ resource Microsoft_Network_privateDnsZones_virtualNetworkLinks_privatelink_mongo
     }
   }
 }
+
+resource Microsoft_Network_privateDnsZones_virtualNetworkLinks_privatelink_region_azurecontainerapps_io_vnet_link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+  parent: privatelink_region_azurecontainerapps_io
+  name: 'vnet-link'
+  location: 'global'
+  properties: {
+    registrationEnabled: false
+    virtualNetwork: {
+      id: resourceId('Microsoft.Network/virtualNetworks', invictus_vnet_name)
+    }
+  }
+}
+
