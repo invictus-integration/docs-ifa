@@ -8,14 +8,9 @@ The Invictus Framework and Dashboard run on Azure Container Apps, many of which 
 - Follow the official [documentation](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=client-secret) to create an app registration.
 > Supported account types may be set to `Accounts in this organizational directory only (Single-tenant)`
 - Generate a client secret as explained [here](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=client-secret#tabpanel_1_client-secret), making sure to keep the value somewhere safe.
-- Set up API Permissions:
-   1. Go to the **Expose an API** tab.
-   2. Click **Add a scope**.
-   3. For **Scope name**, enter `user_impersonation`.
-   4. Set **Who can consent** to **Admins and Users**.
-   5. Provide a **Description** (e.g., "Allows the app to impersonate the user").
-   6. Click **Add scope** to save.
-      
+- [Set up API Permissions](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis):
+   * Scope: <u>`user_impersonation`</u>
+   * Set **Who can consent** to **Admins and Users**.      
 
 ![Generate a Client Secret](../images/AAD-addScope.png)
 
