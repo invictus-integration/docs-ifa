@@ -14,11 +14,11 @@ To use your Azure Active Directory groups as a way of authentication and flow au
      * Assign <u>Owners</u> ([more info](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/assign-app-owners?pivots=portal))
      * Grant <u>Admin consent</u> ([more info](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal))
 
-1. [**Let app expose an API with scoped permissions**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-expose-web-apis#add-a-scope)
+2. [**Let app expose an API with scoped permissions**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-expose-web-apis#add-a-scope)
    * Use default <u>Application ID URI</u> (copy value for later use).
    * Add scope with <u>Admin and users</u> consent.
 
-2. [**Add API permissions**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis)
+3. [**Add API permissions**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis)
    * <u>Microsoft.Graph/</u>
      * <u>Directory.Read.All</u> **Delegated** (looking up directory objects)
      * <u>User.Read</u> **Delegated** (looking up users)
@@ -27,7 +27,7 @@ To use your Azure Active Directory groups as a way of authentication and flow au
      * <u>Mail.Send</u> **Application** (sending 'forgot password' mails)
    * <u>My API's</u> **Delegated** (the scoped API permission you've created in the previous step)
 
-3. **Pass app registration values to Invictus deployment**
+4. **Pass app registration values to Invictus deployment**
    * `azureActiveDirectoryClientId` (**App registration > overview**)
    * `azureActiveDirectoryTenantId` (**App registration > overview**)
    * `azureActiveDirectoryClientSecret` (paste from previous generation)
