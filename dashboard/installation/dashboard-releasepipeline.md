@@ -90,7 +90,7 @@ PS> $(ArtifactsPath)/Deploy.ps1 `
   -identityProviderClientSecret "$(Infra.Environment.IdentityProviderClientSecret)" `
   -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)" `
   -isProvisionedCosmos 1 `
-  -FlowDataTTLInDays 90
+  -flowDataTTLInDays 90
 ```
 
 ### Provisoned Throughput vs Serverless Cosmos DB
