@@ -12,6 +12,5 @@ The Invictus Framework and Dashboard run on Azure Container Apps, many of which 
    * Scope: <u>`user_impersonation`</u>
    * Set **Who can consent** to **Admins and Users**.      
 
-![Generate a Client Secret](../images/AAD-addScope.png)
 
 - Make sure to securely store the `Application ID` and `Client Secret` as these values are required parameters in the [release pipeline](../dashboard/installation/dashboard-releasepipeline.md).
