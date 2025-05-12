@@ -64,7 +64,7 @@ The MessageId property in the Publish will be used for duplicate detection. This
    ![swagger](../../../images/pubsub-swagger.png)
 
 <!-- md-dead-link-check: off -->
-9. Enter the swagger url (eg: for PubSub <a href="">https://invictus-dev-we-sft-pubsubapp.azurewebsites.net/swagger/docs/v1</a>).
+9. Enter the swagger url (eg: for PubSub <a href="/">https://invictus-dev-we-sft-pubsubapp.azurewebsites.net/swagger/docs/v1</a>).
 <!-- md-dead-link-check: on -->
 
    ![swagger connector](../../../images/pubsub-swaggerconnector.png)
