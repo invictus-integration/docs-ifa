@@ -10,7 +10,7 @@ steps:
   displayName: 'Pull Sources'
   inputs:
     targetType: filePath
-    filePath: './Scripts/Invictus-GetSources.ps1'
+    filePath: './scripts/Invictus-GetSources.ps1'
     arguments: '-StorageAccountName "${{parameters.storageAccountName}}" -StorageSasToken "${{parameters.storageSasToken}}" -StorageContainerName "${{parameters.type}}" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta ${{parameters.useBeta}} -Version ${{ parameters.version }}'
           
 - task: PublishPipelineArtifact@1
