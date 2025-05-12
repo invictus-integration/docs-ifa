@@ -10,5 +10,5 @@ To do this, follow these steps:
 
 1. Go to the User Assigned Managed Identity (named `invictus-prefix-we-sft-aca-identity` by default) and select `Azure role assignments`.
 2. Click on `Add role assignment`.
-3. Assign the scope (subscription or resource group where Logic Apps are located) and set the role to `Logic App Contributor`.
+3. Assign the scope (subscription or resource group where Logic Apps are located) and set the role to [`Logic App Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/integration#logic-app-contributor).
 4. Repeat this step for the FlowHandler Container App and if necessary the `Website Contributor` role.
