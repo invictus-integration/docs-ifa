@@ -65,7 +65,7 @@ A JSON Transco config file is required to specify details about the instruction 
     				"databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
     				"commandValue": [SQL query to be executed],
     				"isMandatory": [If true, will throw error when result is null],
-					"columnName": [Obtain value from specified column if query returns multiple fields. If empty, value from first column is obtained],
+				"columnName": [Obtain value from specified column if query returns multiple fields. If empty, value from first column is obtained],
     				"defaultValue": [Default value of result],
     				"parameters": [
     					{
