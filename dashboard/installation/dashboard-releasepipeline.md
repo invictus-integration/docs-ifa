@@ -88,7 +88,7 @@ PS> $(ArtifactsPath)/Deploy.ps1 `
   -azureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]" `
   -identityProviderApplicationId "$(Infra.Environment.IdentityProviderApplicationId)" `
   -identityProviderClientSecret "$(Infra.Environment.IdentityProviderClientSecret)" `
-  -ContainerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)" `
+  -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)" `
   -isProvisionedCosmos 1 `
   -FlowDataTTLInDays 90
 ```
