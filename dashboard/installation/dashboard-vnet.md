@@ -14,7 +14,7 @@ Invictus includes functionality which allows all its resources to run within an 
     - Microsoft.KeyVault
     - Microsoft.ServiceBus
     - Microsoft.Storage
-  - The container app subnet must also have the delegation `Microsoft.App/environments`
+  - The container app subnet must also have the delegation `Microsoft.App/environments` ([more info](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation))
         
 - 10 Private DNS Zones
   - privatelink.azurecr.io
