@@ -26,8 +26,7 @@
       * [Auditing](/dashboard/auditing.md)
     * Other
       * [Settings](/dashboard/settings.md)
-* Framework components
-  * [Overview](/framework/framework.md)
+* [Framework components](/framework/framework.md)
   * [Installation](/framework/installation/framework-installation.md)
   * [Deprecated components](/framework/components/deprecated/deprecated-components.md)
   * Active components
