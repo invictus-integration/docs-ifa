@@ -165,7 +165,7 @@ Parameters related to the Azure Active Directory where the groups are synced fro
 | `AzureActiveDirectoryAudience`         | Yes      |         | Required for AD Login                                 | 
 | `isAdDisabled`                         | No       | `0`     | isAdDisabled true or false                            |
 
-## App parameters
+## App service parameters
 Parameters related to the applications that are deployed, mostly Azure Functions.
 
 | Parameter                                 | Required | Default                                             | Description                                     |
