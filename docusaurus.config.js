@@ -14,9 +14,9 @@ module.exports = {
   themeConfig: {
     image: 'images/v2_logo_horizontal.png',
     navbar: {
-      title: 'Testing',
+      title: 'Integration',
       logo: {
-        alt: 'Arcus',
+        alt: 'Invictus',
         src: 'images/v2_logo_horizontal.png',
         srcDark: 'images/v2_logo_horizontal.png',
       },
