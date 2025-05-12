@@ -1,0 +1,15 @@
+{
+  "id": "framework/installation/framework-releasepipeline",
+  "title": "framework-releasepipeline",
+  "description": "home | framework | framework installation",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/installation/framework-releasepipeline.md",
+  "sourceDirName": "framework/installation",
+  "slug": "/framework/installation/framework-releasepipeline",
+  "permalink": "/framework/installation/framework-releasepipeline",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/installation/framework-releasepipeline.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

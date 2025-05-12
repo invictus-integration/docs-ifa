@@ -1,0 +1,15 @@
+{
+  "id": "dashboard/azureADSetup",
+  "title": "Give Invictus access to your Azure Active Directory",
+  "description": "To use your Azure Active Directory groups as a way of authentication and flow authorization, you need to follow these steps.",
+  "source": "@site/versioned_docs/version-v5.6.0/dashboard/azureADSetup.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/azureADSetup",
+  "permalink": "/dashboard/azureADSetup",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/dashboard/azureADSetup.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

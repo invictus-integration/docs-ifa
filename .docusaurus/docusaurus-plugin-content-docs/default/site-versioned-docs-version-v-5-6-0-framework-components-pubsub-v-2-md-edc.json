@@ -1,0 +1,15 @@
+{
+  "id": "framework/components/pubsubV2",
+  "title": "PubSub V2",
+  "description": "PubSub has been redeveloped to modernise it and implement the latest Microsoft SDKs. This function is used to send messages to a Service Bus Topic. The Subscribe function can then be used to receive the appropriate messages based on a filter. Finally, messages may then be settled (acknowledged) once processing is complete.",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/components/pubsubV2.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/pubsubV2",
+  "permalink": "/framework/components/pubsubV2",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/components/pubsubV2.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

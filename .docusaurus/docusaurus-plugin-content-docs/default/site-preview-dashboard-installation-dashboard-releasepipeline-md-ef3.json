@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/installation/dashboard-releasepipeline",
+  "title": "dashboard-releasepipeline",
+  "description": "home | dashboard | dashboard installation",
+  "source": "@site/preview/dashboard/installation/dashboard-releasepipeline.md",
+  "sourceDirName": "dashboard/installation",
+  "slug": "/dashboard/installation/dashboard-releasepipeline",
+  "permalink": "/next/dashboard/installation/dashboard-releasepipeline",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/installation/dashboard-releasepipeline.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "dashboard-migration",
+    "permalink": "/next/dashboard/installation/dashboard-migration"
+  },
+  "next": {
+    "title": "Invictus Dashboard VNET Support",
+    "permalink": "/next/dashboard/installation/dashboard-vnet"
+  }
+}

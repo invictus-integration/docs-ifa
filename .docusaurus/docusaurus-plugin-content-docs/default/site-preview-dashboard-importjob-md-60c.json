@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/importjob",
+  "title": "importjob",
+  "description": "home | dashboard",
+  "source": "@site/preview/dashboard/importjob.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/importjob",
+  "permalink": "/next/dashboard/importjob",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/importjob.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Dashboard Home Page",
+    "permalink": "/next/dashboard/home"
+  },
+  "next": {
+    "title": "importjobreceivers",
+    "permalink": "/next/dashboard/importjobreceivers"
+  }
+}

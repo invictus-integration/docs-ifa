@@ -1,0 +1,20 @@
+{
+  "id": "framework/logicappsdiagnostics",
+  "title": "Enable LogicApps Diagnostics",
+  "description": "For the Invictus Dashboard to know if messages went through your Logic App workflow correctly or not, diagnostic settings need to be configured on all Logic Apps that you want to include. These settings should stream their diagnostic traces to the Invictus EventHubs resource:",
+  "source": "@site/preview/framework/logicappsdiagnostics.md",
+  "sourceDirName": "framework",
+  "slug": "/framework/logicappsdiagnostics",
+  "permalink": "/next/framework/logicappsdiagnostics",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/framework/logicappsdiagnostics.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Invictus Framework VNET Support",
+    "permalink": "/next/framework/installation/framework-vnet"
+  }
+}

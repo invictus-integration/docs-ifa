@@ -1,0 +1,15 @@
+{
+  "id": "framework/installation/framework-buildpipeline",
+  "title": "framework-buildpipeline",
+  "description": "home | framework | framework installation",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/installation/framework-buildpipeline.md",
+  "sourceDirName": "framework/installation",
+  "slug": "/framework/installation/framework-buildpipeline",
+  "permalink": "/framework/installation/framework-buildpipeline",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/installation/framework-buildpipeline.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

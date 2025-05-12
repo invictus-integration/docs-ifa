@@ -1,0 +1,24 @@
+{
+  "id": "framework/components/pubsub",
+  "title": "pubsub",
+  "description": "home | framework",
+  "source": "@site/preview/framework/components/pubsub.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/pubsub",
+  "permalink": "/next/framework/components/pubsub",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/framework/components/pubsub.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "matrix",
+    "permalink": "/next/framework/components/matrix"
+  },
+  "next": {
+    "title": "PubSub V2",
+    "permalink": "/next/framework/components/pubsubV2"
+  }
+}

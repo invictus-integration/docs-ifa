@@ -1,0 +1,15 @@
+{
+  "id": "dashboard/usermanagement",
+  "title": "Manage Users in the Dashboard",
+  "description": "The Invictus Dashboard allows you to access the application with multiple user accounts. These can be local users, managed by Invictus itself; or Active Directory users, managed by your Azure tenant.",
+  "source": "@site/versioned_docs/version-v5.6.0/dashboard/usermanagement.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/usermanagement",
+  "permalink": "/dashboard/usermanagement",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/dashboard/usermanagement.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

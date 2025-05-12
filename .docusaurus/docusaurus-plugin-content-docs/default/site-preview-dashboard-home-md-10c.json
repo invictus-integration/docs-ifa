@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/home",
+  "title": "Dashboard Home Page",
+  "description": "The dashboard home page shows you an overview of the current status of all your flows (= message chain). Flows are an aggregation of all diagnostic traces that can be linked to the same incoming message. Besides predefined properties, it can have optional custom properties to give context to the user.",
+  "source": "@site/preview/dashboard/home.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/home",
+  "permalink": "/next/dashboard/home",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/home.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Sync your Azure Active Directory groups to Invictus",
+    "permalink": "/next/dashboard/groupmanagement"
+  },
+  "next": {
+    "title": "importjob",
+    "permalink": "/next/dashboard/importjob"
+  }
+}

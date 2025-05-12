@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/importjobreceivers",
+  "title": "importjobreceivers",
+  "description": "The purpose of these receivers is to allow developers to add entries to the dashboard manually. The first version of IfA was specifically designed for LogicApps, which post Diagnostic Logs to EventHub, which are then processed by the ImportJob and inserted into the Database.",
+  "source": "@site/preview/dashboard/importjobreceivers.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/importjobreceivers",
+  "permalink": "/next/dashboard/importjobreceivers",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/importjobreceivers.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "importjob",
+    "permalink": "/next/dashboard/importjob"
+  },
+  "next": {
+    "title": "Add Invictus Dashboard to release package",
+    "permalink": "/next/dashboard/installation/dashboard-buildpipeline"
+  }
+}

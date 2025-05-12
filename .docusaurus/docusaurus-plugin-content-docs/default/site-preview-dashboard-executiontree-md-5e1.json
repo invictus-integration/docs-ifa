@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/executiontree",
+  "title": "executiontree",
+  "description": "home | dashboard",
+  "source": "@site/preview/dashboard/executiontree.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/executiontree",
+  "permalink": "/next/dashboard/executiontree",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/executiontree.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Edit Flows",
+    "permalink": "/next/dashboard/editflows"
+  },
+  "next": {
+    "title": "flowauditing",
+    "permalink": "/next/dashboard/flowauditing"
+  }
+}

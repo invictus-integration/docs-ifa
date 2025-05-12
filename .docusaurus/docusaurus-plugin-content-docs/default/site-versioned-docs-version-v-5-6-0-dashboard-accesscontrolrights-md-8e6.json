@@ -1,0 +1,15 @@
+{
+  "id": "dashboard/accesscontrolrights",
+  "title": "Access Control Rights",
+  "description": "Some role assignments need to be added to a few Invictus for Azure components so that certain features function correctly.",
+  "source": "@site/versioned_docs/version-v5.6.0/dashboard/accesscontrolrights.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/accesscontrolrights",
+  "permalink": "/dashboard/accesscontrolrights",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/dashboard/accesscontrolrights.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

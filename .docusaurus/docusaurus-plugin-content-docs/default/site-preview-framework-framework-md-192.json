@@ -1,0 +1,24 @@
+{
+  "id": "framework/framework",
+  "title": "framework",
+  "description": "home",
+  "source": "@site/preview/framework/framework.md",
+  "sourceDirName": "framework",
+  "slug": "/framework/",
+  "permalink": "/next/framework/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/framework/framework.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Manage Users in the Dashboard",
+    "permalink": "/next/dashboard/usermanagement"
+  },
+  "next": {
+    "title": "Exception Handler",
+    "permalink": "/next/framework/components/exceptionHandler"
+  }
+}

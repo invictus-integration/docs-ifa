@@ -1,0 +1,24 @@
+{
+  "id": "framework/installation/framework-releasepipeline",
+  "title": "framework-releasepipeline",
+  "description": "home | framework | framework installation",
+  "source": "@site/preview/framework/installation/framework-releasepipeline.md",
+  "sourceDirName": "framework/installation",
+  "slug": "/framework/installation/framework-releasepipeline",
+  "permalink": "/next/framework/installation/framework-releasepipeline",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/framework/installation/framework-releasepipeline.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "framework-migration",
+    "permalink": "/next/framework/installation/framework-migration"
+  },
+  "next": {
+    "title": "Invictus Framework VNET Support",
+    "permalink": "/next/framework/installation/framework-vnet"
+  }
+}

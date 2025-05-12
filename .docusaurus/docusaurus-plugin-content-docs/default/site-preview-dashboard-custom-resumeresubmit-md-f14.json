@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/custom-resumeresubmit",
+  "title": "custom-resumeresubmit",
+  "description": "home | dashboard | custom resume/resubmit",
+  "source": "@site/preview/dashboard/custom-resumeresubmit.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/custom-resumeresubmit",
+  "permalink": "/next/dashboard/custom-resumeresubmit",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/custom-resumeresubmit.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Give Invictus access to your Azure Active Directory",
+    "permalink": "/next/dashboard/azureADSetup"
+  },
+  "next": {
+    "title": "DataFactory Receiver",
+    "permalink": "/next/dashboard/datafactoryreceiver"
+  }
+}

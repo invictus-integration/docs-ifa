@@ -1,0 +1,15 @@
+{
+  "id": "dashboard/flowdatatimetolive",
+  "title": "Flow Data Time to Live",
+  "description": "Invictus V2 now includes functionality to set a time-to-live value (TTL) on the flow and workflow event data stored in Cosmos DB. This means that once the age of the data exceeds the TTL value, that data is automatically deleted.",
+  "source": "@site/versioned_docs/version-v5.6.0/dashboard/flowdatatimetolive.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/flowdatatimetolive",
+  "permalink": "/dashboard/flowdatatimetolive",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/dashboard/flowdatatimetolive.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

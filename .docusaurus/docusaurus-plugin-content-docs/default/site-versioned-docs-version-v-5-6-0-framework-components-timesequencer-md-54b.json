@@ -1,0 +1,15 @@
+{
+  "id": "framework/components/timesequencer",
+  "title": "timesequencer",
+  "description": "home | framework",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/components/timesequencer.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/timesequencer",
+  "permalink": "/framework/components/timesequencer",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/components/timesequencer.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

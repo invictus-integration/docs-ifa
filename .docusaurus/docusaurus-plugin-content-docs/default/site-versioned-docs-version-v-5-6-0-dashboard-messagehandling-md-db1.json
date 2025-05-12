@@ -1,0 +1,15 @@
+{
+  "id": "dashboard/messagehandling",
+  "title": "Dashboard Message Handling",
+  "description": "Users have to option to resubmit, resume, reimport and ignore one or many messages.",
+  "source": "@site/versioned_docs/version-v5.6.0/dashboard/messagehandling.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/messagehandling",
+  "permalink": "/dashboard/messagehandling",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/dashboard/messagehandling.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

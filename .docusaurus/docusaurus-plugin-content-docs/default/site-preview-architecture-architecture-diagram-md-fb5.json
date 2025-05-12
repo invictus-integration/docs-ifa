@@ -1,0 +1,20 @@
+{
+  "id": "architecture/architecture-diagram",
+  "title": "architecture-diagram",
+  "description": "home",
+  "source": "@site/preview/architecture/architecture-diagram.md",
+  "sourceDirName": "architecture",
+  "slug": "/architecture/architecture-diagram",
+  "permalink": "/next/architecture/architecture-diagram",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/architecture/architecture-diagram.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "next": {
+    "title": "dashboard",
+    "permalink": "/next/dashboard/"
+  }
+}

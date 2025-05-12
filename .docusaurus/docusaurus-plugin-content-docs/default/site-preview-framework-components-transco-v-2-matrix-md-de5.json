@@ -1,0 +1,24 @@
+{
+  "id": "framework/components/transcoV2-Matrix",
+  "title": "Transco V2 - Matrix Functionality",
+  "description": "Matrix functionality has been rewritten in .NET 6.0 to modernize its capabilities. This functionality has now been included within the Transco V2 function, instead of its own standalone API.",
+  "source": "@site/preview/framework/components/transcoV2-Matrix.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/transcoV2-Matrix",
+  "permalink": "/next/framework/components/transcoV2-Matrix",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/framework/components/transcoV2-Matrix.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Full Transco V2 Example",
+    "permalink": "/next/framework/components/transcoV2-Example"
+  },
+  "next": {
+    "title": "Transco V2",
+    "permalink": "/next/framework/components/transcoV2"
+  }
+}

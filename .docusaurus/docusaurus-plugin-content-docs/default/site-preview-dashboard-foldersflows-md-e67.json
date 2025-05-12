@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/foldersflows",
+  "title": "Organizing flows in folders",
+  "description": "To have a clear overview of your desired flows, the Invictus Dashboard allows you to organize your flows into a folder hierarchy (with possibly one or more sub-folders).",
+  "source": "@site/preview/dashboard/foldersflows.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/foldersflows",
+  "permalink": "/next/dashboard/foldersflows",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/foldersflows.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "foldermanagement",
+    "permalink": "/next/dashboard/foldermanagement"
+  },
+  "next": {
+    "title": "forgotpassword",
+    "permalink": "/next/dashboard/forgotpassword"
+  }
+}

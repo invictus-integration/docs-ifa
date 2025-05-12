@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/datafactoryreceiver",
+  "title": "DataFactory Receiver",
+  "description": "To enable diagnostics and automatically stream all events from your DataFactory pipelines to event hub follow the steps below.",
+  "source": "@site/preview/dashboard/datafactoryreceiver.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/datafactoryreceiver",
+  "permalink": "/next/dashboard/datafactoryreceiver",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/datafactoryreceiver.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "custom-resumeresubmit",
+    "permalink": "/next/dashboard/custom-resumeresubmit"
+  },
+  "next": {
+    "title": "Edit Flows",
+    "permalink": "/next/dashboard/editflows"
+  }
+}

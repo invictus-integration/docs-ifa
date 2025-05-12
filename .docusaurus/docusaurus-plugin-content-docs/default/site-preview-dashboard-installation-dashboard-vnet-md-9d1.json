@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/installation/dashboard-vnet",
+  "title": "Invictus Dashboard VNET Support",
+  "description": "Invictus includes functionality which allows all its resources to run within an Azure Virtual Network (VNET). This document will guide you through this process.",
+  "source": "@site/preview/dashboard/installation/dashboard-vnet.md",
+  "sourceDirName": "dashboard/installation",
+  "slug": "/dashboard/installation/dashboard-vnet",
+  "permalink": "/next/dashboard/installation/dashboard-vnet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/installation/dashboard-vnet.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "dashboard-releasepipeline",
+    "permalink": "/next/dashboard/installation/dashboard-releasepipeline"
+  },
+  "next": {
+    "title": "Dashboard Message Handling",
+    "permalink": "/next/dashboard/messagehandling"
+  }
+}

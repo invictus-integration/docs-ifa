@@ -1,0 +1,15 @@
+{
+  "id": "framework/components/matrix-basic",
+  "title": "matrix-basic",
+  "description": "home | framework | matrix",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/components/matrix-basic.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/matrix-basic",
+  "permalink": "/framework/components/matrix-basic",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/components/matrix-basic.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

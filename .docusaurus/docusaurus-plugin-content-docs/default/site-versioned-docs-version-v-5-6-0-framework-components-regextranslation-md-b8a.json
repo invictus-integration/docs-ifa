@@ -1,0 +1,15 @@
+{
+  "id": "framework/components/regextranslation",
+  "title": "Regex Translation",
+  "description": "Introduction",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/components/regextranslation.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/regextranslation",
+  "permalink": "/framework/components/regextranslation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/components/regextranslation.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

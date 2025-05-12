@@ -1,0 +1,24 @@
+{
+  "id": "framework/installation/framework-installation",
+  "title": "framework-installation",
+  "description": "home | framework",
+  "source": "@site/preview/framework/installation/framework-installation.md",
+  "sourceDirName": "framework/installation",
+  "slug": "/framework/installation/framework-installation",
+  "permalink": "/next/framework/installation/framework-installation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/framework/installation/framework-installation.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "framework-buildpipeline",
+    "permalink": "/next/framework/installation/framework-buildpipeline"
+  },
+  "next": {
+    "title": "framework-migration",
+    "permalink": "/next/framework/installation/framework-migration"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "dashboard/installation/dashboard-buildpipeline",
+  "title": "Add Invictus Dashboard to release package",
+  "description": "To deploy the Invictus Dashboard together with your customer solution, the first step is to include the Dashboard in your release package.",
+  "source": "@site/versioned_docs/version-v5.6.0/dashboard/installation/dashboard-buildpipeline.md",
+  "sourceDirName": "dashboard/installation",
+  "slug": "/dashboard/installation/dashboard-buildpipeline",
+  "permalink": "/dashboard/installation/dashboard-buildpipeline",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/dashboard/installation/dashboard-buildpipeline.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

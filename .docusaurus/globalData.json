@@ -1,0 +1,534 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": false,
+          "path": "/next",
+          "mainDocId": "architecture/architecture-diagram",
+          "docs": [
+            {
+              "id": "architecture/architecture-diagram",
+              "path": "/next/architecture/architecture-diagram",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/accesscontrolrights",
+              "path": "/next/dashboard/accesscontrolrights",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/apifunctionssamples",
+              "path": "/next/dashboard/apifunctionssamples",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/azureADSetup",
+              "path": "/next/dashboard/azureADSetup",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/custom-resumeresubmit",
+              "path": "/next/dashboard/custom-resumeresubmit",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/dashboard",
+              "path": "/next/dashboard/",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/datafactoryreceiver",
+              "path": "/next/dashboard/datafactoryreceiver",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/editflows",
+              "path": "/next/dashboard/editflows",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/executiontree",
+              "path": "/next/dashboard/executiontree",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/flowauditing",
+              "path": "/next/dashboard/flowauditing",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/flowdatatimetolive",
+              "path": "/next/dashboard/flowdatatimetolive",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/foldermanagement",
+              "path": "/next/dashboard/foldermanagement",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/foldersflows",
+              "path": "/next/dashboard/foldersflows",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/forgotpassword",
+              "path": "/next/dashboard/forgotpassword",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/groupmanagement",
+              "path": "/next/dashboard/groupmanagement",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/home",
+              "path": "/next/dashboard/home",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/importjob",
+              "path": "/next/dashboard/importjob",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/importjobreceivers",
+              "path": "/next/dashboard/importjobreceivers",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/installation/dashboard-buildpipeline",
+              "path": "/next/dashboard/installation/dashboard-buildpipeline",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/installation/dashboard-installation",
+              "path": "/next/dashboard/installation/dashboard-installation",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/installation/dashboard-migration",
+              "path": "/next/dashboard/installation/dashboard-migration",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/installation/dashboard-releasepipeline",
+              "path": "/next/dashboard/installation/dashboard-releasepipeline",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/installation/dashboard-vnet",
+              "path": "/next/dashboard/installation/dashboard-vnet",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/messagehandling",
+              "path": "/next/dashboard/messagehandling",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/role-management",
+              "path": "/next/dashboard/role-management",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/search",
+              "path": "/next/dashboard/search",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/settings",
+              "path": "/next/dashboard/settings",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/setup",
+              "path": "/next/dashboard/setup",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/support/faq",
+              "path": "/next/dashboard/support/faq",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "dashboard/usermanagement",
+              "path": "/next/dashboard/usermanagement",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/exceptionHandler",
+              "path": "/next/framework/components/exceptionHandler",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/matrix",
+              "path": "/next/framework/components/matrix",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/matrix-basic",
+              "path": "/next/framework/components/matrix-basic",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/matrix-promote",
+              "path": "/next/framework/components/matrix-promote",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/pubsub",
+              "path": "/next/framework/components/pubsub",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/pubsubV2",
+              "path": "/next/framework/components/pubsubV2",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/regextranslation",
+              "path": "/next/framework/components/regextranslation",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/sequencecontroller",
+              "path": "/next/framework/components/sequencecontroller",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/timesequencer",
+              "path": "/next/framework/components/timesequencer",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/transco",
+              "path": "/next/framework/components/transco",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/transco-assemblies",
+              "path": "/next/framework/components/transco-assemblies",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/transco-extraction",
+              "path": "/next/framework/components/transco-extraction",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/transcoV2",
+              "path": "/next/framework/components/transcoV2",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/transcoV2-Example",
+              "path": "/next/framework/components/transcoV2-Example",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/transcoV2-Matrix",
+              "path": "/next/framework/components/transcoV2-Matrix",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/xmljsonconverter",
+              "path": "/next/framework/components/xmljsonconverter",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/components/xsd-validator",
+              "path": "/next/framework/components/xsd-validator",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/datafactorydiagnostics",
+              "path": "/next/framework/datafactorydiagnostics",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/framework",
+              "path": "/next/framework/",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/installation/framework-buildpipeline",
+              "path": "/next/framework/installation/framework-buildpipeline",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/installation/framework-installation",
+              "path": "/next/framework/installation/framework-installation",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/installation/framework-migration",
+              "path": "/next/framework/installation/framework-migration",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/installation/framework-releasepipeline",
+              "path": "/next/framework/installation/framework-releasepipeline",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/installation/framework-vnet",
+              "path": "/next/framework/installation/framework-vnet",
+              "sidebar": "sidebar"
+            },
+            {
+              "id": "framework/logicappsdiagnostics",
+              "path": "/next/framework/logicappsdiagnostics",
+              "sidebar": "sidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "sidebar": {
+              "link": {
+                "path": "/next/architecture/architecture-diagram",
+                "label": "architecture/architecture-diagram"
+              }
+            }
+          }
+        },
+        {
+          "name": "v5.6.0",
+          "label": "v5.6.0",
+          "isLast": true,
+          "path": "/",
+          "mainDocId": "architecture/architecture-diagram",
+          "docs": [
+            {
+              "id": "architecture/architecture-diagram",
+              "path": "/architecture/architecture-diagram"
+            },
+            {
+              "id": "dashboard/accesscontrolrights",
+              "path": "/dashboard/accesscontrolrights"
+            },
+            {
+              "id": "dashboard/apifunctionssamples",
+              "path": "/dashboard/apifunctionssamples"
+            },
+            {
+              "id": "dashboard/azureADSetup",
+              "path": "/dashboard/azureADSetup"
+            },
+            {
+              "id": "dashboard/custom-resumeresubmit",
+              "path": "/dashboard/custom-resumeresubmit"
+            },
+            {
+              "id": "dashboard/dashboard",
+              "path": "/dashboard/"
+            },
+            {
+              "id": "dashboard/datafactoryreceiver",
+              "path": "/dashboard/datafactoryreceiver"
+            },
+            {
+              "id": "dashboard/editflows",
+              "path": "/dashboard/editflows"
+            },
+            {
+              "id": "dashboard/executiontree",
+              "path": "/dashboard/executiontree"
+            },
+            {
+              "id": "dashboard/flowauditing",
+              "path": "/dashboard/flowauditing"
+            },
+            {
+              "id": "dashboard/flowdatatimetolive",
+              "path": "/dashboard/flowdatatimetolive"
+            },
+            {
+              "id": "dashboard/foldermanagement",
+              "path": "/dashboard/foldermanagement"
+            },
+            {
+              "id": "dashboard/foldersflows",
+              "path": "/dashboard/foldersflows"
+            },
+            {
+              "id": "dashboard/forgotpassword",
+              "path": "/dashboard/forgotpassword"
+            },
+            {
+              "id": "dashboard/groupmanagement",
+              "path": "/dashboard/groupmanagement"
+            },
+            {
+              "id": "dashboard/home",
+              "path": "/dashboard/home"
+            },
+            {
+              "id": "dashboard/importjob",
+              "path": "/dashboard/importjob"
+            },
+            {
+              "id": "dashboard/importjobreceivers",
+              "path": "/dashboard/importjobreceivers"
+            },
+            {
+              "id": "dashboard/installation/dashboard-buildpipeline",
+              "path": "/dashboard/installation/dashboard-buildpipeline"
+            },
+            {
+              "id": "dashboard/installation/dashboard-installation",
+              "path": "/dashboard/installation/dashboard-installation"
+            },
+            {
+              "id": "dashboard/installation/dashboard-migration",
+              "path": "/dashboard/installation/dashboard-migration"
+            },
+            {
+              "id": "dashboard/installation/dashboard-releasepipeline",
+              "path": "/dashboard/installation/dashboard-releasepipeline"
+            },
+            {
+              "id": "dashboard/installation/dashboard-vnet",
+              "path": "/dashboard/installation/dashboard-vnet"
+            },
+            {
+              "id": "dashboard/messagehandling",
+              "path": "/dashboard/messagehandling"
+            },
+            {
+              "id": "dashboard/role-management",
+              "path": "/dashboard/role-management"
+            },
+            {
+              "id": "dashboard/search",
+              "path": "/dashboard/search"
+            },
+            {
+              "id": "dashboard/settings",
+              "path": "/dashboard/settings"
+            },
+            {
+              "id": "dashboard/setup",
+              "path": "/dashboard/setup"
+            },
+            {
+              "id": "dashboard/support/faq",
+              "path": "/dashboard/support/faq"
+            },
+            {
+              "id": "dashboard/usermanagement",
+              "path": "/dashboard/usermanagement"
+            },
+            {
+              "id": "framework/components/exceptionHandler",
+              "path": "/framework/components/exceptionHandler"
+            },
+            {
+              "id": "framework/components/matrix",
+              "path": "/framework/components/matrix"
+            },
+            {
+              "id": "framework/components/matrix-basic",
+              "path": "/framework/components/matrix-basic"
+            },
+            {
+              "id": "framework/components/matrix-promote",
+              "path": "/framework/components/matrix-promote"
+            },
+            {
+              "id": "framework/components/pubsub",
+              "path": "/framework/components/pubsub"
+            },
+            {
+              "id": "framework/components/pubsubV2",
+              "path": "/framework/components/pubsubV2"
+            },
+            {
+              "id": "framework/components/regextranslation",
+              "path": "/framework/components/regextranslation"
+            },
+            {
+              "id": "framework/components/sequencecontroller",
+              "path": "/framework/components/sequencecontroller"
+            },
+            {
+              "id": "framework/components/timesequencer",
+              "path": "/framework/components/timesequencer"
+            },
+            {
+              "id": "framework/components/transco",
+              "path": "/framework/components/transco"
+            },
+            {
+              "id": "framework/components/transco-assemblies",
+              "path": "/framework/components/transco-assemblies"
+            },
+            {
+              "id": "framework/components/transco-extraction",
+              "path": "/framework/components/transco-extraction"
+            },
+            {
+              "id": "framework/components/transcoV2",
+              "path": "/framework/components/transcoV2"
+            },
+            {
+              "id": "framework/components/transcoV2-Example",
+              "path": "/framework/components/transcoV2-Example"
+            },
+            {
+              "id": "framework/components/transcoV2-Matrix",
+              "path": "/framework/components/transcoV2-Matrix"
+            },
+            {
+              "id": "framework/components/xmljsonconverter",
+              "path": "/framework/components/xmljsonconverter"
+            },
+            {
+              "id": "framework/components/xsd-validator",
+              "path": "/framework/components/xsd-validator"
+            },
+            {
+              "id": "framework/datafactorydiagnostics",
+              "path": "/framework/datafactorydiagnostics"
+            },
+            {
+              "id": "framework/framework",
+              "path": "/framework/"
+            },
+            {
+              "id": "framework/installation/framework-buildpipeline",
+              "path": "/framework/installation/framework-buildpipeline"
+            },
+            {
+              "id": "framework/installation/framework-installation",
+              "path": "/framework/installation/framework-installation"
+            },
+            {
+              "id": "framework/installation/framework-migration",
+              "path": "/framework/installation/framework-migration"
+            },
+            {
+              "id": "framework/installation/framework-releasepipeline",
+              "path": "/framework/installation/framework-releasepipeline"
+            },
+            {
+              "id": "framework/installation/framework-vnet",
+              "path": "/framework/installation/framework-vnet"
+            },
+            {
+              "id": "framework/logicappsdiagnostics",
+              "path": "/framework/logicappsdiagnostics"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {}
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

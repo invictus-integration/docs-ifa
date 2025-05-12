@@ -1,0 +1,15 @@
+{
+  "id": "framework/components/transcoV2-Example",
+  "title": "Full Transco V2 Example",
+  "description": "The following is a full example which demonstrates the usage of Transco V2.",
+  "source": "@site/versioned_docs/version-v5.6.0/framework/components/transcoV2-Example.md",
+  "sourceDirName": "framework/components",
+  "slug": "/framework/components/transcoV2-Example",
+  "permalink": "/framework/components/transcoV2-Example",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/versioned_docs/version-v5.6.0/framework/components/transcoV2-Example.md",
+  "tags": [],
+  "version": "v5.6.0",
+  "frontMatter": {}
+}

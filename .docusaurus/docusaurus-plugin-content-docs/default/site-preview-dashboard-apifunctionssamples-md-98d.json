@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/apifunctionssamples",
+  "title": "API Functions",
+  "description": "The below script has a sample of the most used/requested API functions. These can be called externally to execute functionality without having to go through the Dashboard or Database.",
+  "source": "@site/preview/dashboard/apifunctionssamples.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/apifunctionssamples",
+  "permalink": "/next/dashboard/apifunctionssamples",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/apifunctionssamples.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "Access Control Rights",
+    "permalink": "/next/dashboard/accesscontrolrights"
+  },
+  "next": {
+    "title": "Give Invictus access to your Azure Active Directory",
+    "permalink": "/next/dashboard/azureADSetup"
+  }
+}

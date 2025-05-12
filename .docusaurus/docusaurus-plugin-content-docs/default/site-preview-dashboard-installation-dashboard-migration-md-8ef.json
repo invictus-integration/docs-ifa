@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/installation/dashboard-migration",
+  "title": "dashboard-migration",
+  "description": "home | dashboard | dashboard installation",
+  "source": "@site/preview/dashboard/installation/dashboard-migration.md",
+  "sourceDirName": "dashboard/installation",
+  "slug": "/dashboard/installation/dashboard-migration",
+  "permalink": "/next/dashboard/installation/dashboard-migration",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/installation/dashboard-migration.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "dashboard-installation",
+    "permalink": "/next/dashboard/installation/dashboard-installation"
+  },
+  "next": {
+    "title": "dashboard-releasepipeline",
+    "permalink": "/next/dashboard/installation/dashboard-releasepipeline"
+  }
+}

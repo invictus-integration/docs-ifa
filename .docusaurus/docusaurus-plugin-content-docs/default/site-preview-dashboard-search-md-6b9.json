@@ -1,0 +1,24 @@
+{
+  "id": "dashboard/search",
+  "title": "search",
+  "description": "home | dashboard",
+  "source": "@site/preview/dashboard/search.md",
+  "sourceDirName": "dashboard",
+  "slug": "/dashboard/search",
+  "permalink": "/next/dashboard/search",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/invictus-integration/docs-ifa/edit/master/preview/dashboard/search.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "sidebar",
+  "previous": {
+    "title": "role-management",
+    "permalink": "/next/dashboard/role-management"
+  },
+  "next": {
+    "title": "settings",
+    "permalink": "/next/dashboard/settings"
+  }
+}
