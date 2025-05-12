@@ -45,7 +45,7 @@ Each of the above parameters accepts an object:
 - `cpuResources`: The amount of cpu resources to dedicate for the container resource. See [here](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for allowed values.
 - `memoryResources`: The amount of memory resources to dedicate for the container resource. See [here](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for allowed values.
 
-These values can be overriden in your release pipeline by passing the updated object to the respective parameter. 
+These values can be overridden in your release pipeline by passing the updated object to the respective parameter. 
 
 Example:
 
