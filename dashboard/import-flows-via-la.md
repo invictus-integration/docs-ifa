@@ -100,31 +100,68 @@ If the corresponding logic app has resulted in an error, the error information c
 
 For any additional details or insights, the user can also navigate directly to the Azure Portal.
 
-## Resubmit and Resume workflows
+## Workflow operations via Dashboard
 > ⚠️ Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run properly.
 
+Flows linked to LogicApps workflows can be resubmitted and resumed via the Dashboard both separately (`Flow Actions button`) and in batch (`Selecting multiple flows`).
+
+### Resubmit
+The Resubmit functionality will always trigger an "Azure Resubmit" for the first LogicApp in the Chain. Resubmit will trigger the execution of any corresponding flow, even completed ones. When Resubmit is triggered, the first Logic App in the chain (execution tree) is resubmitted on Azure thus retriggering the whole flow.
+
+![resubmit](../images/dashboard/FlowHandler/fh-resubmit1.jpg)
+
+If we had to take the above image as an example. If Resubmit is executed for this flow, "LogicAppChain-A" is Resubmitted on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
+
+![resubmit](../images/dashboard/FlowHandler/fh-resubmit2.jpg)
+
+### Resume
+The Resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status Failed. Also, the Resume does not start from the first logic app within its flow, as with the Resubmit, but instead executes only the failed logic apps.
+
+**The only exception is that if a Parent Logic App of a failed Logic App has also failed, then only the Parent is executed**.
+
+### Ignore
+Users can choose to ignore a message, normally this could be the case when a message is in failed status. The user can select one or multiple messages and choose to "Ignore" them.
+
+When a message has been set to be ignore, its status will change and show as follows
+
+![handling buttons](../images/v2_handling3.png)
+
+
+> ⚡ It's possible to use a **custom resubmit and resume**, see [this page](custom-resumeresubmit.md) for more information.
+
+### Example scenarios
 The below examples are a representation of the Flow Row and the Execution tree with different Resume and Resubmit scenarios.
 
-### Scenario One
+
+<details>
+<summary>Scenario One: resubmit first in the chain</summary>
 
 In this scenario, a resubmit was executed on Logic App 1. Since the LogicApp is the first one in the chain, which can be identified by the null x-iv-parent-workflow-run-id, this scenario will be handled as a **Resubmit**. As soon as we receive the events for 4, 5 and 6 we will link 4 with 1 through the OriginWorkFlowRunId which is supplied by the LogicAppRuntime and ignore all descendants of 1.
 
 ![scenario 1](../images/import-scenario1.png)
+</details>
 
-### Scenario Two
+<details>
+<summary>Scenario Two: resume further down the chain</summary>
 
 In this scenario, the resubmitted logic app Is number 3. Since this is not the first LogicApp in the Chain, this will be handled as a **Resume**. As soon as we receive the events for number 4 we can immediately link it to number 1 since it will still have the same x-iv-parent-workflow-run-id. Through the OriginWorkFlowRunId of 333 LogicApp 4 is then treated as a resubmit of 3. In the case of a resume, only the resubmitted LogicApps and its descendants are ignored and not the whole chain.
 
 ![scenario 2](../images/import-scenario2.png)
+</details>
 
-### Scenario Three
+<details>
+<summary>Scenario Three: resubmit further down the chain</summary>
 
 This will be similar to scenario two. In this case the developer decided to resubmit LogicApp 3. This can only be achieved through the azure portal as the Invictus Dashboard will only resubmit Failed LogicApps.
 
 ![scenario 3](../images/import-scenario3.png)
+</details>
 
-### Scenario Four
+<details>
+<summary>Scenario Four: resubmit multiple further down the chain</summary>
 
 In this scenario the developer resubmitted LogicApp 2 and LogicApp 3.
 
 ![scenario 4](../images/import-scenario4.png)
+</details>
+

@@ -10,9 +10,8 @@
     * [First-time login](/dashboard/setup.md)
   * Usage
     * [Flows](/dashboard/home.md)
-      * [Edit flows](/dashboard/editflows.md)
-      * [Search flows](/dashboard/search.md)
-      * [Execute flows](/dashboard/messagehandling.md)
+      * [Add new flows](/dashboard/editflows.md)
+      * [Search for flows](/dashboard/search.md)
       * [Flow permissions](/dashboard/foldermanagement.md)
       * [Import flow traces](/dashboard/import-flows.md)
         * [Import via LogicApps](/dashboard/import-flows-via-la.md)
