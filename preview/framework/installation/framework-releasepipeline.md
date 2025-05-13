@@ -126,7 +126,7 @@ The below table lists the parameters accepted by the Bicep template.
 |serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
 |keyVaultName|No|`invictus-{resourcePrefix}-vlt`|Name for the Key Vault Service Namespace resource|
 |keyVaultEnablePurgeProtection|No|null|If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
-|storageAccountName|No|`invictus{resourcePrefix}store`|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
+|storageAccountName|No|`invictus{resourcePrefix}store`|Name for the Azure Storage resource. Any dashes (-) will be removed from `{resourcePrefix}`|
 |blobContainerPrefix|No|invictus|Prefix set for blob containers for pubsub|
 |approvedMessageSizeInBytesKey|No|200000|The max allowed message size before pushing message to Blob when using PubSub|
 |appInsightsName|No|`invictus-{resourcePrefix}-appins`|Name for the Application Insights resource|
