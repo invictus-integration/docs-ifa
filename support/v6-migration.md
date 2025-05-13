@@ -34,28 +34,23 @@ Create a client secret and make sure to save the application id and client secre
 
 ### Update Invictus-GetSources.ps1
 
-Update the `Invictus-GetSources.ps1` file with the latest version.
+Update the [`Invictus-GetSources.ps1`](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
 
 ### Update Your Invictus for Azure Pipelines
 
-Update your Invictus for Azure pipelines as follows:
-* Remove the following parameters (if present)
-  * `servicePlanSkuName`
-  * `servicePlanName`
-  * `consumptionPlanName`
-  * `transcoWebAppName`
-  * `pubSubWebAppAlwaysOn`
-  * `matrixWebAppAlwaysOn`
-  * `transcoWebAppAlwaysOn`
+The Azure build and release pipelines have been overhauled and you will need to update your pipelines to match these changes. 
 
-* Add the following parameters
-  * `acrPath` - this should be set to `invictusreleases.azurecr.io`
-  * `acrUsername` - contact Codit Products for the username
-  * `acrPassword` - contact Codit Products for the password
-  * `identityProviderApplicationId` - this should contain the application id of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID), it will be used as an allowed audience on the Invictus for Azure API's
-  * `identityProviderClientSecret` - this should contain the client secret of the app registration created in Entra ID [here](#Create-an-Application-Registration-in-Entra-ID)
-  * `containerAppsEnvironmentLocation` - typically this should be set to `West Europe` or `North Europe`
-  * `customApplicationIds` - here you can optionally specify a list of application id's that are allowed to call the Invictus for Azure API's, for example the application id of a managed identity used by your Logic Apps
+The changes include:
+- Updated pipeline parameters
+- Updated script parameters
+- Different pipeline tasks
+- Release pipeline agent must be Ubuntu
+
+The newly updated pipelines and template can be found here:
+
+[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/dashboard/installation/pipelines)
+
+[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/framework/installation/pipelines)
 
 ### Deploy Invictus for Azure v6
 
@@ -95,6 +90,8 @@ Ofcourse, if you are not using certain components you can remove these already s
 ### Additional steps
 - Assign the role assignments as shown in this [guide](../dashboard/accesscontrolrights.md) for the new DashboardGateway and FlowHandler container apps.
 - Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
+- Review the container app scaling requirements for your scenario. See the [guide](../general/containerAppScaling.md) for more information.
+- Role assignment clean-up: The deployment of Invictus v6.0 will result in many lingering role assignments named `Unknown`. These can be deleted.
 
 ## Migrating Your Interfaces
 
@@ -207,3 +204,13 @@ See the documentation [here](../framework/components/transcoV2.md#Migrating-Tran
 #### Migrating Matrix v1 to Transco v2
 
 See the documentation [here](../framework/components/transcoV2.md#Migrating-Matrix-v1-to-Transco-v2).
+
+## Common Migration Issues
+- **Pipeline Error**: `Operating system not supported`
+
+  Your release pipeline agent must be a linux agent, for example `vmImage: 'ubuntu-latest'`
+  
+
+- **Pipeline Error**: `Invalid ContainerApp name....The length must be between 2 and 32 characters inclusive.`
+
+  If you are overriding the default app names, the provided name might be too long, as the container app name limit is lower than for function apps.
