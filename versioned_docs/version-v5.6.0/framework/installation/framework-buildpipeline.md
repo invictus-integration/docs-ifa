@@ -8,7 +8,7 @@ The pipeline will use variables stored in a variable group, so before creating t
 
 ## Variable Group
 
-Create a variable group named {prefix}.Invictus.Installation and add these variables:
+Create a variable group named `{prefix}.Invictus.Installation` and add these variables:
 
 - **Invictus.Installation.StorageAccount.Name**: invictusreleases
 - **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software

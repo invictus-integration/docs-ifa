@@ -8,7 +8,7 @@ The release uses variable groups and edits/adds variables to the groups, we will
 
 ## Variable Group
 
-Create a variable group named {prefix}.Invictus.{stage} for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
+Create a variable group named `{prefix}.Invictus.{stage}` for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
 
 Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
 
