@@ -36,7 +36,7 @@ List of data objects supported:
 
 2. After choosing Basic Extract Message Context, you will notice the difference from the normal extract function. This one has more parameters but is limited to those only. Any value passed in the parameter boxes will be now automatically pushed to the Context. All new parameters added except an object value, anything passed here will be promoted to the Context as a KeyValue. **The only exception is the KeyValueCollection**.  This works exactly like the current Message Context property, it accepts a list of KeyValue items, but instead of promoting the object as a whole, it pushes each item within KeyValueCollection to the Message Context. Refer to section below for more information.
 
-   ![extract](../../../images/matrix-basicextract.png)
+   ![extract](../../images/matrix-basicextract.png)
 
 ## KeyValueCollection
 
