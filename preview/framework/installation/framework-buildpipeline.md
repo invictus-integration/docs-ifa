@@ -30,7 +30,7 @@ Afterwards add the [framework.build.yaml](https://github.com/invictus-integratio
 ## Classic Pipeline
 ### Create the build pipeline
 
-Create a new build pipeline, starting with an empty template with this naming: {prefix}.Invictus.Framework.
+Create a new build pipeline, starting with an empty template with this naming: `{prefix}.Invictus.Framework`.
 
 Select 'Azure Pipelines' as the agent pool and 'vs2017-win2016' as the agent specification.
 

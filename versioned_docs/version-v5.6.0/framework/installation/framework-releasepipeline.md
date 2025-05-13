@@ -107,40 +107,40 @@ The below table lists the parameters accepted by the Bicep template.
 |resourcePrefix|Yes||used as part of the default names for most resources.|
 |apiKey1|No|Generated value|The value used for basic authentication for the APIs|
 |apiKey2|No|Generated value|The value used for basic authentication for the APIs|
-|sqlServerName|No|invictus-{resourcePrefix}-sqlsvr|The name for the SQL Server that will host the databases|
+|sqlServerName|No|`invictus-{resourcePrefix}-sqlsvr`|The name for the SQL Server that will host the databases|
 |sqlServerLogin|No|InvictusFrameworkAdmin|The default username set for SQL Server|
 |sqlServerLoginPassword|No|Generated value|The password that will be set to login into SQL Server|
 |dashboardDatabaseName|No|coditcip|The name of the Database used by the Dashboard|
-|timesequencerFunctionName|No|invictus-{resourcePrefix}-timesequencer|Name for the time sequencer function|
-|sequenceControllerFunctionName|No|invictus-{resourcePrefix}-sequencecontroller|Name for the Sequence Controller function|
-|xmlJsonConverterFunctionName|No|invictus-{resourcePrefix}-xmljsonconverter|Name for the XmlJson Converter function|
-|xsdValidatorFunctionName|No|invictus-{resourcePrefix}-xsdvalidator|Name for the XSD Validator function|
-|regexTranslatorFunctionName|No|invictus-{resourcePrefix}-regextranslator|Name for the Regex Translator function|
-|transcoV2FunctionName|No|invictus-{resourcePrefix}-transco-v2|Name for the TranscoV2 function|
-|pubsubV2FunctionName|No|invictus-{resourcePrefix}-pubsub-v2|Name for the PubSubV2 function|
-|exceptionHandlerFunctionName|No|invictus-{resourcePrefix}-exceptionhandler|Name for the Exception Handler function|
-|pubSubWebAppName|No|invictus-{resourcePrefix}-pubsubapp|Name for the PubSub Web API|
-|matrixWebAppName|No|invictus-{resourcePrefix}-matrixapp|Name for the Matrix Web API|
-|transcoWebAppName|No|invictus-{resourcePrefix}-transcoapp|Name for the Transco Web API|
-|serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
+|timesequencerFunctionName|No|`invictus-{resourcePrefix}-timesequencer`|Name for the time sequencer function|
+|sequenceControllerFunctionName|No|`invictus-{resourcePrefix}-sequencecontroller`|Name for the Sequence Controller function|
+|xmlJsonConverterFunctionName|No|`invictus-{resourcePrefix}-xmljsonconverter`|Name for the XmlJson Converter function|
+|xsdValidatorFunctionName|No|`invictus-{resourcePrefix}-xsdvalidator`|Name for the XSD Validator function|
+|regexTranslatorFunctionName|No|`invictus-{resourcePrefix}-regextranslator`|Name for the Regex Translator function|
+|transcoV2FunctionName|No|`invictus-{resourcePrefix}-transco-v2`|Name for the TranscoV2 function|
+|pubsubV2FunctionName|No|`invictus-{resourcePrefix}-pubsub-v2`|Name for the PubSubV2 function|
+|exceptionHandlerFunctionName|No|`invictus-{resourcePrefix}-exceptionhandler`|Name for the Exception Handler function|
+|pubSubWebAppName|No|`invictus-{resourcePrefix}-pubsubapp`|Name for the PubSub Web API|
+|matrixWebAppName|No|`invictus-{resourcePrefix}-matrixapp`|Name for the Matrix Web API|
+|transcoWebAppName|No|`invictus-{resourcePrefix}-transcoapp`|Name for the Transco Web API|
+|serviceBusNamespaceName|No|`invictus-{resourcePrefix}-sbs`|Name for the Service Bus Namespace resource|
 |serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
-|keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
+|keyVaultName|No|`invictus-{resourcePrefix}-vlt`|Name for the Key Vault Service Namespace resource|
 |keyVaultEnablePurgeProtection|No|null|If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
 |storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
 |blobContainerPrefix|No|invictus|Prefix set for blob containers for pubsub|
 |approvedMessageSizeInBytesKey|No|200000|The max allowed message size before pushing message to Blob when using PubSub|
-|appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
-|servicePlanName|No|invictus-{resourcePrefix}-appplan|Name for the service plan which will host the APIs|
+|appInsightsName|No|`invictus-{resourcePrefix}-appins`|Name for the Application Insights resource|
+|servicePlanName|No|`invictus-{resourcePrefix}-appplan`|Name for the service plan which will host the APIs|
 |serviceBusMessageTimeToLiveMinutes|No|-1|Time messages should be stored on service bus before being archived|
 |storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
 |invictusFrameworkBasicUser|No|Invictus|The username used for Basic Authentication for the APIs|
 |servicePlanSkuName|No|S1|Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
 |servicePlanSkuCapacity|No|1|The SKU capacity setting  for the App Plan|
-|autoscaleForPlanName|No|invictus-{resourcePrefix}-CPU-RAM-Autoscale|Name for the autoscale function|
+|autoscaleForPlanName|No|`invictus-{resourcePrefix}-CPU-RAM-Autoscale`|Name for the autoscale function|
 |minPlanInstanceAutoScale|No|1|The minimum number of instances for the AutoScale function|
 |maxPlanInstanceAutoScale|No|5|The maximum number of instances for the AutoScale function|
 |buildtype|No|production|Always leave this property as "production". This created a DB used internally for testing.|
-|consumptionPlanName|No|invictus-{resourcePrefix}-consumptionplan|Name of consumption app plan|
+|consumptionPlanName|No|`invictus-{resourcePrefix}-consumptionplan`|Name of consumption app plan|
 |dashboardDbSkuName|No|S1|The SKU name of the CoditCip DB|
 |dashboardDbSkuTier|No|Standard|The Tier name for the CoditCip DB|
 |dashboardDbMaxSizeBytes|No|268435456000|Default size of CoditCip DB when created|
