@@ -9,7 +9,7 @@ The `Invictus-GetSources.ps1` script will pull the latest Invictus resources nee
 ## 2. Add variables to variable group.
 To deploy Invictus, you will need some secrets for authentication. These secrets should be provided to you by **Codit Software**.
 
-Once you have obtained these values, create a variable group named {prefix}.Invictus.Installation and add the below variables.
+Once you have obtained these values, create a variable group named `{prefix}.Invictus.Installation` and add the below variables.
 
 - **Invictus.Installation.StorageAccount.Name**: invictusreleases
 - **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software
