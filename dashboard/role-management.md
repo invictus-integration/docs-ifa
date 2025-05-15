@@ -17,17 +17,17 @@ Permissions in the Invictus Dashboard are separated into two categories: user ro
   | CRUD alerts          | 🔴          | 🟢            |
   | CRUD folder/flows    | 🟡          | 🟢            |
   | View audits          | 🔴          | 🟢            |
-  | View flow data       | 🟡          | 🟢            |
+  | View flow traces     | 🟡          | 🟢            |
   | View statistics      | 🟢          | 🟢            |
 
 
-* **Folder permissions**: Anything folder- or flow-related is authorized with a more fine-grained role management system for *Non admin* users/groups.
+* **Flow permissions**: Anything folder- or flow-related is authorized with a more fine-grained role management system for *Non admin* users/groups.
 
   | Folder functionality     | Reader   | Operator   | Folder admin   |
   | ------------------------ | :------: | :--------: | :------------: |
   | CRUD folder/flows        | 🔴       | 🔴        | 🟢             |
-  | Grant folder permissions | 🔴       | 🔴        | 🟢             |
-  | Execute flows*           | 🔴       | 🟢        | 🟢             |
+  | Grant flow permissions   | 🔴       | 🔴        | 🟢             |
+  | Operations on flows*     | 🔴       | 🟢        | 🟢             |
   | View folder/flows        | 🟢       | 🟢        | 🟢             |
 
 > \* *Flows can be resubmitted, resumed, and ignored via the Dashboard.*
