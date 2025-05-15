@@ -4,12 +4,12 @@ To deploy the Invictus Dashboard together with your customer solution, the first
 ## 1. Save `Invictus-GetSources.ps1` script to your repository
 The `Invictus-GetSources.ps1` script will pull the latest Invictus resources needed to deploy the Dashboard.
 
-> [⬇️`Invictus-GetSources.ps1`](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/installation/scripts/Invictus-GetSources.ps1)
+> [⬇️`Invictus-GetSources.ps1`](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/scripts/Invictus-GetSources.ps1)
 
 ## 2. Add variables to variable group.
 To deploy Invictus, you will need some secrets for authentication. These secrets should be provided to you by **Codit Software**.
 
-Once you have obtained these values, create a variable group named {prefix}.Invictus.Installation and add the below variables.
+Once you have obtained these values, create a variable group named `{prefix}.Invictus.Installation` and add the below variables.
 
 - **Invictus.Installation.StorageAccount.Name**: invictusreleases
 - **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software
