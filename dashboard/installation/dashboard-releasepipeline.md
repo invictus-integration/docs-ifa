@@ -8,7 +8,7 @@ The release uses variable groups and edits/adds variables to the groups, we will
 
 ## Variable Group
 
-Create a variable group named {prefix}.Invictus.{stage} for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
+Create a variable group named `{prefix}.Invictus.{stage}` for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
 
 Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
 
@@ -185,6 +185,12 @@ Parameters related to the applications that are deployed, mostly Azure Functions
 | ------------------------------------------ | :------: | ------- | ------------------------------------------------------------------------ |
 | `statisticsCutOffDays`                     | No       | `-3`    | The number of days in the past that homepage statistics will recalculate |
 
+| Parameter                           | Required | Default                        | Description                                                   |
+| ----------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------- |
+| `servicePlanName`                   | No       | `invictus-{resourcePrefix}-appplan-linux` | Name for the service plan which will host the APIs |
+| `servicePlanSkuName`                | No       | S1                              | Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
+| `servicePlanSkuCapacity`            | No       | `1`                             | The SKU capacity setting for the App Plan   |
+
 ## Storage parameters
 Parameters related to the data that is stored throughout Invictus.
 
@@ -218,9 +224,6 @@ Parameters related to the messaging resources that import the flow information i
 | ----------------------------------- | :------: | ------------------------------- | -------------------------------------------------------- |
 | `serviceBusNamespaceName`           | No       | `invictus-{resourcePrefix}-sbs` | Name for the Service Bus Namespace resource |
 | `serviceBusSkuName`                 | No       | Standard or Premium if VNET enabled | Name for the Service Bus SKU |
-| `servicePlanName`                   | No       | `invictus-{resourcePrefix}-appplan-linux` | Name for the service plan which will host the APIs |
-| `servicePlanSkuName`                | No       | S1                              | Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
-| `servicePlanSkuCapacity`            | No       | `1`                             | The SKU capacity setting for the App Plan   |
 | **`serviceBusSubnets` (VNET)**      | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
 
 | Parameter                           | Required | Default                             | Description                               |

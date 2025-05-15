@@ -17,16 +17,16 @@ Invictus includes functionality which allows all its resources to run within an 
   - The container app subnet must also have the delegation `Microsoft.App/environments` ([more info](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation))
         
 - 10 Private DNS Zones
-  - privatelink.azurecr.io
-  - privatelink.blob.core.windows.net
-  - privatelink.file.core.windows.net
-  - privatelink.mongo.cosmos.azure.com
-  - privatelink.queue.core.windows.net
-  - privatelink.servicebus.windows.net
-  - privatelink.table.core.windows.net
-  - privatelink.table.cosmos.azure.com
-  - privatelink.vaultcore.azure.net
-  - privatelink.{regionName}.azurecontainerapps.io
+  - `privatelink.azurecr.io`
+  - `privatelink.blob.core.windows.net`
+  - `privatelink.file.core.windows.net`
+  - `privatelink.mongo.cosmos.azure.com`
+  - `privatelink.queue.core.windows.net`
+  - `privatelink.servicebus.windows.net`
+  - `privatelink.table.core.windows.net`
+  - `privatelink.table.cosmos.azure.com`
+  - `privatelink.vaultcore.azure.net`
+  - `privatelink.{regionName}.azurecontainerapps.io`
     
   A Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
 

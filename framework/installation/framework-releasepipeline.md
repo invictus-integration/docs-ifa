@@ -6,7 +6,7 @@ The release pipeline will use the artifacts created from the build pipeline and 
 
 ## Variable Group
 
-Create a variable group named {prefix}.Invictus.{stage} for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
+Create a variable group named `{prefix}.Invictus.{stage}` for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
 
 Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
 
@@ -75,46 +75,77 @@ PS> $(ArtifactsPath)/Deploy.ps1 `
 
 ## Bicep Template Parameters
 
-The below table lists the parameters accepted by the Bicep template.
+The below tables lists the parameters accepted by the Bicep template.
 
-|Parameter Name|Required|Default Value|Description|
-| --- | :---: | --- | --- |
-|resourcePrefix|Yes||used as part of the default names for most resources.|
-|timesequencerFunctionName|No|invictus-{resourcePrefix}-timesequencer|Name for the time sequencer function|
-|sequenceControllerFunctionName|No|invictus-{resourcePrefix}-sequencecontroller|Name for the Sequence Controller function|
-|xmlJsonConverterFunctionName|No|invictus-{resourcePrefix}-xmljsonconverter|Name for the XmlJson Converter function|
-|xsdValidatorFunctionName|No|invictus-{resourcePrefix}-xsdvalidator|Name for the XSD Validator function|
-|regexTranslatorFunctionName|No|invictus-{resourcePrefix}-regextranslator|Name for the Regex Translator function|
-|transcoV2FunctionName|No|invictus-{resourcePrefix}-transco-v2|Name for the TranscoV2 function|
-|pubsubV2FunctionName|No|invictus-{resourcePrefix}-pubsub-v2|Name for the PubSubV2 function|
-|exceptionHandlerFunctionName|No|invictus-{resourcePrefix}-exceptionhandler|Name for the Exception Handler function|
-|serviceBusNamespaceName|No|invictus-{resourcePrefix}-sbs|Name for the Service Bus Namespace resource|
-|serviceBusSkuName|No|Standard or Premium if VNET enabled|Name for the Service Bus SKU|
-|keyVaultName|No|invictus-{resourcePrefix}-vlt|Name for the Key Vault Service Namespace resource|
-|keyVaultEnablePurgeProtection|No|null|If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
-|storageAccountName|No|invictus{resourcePrefix}store|Name for the Azure Storage resource. Any dashes (-) will be removed from {resourcePrefix}|
-|blobContainerPrefix|No|invictus|Prefix set for blob containers for pubsub|
-|appInsightsName|No|invictus-{resourcePrefix}-appins|Name for the Application Insights resource|
-|servicePlanName|No|invictus-{resourcePrefix}-appplan|Name for the service plan which will host the APIs|
-|serviceBusMessageTimeToLiveMinutes|No|-1|Time messages should be stored on service bus before being archived|
-|storageAccountType|No|Standard_LRS|The Storage account StorageAccountSkuType|
-|devOpsObjectId|Yes||The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps|
-|identityProviderClientSecret|Yes||AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
-|identityProviderApplicationId|Yes||AAD Application ID for MSI Authentication of Azure Container Apps|
+## Top-level parameters
+Resource-independent parameters that affect all resources in the deployed resource group.
 
-### VNET Specific Parameters
+| Parameter        | Required | Default | Description          |
+| ---------------- | :------: | --------| -------------------- |
+| `resourcePrefix` | Yes      |         | used as part of the default names for most resources. |
+| `devOpsObjectId` | Yes      |         | The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps |
 
-|Parameter Name|Required for VNET|Default Value|Description|
-| --- | :---: | --- | --- |
-|enableVnetSupport|Yes|false|Used to toggle VNET functionality on or off|
-|vnetResourceGroupName|Yes|&nbsp;|The name of the resource group on Azure where the VNET is located|
-|vnetName|Yes|&nbsp;|The name of the VNET resource|
-|keyVaultSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|storageAccountSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|serviceBusSubnets|Yes|[]|An array of string. The values need to match the subnet names on the VNET|
-|privateEndpointSubnetName|Yes||The name of the subnet to be used to connect the private endpoint resources|
-|containerAppEnvironmentSubnetName|Yes|                               |The name of the subnet to be used to connect the container app environment|
-|disableStorageAccountPublicNetworkAccess|No|false|If true, the Invictus storage account will not be accessible from a public network.|
-|storageAccountMinimumTLSVersion |No|TLS1_2|Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2|
-|dnsZoneSubscriptionId|No|Subscription ID of scope|The subscription ID of the private DNS zones.|
-|dnsZoneResourceGroupName|No|VNET RG name|The resource group name of where the private DNS zones are located.|
+| Parameter                                     | Required | Default | Description          |
+| --------------------------------------------- | :------: | ------- | -------------------- |
+| **`enabledVnetSupport` (VNET)**               | Yes      | `false` | Used to toggle VNET functionality on or off |
+| **`vnetResourceGroupName` (VNET)**            | Yes      | &nbsp;  | The name of the resource group on Azure where the VNET is located |
+| **`vnetName` (VNET)**                         | Yes      | &nbsp;  | The name of the VNET resource |
+|**`privateEndpointSubnetName` (VNET)**         | Yes      |         |The name of the subnet to be used to connect the private endpoint resources|
+|**`containerAppEnvironmentSubnetName` (VNET)** | Yes      |         |The name of the subnet to be used to connect the container app environment|
+|**`dnsZoneSubscriptionId` (VNET)**             | No       | Subscription ID of scope | The subscription ID of the private DNS zones.|
+|**`dnsZoneResourceGroupName` (VNET)**          | No       | VNET RG name             | The resource group name of where the private DNS zones are located.|
+
+## Function App service parameters
+Parameters related to the Azure Functions applications that are deployed.
+
+| Parameter                         | Required | Default                                        | Description                 |
+| --------------------------------- | :------: | ---------------------------------------------- | --------------------------- |
+| `timesequencerFunctionName`       | No       | `invictus-{resourcePrefix}-timesequencer`      | Name for the time sequencer function|
+| `sequenceControllerFunctionName`  | No       | `invictus-{resourcePrefix}-sequencecontroller` | Name for the Sequence Controller function|
+| `xmlJsonConverterFunctionName`    | No       | `invictus-{resourcePrefix}-xmljsonconverter`   | Name for the XmlJson Converter function|
+| `xsdValidatorFunctionName`        | No       | `invictus-{resourcePrefix}-xsdvalidator`       | Name for the XSD Validator function|
+| `regexTranslatorFunctionName`     | No       | `invictus-{resourcePrefix}-regextranslator`    | Name for the Regex Translator function|
+| `transcoV2FunctionName`           | No       | `invictus-{resourcePrefix}-transco-v2`         | Name for the TranscoV2 function|
+| `pubsubV2FunctionName`            | No       | `invictus-{resourcePrefix}-pubsub-v2`          | Name for the PubSubV2 function|
+| `exceptionHandlerFunctionName`    | No       | `invictus-{resourcePrefix}-exceptionhandler`   | Name for the Exception Handler function|
+| `servicePlanName`                 | No       | `invictus-{resourcePrefix}-appplan`            | Name for the service plan which will host the APIs|
+
+## Storage parameters
+Parameters related to data that is stored during the component's interaction.
+
+| Parameter             | Required | Default                             | Description               |
+| ----------------------| :------: | ------------------------------------| ------------------------- |
+| `storageAccountName`  | No       | `invictus{resourcePrefix}store`     | Name for the Azure Storage resource. Any dashes (-) will be removed from `{resourcePrefix}`|
+| `blobContainerPrefix` | No       | `invictus`                          | Prefix set for blob containers for pubsub|
+| `storageAccountType`  | No       | `Standard_LRS`                      | The Storage account StorageAccountSkuType|
+| **`storageAccountSubnets` (VNET)**                    | Yes | `[]`     | An array of string. The values need to match the subnet names on the VNET|
+| **`disableStorageAccountPublicNetworkAccess` (VNET)** | No  | `false`  | If true, the Invictus storage account will not be accessible from a public network.|
+| **`storageAccountMinimumTLSVersion` (VNET)**          | No  | `TLS1_2` | Set the required TLS value for the storage account. Accepted values: `TLS1_0`, `TLS1_1`, `TLS1_2`|
+
+## Messaging parameters
+Parameters related to the messaging components, like PubSub.
+
+| Parameter                            | Required | Default | Description |
+| ------------------------------------ | :------: | ------- | ----------- |
+| `serviceBusNamespaceName`            | No       | `invictus-{resourcePrefix}-sbs` | Name for the Service Bus Namespace resource|
+| `serviceBusSkuName`                  | No       | `Standard` or `Premium` if VNET enabled` | Name for the Service Bus SKU|
+| `serviceBusMessageTimeToLiveMinutes` | No       | `-1`    | Time messages should be stored on service bus before being archived|
+|**`serviceBusSubnets` (VNET)**        | Yes      | `[]`    | An array of string. The values need to match the subnet names on the VNET|
+
+## Secret parameters
+Parameters related to the security and secret management of the deployed applications. 
+
+| Parameter                       | Required | Default | Description              |
+| ------------------------------- | :------: | ------- | ------------------------ |
+| `keyVaultName`                  | No       | `invictus-{resourcePrefix}-vlt` |Name for the Key Vault Service Namespace resource|
+| `keyVaultEnablePurgeProtection` | No       | `null`  | If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
+| `identityProviderClientSecret`  | Yes      |         | AAD App Registration client secret required for Azure Container Apps Identity Provider authentication|
+| `identityProviderApplicationId` | Yes      |         | AAD Application ID for MSI Authentication of Azure Container Apps|
+| **`keyVaultSubnets` (VNET)**    | Yes      | `[]`    | An array of string. The values need to match the subnet names on the VNET|
+
+## Observability parameters
+Parameters related to telemetry tracking of the deployed applications.
+
+| Parameter         | Required | Default | Description       |
+| ----------------- | :------: | --------| ----------------- |
+| `appInsightsName` | No       | `invictus-{resourcePrefix}-appins` | Name for the Application Insights resource|

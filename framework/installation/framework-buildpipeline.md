@@ -2,13 +2,13 @@
 
 # Framework Build Pipeline
 
-The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded from [here](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/installation/scripts/Invictus-GetSources.ps1). Make sure to include it in your Git repository (e.g. in the deploy folder).
+The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded from [here](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/scripts/Invictus-GetSources.ps1). Make sure to include it in your Git repository (e.g. in the deploy folder).
 
 The pipeline will use variables stored in a variable group, so before creating the build pipeline open the DevOps Library page and create a new variable group.
 
 ## Variable Group
 
-Create a variable group named {prefix}.Invictus.Installation and add these variables:
+Create a variable group named `{prefix}.Invictus.Installation` and add these variables:
 
 - **Invictus.Installation.StorageAccount.Name**: invictusreleases
 - **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software
