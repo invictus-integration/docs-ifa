@@ -1,5 +1,3 @@
-[home](../../README.md) | [dashboard](../dashboard.md)
-
 # Frequently Asked Questions
 
 ## Reserved keywords

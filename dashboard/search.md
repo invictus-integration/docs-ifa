@@ -1,5 +1,3 @@
-[home](../README.md) | [dashboard](dashboard.md)
-
 # Dashboard Search
 
 ## Basic Search

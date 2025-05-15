@@ -1,5 +1,3 @@
-[home](../README.md) | [dashboard](dashboard.md) | [Folder Management](foldermanagement.md)
-
 # Dashboard Folder Permission Management
 
 All system admins are automatically assigned to every folder in the invictus dashboard. However, non-admins may be assigned a role on any folder via the Folder permissions page. 

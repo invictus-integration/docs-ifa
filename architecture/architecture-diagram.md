@@ -1,5 +1,3 @@
-[home](../README.md)
-
 # Invictus for Azure Architecture Diagrams
 
 ## Invictus Dashboard Architecture
