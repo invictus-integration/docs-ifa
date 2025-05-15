@@ -40,10 +40,12 @@ Within the table 2 properties of type string have to be added when creating a ne
 
 ### Sample Request Schema
 
-`{
+```json
+{
   "Content": "The provided host name 'website.com' could not be resolved",
   "MatchKey": ["OrderService", "InvoiceService"]
-}`
+}
+```
 
 When setting up your Logic App, the HttpRequest is to be setup as follows:
 
@@ -57,15 +59,19 @@ The request is then followed by the execution of the function **RegexTranslation
 
 After the message is translated, the result for a successful translation returns the translated message:
 
-`{
+```json
+{
     "content": "System X could not be reached at endpoint 'website.com', contact John"
-}`
+}
+```
 
 If the translation is unsuccessful, the output returned will either be the original message or specific error message:
 
-`{
+```json
+{
     "content": "The provided host name website.com could not be resolved"
-}`
+}
+```
 
 The response to the function **RegexTranslation** is to be setup as follows:
 
