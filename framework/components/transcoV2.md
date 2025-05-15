@@ -47,7 +47,7 @@ See [Transco V2 - Matrix Functionality](https://github.com/invictus-integration/
 A JSON Transco config file is required to specify details about the instruction which will be performed. Instructions are executed in the order in which they appear. The name of the config file should be specified in the request so that it can be retrieved from the storage account.
 
 **Config File Full Specification:**
-
+	```json
     {
     	"instructions": [
     		{
@@ -116,19 +116,22 @@ A JSON Transco config file is required to specify details about the instruction 
                      "indentResult": [If true, transco results will be formatted and indented]
     	}
     }
+	```
 
 **SQL Command Instruction**
 
 This instruction can be added to the Transco config to promote values from the database into XML or JSON content, or into the request Context. Scope path can be defined so that the command affects only nodes within that path. In the command section, a connection to the DB must be provided either via a connection string or via the Key Vault secret name. The SQL query itself is also defined in this section. Parameters in the SQL query must be denoted with an '@' symbol. Parameters may be given a name or indexed with a number.
 
 Example:
-*SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
-
+```sql
+SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
+```
 or
+```sql
+SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
+```
 
-*SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
-
-
+	```json
     {
     	"scopePath": [XPath/JPath of content scope],
     	"namespaces": [
@@ -172,12 +175,13 @@ or
     				}
     	}
     }
+	```
 
 **XML Transform Instruction**
 This instruction can be added to the Transco Config to transform XML content via the specified XSLT file. Assemblies and dependencies used by the XSLT transformation are also specified in this instruction so that they may downloaded from storage and loaded for use by Transco.
 
 This instruction is only available when calling the /TranscoXML endpoint.
-
+	```json
     {
 	    "xsltTransform": [Name of XSLT file],
 	    "extensions": [
@@ -192,6 +196,7 @@ This instruction is only available when calling the /TranscoXML endpoint.
 		    }
 	    ]
     }
+	```
 
 ## Storage Account
 
@@ -215,7 +220,7 @@ The Transco request requires three values:
  3. Name of transco config file in storage account
 
 Example payload:
-
+	```json
     {
 	    "Content":  "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PHJvb3Q+PG5hbWUgc3RhdHVzPSJNZW1iZXIiPkpvaG4gRG9lPC9uYW1lPjwvcm9vdD4=",
 	    "Context":  {
@@ -223,6 +228,7 @@ Example payload:
 	    }, 
 	    "TranscoConfig":  "docs_config.json"    
     }
+	```
 
 ## Creating Logic App with TranscoV2 Connector
 
