@@ -15,8 +15,8 @@ Make sure the Project Collection Build Service has Administrator access to these
 > ![Library Security](../../images/ifa-library-security.png)
 
 ## YAML Pipeline
-Add the files and folders from [this](./pipelines) location to your DevOps repo. 
-This contains an example YAML pipeline to release the Invictus for Azure Framework, change the [framework.release.yaml](@site/framework/installation/pipelines/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+Add the files and folders from [this](./assets) location to your DevOps repo. 
+This contains an example YAML pipeline to release the Invictus for Azure Framework, change the [framework.release.yaml](./assets/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
 ``` yaml
 resources:
   pipelines:
@@ -33,7 +33,7 @@ Also make sure to change the Bicep template parameters. In these example files w
 
 If you need to overwrite more Bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
 
-Afterwards add the [framework.release.yaml](./pipelines/framework.release.yaml) in your DevOps environment as a pipeline.
+Afterwards add the [framework.release.yaml](./assets/framework.release.yaml) in your DevOps environment as a pipeline.
 
 ## Classic Pipeline
 ### Release
