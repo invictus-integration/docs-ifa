@@ -1,5 +1,3 @@
-name: ${{ parameters.major }}.${{ parameters.minor }}.${{ parameters.patch }}$(rev:.r)
-
 pr: none
 trigger:
   branches:
@@ -11,18 +9,10 @@ trigger:
     - /src/customer.azure.invictus
 
 parameters:
-- name: major
-  displayName: Major Version
+- name: Version
+  displayName: Invictus Version
   type: string
-  default: 4
-- name: minor
-  displayName: Minor Version
-  type: string
-  default: 15
-- name: patch
-  displayName: Patch Version
-  type: string
-  default: 10
+  default: '*'
 - name: useBeta
   displayName: Use Beta
   type: string
@@ -45,9 +35,10 @@ stages:
       clean: true
       persistCredentials: true
 
-    - template: ./Templates/build-steps.yaml
+    - template: ./templates/build-steps.yml
       parameters:
         type: 'framework'
         useBeta: '${{ parameters.useBeta }}'
         storageAccountName: '$(Invictus.Installation.StorageAccount.Name)'
         storageSasToken: '$(Invictus.Installation.StorageAccount.Framework.SasToken)'
+        version: '${{ parameters.Version }}'
