@@ -16,7 +16,7 @@
       * [Flow permissions](/dashboard/foldermanagement.md)
       * [Import flow traces](/dashboard/import-flows.md)
         * [Import via LogicApps](/dashboard/import-flows-via-la.md)
-        * [DataFactory diagnostics](/framework/datafactorydiagnostics.md)
+        * [Import via DataFactory](/framework/datafactorydiagnostics.md)
         * [Import prog. via HTTP](/dashboard/import-flow-prog-via-http.md)
         * [Import prog. via EventHubs](/dashboard/import-flow-prog-via-eh.md)
     * Security
@@ -26,8 +26,7 @@
       * [Auditing](/dashboard/auditing.md)
     * Other
       * [Settings](/dashboard/settings.md)
-* Framework components
-  * [Overview](/framework/framework.md)
+* [Framework components](/framework/framework.md)
   * [Installation](/framework/installation/framework-installation.md)
   * [Deprecated components](/framework/components/deprecated/deprecated-components.md)
   * Active components

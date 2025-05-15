@@ -4,8 +4,10 @@ To use your Azure Active Directory groups as a way of authentication and flow au
 1. [**Register an application Invictus redirects**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate%2Cexpose-a-web-api)
    * Choose the <u>multi-tenant</u> account type option to let Invictus be able to use the app registration.
    * Add <u>Redirect URI`s</u> to **your** Invictus pages, i.e.:
-     * [https://your-invictusdashboard.azurewebsites.net/login]()
-     * [https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad]()
+<!-- md-dead-link-check: off -->
+     * <a href="/">https://your-invictusdashboard.azurewebsites.net/login</a> 
+     * <a href="/">https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad</a>
+<!-- md-dead-link-check: on -->
      * 👉 Make sure to check the **☑️ Access tokens** checkbox to issue tokens ([more info](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps))
    * Add new <u>client secret</u> (copy value for later use)
    * Linked Enterprise application:
