@@ -18,7 +18,7 @@ Once you have obtained these values, create a variable group named `{prefix}.Inv
 - **Infra.Environment.ACRPassword**: value provided by Codit Software
 
 ## 3. Add YAML build pipeline
-Add the files and folders from [this](./pipelines) location to your DevOps repo. 
+Add the files and folders from this location to your DevOps repo. 
 This contains an example YAML pipelines to build the Invictus for Azure Dashboard, change the [dashboard.build.yaml](./pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
 ``` yaml
   paths:
