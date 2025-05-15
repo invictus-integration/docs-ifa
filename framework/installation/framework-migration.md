@@ -1,5 +1,3 @@
-[home](../../README.md) | [framework](../framework.md) | [framework installation](framework-installation.md)
-
 # Framework Migration Guide
 
 This document will guide you through the process of migrating the build & release pipelines to the new procedure associated with version 2.4.0 or greater.
