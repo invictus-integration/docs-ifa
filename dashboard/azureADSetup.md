@@ -32,3 +32,4 @@ To use your Azure Active Directory groups as a way of authentication and flow au
    * `azureActiveDirectoryTenantId` (**App registration > overview**)
    * `azureActiveDirectoryClientSecret` (paste from previous generation)
    * `azureActiveDirectoryAudience` (default <u>Application ID URI</u>)
+

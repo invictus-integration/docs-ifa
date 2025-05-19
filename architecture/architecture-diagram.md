@@ -19,7 +19,7 @@
 
 ### Framework Components
 
-Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](../framework/framework.md).
+Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](../framework/index.md).
 
 - **PubSub API**
 - **Transco API**
