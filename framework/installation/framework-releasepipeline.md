@@ -11,8 +11,7 @@ Make sure the Project Collection Build Service has Administrator access to these
 > ![Library Security](../../images/ifa-library-security.png)
 
 ## YAML Pipeline
-Add the files and folders from [this](./pipelines) location to your DevOps repo. 
-This contains an example YAML pipeline to release the Invictus for Azure Framework, change the [framework.release.yaml](./pipelines/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+Next step is to add a YAML pipeline to release the Invictus for Azure Framework. Change the [framework.release.yaml](./pipelines/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
 ``` yaml
 resources:
   pipelines:
