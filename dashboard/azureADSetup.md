@@ -26,7 +26,6 @@ To use your Azure Active Directory groups as a way of authentication and flow au
      * <u>Group.Read.All</u> **Application** (looking up available groups)
      * <u>Mail.Send</u> **Application** (sending 'forgot password' mails)
    * <u>My API's</u> **Delegated** (the scoped API permission you've created in the previous step)
-   * <u>user_impersonation</u> **Who can consent: Admin and Users** (to make sure containers can access Active Directory)
 
 4. **Pass app registration values to Invictus deployment**
    * `azureActiveDirectoryClientId` (**App registration > overview**)
