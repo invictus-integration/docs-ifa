@@ -1,5 +1,3 @@
-[home](../README.md)
-
 # Dashboard
 
 Invictus™ Integration Dashboard is a web-based management tool allowing functional key users to monitor and manage integration processes. The Dashboard makes your integration platform and business processes manageable for all users, turning the black box of your integrations into a transparent environment.

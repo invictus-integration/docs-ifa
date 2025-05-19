@@ -1,5 +1,3 @@
-[home](../README.md)
-
 # Framework
 
 The Invictus Integration Framework turns integration development into configuration.  It processes millions of messages every single day in customer solutions worldwide.  The time needed for development, testing and the overall risk for an integration solution is reduced when using the framework.

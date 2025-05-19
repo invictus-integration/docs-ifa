@@ -1,5 +1,3 @@
-[home](../../README.md) | [dashboard](../dashboard.md)
-
 # Dashboard Installation
 
 This document lists the steps required to perform an installation of the Invictus Dashboard in you Azure environment.

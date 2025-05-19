@@ -1,5 +1,3 @@
-[Home](../README.md) | [Dashboard](dashboard.md) | [Forgot Password](forgotpassword.md)
-
 # Forgot Password
 a
 The forgot password feature can be set up using two different approaches: SMTP or Azure Active Directory with application registration and API permissions. The SMTP approach is to be used when Azure AD has not been enabled for your Invictus V2 installation.
