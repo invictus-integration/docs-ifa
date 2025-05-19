@@ -40,8 +40,8 @@ The following script arguments are used in the deploy script:
   - `resourcePrefix`: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - `resourceGroupName`: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - `variableGroupName`: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - `identityProviderClientSecret`: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
-  - `identityProviderApplicationId`: Value can be obtained by following this guide: [Container Authentication](../../dashboard/containerAuthentication.md).
+  - `identityProviderClientSecret`: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
+  - `identityProviderApplicationId`: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
     
 - **Optional Arguments**
   - `artifactsPathScripts`: uses ArtifactsPath when not specified.
