@@ -6,7 +6,7 @@ When implementing the framework in your integration you will achieve a high leve
 
 ## Installing the framework
 
-Follow [this guide](installation/framework-installation.md) to setup your build and release pipelines in DevOps.
+Follow [this guide](installation/index.md) to setup your build and release pipelines in DevOps.
 
 ## Components
 
