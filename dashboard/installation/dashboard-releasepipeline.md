@@ -52,8 +52,8 @@ The following script arguments are used in the deploy script:
   - performSqlDataMigration: If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
   - flowDataTTLInDays: A positive integer value which represents the amount of days flow data can live in the database. More info [here](../import-flows.md).
   - isProvisionedCosmos: If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
-  - identityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](../containerAuthentication.md).
-  - identityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](../containerAuthentication.md).
+  - identityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
+  - identityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
     
 - **Optional Arguments**
   - artifactsPathScripts: uses ArtifactsPath when not specified.
