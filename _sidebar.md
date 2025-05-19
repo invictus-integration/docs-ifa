@@ -5,8 +5,8 @@
 * Dashboard
   * [Overview](/dashboard/overview.md)
   * [Installation](/dashboard/installation.md)
-    * [Give Invictus access to your Active Directory](/dashboard/azureADSetup.md)
-    * [Sync your Active Directory groups into Invictus](/dashboard/groupmanagement.md)
+    * [Give Invictus access to your Active Directory](/dashboard/installation/azureADSetup.md)
+    * [Sync your Active Directory groups into Invictus](/dashboard/installation/groupmanagement.md)
     * [First-time login](/dashboard/installation/first-time-login.md)
   * Usage
     * [Flows](/dashboard/flows.md)
@@ -14,7 +14,7 @@
       * [Search flows](/dashboard/flows/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
       * [Flow permissions](/dashboard/flows/foldermanagement.md)
-      * [Import flow traces](/dashboard/import-flows.md)
+      * [Import flow traces](/dashboard/flows/import-flows.md)
         * [Import via LogicApps](/dashboard/flows/import-flow-traces/import-flows-via-la.md)
         * [Import via DataFactory](/dashboard/flows/import-flow-traces/import-flow--via-df.md)
         * [Import prog. via HTTP](/dashboard/flows/import-flow-traces/import-flow-prog-via-http.md)
@@ -25,7 +25,7 @@
       * [Roles](/dashboard/security/role-management.md)
       * [Auditing](/dashboard/security/auditing.md)
     * Other
-      * [Settings](/dashboard/settings.md)
+      * [Settings](/dashboard/other/settings.md)
 * [Framework components](/framework/framework.md)
   * [Installation](/framework/installation/framework-installation.md)
   * [Deprecated components](/framework/components/deprecated/deprecated-components.md)
