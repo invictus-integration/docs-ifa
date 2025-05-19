@@ -1,3 +1,11 @@
+---
+title: "Invictus - Integration"
+layout: default
+slug: /
+sidebar_label: Welcome
+sidebar_position: 1
+---
+
 ![logo](images/v2_logo_horizontal.png)
 
 **For smart business monitoring and better control of your integrations.**
