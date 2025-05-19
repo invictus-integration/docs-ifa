@@ -1,5 +1,5 @@
 # Edit Flows
-Each [folder](./home.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
+Each [folder](../flows.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
 
 ## Add a new Flow
 > 👉 **Home > Your Flows > ••• > Create New Flow**
@@ -20,7 +20,7 @@ Each [folder](./home.md#organizing-flows-in-folders) can hold one or more 'flows
 ## Edit an existing Flow
 > 👉 **Home > Your Flows > [Your Folder] > [Your Flow] > ••• > Edit/Delete Flow**
 
-![edit/delete flow](../images/v2_alerting2.png)
+![edit/delete flow](../../images/v2_alerting2.png)
 
 ### Alerting
 > ⚠️ To manage alerts within Flows, make sure the [necessary **role assignments** are set](../accesscontrolrights.md) in your Invictus installation.

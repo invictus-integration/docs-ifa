@@ -8,7 +8,7 @@ The aggregated status of the messages received by that flow can be:
 
 > 👆 Clicking on the flow name will redirect you to the details of that flow.
 >
-> 👆 Clicking on a status will redirect you to the [search page](./search.md) to list all flows of that status. 
+> 👆 Clicking on a status will redirect you to the [search page](./flows/search.md) to list all flows of that status. 
 
 ![home](../images/v2_dsb-overview.png)
 

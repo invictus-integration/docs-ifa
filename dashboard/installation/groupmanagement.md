@@ -13,9 +13,9 @@ To synchronize Azure Active Directory groups, go to **Groups** and click on **Sy
 ## Enable only required groups
 Once the groups are synced within the Dashboard, you have to manually enable the required groups which you want to use for [flow permissions](../flows/foldermanagement.md).
 
-![Enable Groups](../images/dashboard/Groups/groupman_3.jpg)
+![Enable Groups](../../images/dashboard/Groups/groupman_3.jpg)
 
 ## Assign user role to required groups
 Each enabled group requires a user role permission to indicate what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../security/role-management.md).
 
-![Add Global Roles](../images/dashboard/Groups/groupman_4.jpg)
+![Add Global Roles](../../images/dashboard/Groups/groupman_4.jpg)

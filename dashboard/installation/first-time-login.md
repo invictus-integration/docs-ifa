@@ -18,11 +18,11 @@ Follow the steps below to log in to the dashboard:
    - **Username**: `admin`
    - **Password**: (the `tempAdminPassword` available as an [Azure Key vault secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the accompanied deployed vault)
 
-   ![dashboard login page](../images/dashboard/AdminAccount/adminAccount-4.jpg)
+   ![dashboard login page](../../images/dashboard/AdminAccount/adminAccount-4.jpg)
 
 3. After successfully logging in, you will be prompted to reset your password to one of your choice.
 
-   ![dashboard reset password](../images/dashboard/AdminAccount/adminAccount-5.png)
+   ![dashboard reset password](../../images/dashboard/AdminAccount/adminAccount-5.png)
 
 4. 🎉 Congratulations! You have logged into the Invictus Dashboard for the first time.
 
