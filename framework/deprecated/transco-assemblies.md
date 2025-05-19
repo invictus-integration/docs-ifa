@@ -5,7 +5,7 @@
 > 
 > Maximum supported .NET version is .NET Framework 4.7.1
 > 
-> For the supported version, please see [Transco V2](../transcoV2.md)
+> For the supported version, please see [Transco V2](../components/transcoV2.md)
 
 ## Introduction
 
@@ -41,7 +41,7 @@ To execute functions within your Transco function you will need to include the d
 
 Sample code to be used later in the sample call:
 
-> ![sample code](../../../images/transco-samplecode.png)
+> ![sample code](../../images/transco-samplecode.png)
 
 ## XSLT File
 

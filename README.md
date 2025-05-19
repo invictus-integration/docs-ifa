@@ -12,7 +12,7 @@ Documentation on the dashboard can be found [here](dashboard/dashboard.md).
 
 ## Framework
 
-Documentation on the framework can be found [here](framework/framework.md).
+Documentation on the framework can be found [here](framework/index.md).
 
 ## Related documentation
 
