@@ -15,7 +15,6 @@ The following documentation pages are related on the use of the dashboard.
 * [Setup](./installation/first-time-login.md): A one time setup procedure.
 * [Home page](./flows/index.md): A quick overview of flow statuses.
 * [Search](./flows/search.md): Information on the search functionality.
-* [Message handling](messagehandling.md): Resubmit, resume and handle.
 * [Settings](./other/settings.md): An overview of the settings page.
 * [User management](./security/usermanagement.md): More info on user management.
 
