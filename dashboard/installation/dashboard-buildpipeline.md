@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Add Invictus Dashboard to release package
 To deploy the Invictus Dashboard together with your customer solution, the first step is to include the Dashboard in your release package.
 
