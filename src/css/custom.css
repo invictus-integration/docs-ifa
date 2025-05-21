@@ -38,9 +38,9 @@
   --ifm-color-gray-400: #a6aecb;
   --ifm-color-gray-500: #8b95b8;
   --ifm-color-gray-600: #575f82;
-  --ifm-color-gray-700: #444b6d;
-  --ifm-color-gray-800: #242b47;
-  --ifm-color-gray-900: #1d2338;
+  --ifm-color-gray-700: #446a6d;
+  --ifm-color-gray-800: #244547;
+  --ifm-color-gray-900: #001d22;
 
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-toc-border-color: var(--ifm-color-primary);
