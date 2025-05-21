@@ -146,3 +146,36 @@ Parameters related to telemetry tracking of the deployed applications.
 | Parameter         | Required | Default | Description       |
 | ----------------- | :------: | --------| ----------------- |
 | `appInsightsName` | No       | `invictus-{resourcePrefix}-appins` | Name for the Application Insights resource|
+
+## Scaling parameters
+Azure Container Apps allow for flexible scaling customization. In Invictus we have provided default scaling values which can be customized according to your scenario.
+
+Container Apps have the ability to scale down to zero replicas. This is a great cost-saving option especially for components which are not used at all. A container app scaled to zero will automatically scale out when triggered, however this may take up to a few minutes to complete. This could prove to be an issue in scenarios with limited timeout e.g. logic apps with 120 seconds timeout. In such cases there is no option but to set a minimum replica count of 1.
+
+| Parameter                    | Required |
+| -----------------------------| :------: |
+| `timeSequencerScaling`       | No       |
+| `exceptionHandlerScaling`    | No       |
+| `pubSubV2Scaling`            | No       |
+| `regexTranslatorScaling`     | No       |
+| `sequenceControllerScaling`  | No       |  
+| `transcoV2Scaling`           | No       |
+| `xmlJsonConverterScaling`    | No       |
+| `xsdValidatorScaling`        | No       |
+
+Each of the above parameters accepts an object:
+```json
+{
+  scaleMinReplicas: int
+  scaleMaxReplicas: int
+  cpuResources: string
+  memoryResources: string
+}
+```
+
+| Parameter value    | Description                                                                                            |
+| -------------------| ------------------------------------------------------------------------------------------------------ |
+| `scaleMinReplicas` | The lowest number of replicas the Container App will scale in to.                                      |
+| `scaleMaxReplicas` | The highest number of replicas the Container App will scale out to.                                    |
+| `cpuResources`     | The amount of cpu resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).       |
+| `memoryResources`  | The amount of memory resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).    |
