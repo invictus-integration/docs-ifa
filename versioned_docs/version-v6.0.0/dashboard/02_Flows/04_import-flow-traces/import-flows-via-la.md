@@ -42,7 +42,7 @@ Alternatively, you can update your Bicep template to include them, using [AVM](h
 ```
 
 ## Map Dashboard flows to LogicApp workflow runs
-Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../editflows.md):
+Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../01_editflows.md):
 * WorkflowName (if present)
 * Domain (if present)
 * Service (if present)
