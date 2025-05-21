@@ -1,4 +1,6 @@
-[home](../README.md) | [dashboard](dashboard.md) | [custom resume/resubmit](custom-resumeresubmit.md)
+---
+sidebar_class_name: hidden
+---
 
 # Custom Resume And Resubmit
 

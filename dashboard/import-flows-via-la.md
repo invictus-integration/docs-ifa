@@ -105,6 +105,8 @@ For any additional details or insights, the user can also navigate directly to t
 
 Flows linked to LogicApps workflows can be resubmitted and resumed via the Dashboard both separately (`Flow Actions button`) and in batch (`Selecting multiple flows`).
 
+To manipulate the default resubmit/resume operations, you can also do [custom resubmit/resume](./custom-resumeresubmit.md) of flows.
+
 ### Resubmit
 The Resubmit functionality will always trigger an "Azure Resubmit" for the first LogicApp in the Chain. Resubmit will trigger the execution of any corresponding flow, even completed ones. When Resubmit is triggered, the first Logic App in the chain (execution tree) is resubmitted on Azure thus retriggering the whole flow.
 
@@ -131,7 +133,6 @@ When a message has been set to be ignore, its status will change and show as fol
 
 ### Example scenarios
 The below examples are a representation of the Flow Row and the Execution tree with different Resume and Resubmit scenarios.
-
 
 <details>
 <summary>Scenario One: resubmit first in the chain</summary>
