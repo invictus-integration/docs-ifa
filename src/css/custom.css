@@ -7,13 +7,13 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #248eff;
-  --ifm-color-primary-dark: #078fff;
-  --ifm-color-primary-darker: #0088f7;
-  --ifm-color-primary-darkest: #006cc6;
-  --ifm-color-primary-light: #47acff;
-  --ifm-color-primary-lighter: #55b2ff;
-  --ifm-color-primary-lightest: #81c6ff;
+  --ifm-color-primary: #014550;
+  --ifm-color-primary-dark: #00464f;
+  --ifm-color-primary-darker: #003f47;
+  --ifm-color-primary-darkest: #00292e;
+  --ifm-color-primary-light: #00778a;
+  --ifm-color-primary-lighter: #0098af;
+  --ifm-color-primary-lightest: #00cdec;
 
   --ifm-color-secondary: #cacad2;
   --ifm-color-secondary-dark: #9f9fac;
@@ -58,31 +58,6 @@
   background-color: var(--ifm-alert-background-color) !important;
 }
 
-.alert--praise {
-  --ifm-alert-background-color: rgba(114, 137, 218, 0.5);
-  --ifm-alert-background-color-highlight: rgba(84, 199, 236, 0.15);
-  --ifm-alert-foreground-color: rgb(66,69,73);
-  --ifm-alert-border-color: #5865F2;
-}
-
-html[data-theme='dark'] .alert--praise {
-  --ifm-alert-background-color: rgba(114, 137, 218, 0.5);
-  --ifm-alert-background-color-highlight: rgba(84, 199, 236, 0.15);
-  --ifm-alert-foreground-color: rgb(255,255,255);
-  --ifm-alert-border-color: #5865F2;
-}
-
-/* Use FontAwesome-style icon */
-.alert--praise::before {
-  font-family: "Font Awesome 5 Free"; /* Depends on your FontAwesome version */
-  font-weight: 900;
-  content: "\f559"; /* Unicode for FontAwesome icon (e.g., 'sticky-note') */
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  font-size: 1.2rem;
-}
-
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: var(--ifm-color-gray-800);
 }
@@ -97,7 +72,7 @@ html[data-theme='dark'] main img[src$='.png'] {
 
 html[data-theme='dark'] {
   --ifm-background-color: var(--ifm-color-gray-900);
-  --ifm-color-primary: #249cff;
+  --ifm-color-primary: #003f47;
 
   --ifm-navbar-background-color: var(--ifm-color-gray-800);
 }
