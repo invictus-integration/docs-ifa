@@ -1,38 +1,32 @@
+---
+sidebar_class_name: hidden
+---
+
 # Add Invictus Dashboard to release package
 To deploy the Invictus Dashboard together with your customer solution, the first step is to include the Dashboard in your release package.
 
 ## 1. Save `Invictus-GetSources.ps1` script to your repository
 The `Invictus-GetSources.ps1` script will pull the latest Invictus resources needed to deploy the Dashboard.
 
-> [⬇️ Download `Invictus-GetSources.ps1`](https://invictusreleases.blob.core.windows.net/devops/prod/Invictus-GetSources.ps1?sp=r&st=2023-07-31T05:31:04Z&se=2060-07-31T13:31:04Z&spr=https&sv=2022-11-02&sr=b&sig=9xVYMoiiPjTgGXHfuA0UQcBo0g028U0fs1Wf0DCtsX4%3D)
+> [⬇️`Invictus-GetSources.ps1`](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/scripts/Invictus-GetSources.ps1)
 
-## 2. Add SAS storage token as pipeline variable
-When pulling the Invictus resources, the SAS storage token is used to authenticate the request. This token should be provided to you by **Codit Software**.
+## 2. Add variables to variable group.
+To deploy Invictus, you will need some secrets for authentication. These secrets should be provided to you by **Codit Software**.
 
-## 3. Add YAML tasks
-The following YAML tasks show how the `Invictus-GetSources.ps1` script is used to pull the Invictus resources and save the result as a pipeline artifact for later use upon releasing your solution.
+Once you have obtained these values, create a variable group named `{prefix}.Invictus.Installation` and add the below variables.
 
-```yaml
-- task: PowerShell@2
-  displayName: 'Pull Invictus Dashboard sources'
-  inputs:
-    targetType: filePath
-    filePath: './Invictus-GetSources.ps1'
-    arguments: >
-      -StorageAccountName 'invictusreleases'
-      -StorageSasToken "$(Your.Personal.SasToken)"
-      -StorageContainerName 'dashboard-v2'
-      -SaveLocation '$(Build.ArtifactStagingDirectory)'
-      -UseBeta false
+- **Invictus.Installation.StorageAccount.Name**: invictusreleases
+- **Invictus.Installation.StorageAccount.Dashboard.SasToken**: value provided by Codit Software
+- **Invictus.Installation.StorageAccount.Framework.SasToken**: value provided by Codit Software
+- **Infra.Environment.ACRUsername**: value provided by Codit Software
+- **Infra.Environment.ACRPassword**: value provided by Codit Software
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    TargetPath: $(Build.ArtifactStagingDirectory)
-    ArtifactName: 'invictus-dashboard'
-    publishLocation: 'pipeline'
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    TargetPath: deploy
-    ArtifactName: scripts
+## 3. Add YAML build pipeline
+Next step is to add a YAML pipeline to build the Invictus for Azure Dashboard. Change the [dashboard.build.yaml](./pipelines/dashboard.build.yaml) file according to your needs, for example change the trigger path:
+``` yaml
+  paths:
+    include:
+    - /src/customer.azure.invictus
 ```
+
+Afterwards add it in your DevOps environment as a pipeline. You may now proceed to the [release pipeline](dashboard-releasepipeline.md).

@@ -1,4 +1,6 @@
-[home](../../README.md) | [framework](../framework.md) | [framework installation](framework-installation.md)
+---
+sidebar_class_name: hidden
+---
 
 # Framework Migration Guide
 

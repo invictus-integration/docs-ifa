@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Transco V2 - Matrix Functionality
 
 Matrix functionality has been rewritten in .NET 6.0 to modernize its capabilities. This functionality has now been included within the Transco V2 function, instead of its own standalone API.
@@ -32,68 +36,70 @@ Each key-value pair in the KeyValueCollection is individually promoted to the co
 
 
 Example Request:
-
-    {
-	    "Content":  "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
-	    "Context":  {
-	    "x-conversationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",
-	    "x-correlationId":  "fc13d345-ebd7-44f2-89a9-4371258c0a08",
-	    "x-batchId":  "975f7ea4-6247-431b-afb6-6d27fb47516f",
-	    "x-applicationName":  "InvoiceApp",
-	    "filter":  "endtoendintegrationtests"	    
-	    },   
-	    "KeyValueCollection":  {
-		    "w":  3,
-		    "l":  10.2,
-		    "h":  1,
-		    "t":  200,
-	    },
-	    "Flow":  "fl1",
-	    "Domain":  "do",
-	    "Service":  "sr1",
-	    "Action":  "Ac",
-	    "Version":  "Vs",
-	    "Sender":  "Snd",
-	    "ApplicationName":  "Snd",
-	    "Milestone":  "2018",
-	    "ConversationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",   
-	    "CorrelationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0", 
-	    "BatchId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",  
-	    "Data1":  "d1", 
-	    "Data2":  "d2", 
-	    "Data3":  "d3"
-    }
+```json
+{
+ "Content":  "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+ "Context":  {
+ "x-conversationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",
+ "x-correlationId":  "fc13d345-ebd7-44f2-89a9-4371258c0a08",
+ "x-batchId":  "975f7ea4-6247-431b-afb6-6d27fb47516f",
+ "x-applicationName":  "InvoiceApp",
+ "filter":  "endtoendintegrationtests"	    
+ },   
+ "KeyValueCollection":  {
+  "w":  3,
+  "l":  10.2,
+  "h":  1,
+  "t":  200,
+ },
+ "Flow":  "fl1",
+ "Domain":  "do",
+ "Service":  "sr1",
+ "Action":  "Ac",
+ "Version":  "Vs",
+ "Sender":  "Snd",
+ "ApplicationName":  "Snd",
+ "Milestone":  "2018",
+ "ConversationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",   
+ "CorrelationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0", 
+ "BatchId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",  
+ "Data1":  "d1", 
+ "Data2":  "d2", 
+ "Data3":  "d3"
+}
+```
 
 Expected Response:
-
-    {
-        "content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
-        "context": {
-            "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
-            "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
-            "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
-            "x-applicationName": "InvoiceApp",
-            "filter": "endtoendintegrationtests",
-            "Flow": "fl1",
-            "Domain": "do",	    
-            "Service": "sr1",
-            "Action": "Ac",
-            "Version": "Vs",
-            "ApplicationName": "Snd",
-            "Milestone": "2018",
-            "Data1": "d1",
-            "Data2": "d2",
-            "Data3": "d3",
-            "Sender": "Snd",
-            "w": 3,
-            "l": 10.2,
-            "h": 1,
-            "t": 200
-        },
-        "conversationId": null,
-        "correlationId": null,
-        "batchId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
-    }
+```json
+{
+    "content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+    "context": {
+        "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
+        "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
+        "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
+        "x-applicationName": "InvoiceApp",
+        "filter": "endtoendintegrationtests",
+        "Flow": "fl1",
+        "Domain": "do",	    
+        "Service": "sr1",
+        "Action": "Ac",
+        "Version": "Vs",
+        "ApplicationName": "Snd",
+        "Milestone": "2018",
+        "Data1": "d1",
+        "Data2": "d2",
+        "Data3": "d3",
+        "Sender": "Snd",
+        "w": 3,
+        "l": 10.2,
+        "h": 1,
+        "t": 200
+    },
+    "conversationId": null,
+    "correlationId": null,
+    "batchId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
+}
+```
 
 ## Transco Support
 

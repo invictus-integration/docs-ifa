@@ -19,7 +19,7 @@ This framework component can be used to transform either XML to JSON or JSON to 
 |JPath|No|Used to focus on part of the content/result|
 
 ### Sample Request Schema
-
+```json
 {
 "configName":"IDD038-inbound.xsl",
 "content": "eyJFbnZlbG9wZSI6IHiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." 
@@ -27,6 +27,7 @@ This framework component can be used to transform either XML to JSON or JSON to 
 "xpath": "",
 "jpath" "$.Envelope"
 }
+```
 
 ### Config
 

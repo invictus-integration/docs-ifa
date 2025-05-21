@@ -1,5 +1,3 @@
-[home](../../README.md) | [framework](../framework.md)
-
 # Timesequencer
 
 ## Introduction
@@ -43,7 +41,7 @@ CompleteExecution is used to complete a request and to trigger any pending webho
 
 POST Request Object:
 
-```
+```json
 {
  "instanceId": "[STRING]", //The ID associated to the request. SequenceName and InstanceId form the PrimaryKey for the request
  "sequenceName": "[STRING]"The ID used to group requests together, //SequenceName and InstanceId form the PrimaryKey for the request

@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Invictus Dashboard VNET Support
 
 Invictus includes functionality which allows all its resources to run within an Azure Virtual Network (VNET). This document will guide you through this process.
@@ -5,28 +9,28 @@ Invictus includes functionality which allows all its resources to run within an 
 ## Prerequisites
 
 - An Azure Virtual Network
-  - Including three subnets, one each for:
+  - Including two subnets, one each for:
     - Private Endpoints
-    - Dashboard
-    - Functions     
+    - Container App Environment
   - The subnets must have the following services enabled
     - Microsoft.AzureCosmosDB
     - Microsoft.EventHub
     - Microsoft.KeyVault
     - Microsoft.ServiceBus
     - Microsoft.Storage
-    - Microsoft.Web
+  - The container app subnet must also have the delegation `Microsoft.App/environments` ([more info](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation))
+        
 - 10 Private DNS Zones
-  - privatelink.azurecr.io
-  - privatelink.azurewebsites.net
-  - privatelink.blob.core.windows.net
-  - privatelink.file.core.windows.net
-  - privatelink.mongo.cosmos.azure.com
-  - privatelink.queue.core.windows.net
-  - privatelink.servicebus.windows.net
-  - privatelink.table.core.windows.net
-  - privatelink.table.cosmos.azure.com
-  - privatelink.vaultcore.azure.net
+  - `privatelink.azurecr.io`
+  - `privatelink.blob.core.windows.net`
+  - `privatelink.file.core.windows.net`
+  - `privatelink.mongo.cosmos.azure.com`
+  - `privatelink.queue.core.windows.net`
+  - `privatelink.servicebus.windows.net`
+  - `privatelink.table.core.windows.net`
+  - `privatelink.table.cosmos.azure.com`
+  - `privatelink.vaultcore.azure.net`
+  - `privatelink.{regionName}.azurecontainerapps.io`
     
   A Bicep template for these DNS Zones can be found [here](scripts/invictusVnetDNSZones.bicep)
 
@@ -42,7 +46,7 @@ If the Invictus resources and the VNET are on different resource groups, then th
 
 ## Release Pipeline Changes
 
-The release pipeline remains the same as explained [here](dashboard-releasepipeline.md), but with a set of VNET specific parameters. The `enableVnetSupport` parameter must be set to `$true` to enable the functionality. The name of the resource group containing the VNET, as well as the VNET name itself must be passed to the `vnetResourceGroupName` and `vnetName` parameters. An array containing the names of the desired subnets must be passed to the `keyVaultSubnets`, `storageAccountSubnets`, `serviceBusSubnets`, `cosmosDbSubnets`, `eventHubSubnets` parameters. You will also need to pass the subnet names to connect the dashboard, Azure functions and private endpoints. These parameters are `dashboardSubnetName`, `functionsSubnetName`, `privateEndpointSubnetName`.
+The release pipeline remains the same as explained [here](dashboard-releasepipeline.md), but with a set of VNET specific parameters. The `enableVnetSupport` parameter must be set to `$true` to enable the functionality. The name of the resource group containing the VNET, as well as the VNET name itself must be passed to the `vnetResourceGroupName` and `vnetName` parameters. An array containing the names of the desired subnets must be passed to the `keyVaultSubnets`, `storageAccountSubnets`, `serviceBusSubnets`, `cosmosDbSubnets`, `eventHubSubnets` parameters. You will also need to pass the subnet names to connect the Container App Environment and private endpoints. These parameters are `containerAppEnvironmentSubnetName`, `privateEndpointSubnetName`.
 
 A full list of VNET parameters can be found [here](dashboard-releasepipeline.md).
 
@@ -50,29 +54,27 @@ A full list of VNET parameters can be found [here](dashboard-releasepipeline.md)
 
 ```powershell
 PS> $(ArtifactsPath)/Deploy.ps1 `
-  -ArtifactsPath "$(ArtifactsPath)" `
-  -ArtifactsPathScripts "$(ArtifactsPathScripts)" `
-  -ResourcePrefix "$(Infra.Environment.ResourcePrefix)" `
-  -ResourceGroupName "$(Infra.Environment.ResourceGroup)" `
-  -VariableGroupName "Software.Infra.$(Infra.Environment.ShortName)" `
-  -ResourceGroupLocation "$(Infra.Environment.Region.Primary)" `
-  -devOpsObjectId $(Infra.DevOps.Object.Id) `
-  -AzureActiveDirectoryClientId "********-****-****-****-********" `
-  -AzureActiveDirectoryTenantId "********-****-****-****-********" `
-  -use32BitWorkerProcess $false `
-  -AzureActiveDirectoryClientSecret "*************************" `
-  -AzureActiveDirectoryAudience "api://********-****-****-****-********" `
-  -PerformSqlDataMigration 0 `
-  -enableVnetSupport $true `
-  -vnetName "invictus-vnet" `
-  -vnetResourceGroupName "invictus-vnet" `
-  -keyVaultSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
-  -storageAccountSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
-  -serviceBusSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
-  -cosmosDbSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
-  -eventHubSubnets @("snet-privateendpoints", "snet-invictus", "snet-invictusdashboard") `
-  -dashboardSubnetName "snet-invictusdashboard" `
-  -functionsSubnetName "snet-invictus" `
-  -privateEndpointSubnetName "snet-privateendpoints" `
-  -isPrivateDashboardVnet $true
+-artifactsPath "$(ArtifactsPath)" `
+-artifactsPathScripts "$(ArtifactsPathScripts)" `
+-resourcePrefix "$(Infra.Environment.ResourcePrefix)" `
+-resourceGroupName "$(Infra.Environment.ResourceGroup)" `
+-variableGroupName "Software.Infra.$(Infra.Environment.ShortName)" `
+-resourceGroupLocation "$(Infra.Environment.Region.Primary)" `
+-devOpsObjectId $(Infra.DevOps.Object.Id) `
+-azureActiveDirectoryClientId "********-****-****-****-********" `
+-azureActiveDirectoryTenantId "********-****-****-****-********" `
+-use32BitWorkerProcess $false `
+-azureActiveDirectoryClientSecret "*************************" `
+-azureActiveDirectoryAudience "api://********-****-****-****-********" `
+-performSqlDataMigration 0 `
+-enableVnetSupport $true `
+-vnetName "invictus-vnet" `
+-vnetResourceGroupName "invictus-vnet" `
+-keyVaultSubnets @("snet-privateendpoints", "snet-cae") `
+-storageAccountSubnets @("snet-privateendpoints", "snet-cae") `
+-serviceBusSubnets @("snet-privateendpoints", "snet-cae") `
+-cosmosDbSubnets @("snet-privateendpoints", "snet-cae") `
+-eventHubSubnets @("snet-privateendpoints", "snet-cae") `
+-containerAppEnvironmentSubnetName "snet-cae" `
+-privateEndpointSubnetName "snet-privateendpoints"
 ```
