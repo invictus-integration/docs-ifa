@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Access Control Rights
 
 Some role assignments need to be added to a few Invictus for Azure components so that certain features function correctly.

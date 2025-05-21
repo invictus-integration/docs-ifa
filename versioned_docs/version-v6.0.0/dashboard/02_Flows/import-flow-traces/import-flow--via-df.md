@@ -56,3 +56,9 @@ resource factoryName_microsoft_insights_settingName 'Microsoft.DataFactory/facto
   ]
 }
 ```
+
+## Tracked Properties
+
+To track properties when executing pipeline runs you will need to set the User Properties within an Activity inside a pipeline. These will be then picked up by the importjob.
+
+![datafactoryuserproperties](../../images/dfuserproperties.PNG)
