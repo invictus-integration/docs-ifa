@@ -4,12 +4,12 @@
 * [Architecture](/architecture-diagram.md)
 * Dashboard
   * [Overview](/dashboard/overview.md)
-  * [Installation](/dashboard/installation.md)
+  * [Installation](/dashboard/installation/index.md)
     * [Give Invictus access to your Active Directory](/dashboard/installation/azureADSetup.md)
     * [Sync your Active Directory groups into Invictus](/dashboard/installation/groupmanagement.md)
     * [First-time login](/dashboard/installation/first-time-login.md)
   * Usage
-    * [Flows](/dashboard/flows.md)
+    * [Flows](/dashboard/flows/index.md)
       * [Edit flows](/dashboard/flows/editflows.md)
       * [Search flows](/dashboard/flows/search.md)
       * [Execute flows](/dashboard/messagehandling.md)
