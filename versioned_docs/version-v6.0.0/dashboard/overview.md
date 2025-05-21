@@ -6,25 +6,25 @@ Invictus™ Integration Dashboard is designed so that other integration solution
 
 ## Installing the dashboard
 
-Follow [this guide](./installation/index.md) to setup your build and release pipelines in DevOps.
+Follow [this guide](./01_Installation/index.md) to setup your build and release pipelines in DevOps.
 
 ## Frontend Documentation
 
 The following documentation pages are related on the use of the dashboard.
 
-* [Setup](./installation/first-time-login.md): A one time setup procedure.
-* [Home page](./flows/index.md): A quick overview of flow statuses.
-* [Search](./flows/search.md): Information on the search functionality.
+* [Setup](./01_Installation/first-time-login.md): A one time setup procedure.
+* [Home page](./02_Flows/index.md): A quick overview of flow statuses.
+* [Search](./02_Flows/search.md): Information on the search functionality.
 * [Message handling](messagehandling.md): Resubmit, resume and handle.
-* [Settings](./other/settings.md): An overview of the settings page.
-* [User management](./security/usermanagement.md): More info on user management.
+* [Settings](./04_Other/settings.md): An overview of the settings page.
+* [User management](./03_Security/usermanagement.md): More info on user management.
 
 ## Backend Documentation
 
 The following documentation pages are related to the backend of the dashboard and can help you set up or troubleshoot.
 
 * [Access Control Rights](accesscontrolrights.md): Detailed information about access right controls.
-* [Import flows via LogicApp workflows](./flows/import-flow-traces/import-flows-via-la.md): Detailed information on the import job.
+* [Import flows via LogicApp workflows](./02_Flows/import-flow-traces/import-flows-via-la.md): Detailed information on the import job.
 
 ## Release Notes
 

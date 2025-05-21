@@ -15,7 +15,7 @@ Before you can use the forgot password feature, you need to create an Azure Acti
 
 Please note that the permission granted allows any email address within the organization to be used as the sender.
 
-To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](../installation/azureADSetup.md).
+To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](../01_Installation/azureADSetup.md).
 
 ## Setup Email Address as the Sender
 

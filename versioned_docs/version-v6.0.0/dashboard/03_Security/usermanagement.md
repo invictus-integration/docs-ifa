@@ -8,10 +8,10 @@ The Invictus Dashboard allows you to access the application with multiple user a
 ## Active Directory Invictus Dashboard users
 > 👤 Requires membership of a synced Active Directory group
 
-The Invictus Dashboard can be configured to [use existing users in Azure Active Directory groups](../installation/azureADSetup.md). This removes the need to work with additional local Dashboard users.
+The Invictus Dashboard can be configured to [use existing users in Azure Active Directory groups](../01_Installation/azureADSetup.md). This removes the need to work with additional local Dashboard users.
 
 ### Add an Active Directory user to the Dashboard
-Azure Active Directory users can sign in automatically into the Invictus Dashboard if that user is part of an Active Directory group that is [synced into the Dashboard](../installation/groupmanagement.md).
+Azure Active Directory users can sign in automatically into the Invictus Dashboard if that user is part of an Active Directory group that is [synced into the Dashboard](../01_Installation/groupmanagement.md).
 
 > ☝️ Make sure that the group has a [role assigned](./role-management.md), otherwise the Dashboard will be unusable for the user.
 
@@ -25,7 +25,7 @@ Azure Active Directory users can sign in automatically into the Invictus Dashboa
     > 👀 Linked Active Directory users can be distinguished as they do not have a personal role assigned. The role is determined by the group the user is a member of.
 
 ### Edit an Active Directory user's role in the Dashboard
-Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/groupmanagement.md), so will the user.
+Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](../01_Installation/groupmanagement.md), so will the user.
 
 ## Local Invictus Dashboard users
 > 👤 Requires personal `System admin` role to manage local users
