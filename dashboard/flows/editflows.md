@@ -1,5 +1,5 @@
 # Edit Flows
-Each [folder](../flows.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
+Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
 
 ## Add a new Flow
 > 👉 **Home > Your Flows > ••• > Create New Flow**

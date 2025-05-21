@@ -8,16 +8,16 @@ The aggregated status of the messages received by that flow can be:
 
 > 👆 Clicking on the flow name will redirect you to the details of that flow.
 >
-> 👆 Clicking on a status will redirect you to the [search page](./flows/search.md) to list all flows of that status. 
+> 👆 Clicking on a status will redirect you to the [search page](./search.md) to list all flows of that status. 
 
-![home](../images/v2_dsb-overview.png)
+![home](../../images/v2_dsb-overview.png)
 
 ## Organizing flows in folders
 To have a clear overview of your desired flows, the Invictus Dashboard allows you to organize your flows into a folder hierarchy (with possibly one or more sub-folders). These folders are always available in the left-hand sidebar.
 
 👇 The following example shows a root folder `All Data` with a sub-folder `Path Test`. Flows are present on the root folder (`All`) as well as the sub-folder (`LogicAppFlow`).
 
-![path test](../images/v2_path-test.png)
+![path test](../../images/v2_path-test.png)
 
 > 💡 Flow detail URL's can be constructed that will redirect users to the details page of the flow, but following the breadcrumb path of the flow.
 >
@@ -28,4 +28,4 @@ To have a clear overview of your desired flows, the Invictus Dashboard allows yo
 ### Edit folders
 > 👉 **Home > Your Flows >  ••• [Create/Edit/Delete] folder**
 
-Folders and sub-folders can be created, edited and archived, depending on the [role permissions](./security/role-management.md) on that folder. Only a name is required and possibly a parent.
+Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../security/role-management.md) on that folder. Only a name is required and possibly a parent.

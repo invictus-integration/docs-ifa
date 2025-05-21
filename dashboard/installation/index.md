@@ -10,22 +10,22 @@ Once you receive these, you will use them in the next step: Creating the build p
 
 ## 2. Build Pipeline
 
-Follow [this guide](./installation/dashboard-buildpipeline.md) to setup your build in Azure DevOps.
+Follow [this guide](./dashboard-buildpipeline.md) to setup your build in Azure DevOps.
 
 ## 3. Release Pipeline
 
-Follow [this guide](./installation/dashboard-releasepipeline.md) to setup your release in Azure DevOps.
+Follow [this guide](./dashboard-releasepipeline.md) to setup your release in Azure DevOps.
 
 ## 4. Setup
 
 ### V1 to V2 Migration Guide
 
-If you're migrating from Invictus V1 to Invictus V2, please follow the [migration guide](./installation/dashboard-migration.md).
+If you're migrating from Invictus V1 to Invictus V2, please follow the [migration guide](./dashboard-migration.md).
 
 ### First Time Setup
 
-If you are not migrating from Invictus V1 and installing for the first time, please follow the [setup guide](./installation/first-time-login.md)
+If you are not migrating from Invictus V1 and installing for the first time, please follow the [setup guide](./first-time-login.md)
 
 ## 5. Access Control
 
-Some Invictus components require various role assignments to function properly. Follow [this guide](./accesscontrolrights.md) for more info.
+Some Invictus components require various role assignments to function properly. Follow [this guide](../accesscontrolrights.md) for more info.

@@ -6,7 +6,7 @@ Invictus™ Integration Dashboard is designed so that other integration solution
 
 ## Installing the dashboard
 
-Follow [this guide](installation.md) to setup your build and release pipelines in DevOps.
+Follow [this guide](./installation/index.md) to setup your build and release pipelines in DevOps.
 
 ## Frontend Documentation
 
