@@ -28,7 +28,7 @@
       * [Settings](/dashboard/other/settings.md)
 * [Framework components](/framework/index.md)
   * [Installation](/framework/installation/index.md)
-  * [Deprecated components](/framework/deprecated/deprecated-components.md)
+  * [Deprecated components](/framework/deprecated/index.md)
   * Active components
     * [Publish and Subscribe](/framework/components/pubsubV2.md)
     * [Transco](/framework/components/transcoV2.md)
