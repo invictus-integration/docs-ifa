@@ -15,11 +15,11 @@ Before you can use the forgot password feature, you need to create an Azure Acti
 
 Please note that the permission granted allows any email address within the organization to be used as the sender.
 
-To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](azureADSetup.md).
+To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](../installation/azureADSetup.md).
 
 ## Setup Email Address as the Sender
 
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
+![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
 
 To set up the email address as the sender, follow these steps:
 
@@ -38,7 +38,7 @@ To configure the email settings, follow these steps:
 
 2. **Navigate to Settings**: Once logged in, navigate to the settings page. You'll find a form with the necessary details to complete.
 
-     ![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
+     ![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
 
 3. **Fill in Details**:
 
@@ -48,7 +48,7 @@ To configure the email settings, follow these steps:
    
    - **Email API Key and Password API Key**: These keys are securely stored within the KeyVault service. Save the email address and password of the sending account within these secret keys.
    
-   ![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_8.jpg)
+   ![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_8.jpg)
    
    - **SSL Enabled**: It's recommended to enable SSL, as major email providers often require this setting. Ensure this option is checked.
    
@@ -56,25 +56,25 @@ To configure the email settings, follow these steps:
 
 # Forgot Your Password - User Flow
 
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_1.jpg)
+![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_1.jpg)
 
 To reset your password, follow these steps:
 
 1. Click on **Forgot Password?** to initiate the password reset process.
 2. The form will be displayed, and you need to enter the email address associated with your account.
 
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_2.jpg)
+![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_2.jpg)
 
 3. After submitting the form, a confirmation message will be displayed, indicating that the reset password request has been sent to the provided email address.
 
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_3.jpg)
+![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_3.jpg)
 
 4. Access your email inbox and look for the email containing the reset password instructions. The email will have a template like the one shown below.
 
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_4.jpg)
+![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_4.jpg)
 
 5. In the email content, click on the **here** hyperlink. You will be redirected to the reset password form, where you can enter your new password.
 
-![forgotpassword](../images/dashboard/ForgotPassword/ForgotPassword_5.jpg)
+![forgotpassword](../../images/dashboard/ForgotPassword/ForgotPassword_5.jpg)
 
 6. Once you have successfully entered your new password, you can proceed to log in with the newly registered password.

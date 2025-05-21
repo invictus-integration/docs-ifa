@@ -1,5 +1,3 @@
-[home](../README.md) | [dashboard](dashboard.md) | [custom resume/resubmit](custom-resumeresubmit.md)
-
 # Custom Resume And Resubmit
 
 ## How to use this feature
