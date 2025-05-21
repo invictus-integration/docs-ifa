@@ -8,12 +8,12 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #014550;
-  --ifm-color-primary-dark: #00464f;
-  --ifm-color-primary-darker: #003f47;
-  --ifm-color-primary-darkest: #00292e;
-  --ifm-color-primary-light: #00778a;
-  --ifm-color-primary-lighter: #0098af;
-  --ifm-color-primary-lightest: #00cdec;
+  --ifm-color-primary-dark: #013c46;
+  --ifm-color-primary-darker: #01363f;
+  --ifm-color-primary-darkest: #002b32;
+  --ifm-color-primary-light: #065b68;
+  --ifm-color-primary-lighter: #12707d;
+  --ifm-color-primary-lightest: #2a8f9c;
 
   --ifm-color-secondary: #cacad2;
   --ifm-color-secondary-dark: #9f9fac;
@@ -30,6 +30,7 @@
   --ifm-color-warning-light: #ffb84b;
   --ifm-color-warning-lighter: #ffcd6f;
   --ifm-color-warning-lightest: #ffe29f;
+
   --ifm-code-font-size: 95%;
 
   --ifm-color-gray-100: #e9edfa;
@@ -38,9 +39,9 @@
   --ifm-color-gray-400: #a6aecb;
   --ifm-color-gray-500: #8b95b8;
   --ifm-color-gray-600: #575f82;
-  --ifm-color-gray-700: #446a6d;
-  --ifm-color-gray-800: #244547;
-  --ifm-color-gray-900: #001d22;
+  --ifm-color-gray-700: #444b6d;
+  --ifm-color-gray-800: #242b47;
+  --ifm-color-gray-900: #1d2338;
 
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-toc-border-color: var(--ifm-color-primary);
@@ -72,8 +73,7 @@ html[data-theme='dark'] main img[src$='.png'] {
 
 html[data-theme='dark'] {
   --ifm-background-color: var(--ifm-color-gray-900);
-  --ifm-color-primary: #003f47;
-
+  --ifm-color-primary: #2a8f9c;
   --ifm-navbar-background-color: var(--ifm-color-gray-800);
 }
 
