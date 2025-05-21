@@ -1,2 +1,5 @@
 [default.extend-words]
 snet = "snet"
+
+[files]
+extend-exclude = ["pnpm-lock.json"]
