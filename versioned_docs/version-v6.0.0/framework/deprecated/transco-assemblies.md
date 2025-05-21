@@ -1,5 +1,5 @@
 ---
-sidebar_label: null
+sidebar_class_name: hidden
 ---
 
 # Transco - Custom Assemblies

@@ -156,3 +156,7 @@ strong,
 nav.menu {
   padding: 1rem;
 }
+
+.hidden {
+  display: none !important;
+}
