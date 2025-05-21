@@ -17,7 +17,7 @@ The Invictus Dashboard can be configured to [use existing users in Azure Active 
 ### Add an Active Directory user to the Dashboard
 Azure Active Directory users can sign in automatically into the Invictus Dashboard if that user is part of an Active Directory group that is [synced into the Dashboard](../01_Installation/groupmanagement.md).
 
-> ☝️ Make sure that the group has a [role assigned](./role-management.md), otherwise the Dashboard will be unusable for the user.
+> ☝️ Make sure that the group has a [role assigned](./03_roles.md), otherwise the Dashboard will be unusable for the user.
 
 ![Active Directory user sign in](../../images/dashboard/AdminAccount/adminAccount-4.jpg)
 
@@ -43,7 +43,7 @@ To manage local users, go to the top navigation bar and click on the `Users` but
 1. Click on the `Add a new user` button.
   ![add local user](../../images/add-local-user.PNG)
 
-1. Specify all the user information and the [user role](role-management.md).
+1. Specify all the user information and the [user role](./03_roles.md).
   ![add user details](../../images/v2_users2.png)
 
 ### Delete a local user from the Dashboard
@@ -57,5 +57,5 @@ To manage local users, go to the top navigation bar and click on the `Users` but
 1. To edit a user click on the pencil edit icon next to the user in the user list
   ![edit local user](../../images/edit-local-user.PNG)
 
-2. You can change the [role of the user](role-management.md) and save the changes. 
+1. You can change the [role of the user](./03_roles.md) and save the changes. 
   ![edit user role](../../images/v2_users3.png)

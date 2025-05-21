@@ -9,7 +9,7 @@ sidebar_class_name: hidden
 > 
 > Maximum supported .NET version is .NET Framework 4.7.1
 > 
-> For the supported version, please see [Transco V2](../components/transcoV2.md)
+> For the supported version, please see [Transco V2](../transcoV2.md)
 
 ## Introduction
 

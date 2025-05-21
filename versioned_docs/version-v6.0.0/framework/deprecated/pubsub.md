@@ -9,9 +9,9 @@ sidebar_class_name: hidden
 > 
 > Maximum supported .NET version is .NET Framework 4.7.1
 > 
-> For the supported version, please see [PubSub V2](../components/pubsubV2.md)
+> For the supported version, please see [PubSub V2](../pubsubV2.md)
 > 
-> For the migration guide from v1 to v2 see [here](../components/pubsubV2.md#Migrating-PubSub-v1-to-v2)
+> For the migration guide from v1 to v2 see [here](../pubsubV2.md#Migrating-PubSub-v1-to-v2)
 
 ## Introduction
 
