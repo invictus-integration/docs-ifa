@@ -26,7 +26,7 @@ Create a list of locations where the PubSub v1, Transco v1 and Matrix v1 compone
 
 ### Create an Application Registration in Entra ID
 
-Go to Entra ID and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 👉🏼 A detailed description for this can be found [here](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/containerAuthentication.md). 
+Go to Entra ID and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 👉🏼 A detailed description for this can be found [here](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). 
 
 Create a client secret and make sure to save the application id and client secret as you will need them later.
 
@@ -34,7 +34,7 @@ Create a client secret and make sure to save the application id and client secre
 
 ### Update Invictus-GetSources.ps1
 
-Update the [`Invictus-GetSources.ps1`](https://github.com/invictus-integration/docs-ifa/blob/containerization/dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
+Update the [`Invictus-GetSources.ps1`](../dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
 
 ### Update Your Invictus for Azure Pipelines
 
@@ -48,9 +48,9 @@ The changes include:
 
 The newly updated pipelines and template can be found here:
 
-[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/dashboard/installation/pipelines)
+[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/master/dashboard/installation/pipelines)
 
-[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/containerization/framework/installation/pipelines)
+[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/master/framework/installation/pipelines)
 
 ### Deploy Invictus for Azure v6
 
