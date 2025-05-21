@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Custom Resume And Resubmit
 
 ## How to use this feature

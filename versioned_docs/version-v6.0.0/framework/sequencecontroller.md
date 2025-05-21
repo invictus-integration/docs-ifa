@@ -24,7 +24,7 @@ The **Sequence Controller** component is available as a HTTP endpoint in your Lo
 
 The idea is that workflows are processed in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 gets triggered before workflow 2, the second workflow will wait for the first workflow.
 
-![Pseudo Logic App workflow with Sequence Controller](../../images/framework/pseudo-logic-app-w-sequence-controller.png)
+![Pseudo Logic App workflow with Sequence Controller](../images/framework/pseudo-logic-app-w-sequence-controller.png)
 
 ### 1. Get sequence number
 
@@ -58,7 +58,7 @@ If you want to start the sequence at a later point, you can also pass the `seque
 
 The following image shows a screenshot of how this HTTP call can be made in a Logic App workflow.
 
-> ![sequencecontroller-get-number-execution](../../images/seqcont-getseqnum.jpg)
+> ![sequencecontroller-get-number-execution](../images/seqcont-getseqnum.jpg)
 
 ### 2. Wait for sequence
 
@@ -81,7 +81,7 @@ The following request needs to be send in this HTTP callback task:
 
 The following image shows a screenshot of how this HTTP-callback task can be made in the Logic App workflow.
 
-> ![sequencecontroller-wait-execution](../../images/seqcont-waitforexec.jpg)
+> ![sequencecontroller-wait-execution](../images/seqcont-waitforexec.jpg)
 
 ### 3. Complete sequence
 
@@ -101,7 +101,7 @@ To complete the in-sequence work of the workflow, a HTTP task is required that s
 
 The following image shows a screenshot of how this HTTP call can be made in a Logic App workflow.
 
-> ![sequencecontroller-complete-execution](../../images/seqcont-compexec.jpg)
+> ![sequencecontroller-complete-execution](../images/seqcont-compexec.jpg)
 
 ### (4.) Reset sequence
 

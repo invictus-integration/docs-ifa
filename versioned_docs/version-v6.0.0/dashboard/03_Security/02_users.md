@@ -1,3 +1,7 @@
+---
+sidebar_label: Users
+---
+
 # Manage Users in the Dashboard
 The Invictus Dashboard allows you to access the application with multiple user accounts. These can be local users, managed by Invictus itself; or **Active Directory** users, managed by your Azure tenant.
 

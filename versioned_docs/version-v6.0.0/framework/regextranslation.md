@@ -32,7 +32,7 @@ Within the table 2 properties of type string have to be added when creating a ne
 - MatchPattern
 - OutputPattern
 
-![regextranslator](../../images/regextranslator.PNG)
+![regextranslator](../images/regextranslator.PNG)
 
 **Note: Upon startup the application will check if a table called RegexTranslator exists. If the table does not exist a table with that name will be created. The newly created table will not have any properties these will have to be added manually.**
 
@@ -49,11 +49,11 @@ Within the table 2 properties of type string have to be added when creating a ne
 
 When setting up your Logic App, the HttpRequest is to be setup as follows:
 
-![regextranslator](../../images/regextranslationrequest.PNG)
+![regextranslator](../images/regextranslationrequest.PNG)
 
 The request is then followed by the execution of the function **RegexTranslation** as follows:
 
-![regextranslator](../../images/regextranslationfunction.PNG)
+![regextranslator](../images/regextranslationfunction.PNG)
 
 ## Output
 
@@ -75,4 +75,4 @@ If the translation is unsuccessful, the output returned will either be the origi
 
 The response to the function **RegexTranslation** is to be setup as follows:
 
-![regextranslator](../../images/regextranslationresponse.PNG)
+![regextranslator](../images/regextranslationresponse.PNG)
