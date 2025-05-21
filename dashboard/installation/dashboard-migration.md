@@ -24,7 +24,7 @@ Invictus V2 includes functionality to automatically deploy role assignments whic
 
 ## Azure AD Setup
 
-If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](../azureADSetup.md) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
+If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](./azureADSetup.md) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
 
 ## SQL Data Migration
 

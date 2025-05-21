@@ -1,10 +1,10 @@
 # Edit Flows
-Each [folder](./home.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
+Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
 
 ## Add a new Flow
 > 👉 **Home > Your Flows > ••• > Create New Flow**
 
-> ![create flow](../images/v2_dsb-createflow.png)
+> ![create flow](../../images/v2_dsb-createflow.png)
 
 1. **Flow Name:** a case sensitive name of the flow (example: ex. invoice request, invoice approval, …)
 2. **Folder:** the parent folder to add the flow to.
@@ -20,12 +20,12 @@ Each [folder](./home.md#organizing-flows-in-folders) can hold one or more 'flows
 ## Edit an existing Flow
 > 👉 **Home > Your Flows > [Your Folder] > [Your Flow] > ••• > Edit/Delete Flow**
 
-![edit/delete flow](../images/v2_alerting2.png)
+![edit/delete flow](../../images/v2_alerting2.png)
 
 ### Alerting
-> ⚠️ To manage alerts within Flows, make sure the [necessary **role assignments** are set](./accesscontrolrights.md) in your Invictus installation.
+> ⚠️ To manage alerts within Flows, make sure the [necessary **role assignments** are set](../accesscontrolrights.md) in your Invictus installation.
 
-![edit/delete flow](../images/v2_alerting4.png)
+![edit/delete flow](../../images/v2_alerting4.png)
 
 1. **Alert Name:** The name for the rule, must be unique per flow. Name will automatically have the flow name added as a prefix to it.
 2. **Severity:** Has to be a value between `1-4` which identifies the severity of an alert.

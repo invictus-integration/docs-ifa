@@ -5,16 +5,16 @@
 The user is able to perform a basic text search through the top search bar. This will search through all properties of the flow and will check if the property data contains the desired string. Click on the search button to perform your request.
 
 No search query
-![basic search](../images/v2_search-basic1.png)
+![basic search](../../images/v2_search-basic1.png)
 
 With search query
-![basic search](../images/v2_search-basic2.png)
+![basic search](../../images/v2_search-basic2.png)
 
 ## Advanced Search
 
 Opening the advanced search pane will present the user with a selection of filters which can be applied to the flow data.
 
-![basic search](../images/v2_search-advanced1.png)
+![basic search](../../images/v2_search-advanced1.png)
 
 The following filters may be applied:
 
@@ -38,10 +38,10 @@ The following filters may be applied:
    * "Not Equal To" - search within the specified business property that doesn't match the specific word.
    * "Regex" - search within the specified business property by using regex pattern. You can use these patterns below.
    
-  ![regex](../images/dashboard/regex.png)
+  ![regex](../../images/dashboard/regex.png)
 
 ## Search across flows
 
 All of the above searching functionality can be applied to searches across multiple flows. Simply select the desired flows from the "Select Flows" dropdown. Results will be combined into a single table.
 
-![basic search](../images/v2_search-advanced3.png)
+![basic search](../../images/v2_search-advanced3.png)

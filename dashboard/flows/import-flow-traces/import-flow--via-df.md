@@ -9,7 +9,7 @@ For the Invictus Dashboard to know if messages went through your DataFactory pip
 >   * ✅ `TriggerRuns`
 >   * ✅ `ActivityRuns`
 
-![DataFactory diagnostic settings](../images/dfdiagnostics.png)
+![DataFactory diagnostic settings](../../../images/dfdiagnostics.png)
 
 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics) on how this can be configured manually.
 
