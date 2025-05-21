@@ -54,7 +54,7 @@ The minimal `event` values are defined as follows:
 > ⚠️ A `Started` event is always required to create at least a single event in Invictus' backend storage. A `Completed`/`Failed` event then indicates the end of a given operation.
 
 ## Map Dashboard flows to Event Hub receive events
-Make sure that any of the `event` mappings match the the values in the [flow created via the Dashboard](./editflows.md)
+Make sure that any of the `event` mappings match the the values in the [flow created via the Dashboard](../editflows.md)
 
 ```json
 // event
