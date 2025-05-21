@@ -2,7 +2,7 @@
 
 ## Invictus Dashboard Architecture
 
-![Architecture diagram](../images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
+![Architecture diagram](/images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
 
 ### Dashboard Components
 
@@ -15,11 +15,11 @@
 
 ## Invictus Framework Architecture
 
-![Architecture diagram](../images/InvictusV2Diagram_Framework.jpg "Invictus framework architecture diagram")
+![Architecture diagram](/images/InvictusV2Diagram_Framework.jpg "Invictus framework architecture diagram")
 
 ### Framework Components
 
-Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](../framework/index.md).
+Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](./framework/index.md).
 
 - **PubSub API**
 - **Transco API**

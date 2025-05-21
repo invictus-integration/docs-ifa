@@ -45,12 +45,12 @@ The following script arguments are used in the deploy script:
   - resourcePrefix: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
   - resourceGroupName: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
   - variableGroupName: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - azureActiveDirectoryClientId: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
-  - azureActiveDirectoryTenantId: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled.
-  - azureActiveDirectoryClientSecret: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled. 
-  - azureActiveDirectoryAudience: Value can be obtained by following this guide: [Azure AD Setup](../azureADSetup.md). Leave empty if AD will be disabled.
+  - azureActiveDirectoryClientId: Value can be obtained by following this guide: [Azure AD Setup](./azureADSetup.md). Leave empty if AD will be disabled. 
+  - azureActiveDirectoryTenantId: Value can be obtained by following this guide: [Azure AD Setup](./azureADSetup.md). Leave empty if AD will be disabled.
+  - azureActiveDirectoryClientSecret: Value can be obtained by following this guide: [Azure AD Setup](./azureADSetup.md). Leave empty if AD will be disabled. 
+  - azureActiveDirectoryAudience: Value can be obtained by following this guide: [Azure AD Setup](./azureADSetup.md). Leave empty if AD will be disabled.
   - performSqlDataMigration: If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
-  - flowDataTTLInDays: A positive integer value which represents the amount of days flow data can live in the database. More info [here](../import-flows.md).
+  - flowDataTTLInDays: A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flows/import-flows.md).
   - isProvisionedCosmos: If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
   - identityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
   - identityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
@@ -265,3 +265,38 @@ Parameters related to the observability of the deployed applications.
 | `importjobAppInsightsName`                    | No       | `invictus-{resourcePrefix}-importjobappins` | Name for Application Insights used by importjob              |
 | `appInsightsSamplingPercentage`               | No       | `1`                                         | The sampling percentage for the Application Insights resource |
 | `importJobAppInsightsSamplingPercentage`      | No       | `1`                                         | The sampling percentage for the import job Application Insights resource |
+
+## Scaling parameters
+Azure Container Apps allow for flexible scaling customization. In Invictus we have provided default scaling values which can be customized according to your scenario.
+
+Container Apps have the ability to scale down to zero replicas. This is a great cost-saving option especially for components which are not used at all. A container app scaled to zero will automatically scale out when triggered, however this may take up to a few minutes to complete. This could prove to be an issue in scenarios with limited timeout e.g. logic apps with 120 seconds timeout. In such cases there is no option but to set a minimum replica count of 1.
+
+| Parameter                      | Required |
+| ------------------------------ | :------: | 
+| `dashboardScaling`             | No       | 
+| `dashboardGatewayScaling`      | No       | 
+| `cacheImportJobScaling`        | No       | 
+| `dbImportJobScaling`           | No       | 
+| `datafactoryReceiverScaling`   | No       | 
+| `flowhandlerScaling`           | No       | 
+| `genericReceiverScaling`       | No       | 
+| `httpReceiverScaling`          | No       | 
+| `importJobScaling`             | No       | 
+| `storeImportJobScaling`        | No       |
+
+Each of the above parameters accepts an object:
+```json
+{
+  scaleMinReplicas: int
+  scaleMaxReplicas: int
+  cpuResources: string
+  memoryResources: string
+}
+```
+
+| Parameter value    | Description                                                                                            |
+| -------------------| ------------------------------------------------------------------------------------------------------ |
+| `scaleMinReplicas` | The lowest number of replicas the Container App will scale in to.                                      |
+| `scaleMaxReplicas` | The highest number of replicas the Container App will scale out to.                                    |
+| `cpuResources`     | The amount of cpu resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).       |
+| `memoryResources`  | The amount of memory resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).    |
