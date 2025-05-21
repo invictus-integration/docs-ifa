@@ -1,28 +1,28 @@
 /* stylelint-disable docusaurus/copyright-header */
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Custom global CSS for Docusaurus site using a deep greenish-blue primary color.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #248eff;
-  --ifm-color-primary-dark: #078fff;
-  --ifm-color-primary-darker: #0088f7;
-  --ifm-color-primary-darkest: #006cc6;
-  --ifm-color-primary-light: #47acff;
-  --ifm-color-primary-lighter: #55b2ff;
-  --ifm-color-primary-lightest: #81c6ff;
+  /* Primary theme color: Deep blue-green */
+  --ifm-color-primary: #014550;
+  --ifm-color-primary-dark: #013c46;
+  --ifm-color-primary-darker: #01363f;
+  --ifm-color-primary-darkest: #002b32;
+  --ifm-color-primary-light: #065b68;
+  --ifm-color-primary-lighter: #12707d;
+  --ifm-color-primary-lightest: #2a8f9c;
 
-  --ifm-color-secondary: #cacad2;
-  --ifm-color-secondary-dark: #9f9fac;
-  --ifm-color-secondary-darker: #9f9fac;
-  --ifm-color-secondary-darkest: #666675;
-  --ifm-color-secondary-light: #e9e9f0;
-  --ifm-color-secondary-lighter: #f4f4f7;
-  --ifm-color-secondary-lightest: #f4f4f7;
+  /* Secondary color (neutral grays) */
+  --ifm-color-secondary: #b8c0c2;
+  --ifm-color-secondary-dark: #8a9293;
+  --ifm-color-secondary-darker: #6c7374;
+  --ifm-color-secondary-darkest: #4e5354;
+  --ifm-color-secondary-light: #d6dcde;
+  --ifm-color-secondary-lighter: #e8edee;
+  --ifm-color-secondary-lightest: #f3f6f7;
 
+  /* Warning (unchanged) */
   --ifm-color-warning: #ff970f;
   --ifm-color-warning-dark: #db770a;
   --ifm-color-warning-darker: #b75b07;
@@ -30,57 +30,47 @@
   --ifm-color-warning-light: #ffb84b;
   --ifm-color-warning-lighter: #ffcd6f;
   --ifm-color-warning-lightest: #ffe29f;
+
   --ifm-code-font-size: 95%;
 
-  --ifm-color-gray-100: #e9edfa;
-  --ifm-color-gray-200: #d5daec;
-  --ifm-color-gray-300: #ccd1e3;
-  --ifm-color-gray-400: #a6aecb;
-  --ifm-color-gray-500: #8b95b8;
-  --ifm-color-gray-600: #575f82;
-  --ifm-color-gray-700: #444b6d;
-  --ifm-color-gray-800: #242b47;
-  --ifm-color-gray-900: #1d2338;
+  /* Gray scale - tuned toward neutral instead of purplish-blue */
+  --ifm-color-gray-100: #eef1f1;
+  --ifm-color-gray-200: #d9dddd;
+  --ifm-color-gray-300: #c4c8c8;
+  --ifm-color-gray-400: #a0a4a4;
+  --ifm-color-gray-500: #7e8282;
+  --ifm-color-gray-600: #5b5f5f;
+  --ifm-color-gray-700: #404343;
+  --ifm-color-gray-800: #2c2f2f;
+  --ifm-color-gray-900: #1e2020;
 
+  /* Global spacing and borders */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-toc-border-color: var(--ifm-color-primary);
   --ifm-global-spacing: 1.5rem;
 }
 
+html[data-theme='dark'] {
+  /* Dark background and greenish-blue primary */
+  --ifm-background-color: var(--ifm-color-gray-900);
+  --ifm-navbar-background-color: var(--ifm-color-gray-800);
+  --ifm-color-primary: #2a8f9c; /* brighter variant for contrast */
+  --ifm-link-color: #36b1c5;
+  --ifm-link-hover-color: #4fcadf;
+  --ifm-toc-border-color: #2a8f9c;
+}
+
+html[data-theme='dark'] .footer--dark {
+  background-color: var(--ifm-color-gray-800);
+  border-top: 1px solid var(--ifm-color-primary);
+}
+
+/* Highlighting code lines */
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
-}
-
-.alert {
-  background-color: var(--ifm-alert-background-color) !important;
-}
-
-.alert--praise {
-  --ifm-alert-background-color: rgba(114, 137, 218, 0.5);
-  --ifm-alert-background-color-highlight: rgba(84, 199, 236, 0.15);
-  --ifm-alert-foreground-color: rgb(66,69,73);
-  --ifm-alert-border-color: #5865F2;
-}
-
-html[data-theme='dark'] .alert--praise {
-  --ifm-alert-background-color: rgba(114, 137, 218, 0.5);
-  --ifm-alert-background-color-highlight: rgba(84, 199, 236, 0.15);
-  --ifm-alert-foreground-color: rgb(255,255,255);
-  --ifm-alert-border-color: #5865F2;
-}
-
-/* Use FontAwesome-style icon */
-.alert--praise::before {
-  font-family: "Font Awesome 5 Free"; /* Depends on your FontAwesome version */
-  font-weight: 900;
-  content: "\f559"; /* Unicode for FontAwesome icon (e.g., 'sticky-note') */
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  font-size: 1.2rem;
 }
 
 html[data-theme='dark'] .docusaurus-highlight-code-line {
@@ -95,39 +85,25 @@ html[data-theme='dark'] main img[src$='.png'] {
   background-color: white;
 }
 
-html[data-theme='dark'] {
-  --ifm-background-color: var(--ifm-color-gray-900);
-  --ifm-color-primary: #249cff;
-
-  --ifm-navbar-background-color: var(--ifm-color-gray-800);
-}
-
+/* Footer */
 .footer--dark {
   background-color: var(--ifm-color-gray-800);
 }
 
-html[data-theme='dark'] .footer--dark {
-  background-color: var(--ifm-color-gray-800);
-  border-top: 1px solid var(--ifm-color-primary);
-}
-
+/* Branding tweaks */
 .navbar__brand img {
-  width: 110px;
   height: auto;
   margin-right: 10px;
   margin-bottom: 5px;
 }
 
+/* Typography */
 html {
   font-family: 'Inter', sans-serif;
   font-weight: normal;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+h1, h2, h3, h4, h5 {
   font-family: 'Bitter', sans-serif;
   line-height: 110%;
 }
@@ -153,10 +129,12 @@ strong,
   margin-top: 8px;
 }
 
+/* Sidebar tweaks */
 nav.menu {
   padding: 1rem;
 }
 
+/* Utility */
 .hidden {
   display: none !important;
 }
