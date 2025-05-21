@@ -45,5 +45,3 @@
   * [Migrate to Dashboard V2](/dashboard/installation/dashboard-migration.md)
   * [Migrate to Framework V2](/framework/installation/framework-migration.md)
   * [Migrate to v6](/support/v6-migration.md)
-  * [FAQ ❓](/dashboard/support/faq.md)
-
