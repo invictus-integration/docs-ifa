@@ -2,7 +2,7 @@
 
 ## Invictus Dashboard Architecture
 
-![Architecture diagram](/images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
+![Architecture diagram](./images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
 
 ### Dashboard Components
 
@@ -15,7 +15,7 @@
 
 ## Invictus Framework Architecture
 
-![Architecture diagram](/images/InvictusV2Diagram_Framework.jpg "Invictus framework architecture diagram")
+![Architecture diagram](./images/InvictusV2Diagram_Framework.jpg "Invictus framework architecture diagram")
 
 ### Framework Components
 
