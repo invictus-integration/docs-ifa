@@ -1,3 +1,7 @@
+---
+sidebar_label: 'Search for flows'
+---
+
 # Dashboard Search
 
 ## Basic Search

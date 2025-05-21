@@ -1,3 +1,7 @@
+---
+sidebar_label: 'Add new flows'
+---
+
 # Edit Flows
 Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
 
