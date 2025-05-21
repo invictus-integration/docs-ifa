@@ -1,3 +1,7 @@
+---
+sidebar_label: null
+---
+
 # Matrix - Basic Promotion
 
 > ## ⚠️ Attention

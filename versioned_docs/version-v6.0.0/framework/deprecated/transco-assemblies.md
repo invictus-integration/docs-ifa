@@ -1,3 +1,7 @@
+---
+sidebar_label: null
+---
+
 # Transco - Custom Assemblies
 
 > ## ⚠️ Attention
