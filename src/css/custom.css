@@ -92,7 +92,6 @@ html[data-theme='dark'] main img[src$='.png'] {
 
 /* Branding tweaks */
 .navbar__brand img {
-  width: 110px;
   height: auto;
   margin-right: 10px;
   margin-bottom: 5px;
