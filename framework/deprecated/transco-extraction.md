@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Transco - Extraction
 
 > ## ⚠️ Attention

@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Full Transco V2 Example
 
 The following is a full example which demonstrates the usage of Transco V2.
