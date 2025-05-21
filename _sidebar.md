@@ -15,7 +15,7 @@
       * [Flow permissions](/dashboard/flows/foldermanagement.md)
       * [Import flow traces](/dashboard/flows/import-flows.md)
         * [Import via LogicApps](/dashboard/flows/import-flow-traces/import-flows-via-la.md)
-        * [Import via DataFactory](/dashboard/flows/import-flow-traces/import-flow-traces/import-flow--via-df.md)
+        * [Import via DataFactory](/dashboard/flows/import-flow-traces/import-flow--via-df.md)
         * [Import prog. via HTTP](/dashboard/flows/import-flow-traces/import-flow-prog-via-http.md)
         * [Import prog. via EventHubs](/dashboard/flows/import-flow-traces/import-flow-prog-via-eh.md)
     * Security
