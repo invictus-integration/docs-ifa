@@ -12,7 +12,7 @@ The aggregated status of the messages received by that flow can be:
 
 > 👆 Clicking on the flow name will redirect you to the details of that flow.
 >
-> 👆 Clicking on a status will redirect you to the [search page](./search.md) to list all flows of that status. 
+> 👆 Clicking on a status will redirect you to the [search page](./02_search.md) to list all flows of that status. 
 
 ![home](../../images/v2_dsb-overview.png)
 
@@ -32,4 +32,4 @@ To have a clear overview of your desired flows, the Invictus Dashboard allows yo
 ### Edit folders
 > 👉 **Home > Your Flows >  ••• [Create/Edit/Delete] folder**
 
-Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../03_Security/role-management.md) on that folder. Only a name is required and possibly a parent.
+Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../03_Security/03_roles.md) on that folder. Only a name is required and possibly a parent.

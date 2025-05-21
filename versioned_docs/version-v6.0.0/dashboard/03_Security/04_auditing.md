@@ -1,5 +1,5 @@
 # Auditing
-> 🛡️ Only [**system admins**](./role-management.md) have access to the Audits page.
+> 🛡️ Only [**system admins**](./03_roles.md) have access to the Audits page.
 
 The top navigation bar `Audits` button brings you to a list of audits throughout the system.
 

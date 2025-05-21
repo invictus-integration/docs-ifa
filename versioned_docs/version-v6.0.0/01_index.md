@@ -11,7 +11,7 @@ sidebar_position: 1
 
 ## Architecture
 
-The full description of the architecture (including diagrams and service names) can be found [here](architecture-diagram.md "here").
+The full description of the architecture (including diagrams and service names) can be found [here](02_architecture-diagram.md "here").
 
 ## Dashboard
 

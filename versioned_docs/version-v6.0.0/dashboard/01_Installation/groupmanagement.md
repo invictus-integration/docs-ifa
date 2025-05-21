@@ -16,6 +16,6 @@ Once the groups are synced within the Dashboard, you have to manually enable the
 ![Enable Groups](../../images/dashboard/Groups/groupman_3.jpg)
 
 ## Assign user role to required groups
-Each enabled group requires a user role permission to indicate what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../03_Security/role-management.md).
+Each enabled group requires a user role permission to indicate what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../03_Security/03_roles.md).
 
 ![Add Global Roles](../../images/dashboard/Groups/groupman_4.jpg)
