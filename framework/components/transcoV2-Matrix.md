@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Transco V2 - Matrix Functionality
 
 Matrix functionality has been rewritten in .NET 6.0 to modernize its capabilities. This functionality has now been included within the Transco V2 function, instead of its own standalone API.
