@@ -1,12 +1,10 @@
 /* stylelint-disable docusaurus/copyright-header */
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Custom global CSS for Docusaurus site using a deep greenish-blue primary color.
  */
 
-/* You can override the default Infima variables here. */
 :root {
+  /* Primary theme color: Deep blue-green */
   --ifm-color-primary: #014550;
   --ifm-color-primary-dark: #013c46;
   --ifm-color-primary-darker: #01363f;
@@ -15,14 +13,16 @@
   --ifm-color-primary-lighter: #12707d;
   --ifm-color-primary-lightest: #2a8f9c;
 
-  --ifm-color-secondary: #cacad2;
-  --ifm-color-secondary-dark: #9f9fac;
-  --ifm-color-secondary-darker: #9f9fac;
-  --ifm-color-secondary-darkest: #666675;
-  --ifm-color-secondary-light: #e9e9f0;
-  --ifm-color-secondary-lighter: #f4f4f7;
-  --ifm-color-secondary-lightest: #f4f4f7;
+  /* Secondary color (neutral grays) */
+  --ifm-color-secondary: #b8c0c2;
+  --ifm-color-secondary-dark: #8a9293;
+  --ifm-color-secondary-darker: #6c7374;
+  --ifm-color-secondary-darkest: #4e5354;
+  --ifm-color-secondary-light: #d6dcde;
+  --ifm-color-secondary-lighter: #e8edee;
+  --ifm-color-secondary-lightest: #f3f6f7;
 
+  /* Warning (unchanged) */
   --ifm-color-warning: #ff970f;
   --ifm-color-warning-dark: #db770a;
   --ifm-color-warning-darker: #b75b07;
@@ -33,30 +33,44 @@
 
   --ifm-code-font-size: 95%;
 
-  --ifm-color-gray-100: #e9edfa;
-  --ifm-color-gray-200: #d5daec;
-  --ifm-color-gray-300: #ccd1e3;
-  --ifm-color-gray-400: #a6aecb;
-  --ifm-color-gray-500: #8b95b8;
-  --ifm-color-gray-600: #575f82;
-  --ifm-color-gray-700: #444b6d;
-  --ifm-color-gray-800: #242b47;
-  --ifm-color-gray-900: #1d2338;
+  /* Gray scale - tuned toward neutral instead of purplish-blue */
+  --ifm-color-gray-100: #eef1f1;
+  --ifm-color-gray-200: #d9dddd;
+  --ifm-color-gray-300: #c4c8c8;
+  --ifm-color-gray-400: #a0a4a4;
+  --ifm-color-gray-500: #7e8282;
+  --ifm-color-gray-600: #5b5f5f;
+  --ifm-color-gray-700: #404343;
+  --ifm-color-gray-800: #2c2f2f;
+  --ifm-color-gray-900: #1e2020;
 
+  /* Global spacing and borders */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-toc-border-color: var(--ifm-color-primary);
   --ifm-global-spacing: 1.5rem;
 }
 
+html[data-theme='dark'] {
+  /* Dark background and greenish-blue primary */
+  --ifm-background-color: var(--ifm-color-gray-900);
+  --ifm-navbar-background-color: var(--ifm-color-gray-800);
+  --ifm-color-primary: #2a8f9c; /* brighter variant for contrast */
+  --ifm-link-color: #36b1c5;
+  --ifm-link-hover-color: #4fcadf;
+  --ifm-toc-border-color: #2a8f9c;
+}
+
+html[data-theme='dark'] .footer--dark {
+  background-color: var(--ifm-color-gray-800);
+  border-top: 1px solid var(--ifm-color-primary);
+}
+
+/* Highlighting code lines */
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
-}
-
-.alert {
-  background-color: var(--ifm-alert-background-color) !important;
 }
 
 html[data-theme='dark'] .docusaurus-highlight-code-line {
@@ -71,29 +85,12 @@ html[data-theme='dark'] main img[src$='.png'] {
   background-color: white;
 }
 
-html[data-theme='dark'] {
-  --ifm-background-color: var(--ifm-color-gray-900);
-  --ifm-color-primary: #2a8f9c;
-  --ifm-navbar-background-color: var(--ifm-color-gray-800);
-}
-
-html[data-theme='dark'] a {
-  color: #36b1c5;
-}
-
-html[data-theme='dark'] a:hover {
-  color: #4fcadf;
-}
-
+/* Footer */
 .footer--dark {
   background-color: var(--ifm-color-gray-800);
 }
 
-html[data-theme='dark'] .footer--dark {
-  background-color: var(--ifm-color-gray-800);
-  border-top: 1px solid var(--ifm-color-primary);
-}
-
+/* Branding tweaks */
 .navbar__brand img {
   width: 110px;
   height: auto;
@@ -101,16 +98,13 @@ html[data-theme='dark'] .footer--dark {
   margin-bottom: 5px;
 }
 
+/* Typography */
 html {
   font-family: 'Inter', sans-serif;
   font-weight: normal;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+h1, h2, h3, h4, h5 {
   font-family: 'Bitter', sans-serif;
   line-height: 110%;
 }
@@ -136,10 +130,12 @@ strong,
   margin-top: 8px;
 }
 
+/* Sidebar tweaks */
 nav.menu {
   padding: 1rem;
 }
 
+/* Utility */
 .hidden {
   display: none !important;
 }
