@@ -12,13 +12,13 @@ module.exports = {
   organizationName: 'invictus-integration', // Usually your GitHub org/user name.
   projectName: 'Invictus - Integration', // Usually your repo name.
   themeConfig: {
-    image: 'images/v2_logo_horizontal.png',
+    image: 'images/invictus.png',
     navbar: {
       title: 'Integration',
       logo: {
         alt: 'Invictus',
-        src: 'images/v2_logo_horizontal.png',
-        srcDark: 'images/v2_logo_horizontal.png',
+        src: 'images/invictus.png',
+        srcDark: 'images/invictus.png',
       },
       items: [
         {
