@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Invictus Dashboard V2 Migration Guide
 
 Below is some useful information for when users are upgrading their Invictus installation from V1 to V2. To update your build and release pipelines, please refer to the [build pipeline](dashboard-buildpipeline.md) and [release pipeline](dashboard-releasepipeline.md) guides.

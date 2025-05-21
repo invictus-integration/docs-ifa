@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Framework Build Pipeline
 
 The build pipeline uses a powershell script to pull the resources needed for the release. This script can be downloaded from [here](https://github.com/invictus-integration/docs-ifa/blob/master/dashboard/installation/scripts/Invictus-GetSources.ps1). Make sure to include it in your Git repository (e.g. in the deploy folder).

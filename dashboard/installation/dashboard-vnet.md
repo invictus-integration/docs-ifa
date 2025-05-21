@@ -1,3 +1,7 @@
+---
+sidebar_class_name: hidden
+---
+
 # Invictus Dashboard VNET Support
 
 Invictus includes functionality which allows all its resources to run within an Azure Virtual Network (VNET). This document will guide you through this process.
