@@ -12,7 +12,7 @@ Create a variable group named `{prefix}.Invictus.{stage}` for all the stages (en
 
 Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
 
-> ![Library Security](../../images/ifa-library-security.png)
+> ![Library Security](/images/ifa-library-security.png)
 
 ## YAML Pipeline
 Next step is to add a YAML pipeline to release the Invictus for Azure Framework. Change the [framework.release.yaml](./pipelines/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
