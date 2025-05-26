@@ -1,7 +1,10 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Search for flows
 
-## Basic Search
-
+<Tabs groupId="search-type">
+<TabItem value="basic" label "Basic search" default>
 The user is able to perform a basic text search through the top search bar. This will search through all properties of the flow and will check if the property data contains the desired string. Click on the search button to perform your request.
 
 No search query
@@ -10,6 +13,8 @@ No search query
 With search query
 ![basic search](/images/v2_search-basic2.png)
 
+</TabItem>
+<TabItem value="advanced" label="Advanced search">
 ## Advanced Search
 
 Opening the advanced search pane will present the user with a selection of filters which can be applied to the flow data.
@@ -44,4 +49,7 @@ The following filters may be applied:
 
 All of the above searching functionality can be applied to searches across multiple flows. Simply select the desired flows from the "Select Flows" dropdown. Results will be combined into a single table.
 
-![basic search](/images/v2_search-advanced3.png)
+![advanced search](/images/v2_search-advanced3.png)
+
+</TabItem>
+</Tabs>
