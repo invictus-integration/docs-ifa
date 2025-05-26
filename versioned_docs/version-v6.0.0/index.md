@@ -1,4 +1,5 @@
 ---
+title: Invictus
 sidebar_label: Welcome
 ---
 
