@@ -28,4 +28,4 @@ To have a clear overview of your desired flows, the Invictus Dashboard allows yo
 ### Edit folders
 > 👉 **Home > Your Flows >  ••• [Create/Edit/Delete] folder**
 
-Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../../../security/role-management.md) on that folder. Only a name is required and possibly a parent.
+Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../../../../dashboard/security/role-management.md) on that folder. Only a name is required and possibly a parent.
