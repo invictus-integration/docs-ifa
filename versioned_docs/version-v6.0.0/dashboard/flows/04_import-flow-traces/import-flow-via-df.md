@@ -4,10 +4,12 @@ For the Invictus Dashboard to know if messages went through your DataFactory pip
 * `EventHubsNamespace`: `invictus-{env}-we-sft-evnm`
 * `EventHubsName`: `invictus-{env}-we-sft-df-evhb`
 
-> ⚠️ Make sure that the following categories are checked:
->   * ✅ `PipelineRuns`
->   * ✅ `TriggerRuns`
->   * ✅ `ActivityRuns`
+:::warning
+⚠️ Make sure that the following categories are checked:
+  * ✅ `PipelineRuns`
+  * ✅ `TriggerRuns`
+  * ✅ `ActivityRuns`
+:::
 
 ![DataFactory diagnostic settings](/images/dfdiagnostics.png)
 

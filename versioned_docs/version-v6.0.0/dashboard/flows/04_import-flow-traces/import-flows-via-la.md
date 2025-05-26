@@ -9,7 +9,9 @@ For the Invictus Dashboard to know if messages went through your Logic App workf
   * `invictus-{env}-we-sft-evhb` (Logic Apps Consumption) 
   * `invictus-{env}-we-sft-evhb-v2` (Logic Apps Standard)
 
-> ⚠️ Make sure that the `WorkflowRuntime` is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise you will send far too much events to the EventHubs.
+:::warning
+Make sure that the `WorkflowRuntime` is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise you will send far too much events to the EventHubs.
+:::
 
 ![diagnostics](/images/ladiagnostics.png)
 
@@ -66,7 +68,9 @@ The value for the property needs to be the `WorkFlowRunId` that you wish to link
 
 In the example above, the **x-iv-parent-workflow-run-id** was set in **LogicAppChain-B** linking it with **LogicAppChain-A**. **LogicAppChain-C** was not linked to **B** or **A** thus is not considered part of the chain.
 
-> ⚠️ The **ClientTrackingId** is the identifier used to link transactional messages together, this ID is by default generated for every run in LogicApps, but can also be manually set by the developer. Since async flows might change their ClientTrackingId due to routing, the ClientTrackingId will need to be reset in the LogicApp as soon as possible.
+:::warning
+The **ClientTrackingId** is the identifier used to link transactional messages together, this ID is by default generated for every run in LogicApps, but can also be manually set by the developer. Since async flows might change their ClientTrackingId due to routing, the ClientTrackingId will need to be reset in the LogicApp as soon as possible.
+:::
 
 ## Tracked properties of workflows
 The `Milestone` and `EventText` are properties set and displayed by default. For the `EventText`, if the value re-appears in several workflows, instead of overwriting/updating its value, all data is appended as a single value, separated by comma.
@@ -91,7 +95,9 @@ To track the input and output of an action in a LogicApp the below tracked prope
 | `x-iv-messagecontent-output-name` | `ActionOutput` | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word|
 | `x-iv-messagecontent-output-content-type` | `application/json` | This should have the same content type as the data type when opening the input link for an action |
 
-> ⚠️ The inputs and outputs content views can be set up independently or together. The only requirement is that if the `-name` is present then the `-content-type` has to be also present for the desired output.
+:::warning
+The inputs and outputs content views can be set up independently or together. The only requirement is that if the `-name` is present then the `-content-type` has to be also present for the desired output.
+:::
 
 ### Errors on LogicApp level
 If the corresponding logic app has resulted in an error, the error information can be seen in the within the "Logic App Details" modal.
@@ -101,8 +107,10 @@ If the corresponding logic app has resulted in an error, the error information c
 For any additional details or insights, the user can also navigate directly to the Azure Portal.
 
 ## Workflow operations via Dashboard
-> ⚠️ Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run properly.
+:::warning
+Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run properly.
 Flows linked to LogicApps workflows can be resubmitted and resumed via the Dashboard both separately (`Flow Actions button`) and in batch (`Selecting multiple flows`).
+:::
 
 To manipulate the default resubmit/resume operations, you can also do [custom resubmit/resume](./custom-resumeresubmit.md) of flows.
 
@@ -127,7 +135,9 @@ When a message has been set to be ignore, its status will change and show as fol
 
 ![handling buttons](/images/v2_handling3.png)
 
-> ⚡ It's possible to use a **custom resubmit and resume**, see [this page](./custom-resumeresubmit.md) for more information.
+:::info
+It's possible to use a **custom resubmit and resume**, see [this page](./custom-resumeresubmit.md) for more information.
+:::
 
 ### Example scenarios
 The below examples are a representation of the Flow Row and the Execution tree with different Resume and Resubmit scenarios.
