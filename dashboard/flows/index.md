@@ -10,7 +10,7 @@ The aggregated status of the messages received by that flow can be:
 >
 > 👆 Clicking on a status will redirect you to the [search page](./search.md) to list all flows of that status. 
 
-![home](../../images/v2_dsb-overview.png)
+![home](/images/v2_dsb-overview.png)
 
 ## Organizing flows in folders
 To have a clear overview of your desired flows, the Invictus Dashboard allows you to organize your flows into a folder hierarchy (with possibly one or more sub-folders). These folders are always available in the left-hand sidebar.
