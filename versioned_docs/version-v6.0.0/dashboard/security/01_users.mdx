@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Manage Users in the Dashboard
 The Invictus Dashboard allows you to access the application with multiple user accounts. These can be local users, managed by Invictus itself; or **Active Directory** users, managed by your Azure tenant.
 
@@ -5,7 +8,9 @@ The Invictus Dashboard allows you to access the application with multiple user a
 
 ![users overview](/images/v2_users1.png)
 
-## Active Directory Invictus Dashboard users
+<Tabs groupId="user-source">
+<Tab value="ad" label="Active Directory" default>
+
 > 👤 Requires membership of a synced Active Directory group
 
 The Invictus Dashboard can be configured to [use existing users in Azure Active Directory groups](../../../../dashboard/installation/azureADSetup.md). This removes the need to work with additional local Dashboard users.
@@ -45,7 +50,9 @@ To set up the email address as the sender, follow these steps:
 3. In the **Forgot Password Settings** section, enter the email address you want to use.
 4. Click on **Save password settings** to save the email address being used.
 
-## Local Invictus Dashboard users
+</TabItem>
+<TabItem value="local" label="Local">
+
 > 👤 Requires personal `System admin` role to manage local users
 
 Local users are entirely managed by the Invictus Dashboard. They can have their own personal permissions assigned and can be deleted at anytime.
@@ -124,3 +131,6 @@ To reset your password, follow these steps:
 ![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_5.jpg)
 
 6. Once you have successfully entered your new password, you can proceed to log in with the newly registered password.
+
+</TabItem>
+</Tabs>
