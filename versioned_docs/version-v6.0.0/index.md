@@ -1,3 +1,7 @@
+---
+sidebar_label: Welcome
+---
+
 ![logo](/images/v2_logo_horizontal.png)
 
 **For smart business monitoring and better control of your integrations.**
