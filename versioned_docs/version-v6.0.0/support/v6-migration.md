@@ -103,8 +103,7 @@ Make sure that your Devops pipelines are using the new libraries that you create
 
 Make sure to update your Logic App parameters files to represent the new components.
 
-Old parameters file example:
-``` json
+```diff
 "invictus": {
     "value": {
         "monitoring": {
@@ -115,64 +114,43 @@ Old parameters file example:
         },
         "framework": {
             "pubSub": {
-                "v1": {
-                    "definitionUrl": "#{Invictus.Framework.PubSub.V1.DefinitionUrl}#",
-                    "publishUrl": "#{Invictus.Framework.PubSub.V1.PublishUrl}#",
-                    "subscribeUrl": "#{Invictus.Framework.PubSub.V1.SubscribeUrl}#",
-                    "acknowledgeUrl": "#{Invictus.Framework.PubSub.V1.AcknowledgeUrl}#"
-                }
+-               "v1": {
+-                   "definitionUrl": "#{Invictus.Framework.PubSub.V1.DefinitionUrl}#",
+-                   "publishUrl": "#{Invictus.Framework.PubSub.V1.PublishUrl}#",
+-                   "subscribeUrl": "#{Invictus.Framework.PubSub.V1.SubscribeUrl}#",
+-                   "acknowledgeUrl": "#{Invictus.Framework.PubSub.V1.AcknowledgeUrl}#"
+-                }
++               "v2": {
++				    "publishUrl": "#{Invictus.Framework.PubSub.V2.Publish.Url}#",
++				    "subscribeUrl": "#{Invictus.Framework.PubSub.V2.Subscribe.Url}#",
++				    "acknowledgeUrl": "#{Invictus.Framework.PubSub.V2.Acknowledge.Url}#"
++			    }   
             },
-            "matrix": {
-                "v1": {
-                    "definitionUrl": "#{Invictus.Framework.Matrix.V1.DefinitionUrl}#",
-                    "matrixUrl": "#{Invictus.Framework.Matrix.V1.MatrixUrl}#",
-                    "basicMatrixUrl": "#{Invictus.Framework.Matrix.V1.BasicMatrixUrl}#"
-                }
-            },
+-           "matrix": {
+-               "v1": {
+-                   "definitionUrl": "#{Invictus.Framework.Matrix.V1.DefinitionUrl}#",
+-                   "matrixUrl": "#{Invictus.Framework.Matrix.V1.MatrixUrl}#",
+-                   "basicMatrixUrl": "#{Invictus.Framework.Matrix.V1.BasicMatrixUrl}#"
+-               }
+-           },
             "transco": {
-                "v1": {
-                    "definitionUrl": "#{Invictus.Framework.Transco.V1.DefinitionUrl}#",
-                    "transcoUrl": "#{Invictus.Framework.Transco.V1.TranscoUrl}#"
-                }
+-               "v1": {
+-                   "definitionUrl": "#{Invictus.Framework.Transco.V1.DefinitionUrl}#",
+-                   "transcoUrl": "#{Invictus.Framework.Transco.V1.TranscoUrl}#"
+-               }
++               "v2": {
++				    "transcoJsonUrl": "#{Invictus.Framework.Transco.V2.TranscoJson.Url}#",
++				    "transcoXmlUrl": "#{Invictus.Framework.Transco.V2.TranscoXml.Url}#",
++				    "basicMatrixUrl": "#{Invictus.Framework.Transco.V2.MatrixBasicPromote.Url}#"
++			    }
             }
-        }
+        },
++       "authentication": {
++   		"audience": "api://#{Invictus.Containers.Client.Id}#"
++	    }
     }
 }
 ```
-
-New parameters file example:
-``` json
-"invictus": {
-	"value": {
-		"monitoring": {
-			"eventHub": {
-				"name": "#{Invictus.Monitoring.EventHub.Name}#",
-				"accessRuleId": "#{Invictus.Monitoring.EventHub.AccessRuleId}#"
-			}
-		},
-		"framework": {
-			"pubSub": {
-				"v2": {
-					"publishUrl": "#{Invictus.Framework.PubSub.V2.Publish.Url}#",
-					"subscribeUrl": "#{Invictus.Framework.PubSub.V2.Subscribe.Url}#",
-					"acknowledgeUrl": "#{Invictus.Framework.PubSub.V2.Acknowledge.Url}#"
-				}
-			},
-			"transco": {
-				"v2": {
-					"transcoJsonUrl": "#{Invictus.Framework.Transco.V2.TranscoJson.Url}#",
-					"transcoXmlUrl": "#{Invictus.Framework.Transco.V2.TranscoXml.Url}#",
-					"basicMatrixUrl": "#{Invictus.Framework.Transco.V2.MatrixBasicPromote.Url}#"
-				}
-			}
-		},
-		"authentication": {
-			"audience": "api://#{Invictus.Containers.Client.Id}#"
-		}
-	}
-}
-```
-
 
 ### Invictus API Authentication
 
