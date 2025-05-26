@@ -1,5 +1,2 @@
 theme: jekyll-theme-cayman
-
-assets:
-  sources:
-    - images
+baseurl: ""
