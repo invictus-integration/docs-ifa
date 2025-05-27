@@ -1,0 +1,20 @@
+parameters:
+  type: ''
+  useBeta: ''
+  storageAccountName: ''
+  storageSasToken: ''
+  version: '*'
+
+steps:
+- task: PowerShell@2
+  displayName: 'Pull Sources'
+  inputs:
+    targetType: filePath
+    filePath: './scripts/Invictus-GetSources.ps1'
+    arguments: '-StorageAccountName "${{parameters.storageAccountName}}" -StorageSasToken "${{parameters.storageSasToken}}" -StorageContainerName "${{parameters.type}}" -SaveLocation "$(Build.ArtifactStagingDirectory)" -UseBeta ${{parameters.useBeta}} -Version ${{ parameters.version }}'
+          
+- task: PublishPipelineArtifact@1
+  inputs:
+    TargetPath: $(Build.ArtifactStagingDirectory)
+    ArtifactName: ${{parameters.type}}
+    publishLocation: 'pipeline'
