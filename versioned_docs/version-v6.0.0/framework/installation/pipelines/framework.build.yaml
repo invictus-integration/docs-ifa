@@ -1,0 +1,44 @@
+pr: none
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+  paths:
+    include:
+    - /src/customer.azure.invictus
+
+parameters:
+- name: Version
+  displayName: Invictus Version
+  type: string
+  default: '*'
+- name: useBeta
+  displayName: Use Beta
+  type: string
+  default: $False
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Package
+  displayName: Package
+  dependsOn: []
+  variables:
+  - group: invictus.installation
+  jobs:
+  - job: publish
+    displayName: Build and Publish Framework
+    steps:
+    - checkout: self
+      clean: true
+      persistCredentials: true
+
+    - template: ./templates/build-steps.yml
+      parameters:
+        type: 'framework'
+        useBeta: '${{ parameters.useBeta }}'
+        storageAccountName: '$(Invictus.Installation.StorageAccount.Name)'
+        storageSasToken: '$(Invictus.Installation.StorageAccount.Framework.SasToken)'
+        version: '${{ parameters.Version }}'
