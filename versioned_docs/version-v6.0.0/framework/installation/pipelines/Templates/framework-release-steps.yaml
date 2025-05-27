@@ -1,0 +1,16 @@
+parameters:
+  azureSubscription: ''
+  deployScriptParameters: ''
+  scriptPath: ''
+
+steps:
+- task: AzureCLI@2
+  displayName: 'Azure CLI'
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  inputs:
+    azureSubscription: '${{parameters.azureSubscription}}'
+    scriptType: 'pscore'
+    scriptLocation: 'scriptPath'
+    ScriptPath: '${{parameters.scriptPath}}'
+    ScriptArguments: '${{parameters.deployScriptParameters}}'
