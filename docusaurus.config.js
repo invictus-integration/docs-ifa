@@ -88,10 +88,7 @@ module.exports = {
           // Please change this to your repo.
           editUrl: 'https://github.com/invictus-integration/docs-ifa/edit/master/docs',
           includeCurrentVersion: process.env.CONTEXT !== 'production',
-          admonitions: {
-            keywords: ['praise'],
-            extendDefaults: true,
-          }
+          exclude: ['node_modules/**', 'src/**', 'docusaurus.config.js', 'sidebars.js']
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
