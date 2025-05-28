@@ -1,7 +1,7 @@
 ---
 title: Invictus
 sidebar_label: Welcome
-position: 1
+sidebar_position: 1
 ---
 
 ![logo](/images/v2_logo_horizontal.png)

@@ -1,6 +1,6 @@
 ---
 sidebar_label: Architecture
-position: 2
+sidebar_position: 2
 ---
 
 # Invictus for Azure Architecture Diagrams
