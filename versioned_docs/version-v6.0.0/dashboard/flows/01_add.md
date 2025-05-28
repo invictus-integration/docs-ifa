@@ -24,7 +24,7 @@ Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flow
 
 ### Alerting
 :::warning
-To manage alerts within Flows, make sure the [necessary **role assignments** are set](../../../../dashboard/accesscontrolrights.md) in your Invictus installation.
+To manage alerts within Flows, make sure the [necessary **role assignments** are set](../accesscontrolrights.md) in your Invictus installation.
 :::
 
 ![edit/delete flow](/images/v2_alerting4.png)
