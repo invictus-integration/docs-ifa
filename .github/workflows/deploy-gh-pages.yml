@@ -1,12 +1,6 @@
 name: Deploy new master to GitHub Pages
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - closed
   push:
     branches:
       - master
@@ -28,13 +22,14 @@ jobs:
             -e "s|baseUrl: '.*'|baseUrl: '/docs-ifa/'|" \
             -e 's/includeCurrentVersion: true/includeCurrentVersion: false/' \
             docusaurus.config.js
+          cat docusaurus.config.js   
 
           npm install
           npm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
