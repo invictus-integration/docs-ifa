@@ -75,7 +75,6 @@ module.exports = {
       }),
     ]
   ],
-  staticDirectories: ['images/..', 'static'],
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -88,7 +87,6 @@ module.exports = {
           // Please change this to your repo.
           editUrl: 'https://github.com/invictus-integration/docs-ifa/edit/master/docs',
           includeCurrentVersion: process.env.CONTEXT !== 'production',
-          exclude: ['node_modules/**', 'src/**', 'docusaurus.config.js', 'sidebars.js']
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
