@@ -1,3 +1,7 @@
+---
+sidebar_label: Give access to your Active Directory
+---
+
 # Give Invictus access to your Azure Active Directory
 To use your Azure Active Directory groups as a way of authentication and flow authorization, you need to follow these steps.
 

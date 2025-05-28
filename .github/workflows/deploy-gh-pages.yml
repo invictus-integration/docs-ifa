@@ -1,0 +1,35 @@
+name: Deploy new master to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Install and Build
+        run: |
+          sed -i \
+            -e "s|baseUrl: '.*'|baseUrl: '/docs-ifa/'|" \
+            -e 's/includeCurrentVersion: true/includeCurrentVersion: false/' \
+            docusaurus.config.js
+          cat docusaurus.config.js   
+
+          npm install
+          npm run build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build

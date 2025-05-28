@@ -12,13 +12,13 @@ module.exports = {
   organizationName: 'invictus-integration', // Usually your GitHub org/user name.
   projectName: 'Invictus - Integration', // Usually your repo name.
   themeConfig: {
-    image: 'images/v2_logo_horizontal.png',
+    image: 'img/logo.light.png',
     navbar: {
-      title: 'Integration',
+      title: 'Invictus',
       logo: {
         alt: 'Invictus',
-        src: 'images/v2_logo_horizontal.png',
-        srcDark: 'images/v2_logo_horizontal.png',
+        src: 'img/logo.light.png',
+        srcDark: 'img/logo.dark.png',
       },
       items: [
         {
@@ -86,11 +86,7 @@ module.exports = {
           sidebarCollapsible: false,
           // Please change this to your repo.
           editUrl: 'https://github.com/invictus-integration/docs-ifa/edit/master/docs',
-          includeCurrentVersion: process.env.CONTEXT !== 'production',
-          admonitions: {
-            keywords: ['praise'],
-            extendDefaults: true,
-          }
+          includeCurrentVersion: true,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

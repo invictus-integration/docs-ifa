@@ -78,7 +78,7 @@ The `Milestone` and `EventText` are properties set and displayed by default. For
 ![execution tree](/images/v2_events2.png)
 
 ### LogicApp inputs/outputs
-> 🛡️ For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](../../../../../dashboard/accesscontrolrights.md) for more info.
+> 🛡️ For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](../../accesscontrolrights.md) for more info.
 
 The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per LogicApp in the workflow events table. 
 
