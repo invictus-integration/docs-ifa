@@ -1,3 +1,8 @@
+---
+sidebar_label: Architecture
+position: 2
+---
+
 # Invictus for Azure Architecture Diagrams
 
 ## Invictus Dashboard Architecture
