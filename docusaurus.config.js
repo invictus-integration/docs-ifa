@@ -14,7 +14,7 @@ module.exports = {
   themeConfig: {
     image: 'img/logo.light.png',
     navbar: {
-      title: 'Integration',
+      title: 'Invictus',
       logo: {
         alt: 'Invictus',
         src: 'img/logo.light.png',
