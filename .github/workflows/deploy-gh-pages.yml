@@ -24,8 +24,10 @@ jobs:
 
       - name: Install and Build
         run: |
+          echo "CONTEXT=production" >> $GITHUB_ENV
           npm install
           npm run build
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         # if: github.ref == 'refs/heads/master'
