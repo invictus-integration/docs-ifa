@@ -48,14 +48,9 @@ The changes include:
 
 The newly updated pipelines and template can be found here:
 
-[dashboard.build.yaml]: ../dashboard/installation/pipelines/dashboard.build.yaml
-[dashboard.release.yaml]: ../dashbaord/installation/pipelines/dashboard.release.yaml
-[framework.build.yaml]: ../framework/installation/pipelines/framework.build.yaml
-[framework.release.yaml]: ../framework/installation/pipelines/framework.release.yaml
-
 | Invictus project | Build pipeline         | Release pipeline         |
 | ---------------- | ---------------------- | ------------------------ |
-| Dashboard        | [dashboard.build.yaml](../dashboard/installation/pipelines/dashboard.build.yaml) | [dashboard.release.yaml](../dashbaord/installation/pipelines/dashboard.release.yaml) |
+| Dashboard        | [dashboard.build.yaml](../dashboard/installation/pipelines/dashboard.build.yaml) | [dashboard.release.yaml](../dashboard/installation/pipelines/dashboard.release.yaml) |
 | Framework        | [framework.build.yaml](../framework/installation/pipelines/framework.build.yaml) | [framework.release.yaml](../framework/installation/pipelines/framework.release.yaml) |
 
 ### Deploy Invictus for Azure v6
