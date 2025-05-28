@@ -75,7 +75,7 @@ module.exports = {
       }),
     ]
   ],
-  staticDirectories: ['images', 'static'],
+  staticDirectories: ['', 'static'],
   presets: [
     [
       '@docusaurus/preset-classic',
