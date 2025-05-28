@@ -12,7 +12,7 @@ Welcome, administrators! This guide is intended for those who are logging in for
 
 During the deployment of the system, an administrator account has been generated for your initial login to the dashboard.
 
-> 🎖️ It is recommended to create a new `System Admin` user with your own email address after logging in for the first time. This will help during the [Forgot Password](../../../../dashboard/security/forgotpassword.md) procedure.
+> 🎖️ It is recommended to create a new `System Admin` user with your own email address after logging in for the first time. This will help during the [Forgot Password](../security/01_users.mdx#Forgot-Password) procedure.
 
 Follow the steps below to log in to the dashboard:
 

@@ -56,7 +56,7 @@ The Invictus V2 release pipeline will create a new App Service dashboard resourc
 ## Add Role Assignments
 
 In addition to the flowhandlerjob function, in V2 also the dashboardgateway must have Logic App Contribute access on the resource group or subscription which contains the Logic Apps.
-See also [Access Control Rights](../../../../dashboard/accesscontrolrights.md)
+See also [Access Control Rights](../accesscontrolrights.md)
 
 ## Common Issues When Migrating
 - `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`

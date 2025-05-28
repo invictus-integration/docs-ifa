@@ -24,8 +24,8 @@ If you're migrating from Invictus V1 to Invictus V2, please follow the [migratio
 
 ### First Time Setup
 
-If you are not migrating from Invictus V1 and installing for the first time, please follow the [setup guide](./first-time-login.md)
+If you are not migrating from Invictus V1 and installing for the first time, please follow the [setup guide](./03_first-time-login.md)
 
 ## 5. Access Control
 
-Some Invictus components require various role assignments to function properly. Follow [this guide](../../../../dashboard/accesscontrolrights.md) for more info.
+Some Invictus components require various role assignments to function properly. Follow [this guide](../accesscontrolrights.md) for more info.
