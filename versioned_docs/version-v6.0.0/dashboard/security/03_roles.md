@@ -1,3 +1,7 @@
+---
+sidebar_label: Roles
+---
+
 # Role Management
 Permissions in the Invictus Dashboard are separated into two categories: user roles and folder level roles.
 

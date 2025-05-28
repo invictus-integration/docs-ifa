@@ -1,3 +1,7 @@
+---
+sidebar_label: Sync your Active Directory groups
+---
+
 # Sync your Azure Active Directory groups to Invictus
 > 👉 [Make sure that Invictus can access your Azure Active Directory](./02_sync_ad_groups.md)
 
