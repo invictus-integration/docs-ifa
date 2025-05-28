@@ -27,7 +27,7 @@ jobs:
           sed -i '' \
             -e "s|baseUrl: '.*'|baseUrl: '/docs-ifa/'|" \
             -e 's/includeCurrentVersion: true/includeCurrentVersion: false/' \
-            docusaurus.config.jss
+            docusaurus.config.js
 
           npm install
           npm run build
