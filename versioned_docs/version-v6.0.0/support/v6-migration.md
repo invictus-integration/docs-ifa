@@ -48,9 +48,15 @@ The changes include:
 
 The newly updated pipelines and template can be found here:
 
-[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/master/dashboard/installation/pipelines)
+[dashboard.build.yaml]: ../dashboard/installation/pipelines/dashboard.build.yaml
+[dashboard.release.yaml]: ../dashbaord/installation/pipelines/dashboard.release.yaml
+[framework.build.yaml]: ../framework/installation/pipelines/framework.build.yaml
+[framework.release.yaml]: ../framework/installation/pipelines/framework.release.yaml
 
-[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/master/framework/installation/pipelines)
+| Invictus project | Build pipeline         | Release pipeline         |
+| ---------------- | ---------------------- | ------------------------ |
+| Dashboard        | [dashboard.build.yaml] | [dashboard.release.yaml] |
+| Framework        | [framework.build.yaml] | [framework.release.yaml] |
 
 ### Deploy Invictus for Azure v6
 
