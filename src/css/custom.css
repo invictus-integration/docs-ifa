@@ -81,10 +81,6 @@ html[data-theme='dark'] code {
   background-color: var(--ifm-color-gray-800);
 }
 
-html[data-theme='dark'] main img[src$='.png'] {
-  background-color: white;
-}
-
 /* Footer */
 .footer--dark {
   background-color: var(--ifm-color-gray-800);
