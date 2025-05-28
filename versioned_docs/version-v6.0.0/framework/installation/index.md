@@ -15,3 +15,12 @@ Follow [this guide](framework-buildpipeline.md) to setup your build in Azure Dev
 ## 3. Release Pipeline
 
 Follow [this guide](framework-releasepipeline.md) to setup your release in Azure DevOps.
+
+## 4. VNET Support
+
+Enabling Azure Virtual Network support for the Invictus Framework is an identical process as for the Invictus Dashboard. Therefore you can follow the same guide found [here](../../dashboard/installation/dashboard-vnet.md).
+
+A full list of VNET specific parameters which can be passed to Framework release pipeline can be found [here](./framework-releasepipeline.md).
+
+## Migrating pipelines
+Migrating the build & release pipelines to the new procedure associated with version 2.4.0 or greater can be found [here](./framework-migration.md)
