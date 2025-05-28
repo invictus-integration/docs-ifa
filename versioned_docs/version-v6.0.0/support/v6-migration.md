@@ -122,9 +122,9 @@ Make sure to update your Logic App parameters files to represent the new compone
 -                   "acknowledgeUrl": "#{Invictus.Framework.PubSub.V1.AcknowledgeUrl}#"
 -                }
 +               "v2": {
-+				    "publishUrl": "#{Invictus.Framework.PubSub.V2.Publish.Url}#",
-+				    "subscribeUrl": "#{Invictus.Framework.PubSub.V2.Subscribe.Url}#",
-+				    "acknowledgeUrl": "#{Invictus.Framework.PubSub.V2.Acknowledge.Url}#"
++                   "publishUrl": "#{Invictus.Framework.PubSub.V2.Publish.Url}#",
++                   "subscribeUrl": "#{Invictus.Framework.PubSub.V2.Subscribe.Url}#",
++                   "acknowledgeUrl": "#{Invictus.Framework.PubSub.V2.Acknowledge.Url}#"
 +			    }   
             },
 -           "matrix": {
@@ -140,9 +140,9 @@ Make sure to update your Logic App parameters files to represent the new compone
 -                   "transcoUrl": "#{Invictus.Framework.Transco.V1.TranscoUrl}#"
 -               }
 +               "v2": {
-+				    "transcoJsonUrl": "#{Invictus.Framework.Transco.V2.TranscoJson.Url}#",
-+				    "transcoXmlUrl": "#{Invictus.Framework.Transco.V2.TranscoXml.Url}#",
-+				    "basicMatrixUrl": "#{Invictus.Framework.Transco.V2.MatrixBasicPromote.Url}#"
++                   "transcoJsonUrl": "#{Invictus.Framework.Transco.V2.TranscoJson.Url}#",
++                   "transcoXmlUrl": "#{Invictus.Framework.Transco.V2.TranscoXml.Url}#",
++                   "basicMatrixUrl": "#{Invictus.Framework.Transco.V2.MatrixBasicPromote.Url}#"
 +			    }
             }
         },
