@@ -13,7 +13,7 @@ The full description of the architecture (including diagrams and service names) 
 
 ## Dashboard
 
-Documentation on the dashboard can be found [here](./dashboard/overview.md).
+Documentation on the dashboard can be found [here](./dashboard/index.md).
 
 ## Framework
 
