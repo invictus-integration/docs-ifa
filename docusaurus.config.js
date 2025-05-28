@@ -5,7 +5,7 @@ const darkCodeTheme = require('./src/prism/dark');
 module.exports = {
   title: 'Invictus - Integration',
   url: 'https://invictus-integration.github.io/',
-  baseUrl: '/',
+  baseUrl: '/docs-ifa/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
