@@ -5,7 +5,7 @@ const darkCodeTheme = require('./src/prism/dark');
 module.exports = {
   title: 'Invictus - Integration',
   url: 'https://invictus-integration.github.io/',
-  baseUrl: process.env.CONTEXT === 'production' ? '/docs-ifa/' : '/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -86,7 +86,7 @@ module.exports = {
           sidebarCollapsible: false,
           // Please change this to your repo.
           editUrl: 'https://github.com/invictus-integration/docs-ifa/edit/master/docs',
-          includeCurrentVersion: process.env.CONTEXT !== 'production',
+          includeCurrentVersion: true,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

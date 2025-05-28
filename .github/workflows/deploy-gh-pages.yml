@@ -24,7 +24,11 @@ jobs:
 
       - name: Install and Build
         run: |
-          echo "CONTEXT=production" >> $GITHUB_ENV
+          sed -i '' \
+            -e "s|baseUrl: '.*'|baseUrl: '/docs-ifa/'|" \
+            -e 's/includeCurrentVersion: true/includeCurrentVersion: false/' \
+            docusaurus.config.jss
+
           npm install
           npm run build
 
