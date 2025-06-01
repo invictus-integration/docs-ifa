@@ -1,3 +1,7 @@
+---
+sidebar_label: Settings
+---
+
 # Dashboard Settings
 
 In the top navbar, click on the settings icon button then click on Settings to navigate to the page.

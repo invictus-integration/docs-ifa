@@ -1,3 +1,7 @@
+---
+sidebar_label: Publish and subscribe
+---
+
 # PubSub V2
 
 ## Motivation

@@ -24,9 +24,9 @@ Once all interfaces have been migrated you can rename the libraries back to `inv
 
 Create a list of locations where the PubSub v1, Transco v1 and Matrix v1 components are used in your interfaces. This will help you to identify which interfaces need to be migrated.
 
-### Create an Application Registration in Entra ID
+### Create an Application Registration in Active Directory
 
-Go to Entra ID and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 👉🏼 A detailed description for this can be found [here](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). 
+Go to Active Directory and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 👉🏼 A detailed description for this can be found [here](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). 
 
 Create a client secret and make sure to save the application id and client secret as you will need them later.
 
@@ -34,7 +34,7 @@ Create a client secret and make sure to save the application id and client secre
 
 ### Update Invictus-GetSources.ps1
 
-Update the [`Invictus-GetSources.ps1`](../../../dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
+Update the [`Invictus-GetSources.ps1`](../dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
 
 ### Update Your Invictus for Azure Pipelines
 
@@ -48,9 +48,10 @@ The changes include:
 
 The newly updated pipelines and template can be found here:
 
-[Dashboard Pipelines](https://github.com/invictus-integration/docs-ifa/tree/master/dashboard/installation/pipelines)
-
-[Framework Pipelines](https://github.com/invictus-integration/docs-ifa/tree/master/framework/installation/pipelines)
+| Invictus project | Build pipeline         | Release pipeline         |
+| ---------------- | ---------------------- | ------------------------ |
+| Dashboard        | [dashboard.build.yaml](../dashboard/installation/pipelines/dashboard.build.yaml) | [dashboard.release.yaml](../dashboard/installation/pipelines/dashboard.release.yaml) |
+| Framework        | [framework.build.yaml](../framework/installation/pipelines/framework.build.yaml) | [framework.release.yaml](../framework/installation/pipelines/framework.release.yaml) |
 
 ### Deploy Invictus for Azure v6
 
@@ -88,9 +89,9 @@ After deployment the following components can be removed:
 Ofcourse, if you are not using certain components you can remove these already since no migration is necessary.
 
 ### Additional steps
-- Assign the role assignments as shown in this [guide](../../../dashboard/accesscontrolrights.md) for the new DashboardGateway and FlowHandler container apps.
+- Assign the role assignments as shown in this [guide](../dashboard/accesscontrolrights.md) for the new DashboardGateway and FlowHandler container apps.
 - Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
-- Review the container app scaling requirements for your scenario. See the [dashboard guide](../../../dashboard/installation/dashboard-releasepipeline.md#scaling-parameters) and [framework guide](../../../framework/installation/framework-releasepipeline.md#scaling-parameters) for more information.
+- Review the container app scaling requirements for your scenario. See the [dashboard guide](../dashboard/installation/dashboard-releasepipeline.md#scaling-parameters) and [framework guide](../framework/installation/framework-releasepipeline.md#scaling-parameters) for more information.
 - Role assignment clean-up: The deployment of Invictus v6.0 will result in many lingering role assignments named `Unknown`. These can be deleted.
 
 ## Migrating Your Interfaces
@@ -121,9 +122,9 @@ Make sure to update your Logic App parameters files to represent the new compone
 -                   "acknowledgeUrl": "#{Invictus.Framework.PubSub.V1.AcknowledgeUrl}#"
 -                }
 +               "v2": {
-+				    "publishUrl": "#{Invictus.Framework.PubSub.V2.Publish.Url}#",
-+				    "subscribeUrl": "#{Invictus.Framework.PubSub.V2.Subscribe.Url}#",
-+				    "acknowledgeUrl": "#{Invictus.Framework.PubSub.V2.Acknowledge.Url}#"
++                   "publishUrl": "#{Invictus.Framework.PubSub.V2.Publish.Url}#",
++                   "subscribeUrl": "#{Invictus.Framework.PubSub.V2.Subscribe.Url}#",
++                   "acknowledgeUrl": "#{Invictus.Framework.PubSub.V2.Acknowledge.Url}#"
 +			    }   
             },
 -           "matrix": {
@@ -139,9 +140,9 @@ Make sure to update your Logic App parameters files to represent the new compone
 -                   "transcoUrl": "#{Invictus.Framework.Transco.V1.TranscoUrl}#"
 -               }
 +               "v2": {
-+				    "transcoJsonUrl": "#{Invictus.Framework.Transco.V2.TranscoJson.Url}#",
-+				    "transcoXmlUrl": "#{Invictus.Framework.Transco.V2.TranscoXml.Url}#",
-+				    "basicMatrixUrl": "#{Invictus.Framework.Transco.V2.MatrixBasicPromote.Url}#"
++                   "transcoJsonUrl": "#{Invictus.Framework.Transco.V2.TranscoJson.Url}#",
++                   "transcoXmlUrl": "#{Invictus.Framework.Transco.V2.TranscoXml.Url}#",
++                   "basicMatrixUrl": "#{Invictus.Framework.Transco.V2.MatrixBasicPromote.Url}#"
 +			    }
             }
         },
@@ -163,7 +164,7 @@ The Invictus for Azure API's now require an access token to be passed in the Aut
 }
 ```
 
-In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the [newly created App Registration](#Create-an-Application-Registration-in-Entra-ID) as the audience. 
+In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the [newly created App Registration](#create-an-application-registration-in-active-directory) as the audience. 
 
 💡 It is also possible to use the auto created Invictus for Azure user assigned managed identity, but keep in mind that Logic Apps only supports a single user assigned managed identity so if you already have one in your environment make sure to keep using that one.
 
@@ -173,15 +174,15 @@ We need to replace the PubSub v1, Transco v1 and Matrix v1 components with the n
 
 #### Migrating PubSub v1 to v2
 
-See the documentation [here](../../../framework/components/pubsubV2.md#Migrating-PubSub-v1-to-v2).
+See the documentation [here](../framework/pubsubV2.md#Migrating-PubSub-v1-to-v2).
 
 #### Migrating Transco v1 to v2
 
-See the documentation [here](../../../framework/components/transcoV2.md#Migrating-Transco-v1-to-v2).
+See the documentation [here](../framework/transcoV2.md#Migrating-Transco-v1-to-v2).
 
 #### Migrating Matrix v1 to Transco v2
 
-See the documentation [here](../../../framework/components/transcoV2.md#Migrating-Matrix-v1-to-Transco-v2).
+See the documentation [here](../framework/transcoV2.md#Migrating-Matrix-v1-to-Transco-v2).
 
 ## Common Migration Issues
 - **Pipeline Error**: `Operating system not supported`

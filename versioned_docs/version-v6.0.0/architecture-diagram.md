@@ -1,3 +1,8 @@
+---
+sidebar_label: Architecture
+sidebar_position: 2
+---
+
 # Invictus for Azure Architecture Diagrams
 
 ## Invictus Dashboard Architecture
@@ -19,7 +24,7 @@
 
 ### Framework Components
 
-Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](../../framework/index.md).
+Various useful APIs and Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](./framework/index.md).
 
 - **PubSub API**
 - **Transco API**
