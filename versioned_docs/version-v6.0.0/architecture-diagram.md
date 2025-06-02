@@ -7,7 +7,7 @@ sidebar_position: 2
 
 ## Invictus Dashboard Architecture
 
-![Architecture diagram](/images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
+<img src="/images/InvictusV2Diagram_Dashboard.jpg" alt="Invictus Dashboard architecture diagram" class="img-zoom" />
 
 ### Dashboard Components
 

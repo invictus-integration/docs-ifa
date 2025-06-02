@@ -43,6 +43,9 @@ module.exports = {
         },
       ],
     },
+    zoom: {
+      // selector: '.img-zoom',
+    },
     footer: {
       style: 'dark',
       links: [
@@ -74,6 +77,9 @@ module.exports = {
         docsRouteBasePath: '/'
       }),
     ]
+  ],
+  plugins: [
+     'docusaurus-plugin-image-zoom'
   ],
   presets: [
     [
