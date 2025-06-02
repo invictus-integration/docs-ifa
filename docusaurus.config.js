@@ -12,7 +12,7 @@ module.exports = {
   organizationName: 'invictus-integration', // Usually your GitHub org/user name.
   projectName: 'Invictus - Integration', // Usually your repo name.
   themeConfig: {
-    image: 'img/logo.light.png',
+    image: 'img/invictus.jpg',
     navbar: {
       title: 'Invictus',
       logo: {
@@ -42,6 +42,10 @@ module.exports = {
           position: 'right',
         },
       ],
+    },
+    zoom: {
+      // (optional) The selector to use for the images to zoom.
+      // selector: 'img-zoom',
     },
     footer: {
       style: 'dark',
@@ -74,6 +78,9 @@ module.exports = {
         docsRouteBasePath: '/'
       }),
     ]
+  ],
+  plugins: [
+     'docusaurus-plugin-image-zoom'
   ],
   presets: [
     [
