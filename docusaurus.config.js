@@ -44,7 +44,8 @@ module.exports = {
       ],
     },
     zoom: {
-      // selector: '.img-zoom',
+      // (optional) The selector to use for the images to zoom.
+      // selector: 'img-zoom',
     },
     footer: {
       style: 'dark',
