@@ -1,4 +1,4 @@
-# Enable DataFactory Diagnostics
+# Import flow traces via DataFactory pipelines
 For the Invictus Dashboard to know if messages went through your DataFactory pipelines correctly or not, diagnostic settings need to be configured on all pipelines you want to include. These settings should stream their diagnostic traces to the Invictus EventHubs resource:
 
 * `EventHubsNamespace`: `invictus-{env}-we-sft-evnm`
