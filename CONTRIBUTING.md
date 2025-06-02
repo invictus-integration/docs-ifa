@@ -64,6 +64,8 @@ When a new version of Invictus is released, and the documentation site should re
 > npm run docusaurus docs:version v7.0.0
 ```
 
+> ⚠️ Make sure that [`npm`](https://pnpm.io/) is installed on your system.
+
 When running this command, the documentation versioning will:
 1. Copy the full `/preview` folder contents into a new `/versioned_docs/version-[version_name]` folder.
 2. Create a versioned sidebar file at `/versioned_sidebars/version-[version_name]-sidebars.json`
