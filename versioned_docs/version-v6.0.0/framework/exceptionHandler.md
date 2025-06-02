@@ -5,7 +5,9 @@ Everyone who has worked with Logic Apps is familiar with the error `An action fa
 The Exception Handler function can be used to retrieve the actual error message from a Logic App and optionally translate this to a human readable text.
 For more information on the translations and how to set this up see [here](#Translations).
 
-:thumbsup: The Exception Handler function supports both Logic App Consumption and Logic App Standard.
+:::praise
+The Exception Handler function supports both Logic App Consumption and Logic App Standard.
+:::
 
 ## ResolveException Endpoint
 
