@@ -12,7 +12,9 @@ Groups available in your Azure Active Directory will be used to determine whethe
 
 To synchronize Azure Active Directory groups, go to **Groups** and click on **Sync all groups**.
 
-> ☝️ Only groups of active users (Active Directory users that have already signed into the Dashboard) will be synced within the Dashboard.
+:::warning
+Only groups of active users (Active Directory users that have already signed into the Dashboard) will be synced within the Dashboard.
+:::
 
 ## Enable only required groups
 Once the groups are synced within the Dashboard, you have to manually enable the required groups which you want to use for [flow permissions](../flows/03_permissions.mdx).
