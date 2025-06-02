@@ -19,11 +19,13 @@ To have a clear overview of your desired flows, the Invictus Dashboard allows yo
 
 ![path test](/images/v2_path-test.png)
 
-> 💡 Flow detail URL's can be constructed that will redirect users to the details page of the flow, but following the breadcrumb path of the flow.
->
-> `https://{your-dashboard-url}/flowpath/All Data/Path Test/LogicAppFlow`
->
-> ⚠️ Make sure that both the folder and the flow's name is unique horizontally so that the breadcrumb only points to a single flow.
+:::tip
+Flow detail URL's can be constructed that will redirect users to the details page of the flow, but following the breadcrumb path of the flow.
+
+`https://{your-dashboard-url}/flowpath/All Data/Path Test/LogicAppFlow`
+
+⚠️ Make sure that both the folder and the flow's name is unique horizontally so that the breadcrumb only points to a single flow.
+:::
 
 ### Edit folders
 > 👉 **Home > Your Flows >  ••• [Create/Edit/Delete] folder**
