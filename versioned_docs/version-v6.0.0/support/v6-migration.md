@@ -174,15 +174,15 @@ We need to replace the PubSub v1, Transco v1 and Matrix v1 components with the n
 
 #### Migrating PubSub v1 to v2
 
-See the documentation [here](../framework/pubsubV2.md#Migrating-PubSub-v1-to-v2).
+See the documentation [here](../framework/pubsubV2.md#migrating-pubsub-v1-to-v2).
 
 #### Migrating Transco v1 to v2
 
-See the documentation [here](../framework/transcoV2.md#Migrating-Transco-v1-to-v2).
+See the documentation [here](../framework/transcoV2.md#migrating-transco-v1-to-v2).
 
 #### Migrating Matrix v1 to Transco v2
 
-See the documentation [here](../framework/transcoV2.md#Migrating-Matrix-v1-to-Transco-v2).
+See the documentation [here](../framework/transcoV2.md#migrating-matrix-v1-to-transco-v2).
 
 ## Common Migration Issues
 - **Pipeline Error**: `Operating system not supported`
