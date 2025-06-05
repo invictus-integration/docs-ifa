@@ -94,6 +94,10 @@ module.exports = {
           // Please change this to your repo.
           editUrl: 'https://github.com/invictus-integration/docs-ifa/edit/master/docs',
           includeCurrentVersion: true,
+          admonitions: {
+            keywords: ['praise'],
+            extendDefaults: true,
+          }
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

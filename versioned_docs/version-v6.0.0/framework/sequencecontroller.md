@@ -30,7 +30,9 @@ The idea is that workflows are processed in sequence after the **Wait**. The pla
 
 First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
 
-> 💡 This step can be circumvented in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#_2-wait-for-sequence).
+:::tip
+This step can be circumvented in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#_2-wait-for-sequence).
+:::
 
 The most simple request body only contains the name of the sequence. This name can be seen as the transactional group that chain all related workflows. Assuming this is the first workflow, it will receive number 1 in the response body; the second workflow will receive number 2, and so forth.
 
@@ -107,7 +109,9 @@ The following image shows a screenshot of how this HTTP call can be made in a Lo
 
 The deployed **Sequence Controller** allows admins to reset previously stored sequences. This could be useful if certain sequence names should be reused for other purposes, or for cleaning references.
 
-> ⚠️ This action **SHOULD NOT** be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.
+:::danger
+This action **SHOULD NOT** be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.
+:::
 
 Resetting can be done with sending the following request:
 
