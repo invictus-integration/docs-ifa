@@ -29,8 +29,6 @@ resources:
     trigger: true
 ```
 
-**Make sure to replace the `azureSubscription` value with the name of your serviceconnection as this value cannot be parameterized**
-
 Also make sure to change the bicep template parameters according to your needs.
 
 If you need to overwrite more bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
@@ -38,34 +36,41 @@ If you need to overwrite more bicep Template parameters make sure to add this to
 Afterwards add the [dashboard.release.yaml](./pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
 ## Deploy Script Arguments
-
 The following script arguments are used in the deploy script:
 
-- **Mandatory Arguments**
-  - artifactsPath: `$(ArtifactsPath)`
-  - devOpsObjectId: The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection.
-  - acrUsername: The ACR username provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step. 
-  - acrPassword: The ACR password provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step.
-  - resourcePrefix: `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)`
-  - resourceGroupName: name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - variableGroupName: The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific.
-  - azureActiveDirectoryClientId: Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. 
-  - azureActiveDirectoryTenantId: Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled.
-  - azureActiveDirectoryClientSecret: Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. 
-  - azureActiveDirectoryAudience: Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled.
-  - performSqlDataMigration: If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases.
-  - flowDataTTLInDays: A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flows/04_import-flow-traces/index.md).
-  - isProvisionedCosmos: If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#Provisoned-Throughput-vs-Serverless-Cosmos-DB) below for more details.
-  - identityProviderClientSecret: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
-  - identityProviderApplicationId: Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad).
-    
-- **Optional Arguments**
-  - artifactsPathScripts: uses ArtifactsPath when not specified.
-  - resourceGroupLocation: `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified.
-  - isAdDisabled: If the value is 1, the option to log into the dashboard with AAD will be removed.
-  - additionalTemplateParameters: Additional named parameters for the arm template you wish to override. More on this below.
+### Mandatory Arguments
 
-The AdditionalTemplateParameters argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
+[publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
+[Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
+
+| Argument name       | Description |
+| ------------------- | ----------- |
+| `artifactsPath`     | The path on the DevOps agent where the downloaded Invictus artifacts are stored, usually `$(ArtifactsPath)` ([publish and download build artifacts]) |
+| `devOpsObjectId`    | The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
+| `acrUsername`       | The ACR username provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step. |
+| `acrPassword`       | The ACR password provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step. |
+| `resourcePrefix`    | `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` |
+| `resourceGroupName` | name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
+| `variableGroupName` | The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
+| `azureActiveDirectoryClientId` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled.  |
+| `azureActiveDirectoryTenantId` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
+| `azureActiveDirectoryClientSecret` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
+| `azureActiveDirectoryAudience` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
+| `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases. |
+| `flowDataTTLInDays` | A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flows/04_import-flow-traces/index.md). |
+| `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
+| `identityProviderClientSecret` | Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). |
+| `identityProviderApplicationId` | Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). |
+
+### Optional Arguments
+| Argument name | Description |
+| ------------- | ----------- |
+| `artifactsPathScripts` | uses ArtifactsPath when not specified. |
+| `resourceGroupLocation` | `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified. |
+| `isAdDisabled` | If the value is 1, the option to log into the dashboard with AAD will be removed. |
+| `additionalTemplateParameters` | Additional named parameters for the arm template you wish to override. More on this below. |
+
+The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
 
 > Note that **resourcePrefix** and **accessPolicies** are overridden by the script, so no need to include that in the arguments.
 
@@ -95,7 +100,7 @@ PS> $(ArtifactsPath)/Deploy.ps1 `
   -flowDataTTLInDays 90
 ```
 
-### Provisoned Throughput vs Serverless Cosmos DB
+### Provisioned Throughput vs Serverless Cosmos DB
 
 **Provisioned Throughput**: You specify a fixed amount of resources (RU/s) for your database, ensuring predictable performance. Best for steady workloads.
 
