@@ -157,6 +157,14 @@ html[data-theme='dark'] .vnet table {
   background-color: #3e5a5f !important;
 }
 
+.vnet-row {
+  display: none;
+}
+
+body.show-vnet .vnet-row {
+  display: table-row;
+}
+
 .toggle-container {
   display: inline-flex;
   align-items: center;
