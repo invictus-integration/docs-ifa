@@ -43,25 +43,27 @@ The following script arguments are used in the deploy script:
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
 [Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
 [Azure AD setup]: ./01_give_ad_access.md
+[build pipeline]: ./dashboard-buildpipeline.md
+[Container authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
 
 | Argument name       | Description |
 | ------------------- | ----------- |
-| `artifactsPath`     | The path on the DevOps agent where the downloaded Invictus artifacts are stored, usually `$(ArtifactsPath)` ([publish and download build artifacts]) |
-| `devOpsObjectId`    | The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
-| `acrUsername`       | The ACR username provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step. |
-| `acrPassword`       | The ACR password provided by Codit. As defined in [build pipeline](./dashboard-buildpipeline.md) step. |
+| `artifactsPath`     | Path on the DevOps agent where the downloaded Invictus artifacts are stored <br/> ([publish and download build artifacts]) |
+| `devOpsObjectId`    | The **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection, which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
+| `acrUsername`       | ACR username provided by Codit; as defined in [build pipeline], to pull Invictus images |
+| `acrPassword`       | ACR password provided by Codit; as defined in [build pipeline], to pull Invictus images |
 | `resourcePrefix`    | `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` |
 | `resourceGroupName` | name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
 | `variableGroupName` | The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
 | `azureActiveDirectoryClientId` | Value can be obtained by following this guide: [Azure AD Setup]. Leave empty if AD will be disabled.  |
-| `azureActiveDirectoryTenantId` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
-| `azureActiveDirectoryClientSecret` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
-| `azureActiveDirectoryAudience` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
+| `azureActiveDirectoryTenantId` | Value can be obtained by following this guide: [Azure AD Setup]. Leave empty if AD will be disabled. |
+| `azureActiveDirectoryClientSecret` | Value can be obtained by following this guide: [Azure AD Setup]. Leave empty if AD will be disabled. |
+| `azureActiveDirectoryAudience` | Value can be obtained by following this guide: [Azure AD Setup]. Leave empty if AD will be disabled. |
 | `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases. |
 | `flowDataTTLInDays` | A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flows/04_import-flow-traces/index.md). |
 | `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
-| `identityProviderClientSecret` | Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). |
-| `identityProviderApplicationId` | Value can be obtained by following this guide: [Container Authentication](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). |
+| `identityProviderClientSecret` | Value can be obtained by following this guide: [Container Authentication]. |
+| `identityProviderApplicationId` | Value can be obtained by following this guide: [Container Authentication]. |
 
 ### Optional Arguments
 | Argument name | Description |
