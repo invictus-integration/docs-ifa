@@ -72,34 +72,47 @@ The following script arguments are used in the deploy script:
 | `isAdDisabled`                 | `False`       | Boolean flag to indicate whether the Dashboard should use AD for authentication |
 | `additionalTemplateParameters` | []            | Additional named parameters for the Bicep template you wish to override. More on this below. |
 
-The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
+:::info[override bicep parameters]
+The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the arguments of the `./Deploy.ps1` script.
+:::
 
-> Note that **resourcePrefix** and **accessPolicies** are overridden by the script, so no need to include that in the arguments.
+```yaml
+- task: AzureCLI@2
+  displayName: 'Azure CLI'
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  inputs:
+    azureSubscription: '[YOUR_SERVICE_CONNECTION]'
+    addSpnToEnvironment: true
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Determine where the the provided Invictus 'Deploy.ps1' script is located
+      $artifactsPath = ${{ variables['Pipeline.Workspace'] }} + '/_build/dashboard' 
+      $scriptPath = $artifactsPath + '/Deploy.ps1'
 
-Complete example of the arguments (note the use of -devOpsObjectId as an additional parameter):
+      # Use your service connection's service principal Object ID
+      $objectId = (az ad sp show --id $env:servicePrincipalId | ConvertFrom-Json).id
 
-```powershell
-PS> $(ArtifactsPath)/Deploy.ps1 `
-  -artifactsPath "$(ArtifactsPath)" `
-  -acrPath "invictusreleases.azurecr.io" `
-  -acrUsername "$(Infra.Environment.ACRUsername)" `
-  -acrPassword "$(Infra.Environment.ACRPassword)" `
-  -resourcePrefix "$(Infra.Environment.ResourcePrefix)" `
-  -resourceGroupName "$(Infra.Environment.ResourceGroup)" `
-  -variableGroupName "Software.Infra.$(Infra.Environment.ShortName)" `
-  -resourceGroupLocation "$(Infra.Environment.Region.Primary)" `
-  -devOpsObjectId $(Infra.DevOps.Object.Id) `
-  -performSqlDataMigration 0 `
-  -isProvisionedCosmos 0 `
-  -azureActiveDirectoryClientId "[YOUR_CLIENT_ID_HERE]" `
-  -azureActiveDirectoryTenantId "[YOUR_TENANT_ID_HERE]" `
-  -azureActiveDirectoryClientSecret "[YOUR_SECRET_HERE]" `
-  -azureActiveDirectoryAudience "[YOUR_AUDIENCE_HERE]" `
-  -identityProviderApplicationId "$(Infra.Environment.IdentityProviderApplicationId)" `
-  -identityProviderClientSecret "$(Infra.Environment.IdentityProviderClientSecret)" `
-  -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)" `
-  -isProvisionedCosmos 1 `
-  -flowDataTTLInDays 90
+      & $scriptPath `
+        -artifactsPath $artifactsPath `
+        -acrPath 'invictusreleases.azurecr.io' `
+        -acrUsername 'admin' `
+        -acrPassword '<pass>' `
+        -resourcePrefix 'dev' `
+        -resourceGroupName 'my-client-dev-rg' `
+        -variableGroupName 'My.Client.Dev' `
+        -devOpsObjectId $objectId `
+        -performSqlDataMigration 0 `
+        -isProvisionedCosmos 0 `
+        -azureActiveDirectoryClientId '4b559bfb-871a-4013-bce9-829e3aeb6bdd' `
+        -azureActiveDirectoryTenantId '97a944a1-04a0-45d2-b2f3-c424755c4167' `
+        -azureActiveDirectoryClientSecret '<pass>' `
+        -azureActiveDirectoryAudience 'https://contoso.com' `
+        -identityProviderApplicationId 'c84d34ea-f169-4787-a4af-81750debda0b' `
+        -identityProviderClientSecret '<pass>' `
+        -isProvisionedCosmos 1 `
+        -flowDataTTLInDays 90
 ```
 
 ### Provisioned Throughput vs Serverless Cosmos DB
