@@ -149,9 +149,9 @@ Always evaluate your application's needs and monitor performance to ensure the c
 The below tables lists the parameters accepted by the Bicep template.
 
 <style>
-.vnet tr {
-  background:rgb(63, 166, 255);
-}
+  .vnet tr {
+    background:rgb(63, 166, 255);
+  }
 </style>
 
 ## Top-level parameters
