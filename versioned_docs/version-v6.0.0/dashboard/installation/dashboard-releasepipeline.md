@@ -150,7 +150,7 @@ The below tables lists the parameters accepted by the Bicep template.
 
 <style>
 .vnet tr {
-  background-color:rgb(63, 166, 255);
+  background:rgb(63, 166, 255);
 }
 </style>
 
