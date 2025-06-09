@@ -52,9 +52,9 @@ The following script arguments are used in the deploy script:
 | `devOpsObjectId`    | Object ID of the service principal that's connected to the DevOps service connection, which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
 | `acrUsername`       | ACR credentials provided by Codit to pull Invictus images <br/> See [build pipeline] |
 | `acrPassword`       | ACR credentials provided by Codit to pull Invictus images <br/> See [build pipeline] |
-| `resourcePrefix`    | `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` |
-| `resourceGroupName` | name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
-| `variableGroupName` | The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
+| `resourcePrefix`    | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`) |
+| `resourceGroupName` | Name of Azure resource group where Invictus should be deployed |
+| `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`) |
 | `azureActiveDirectoryClientId` | See [Azure AD Setup] if AD enabled  |
 | `azureActiveDirectoryTenantId` | See [Azure AD Setup] if AD enabled |
 | `azureActiveDirectoryClientSecret` | See [Azure AD Setup] if AD enabled |
