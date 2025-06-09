@@ -50,15 +50,15 @@ The following script arguments are used in the deploy script:
 | ------------------- | ----------- |
 | `artifactsPath`     | Path on the DevOps agent where the downloaded Invictus artifacts are stored <br/> ([publish and download build artifacts]) |
 | `devOpsObjectId`    | Object ID of the service principal that's connected to the DevOps service connection, which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
-| `acrUsername`       | ACR username provided by Codit; as defined in [build pipeline], to pull Invictus images |
-| `acrPassword`       | ACR password provided by Codit; as defined in [build pipeline], to pull Invictus images |
+| `acrUsername`       | ACR credentials provided by Codit to pull Invictus images <br/> See [build pipeline] |
+| `acrPassword`       | ACR credentials provided by Codit to pull Invictus images <br/> See [build pipeline] |
 | `resourcePrefix`    | `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` |
 | `resourceGroupName` | name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
 | `variableGroupName` | The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
-| `azureActiveDirectoryClientId` | See [Azure AD Setup]. Leave empty if AD will be disabled.  |
-| `azureActiveDirectoryTenantId` | See [Azure AD Setup]. Leave empty if AD will be disabled. |
-| `azureActiveDirectoryClientSecret` | See [Azure AD Setup]. Leave empty if AD will be disabled. |
-| `azureActiveDirectoryAudience` | See [Azure AD Setup]. Leave empty if AD will be disabled. |
+| `azureActiveDirectoryClientId` | See [Azure AD Setup] if AD enabled  |
+| `azureActiveDirectoryTenantId` | See [Azure AD Setup] if AD enabled |
+| `azureActiveDirectoryClientSecret` | See [Azure AD Setup] if AD enabled |
+| `azureActiveDirectoryAudience` | See [Azure AD Setup] if AD enabled |
 | `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases. |
 | `flowDataTTLInDays` | A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flows/04_import-flow-traces/index.md). |
 | `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
