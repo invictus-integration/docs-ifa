@@ -60,18 +60,17 @@ The following script arguments are used in the deploy script:
 | `azureActiveDirectoryClientSecret` | See [Azure AD Setup] if AD enabled |
 | `azureActiveDirectoryAudience` | See [Azure AD Setup] if AD enabled |
 | `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases. |
-| `flowDataTTLInDays` | A positive integer value which represents the amount of days flow data can live in the database. More info [here](../flows/04_import-flow-traces/index.md). |
+| `flowDataTTLInDays` | Amount of days flow data can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md). |
 | `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
 | `identityProviderClientSecret` | See [Container Authentication]. |
 | `identityProviderApplicationId` | See [Container Authentication]. |
 
 ### Optional Arguments
-| Argument name | Description |
-| ------------- | ----------- |
-| `artifactsPathScripts` | uses ArtifactsPath when not specified. |
-| `resourceGroupLocation` | `$(Infra.Environment.Region.Primary)` or 'West Europe' when not specified. |
-| `isAdDisabled` | If the value is 1, the option to log into the dashboard with AAD will be removed. |
-| `additionalTemplateParameters` | Additional named parameters for the arm template you wish to override. More on this below. |
+| Argument name                  | Default value | Description  |
+| ------------------------------ | --------------| ------------ |
+| `resourceGroupLocation`        | 'West Europe' | Azure location where resources should be deployed |
+| `isAdDisabled`                 | `False`       | Boolean flag to indicate whether the Dashboard should use AD for authentication |
+| `additionalTemplateParameters` | []            | Additional named parameters for the Bicep template you wish to override. More on this below. |
 
 The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the ARM template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the arguments of the powershell script.
 
