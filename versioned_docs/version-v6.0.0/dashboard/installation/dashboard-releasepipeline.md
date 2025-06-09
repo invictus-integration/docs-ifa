@@ -87,6 +87,7 @@ The `AdditionalTemplateParameters` argument are named arguments you can use to o
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: |
+    
       # Determine where the the provided Invictus 'Deploy.ps1' script is located
       $artifactsPath = ${{ variables['Pipeline.Workspace'] }} + '/_build/dashboard' 
       $scriptPath = $artifactsPath + '/Deploy.ps1'
