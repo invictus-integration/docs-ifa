@@ -42,6 +42,7 @@ The following script arguments are used in the deploy script:
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
 [Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
+[Azure AD setup]: ./01_give_ad_access.md
 
 | Argument name       | Description |
 | ------------------- | ----------- |
@@ -52,7 +53,7 @@ The following script arguments are used in the deploy script:
 | `resourcePrefix`    | `$(Infra.Environment.ShortName)-$(Infra.Environment.Region.Primary.ShortName)-$(Infra.Environment.Customer.ShortName)` |
 | `resourceGroupName` | name of the Azure Resource Group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
 | `variableGroupName` | The name of the variable group. Include the variable `$(Infra.Environment.ShortName)` to make this environment specific. |
-| `azureActiveDirectoryClientId` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled.  |
+| `azureActiveDirectoryClientId` | Value can be obtained by following this guide: [Azure AD Setup]. Leave empty if AD will be disabled.  |
 | `azureActiveDirectoryTenantId` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
 | `azureActiveDirectoryClientSecret` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
 | `azureActiveDirectoryAudience` | Value can be obtained by following this guide: [Azure AD Setup](./01_give_ad_access.md). Leave empty if AD will be disabled. |
