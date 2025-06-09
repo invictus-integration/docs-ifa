@@ -145,6 +145,12 @@ Always evaluate your application's needs and monitor performance to ensure the c
 ## Bicep Template Parameters
 The below tables lists the parameters accepted by the Bicep template.
 
+<label className="toggle-container">
+  <input type="checkbox" className="toggle-checkbox" />
+  <span className="toggle-slider" />
+  Toggle VNET Settings
+</label>
+
 ## Top-level parameters
 Resource-independent parameters that affect all resources in the deployed resource group.
 
