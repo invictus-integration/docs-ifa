@@ -72,7 +72,7 @@ The following script arguments are used in the deploy script:
 | `isAdDisabled`                 | `False`       | Boolean flag to indicate whether the Dashboard should use AD for authentication |
 | `additionalTemplateParameters` | []            | Additional named parameters for the Bicep template you wish to override. More on this below. |
 
-:::info[override bicep parameters]
+:::info[override [bicep parameters](#bicep-template-parameters)]
 The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the arguments of the `./Deploy.ps1` script.
 :::
 
@@ -87,7 +87,7 @@ The `AdditionalTemplateParameters` argument are named arguments you can use to o
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: |
-    
+
       # Determine where the the provided Invictus 'Deploy.ps1' script is located
       $artifactsPath = ${{ variables['Pipeline.Workspace'] }} + '/_build/dashboard' 
       $scriptPath = $artifactsPath + '/Deploy.ps1'
@@ -118,24 +118,14 @@ The `AdditionalTemplateParameters` argument are named arguments you can use to o
 
 ### Provisioned Throughput vs Serverless Cosmos DB
 
-**Provisioned Throughput**: You specify a fixed amount of resources (RU/s) for your database, ensuring predictable performance. Best for steady workloads.
+| **Aspect**               | **Serverless in Production**                                                     | **Provisioned Throughput in Production**                                              |
+| ------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Cost-Efficiency**      | Optimized for variable workloads; scales down during low activity to reduce cost | Costs are fixed based on allocated RU/s; autoscale introduces a min-max pricing range |
+| **Traffic Handling**     | Ideal for sporadic or bursty traffic patterns                                    | Suitable for consistently high or predictable workloads                               |
+| **Scalability**          | Auto-scales based on workload; FlowData and WorkFlowEvents most affected         | RU/s can be manually adjusted for high-volume needs                                   |
+| **Usage Suitability**    | Best for unpredictable workloads with fluctuating volume                         | Best for stable, high-throughput scenarios                                            |
+| **Collections Behavior** | FlowData and WorkFlowEvents auto-scale with data insertion                       | FlowData and WorkFlowEvents have fixed RU/s with autoscale range                      |
 
-**Serverless**: Capacity scales automatically based on actual usage, paying only for resources used per request. Cost-effective for variable traffic (high / low usage) and infrequently accessed data.
-
-### When to use Provisioned Throughput vs Serverless Cosmos DB
-
-
-### Serverless in Production
-
-- Cost-Efficiency for Variable Workloads: Suitable for scenarios with varying input volume loads, automatically scaling down during periods of low activity to optimize cost.
-- Sporadic Traffic: Ideal for situations where the volume fluctuates or experiences occasional bursts of traffic, such as higher volume during specific hours and lower volume at other times.
-- Agile and Scalable: Collections are auto-scaled, with FlowData and WorkFlowEvents being the most affected collections when data is inserted.
-
-### Provisioned Throughput in Production
-
-- Fixed RU/s Allocation: Collections are allocated a defined RU/s, requiring consistent usage to make the most of the provisioned capacity.
-- Adjustable RU/s for High Volume Processing: RU/s can be increased to accommodate very high volume processing requirements, ensuring optimal performance.
-- Predictable Costs: Costs are fixed based on the allocated RU/s. However, for FlowData and WorkFlowEvents, since they are set to autoscale, there is a minimum and maximum price based on usage.
 
 
 Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
@@ -158,6 +148,12 @@ Always evaluate your application's needs and monitor performance to ensure the c
 
 The below tables lists the parameters accepted by the Bicep template.
 
+<style>
+.vnet tr {
+  background-color:rgb(63, 166, 255);
+}
+</style>
+
 ## Top-level parameters
 Resource-independent parameters that affect all resources in the deployed resource group.
 
@@ -166,6 +162,7 @@ Resource-independent parameters that affect all resources in the deployed resour
 | `resourcePrefix`                       | Yes      |                     | used as part of the default names for most resources |
 | `devOpsObjectId`                       | Yes      |                     | The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps |
 
+<div class="vnet">
 | Parameter                              | Required | Default                        | Description                                                              |
 | -------------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------------------ |
 | **`enableVnetSupport` (VNET)**         | **Yes**  | **`false`**                   | **Used to toggle VNET functionality on or off** |
@@ -176,6 +173,7 @@ Resource-independent parameters that affect all resources in the deployed resour
 | **`caeVnetInfraRgName` (VNET)** | **No**  |**Auto-Generated by Azure**| **Overrides the name of the Azure auto-generated RG for Container App Environment infra** |
 | **`dnsZoneSubscriptionId` (VNET)**     | **No**   | **Subscription ID of scope**  | **The subscription ID of the private DNS zones.** |
 | **`dnsZoneResourceGroupName` (VNET)**  | **No**   | **VNET RG name**              | **The resource group name of where the private DNS zones are located.** |
+</div>
 
 ### Active Directory parameters
 Parameters related to the Azure Active Directory where the groups are synced from.
