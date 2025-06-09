@@ -148,3 +148,7 @@ nav.menu {
 .hidden {
   display: none !important;
 }
+
+.highlight-vnet {
+    background-color:rgb(5, 97, 139);
+}

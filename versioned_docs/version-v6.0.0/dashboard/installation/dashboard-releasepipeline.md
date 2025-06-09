@@ -152,12 +152,6 @@ Always evaluate your application's needs and monitor performance to ensure the c
   });
 </script>
 
-<style>
-  .highlight-vnet {
-    background-color:rgb(5, 97, 139);
-  }
-</style>
-
 ## Bicep Template Parameters
 The below tables lists the parameters accepted by the Bicep template.
 
