@@ -182,7 +182,9 @@ Parameters related to the Azure Active Directory where the groups are synced fro
 
 </details>
 
-## App service parameters
+<details>
+<summary>App service parameters</summary>
+
 Parameters related to the applications that are deployed, mostly Azure Functions.
 
 | Parameter                                 | Required | Default                                             | Description                                     |
@@ -208,7 +210,11 @@ Parameters related to the applications that are deployed, mostly Azure Functions
 | `servicePlanSkuName`                | No       | S1                              | Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
 | `servicePlanSkuCapacity`            | No       | `1`                             | The SKU capacity setting for the App Plan   |
 
-## Storage parameters
+</details>
+
+<details>
+<summary>Storage parameters</summary>
+
 Parameters related to the data that is stored throughout Invictus.
 
 | Parameter                                              | Required | Default                                                  | Description                                                                |
@@ -234,7 +240,11 @@ Parameters related to the data that is stored throughout Invictus.
 | `workFlowCleanupJobIntervalInMinutes`                  | No       |  `180`  | Interval in minutes for the workflowevent cleanup job  |
 | `dataWorkFlowCleanupMaxRetentionDays`                  | No       |  `90`   | Max number of days the WorkFlowEvent data is stored    |
 
-## Messaging parameters
+</details>
+
+<details>
+<summary>Messaging parameters</summary>
+
 Parameters related to the messaging resources that import the flow information into storage.
 
 | Parameter                           | Required | Default                         | Description                                              |
@@ -264,7 +274,11 @@ Parameters related to the messaging resources that import the flow information i
 | `dataFactoryEventHubName`           | No       | `invictus-{resourcePrefix}-df-evhb`              | EventHub name for the data factory import job |
 | `genericEventHubName`               | No       | `invictus-{resourcePrefix}-genericreceiver-evhb` | EventHub name for the import job |
 
-## Secret parameters
+</details>
+
+<details>
+<summary>Secret parameters</summary>
+
 Parameters related to the security of the deployed applications. 
 
 | Parameter                           | Required | Default                         | Description                                |
@@ -274,7 +288,11 @@ Parameters related to the security of the deployed applications.
 | `jwtSecretToken`                    | No       | Generated on first use          | JWT Secret used for login                  |
 | **`keyVaultSubnets` (VNET)**        | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
 
-## Observability parameters
+</details>
+
+<details>
+<summary>Observability parameters</summary>
+
 Parameters related to the observability of the deployed applications.
 
 | Parameter                                     | Required | Default                                     | Description                                                  |
@@ -285,7 +303,11 @@ Parameters related to the observability of the deployed applications.
 | `appInsightsSamplingPercentage`               | No       | `1`                                         | The sampling percentage for the Application Insights resource |
 | `importJobAppInsightsSamplingPercentage`      | No       | `1`                                         | The sampling percentage for the import job Application Insights resource |
 
-## Scaling parameters
+</details>
+
+<details>
+<summary>Scaling parameters</summary>
+
 Azure Container Apps allow for flexible scaling customization. In Invictus we have provided default scaling values which can be customized according to your scenario.
 
 Container Apps have the ability to scale down to zero replicas. This is a great cost-saving option especially for components which are not used at all. A container app scaled to zero will automatically scale out when triggered, however this may take up to a few minutes to complete. This could prove to be an issue in scenarios with limited timeout e.g. logic apps with 120 seconds timeout. In such cases there is no option but to set a minimum replica count of 1.
@@ -319,3 +341,5 @@ Each of the above parameters accepts an object:
 | `scaleMaxReplicas` | The highest number of replicas the Container App will scale out to.                                    |
 | `cpuResources`     | The amount of cpu resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).       |
 | `memoryResources`  | The amount of memory resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).    |
+
+</details>
