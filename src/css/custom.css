@@ -149,6 +149,10 @@ nav.menu {
   display: none !important;
 }
 
-.vnet tr {
-    background-color:rgb(5, 97, 139);
+.vnet table {
+    background-color: #c1eaf1 !important;
+}
+
+html[data-theme='dark'] .vnet table {
+  background-color: #3e5a5f !important;
 }
