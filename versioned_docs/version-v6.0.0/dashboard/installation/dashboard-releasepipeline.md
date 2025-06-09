@@ -126,8 +126,6 @@ The `AdditionalTemplateParameters` argument are named arguments you can use to o
 | **Usage Suitability**    | Best for unpredictable workloads with fluctuating volume                         | Best for stable, high-throughput scenarios                                            |
 | **Collections Behavior** | FlowData and WorkFlowEvents auto-scale with data insertion                       | FlowData and WorkFlowEvents have fixed RU/s with autoscale range                      |
 
-
-
 Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
 
 **Default Settings for Provisioned Throughput**
@@ -144,8 +142,23 @@ Always evaluate your application's needs and monitor performance to ensure the c
 |WorkflowEvent|2000|Yes|
 |MessageContent|2000|Yes|
 
-## Bicep Template Parameters
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('table tr').forEach(function (row) {
+      if ([...row.cells].some(cell => cell.textContent.toLowerCase().includes('vnet'))) {
+        row.classList.add('highlight-vnet');
+      }
+    });
+  });
+</script>
 
+<style>
+  .highlight-vnet {
+    background-color:rgb(5, 97, 139);
+  }
+</style>
+
+## Bicep Template Parameters
 The below tables lists the parameters accepted by the Bicep template.
 
 ## Top-level parameters
