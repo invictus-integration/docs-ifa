@@ -25,8 +25,9 @@ stages:
 - stage: deploy_dev
   displayName: 'Deploy to Development'
   variables:
-  - group: infra.tst
-  - group: invictus.tst
+  - group: infra.dev
+  - group: prefix.invictus.dev
+  - group: prefix.invictus.installation
   jobs:
   - deployment: deploy_development
     displayName: 'Deploy to Development'
@@ -37,7 +38,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yml
+          - template: ./templates/framework-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
@@ -47,7 +48,8 @@ stages:
   dependsOn: deploy_dev
   variables:
   - group: infra.tst
-  - group: invictus.tst
+  - group: prefix.invictus.tst
+  - group: prefix.invictus.installation
   jobs:
   - deployment: deploy_tst
     displayName: 'Deploy to Test'
@@ -58,7 +60,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yml
+          - template: ./templates/framework-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
@@ -68,7 +70,8 @@ stages:
   dependsOn: deploy_tst
   variables:
   - group: infra.acc
-  - group: invictus.acc
+  - group: prefix.invictus.acc
+  - group: prefix.invictus.installation
   jobs:
   - deployment: deploy_acc
     displayName: 'Deploy to Acceptance'
@@ -79,7 +82,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yml
+          - template: ./templates/framework-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
@@ -89,7 +92,8 @@ stages:
   dependsOn: deploy_acc
   variables:
   - group: infra.prd
-  - group: invictus.prd
+  - group: prefix.invictus.prd
+  - group: prefix.invictus.installation
   jobs:
   - deployment: deploy_prd
     displayName: 'Deploy to Production'
@@ -100,7 +104,7 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yml
+          - template: ./templates/framework-release-steps.yaml
             parameters:
               azureSubscription: 'NameOfYourServiceConnection'
               scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
