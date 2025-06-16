@@ -35,7 +35,7 @@ The PubSub connector will be mainly used to push messages to service bus using t
 * Timeout for Subscribe is set to 75 seconds by default
 * Blob Storage will only be used when message is greater than 256kb. This is configurable at API level.
 * Connectors can both be added using Http+Swagger and Azure App Services connector 
-* Subscribe should always use the LogicAppName as the subscription property. This can be done when using ARM deployments or typed manually 
+* Subscribe should always use the LogicAppName as the subscription property. This can be done when using Bicep deployments or typed manually 
 * Message time to live will be set to 3 months
 
 ### x-ms-workflow-run-id
