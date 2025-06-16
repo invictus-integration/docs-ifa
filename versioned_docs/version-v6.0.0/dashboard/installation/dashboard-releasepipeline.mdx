@@ -2,27 +2,50 @@
 sidebar_class_name: hidden
 ---
 
-import React, { useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react'
 
-export default function VnetToggle() {
-  const [enabled, setEnabled] = useState(false);
+export const ToggleContext = createContext(false)
 
-  useEffect(() => {
-    document.body.classList.toggle('show-vnet', enabled);
-  }, [enabled]);
+export function ToggleProvider({ children }) {
+  const [visible, setVisible] = useState(true)
 
   return (
-    <label className="toggle-container">
+    <ToggleContext.Provider value={{ visible, setVisible }}>
+      {children}
+    </ToggleContext.Provider>
+  )
+}
+
+export function useToggle() {
+  return useContext(ToggleContext)
+}
+
+export function ToggleSwitch() {
+  const { visible, setVisible } = useToggle()
+
+  return (
+    <label className="toggle-container" style={{ cursor: 'pointer' }}>
       <input
         type="checkbox"
+        checked={visible}
         className="toggle-checkbox"
-        checked={enabled}
-        onChange={() => setEnabled(!enabled)}
+        onChange={() => setVisible(!visible)}
+        style={{ marginRight: '0.5rem' }}
       />
       <span className="toggle-slider" />
-      Show VNET Options
+      <strong>Show VNET options</strong>
     </label>
-  );
+  )
+}
+
+export function ToggleSection({ children }) {
+  const { visible } = useToggle()
+  return visible ? <div className="vnet">{children}</div> : null
+}
+
+export function ToggleRow({ children }) {
+  const { visible } = useToggle()
+  return visible ? <tr className="vnet">{children}</tr> : null
 }
 
 # Dashboard Release Pipeline
@@ -53,7 +76,7 @@ resources:
 
 Also make sure to change the bicep template parameters according to your needs.
 
-If you need to overwrite more bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#Bicep-Template-Parameters). 
+If you need to overwrite more bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#bicep-template-parameters). 
 
 Afterwards add the [dashboard.release.yaml](./pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
@@ -98,6 +121,8 @@ The following script arguments are used in the deploy script:
 The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the arguments of the `./Deploy.ps1` script.
 :::
 
+<details>
+<summary>Full YAML task example</summary>
 ```yaml
 - task: AzureCLI@2
   displayName: 'Azure CLI'
@@ -137,39 +162,15 @@ The `AdditionalTemplateParameters` argument are named arguments you can use to o
         -isProvisionedCosmos 1 `
         -flowDataTTLInDays 90
 ```
-
-### Provisioned Throughput vs Serverless Cosmos DB
-
-| **Aspect**               | **Serverless in Production**                                                     | **Provisioned Throughput in Production**                                              |
-| ------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| **Cost-Efficiency**      | Optimized for variable workloads; scales down during low activity to reduce cost | Costs are fixed based on allocated RU/s; autoscale introduces a min-max pricing range |
-| **Traffic Handling**     | Ideal for sporadic or bursty traffic patterns                                    | Suitable for consistently high or predictable workloads                               |
-| **Scalability**          | Auto-scales based on workload; FlowData and WorkFlowEvents most affected         | RU/s can be manually adjusted for high-volume needs                                   |
-| **Usage Suitability**    | Best for unpredictable workloads with fluctuating volume                         | Best for stable, high-throughput scenarios                                            |
-| **Collections Behavior** | FlowData and WorkFlowEvents auto-scale with data insertion                       | FlowData and WorkFlowEvents have fixed RU/s with autoscale range                      |
-
-Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
-
-**Default Settings for Provisioned Throughput**
-
-| Collection    | RU/s          | Autoscale  |
-| ------------- | ------------- | ---------- |
-|Audits|500|No|
-|DashboardSettings|500|No|
-|Users|500|No|
-|Groups|500|No|
-|Statistics|500|No|
-|FolderFlows|500|No|
-|FlowData|2000|Yes|
-|WorkflowEvent|2000|Yes|
-|MessageContent|2000|Yes|
+</details>
 
 ## Bicep Template Parameters
 The below tables lists the parameters accepted by the Bicep template.
 
-<VnetToggle />
+<ToggleProvider>
+  <ToggleSwitch />
 
-## Top-level parameters
+### Top-level parameters
 Resource-independent parameters that affect all resources in the deployed resource group.
 
 | Parameter                              | Required | Default             | Description                       |
@@ -177,18 +178,18 @@ Resource-independent parameters that affect all resources in the deployed resour
 | `resourcePrefix`                       | Yes      |                     | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`) |
 | `devOpsObjectId`                       | Yes      |                     | Object ID of the service principal that's connected to the DevOps service connection, which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
 
-<div class="vnet-row">
-| Parameter                              | Required | Default                        | Description                                                              |
-| -------------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------------------ |
-| **`enableVnetSupport` (VNET)**         | **Yes**  | **`false`**                   | **Used to toggle VNET functionality on or off** |
-| **`vnetResourceGroupName` (VNET)**     | **Yes**  |                               | **The name of the resource group on Azure where the VNET is located** |
-| **`vnetName` (VNET)**                  | **Yes**  |                               | **The name of the VNET resource** |
-| **`privateEndpointSubnetName` (VNET)** | **Yes**  |                               | **The name of the subnet to be used to connect the private endpoint resources** |
-| **`containerAppEnvironmentSubnetName` (VNET)** | **Yes**  |                               | **The name of the subnet to be used to connect the container app environment** |
-| **`caeVnetInfraRgName` (VNET)** | **No**  |**Auto-Generated by Azure**| **Overrides the name of the Azure auto-generated RG for Container App Environment infra** |
-| **`dnsZoneSubscriptionId` (VNET)**     | **No**   | **Subscription ID of scope**  | **The subscription ID of the private DNS zones.** |
-| **`dnsZoneResourceGroupName` (VNET)**  | **No**   | **VNET RG name**              | **The resource group name of where the private DNS zones are located.** |
-</div>
+<ToggleSection>
+| VNET Parameter                  | Required | Default                       | Description                                                              |
+| ------------------------------- | :------: | ----------------------------- | ------------------------------------------------------------------------ |
+| **`enableVnetSupport`**         | **Yes**  | **`false`**                   | **Used to toggle VNET functionality on or off** |
+| **`vnetResourceGroupName`**     | **Yes**  |                               | **The name of the resource group on Azure where the VNET is located** |
+| **`vnetName`**                  | **Yes**  |                               | **The name of the VNET resource** |
+| **`privateEndpointSubnetName`** | **Yes**  |                               | **The name of the subnet to be used to connect the private endpoint resources** |
+| **`containerAppEnvironmentSubnetName`** | **Yes**  |                       | **The name of the subnet to be used to connect the container app environment** |
+| **`caeVnetInfraRgName`**        | **No**  |**Auto-Generated by Azure**| **Overrides the name of the Azure auto-generated RG for Container App Environment infra** |
+| **`dnsZoneSubscriptionId`**     | **No**   | **Subscription ID of scope**  | **The subscription ID of the private DNS zones.** |
+| **`dnsZoneResourceGroupName`**  | **No**   | **VNET RG name**              | **The resource group name of where the private DNS zones are located.** |
+</ToggleSection>
 
 <details>
 <summary>Active Directory parameters</summary>
@@ -210,6 +211,7 @@ Parameters related to the Azure Active Directory where the groups are synced fro
 
 Parameters related to the applications that are deployed, mostly Azure Functions.
 
+### Function names
 | Parameter                                 | Required | Default                                             | Description                                     |
 | ----------------------------------------- | :------: | --------------------------------------------------- | ----------------------------------------------- |
 | `invictusDashboardWebAppName`             | No       | `invictus-{resourcePrefix}-invictusdashboard-v2`    | Name for the dashboard web application          |
@@ -223,10 +225,7 @@ Parameters related to the applications that are deployed, mostly Azure Functions
 | `invictusDatabaseManagerFunctionName`     | No       | `invictus-{resourcePrefix}-database-storeimportjob` | Name for Azure Function                         |
 | `invictusDataFactoryReceiverFunctionName` | No       | `invictus-{resourcePrefix}-datafactoryreceiver`     | Name for Azure Function                         |
 
-| Parameter                                  | Required | Default | Description                                                              |
-| ------------------------------------------ | :------: | ------- | ------------------------------------------------------------------------ |
-| `statisticsCutOffDays`                     | No       | `-3`    | The number of days in the past that homepage statistics will recalculate |
-
+### Function deployment
 | Parameter                           | Required | Default                        | Description                                                   |
 | ----------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------- |
 | `servicePlanName`                   | No       | `invictus-{resourcePrefix}-appplan-linux` | Name for the service plan which will host the APIs |
@@ -240,25 +239,127 @@ Parameters related to the applications that are deployed, mostly Azure Functions
 
 Parameters related to the data that is stored throughout Invictus.
 
-| Parameter                                              | Required | Default                                                  | Description                                                                |
-| ------------------------------------------------------ | :------: | -------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `cosmosAccountName`                                    | No       | `invictus-{resourcePrefix}-cosmos-serverless/provisoned` | Name for Cosmos account                                                    |
-| `cosmosDatabaseName`                                   | No       | `InvictusDashboard`                                      | Name for Cosmos database                                                   |
-| `isProvisionedCosmos`                                  | Yes      | `0` (: `true`)                                             | isProvisionedCosmos true or false                                          |
-| **`cosmosDbSubnets` (VNET)**                           | **Yes**  | **`[]`**                                                | **An array of string. The values need to match the subnet names on the VNET.** |
+### Cosmos
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`cosmosAccountName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-cosmos-serverless/provisoned`</td>
+      <td>Name for Cosmos account</td>
+    </tr>
+    <tr>
+      <td>`cosmosDatabaseName`</td>
+      <td>No</td>
+      <td>`InvictusDashboard`</td>
+      <td>Name for Cosmos database</td>
+    </tr>
+    <tr>
+      <td>`isProvisionedCosmos`</td>
+      <td>Yes</td>
+      <td>`0` (:`true`)</td>
+      <td>`isProvisionedCosmos` true or false</td>
+    </tr>
+    <ToggleRow>
+      <td>**`cosmosDbSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET.**</td>
+    </ToggleRow>
+  </tbody>
+</table>
 
-| Parameter                                              | Required | Default                         | Description
-| ------------------------------------------------------ | :------: | ------------------------------- | --------------------------------------------------------------------------------------- |
-| `storageAccountName`                                   | No       | `invictus{resourcePrefix}store` | Name for the Azure Storage resource. Dashes (-) will be removed from `{resourcePrefix}` |
-| `storageAccountType`                                   | No       | Standard_LRS                    | The Storage account StorageAccountSkuType                                                   |
-| `messageStatusCacheDeleteAfterDays`                    | No       | `30`                            | The number of days without modification for the message status cache to be deleted          |
-| **`storageAccountSubnets` (VNET)**                     | **Yes**  | **`[]`**                        | **An array of string. The values need to match the subnet names on the VNET**               |
-| **`disableStorageAccountPublicNetworkAccess` (VNET)**  | **No**   | **`false`**   | **If true, the Invictus storage account will not be accessible from a public network.**     |
-| **`storageAccountMinimumTLSVersion` (VNET)** | **No**  | **TLS1_2** | **Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2**         |
 
+<details>
+<summary>Provisioned Throughput vs Serverless Cosmos DB</summary>
+| **Aspect**               | **Serverless in Production**                                                     | **Provisioned Throughput in Production**                                              |
+| ------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Cost-Efficiency**      | Optimized for variable workloads; scales down during low activity to reduce cost | Costs are fixed based on allocated RU/s; autoscale introduces a min-max pricing range |
+| **Traffic Handling**     | Ideal for sporadic or bursty traffic patterns                                    | Suitable for consistently high or predictable workloads                               |
+| **Scalability**          | Auto-scales based on workload; FlowData and WorkFlowEvents most affected         | RU/s can be manually adjusted for high-volume needs                                   |
+| **Usage Suitability**    | Best for unpredictable workloads with fluctuating volume                         | Best for stable, high-throughput scenarios                                            |
+| **Collections Behavior** | FlowData and WorkFlowEvents auto-scale with data insertion                       | FlowData and WorkFlowEvents have fixed RU/s with autoscale range                      |
+
+Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
+
+**Default Settings for Provisioned Throughput**
+| Collection    | RU/s          | Autoscale  |
+| ------------- | ------------- | ---------- |
+|Audits|500|No|
+|DashboardSettings|500|No|
+|Users|500|No|
+|Groups|500|No|
+|Statistics|500|No|
+|FolderFlows|500|No|
+|FlowData|2000|Yes|
+|WorkflowEvent|2000|Yes|
+|MessageContent|2000|Yes|
+
+</details>
+
+### Storage account
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`storageAccountName`</td>
+      <td>No</td>
+      <td>`invictus{resourcePrefix}store`</td>
+      <td>Name for the Azure Storage resource. Dashes (-) will be removed from `{resourcePrefix}`</td>
+    </tr>
+    <tr>
+      <td>`storageAccountType`</td>
+      <td>No</td>
+      <td>`Standard_LRS`</td>
+      <td>The Storage account `StorageAccountSkuType`</td>
+    </tr>
+    <tr>
+      <td>`messageStatusCacheDeleteAfterDays`</td>
+      <td>No</td>
+      <td>`30`</td>
+      <td>The number of days without modification for the message status cache to be deleted</td>
+    </tr>
+    <ToggleRow>
+      <td>**`storageAccountSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+    <ToggleRow>
+      <td>**`disableStorageAccountPublicNetworkAccess`**</td>
+      <td>**No**</td>
+      <td>**`false`**</td>
+      <td>**If true, the Invictus storage account will not be accessible from a public network.**</td>
+    </ToggleRow>
+    <ToggleRow>
+      <td>**`storageAccountMinimumTLSVersion`**</td>
+      <td>**No**</td>
+      <td>**`TLS1_2`**</td>
+      <td>**Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2**</td>
+    </ToggleRow>
+  </tbody>
+</table>
+
+### Cleaning data
 | Parameter                                              | Required | Default | Description                                            |
 | ------------------------------------------------------ | :------: | ------- | ------------------------------------------------------ |
 | `flowDataTTLInDays`                                    | Yes      |         | A positive integer value which represents the amount of days flow data can live in the database |
+| `statisticsCutOffDays`                     | No       | `-3`    | The number of days in the past that homepage statistics will recalculate |
 | `cleanupJobIntervalInMinutes`                          | No       |  `1440` | Interval in minutes for the cleanup job                |
 | `workFlowCleanupJobIntervalInMinutes`                  | No       |  `180`  | Interval in minutes for the workflowevent cleanup job  |
 | `dataWorkFlowCleanupMaxRetentionDays`                  | No       |  `90`   | Max number of days the WorkFlowEvent data is stored    |
@@ -270,23 +371,105 @@ Parameters related to the data that is stored throughout Invictus.
 
 Parameters related to the messaging resources that import the flow information into storage.
 
-| Parameter                           | Required | Default                         | Description                                              |
-| ----------------------------------- | :------: | ------------------------------- | -------------------------------------------------------- |
-| `serviceBusNamespaceName`           | No       | `invictus-{resourcePrefix}-sbs` | Name for the Service Bus Namespace resource |
-| `serviceBusSkuName`                 | No       | Standard or Premium if VNET enabled | Name for the Service Bus SKU |
-| **`serviceBusSubnets` (VNET)**      | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
+### Service Bus
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`serviceBusNamespaceName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-sbs`</td>
+      <td>Name for the Service Bus Namespace resource</td>
+    </tr>
+    <tr>
+      <td>`serviceBusSkuName`</td>
+      <td>No</td>
+      <td>Standard or Premium if VNET enabled</td>
+      <td>Name for the Service Bus SKU</td>
+    </tr>
+    <ToggleRow>
+      <td>**`serviceBusSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+  </tbody>
+</table>
 
-| Parameter                           | Required | Default                             | Description                               |
-| ----------------------------------- | :------: | ----------------------------------- | ----------------------------------------- |
-| `eventHubNamespaceName`             | No       | `invictus-{resourcePrefix}-evnm`    | Name for the Event Hub Namespace resource |
-| `eventHubSkuName`                   | No       | Basic                               | The SKU name of the EventHub Namespace    |
-| `eventHubSkuTier`                   | No       | Basic                               | The Tier name for the EventHub Namespace  |
-| `eventHubSkuCapacity`               | No       | `1`                                 | The SKU capacity for the EventHub Namespace |
-| `eventHubAutoInflate`               | No       | `false`                             | The EventHub setting to enable auto-inflate |
-| `eventHubMaxThroughputUnits`        | No       | `0`                                 | Max throughput setting for EventHub         |
-| `eventHubMessageRetentionInDays`    | No       | `1`                                 | The number of days EventHub will retain messages. Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention. |
-| **`eventHubSubnets` (VNET)**        | **Yes** | `[]`                               | **An array of string. The values need to match the subnet names on the VNET** |
+### Event Hubs
+#### Namespace
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`eventHubNamespaceName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-evnm`</td>
+      <td>Name for the Event Hub Namespace resource</td>
+    </tr>
+    <tr>
+      <td>`eventHubSkuName`</td>
+      <td>No</td>
+      <td>Basic</td>
+      <td>The SKU name of the EventHub Namespace</td>
+    </tr>
+    <tr>
+      <td>`eventHubSkuTier`</td>
+      <td>No</td>
+      <td>Basic</td>
+      <td>The Tier name for the EventHub Namespace</td>
+    </tr>
+    <tr>
+      <td>`eventHubSkuCapacity`</td>
+      <td>No</td>
+      <td>`1`</td>
+      <td>The SKU capacity for the EventHub Namespace</td>
+    </tr>
+    <tr>
+      <td>`eventHubAutoInflate`</td>
+      <td>No</td>
+      <td>`false`</td>
+      <td>The EventHub setting to enable auto-inflate</td>
+    </tr>
+    <tr>
+      <td>`eventHubMaxThroughputUnits`</td>
+      <td>No</td>
+      <td>`0`</td>
+      <td>Max throughput setting for EventHub</td>
+    </tr>
+    <tr>
+      <td>`eventHubMessageRetentionInDays`</td>
+      <td>No</td>
+      <td>`1`</td>
+      <td>
+        The number of days EventHub will retain messages.<br />
+        Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention.
+      </td>
+    </tr>
+    <ToggleRow>
+      <td>**`eventHubSubnets`**</td>
+      <td>**Yes**</td>
+      <td>`[]`</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+  </tbody>
+</table>
 
+#### Hubs
 | Parameter                           | Required | Default                                          | Description                                             |
 | ----------------------------------- | :------: | ------------------------------------------------ | ------------------------------------------------------- |
 | `eventHubName`                      | No       | `invictus-{resourcePrefix}-evhb`                 | Name for the Event Hub created on the Namespace |
@@ -304,12 +487,42 @@ Parameters related to the messaging resources that import the flow information i
 
 Parameters related to the security of the deployed applications. 
 
-| Parameter                           | Required | Default                         | Description                                |
-| ----------------------------------- | :------: | ------------------------------- | ------------------------------------------ |
-| `keyVaultName`                      | No       | `invictus-{resourcePrefix}-vlt` | Name for the Key Vault Service Namespace resource |
-| `keyVaultEnablePurgeProtection`     | No       | `null`                          | If true, enables key vault purge protection. Once enabled, this property can never be disabled.|
-| `jwtSecretToken`                    | No       | Generated on first use          | JWT Secret used for login                  |
-| **`keyVaultSubnets` (VNET)**        | **Yes**  | **`[]`**                       | **An array of string. The values need to match the subnet names on the VNET** |
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`keyVaultName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-vlt`</td>
+      <td>Name for the Key Vault Service Namespace resource</td>
+    </tr>
+    <tr>
+      <td>`keyVaultEnablePurgeProtection`</td>
+      <td>No</td>
+      <td>`null`</td>
+      <td>If true, enables key vault purge protection. Once enabled, this property can never be disabled.</td>
+    </tr>
+    <tr>
+      <td>`jwtSecretToken`</td>
+      <td>No</td>
+      <td>Generated on first use</td>
+      <td>JWT Secret used for login</td>
+    </tr>
+    <ToggleRow>
+      <td>**`keyVaultSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+  </tbody>
+</table>
 
 </details>
 
@@ -366,3 +579,5 @@ Each of the above parameters accepts an object:
 | `memoryResources`  | The amount of memory resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).    |
 
 </details>
+
+</ToggleProvider>

@@ -149,20 +149,12 @@ nav.menu {
   display: none !important;
 }
 
-.vnet table {
-    background-color: #e7fbff !important;
+.vnet table, .vnet td {
+    background-color: #8cd0de !important;
 }
 
-html[data-theme='dark'] .vnet table {
-  background-color: #3e5a5f !important;
-}
-
-.vnet-row {
-  display: none;
-}
-
-body.show-vnet .vnet-row {
-  display: table-row;
+html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
+  background-color: #1c6d7c !important;
 }
 
 .toggle-container {
@@ -172,6 +164,10 @@ body.show-vnet .vnet-row {
   cursor: pointer;
   user-select: none;
   font-size: 1rem;
+}
+
+.toggle-text {
+  display: contents;
 }
 
 .toggle-checkbox {
@@ -197,12 +193,4 @@ body.show-vnet .vnet-row {
   background-color: white;
   border-radius: 50%;
   transition: transform 0.3s;
-}
-
-.toggle-checkbox:checked + .toggle-slider {
-  background-color: #277983;
-}
-
-.toggle-checkbox:checked + .toggle-slider::before {
-  transform: translateX(24px);
 }
