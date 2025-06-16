@@ -196,11 +196,10 @@ We need to replace the following components with the new containerized API's.
 * [Migrating Matrix v1 to Transco v2](../framework/transcoV2.md#migrating-matrix-v1-to-transco-v2)
 
 ## Common Migration Issues
-- **Pipeline Error**: `Operating system not supported`
+:::danger[pipeline error: `Operating system not supported`]
+Your release pipeline agent must be a linux agent, for example `vmImage: 'ubuntu-latest'`
+:::  
 
-  Your release pipeline agent must be a linux agent, for example `vmImage: 'ubuntu-latest'`
-  
-
-- **Pipeline Error**: `Invalid ContainerApp name....The length must be between 2 and 32 characters inclusive.`
-
-  If you are overriding the default app names, the provided name might be too long, as the container app name limit is lower than for function apps.
+:::danger[Pipeline Error: `Invalid ContainerApp name....The length must be between 2 and 32 characters inclusive.`]
+If you are overriding the default app names, the provided name might be too long, as the container app name limit is lower than for function apps.
+:::
