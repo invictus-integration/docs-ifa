@@ -194,3 +194,11 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
   border-radius: 50%;
   transition: transform 0.3s;
 }
+
+.toggle-checkbox:checked + .toggle-slider {
+  background-color: #277983;
+}
+
+.toggle-checkbox:checked + .toggle-slider::before {
+  transform: translateX(24px);
+}
