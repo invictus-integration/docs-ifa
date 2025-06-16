@@ -2,51 +2,7 @@
 sidebar_class_name: hidden
 ---
 
-import { createContext, useContext, useState } from 'react'
-
-export const ToggleContext = createContext(false)
-
-export function ToggleProvider({ children }) {
-  const [visible, setVisible] = useState(false)
-
-  return (
-    <ToggleContext.Provider value={{ visible, setVisible }}>
-      {children}
-    </ToggleContext.Provider>
-  )
-}
-
-export function useToggle() {
-  return useContext(ToggleContext)
-}
-
-export function ToggleSwitch() {
-  const { visible, setVisible } = useToggle()
-
-  return (
-    <label className="toggle-container" style={{ cursor: 'pointer' }}>
-      <input
-        type="checkbox"
-        checked={visible}
-        className="toggle-checkbox"
-        onChange={() => setVisible(!visible)}
-        style={{ marginRight: '0.5rem' }}
-      />
-      <span className="toggle-slider" />
-      <strong>Show VNET options</strong>
-    </label>
-  )
-}
-
-export function ToggleSection({ children }) {
-  const { visible } = useToggle()
-  return visible ? <div className="vnet">{children}</div> : null
-}
-
-export function ToggleRow({ children }) {
-  const { visible } = useToggle()
-  return visible ? <tr className="vnet">{children}</tr> : null
-}
+import { ToggleSwitch, ToggleSection, ToggleRow, ToggleProvider } from '@site/src/components/VnetToggleSwitch';
 
 # Dashboard Release Pipeline
 
@@ -60,7 +16,7 @@ Create a variable group named `{prefix}.Invictus.{stage}` for all the stages (en
 
 Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
 
-> ![Library Security](/images/ifa-library-security.png)
+![Library Security](/images/ifa-library-security.png)
 
 ## YAML Release Pipeline
 This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the [dashboard.release.yaml](./pipelines/dashboard.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
@@ -80,10 +36,10 @@ If you need to overwrite more bicep Template parameters make sure to add this to
 
 Afterwards add the [dashboard.release.yaml](./pipelines/dashboard.release.yaml) in your DevOps environment as a pipeline.
 
-## Deploy Script Arguments
-The following script arguments are used in the deploy script:
+## Deploy Script Parameters
+The following script parameters are used in the deploy script:
 
-### Mandatory Arguments
+### Mandatory Parameters
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
 [Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
@@ -107,10 +63,10 @@ The following script arguments are used in the deploy script:
 | `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is 0, the process will be skipped. See the [migration guide](./dashboard-migration.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to 0 so that the migration process is skipped for all subsequent releases. |
 | `flowDataTTLInDays` | Amount of days flow data can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md). |
 | `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
-| `identityProviderClientSecret` | See [Container Authentication]. |
 | `identityProviderApplicationId` | See [Container Authentication]. |
+| `identityProviderClientSecret` | See [Container Authentication]. |
 
-### Optional Arguments
+### Optional Parameters
 | Argument name                  | Default value | Description  |
 | ------------------------------ | --------------| ------------ |
 | `resourceGroupLocation`        | 'West Europe' | Azure location where resources should be deployed |
@@ -118,7 +74,7 @@ The following script arguments are used in the deploy script:
 | `additionalTemplateParameters` | []            | Additional named parameters for the Bicep template you wish to override. More on this below. |
 
 :::info[override [bicep parameters](#bicep-template-parameters)]
-The `AdditionalTemplateParameters` argument are named arguments you can use to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the arguments of the `./Deploy.ps1` script.
+The `AdditionalTemplateParameters` can be used to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the parameters of the `./Deploy.ps1` script.
 :::
 
 <details>
@@ -145,6 +101,7 @@ The `AdditionalTemplateParameters` argument are named arguments you can use to o
       & $scriptPath `
         -artifactsPath $artifactsPath `
         -acrPath 'invictusreleases.azurecr.io' `
+        -useBeta false `
         -acrUsername 'admin' `
         -acrPassword '<pass>' `
         -resourcePrefix 'dev' `
