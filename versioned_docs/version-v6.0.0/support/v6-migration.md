@@ -1,16 +1,15 @@
-﻿# v6 Migration Guide
-
+﻿# Migrating to Invictus v6
 This document will guide you through the process of migrating to version 6 of Invictus for Azure.
 
 ## Preparing Your Environment
-
 In version 6 we are using containerized API's instead of Web API's and Azure Functions, this means that the endpoints for the Invictus for Azure Dashboard and API's such as the PubSub and Transco components will change.
 
 Furthermore, the PubSub v1, Transco v1 and Matrix v1 components have been deprecated and will not be available in version 6 anymore.
 
 To prepare your environment for the migration, follow these steps.
 
-### Set up new Azure Devops libraries for Invictus for Azure version 6
+<details>
+<summary><h3 style={{ margin:0 }}>Set up new Azure Devops libraries for Invictus for Azure version 6</h3></summary>
 
 This is necessary to ensure that both the new and old versions of Invictus for Azure can coexist in the same environment.
 
@@ -19,24 +18,34 @@ For example, if you have a library with the name `invictus.{environment}` create
 This approach makes sure that your current interfaces can still use the old version of Invictus for Azure during the migration, while new and migrated interfaces can use version 6.
 
 Once all interfaces have been migrated you can rename the libraries back to `invictus.{environment}` and change the pipelines accordingly.
+</details>
 
-### Identify all the locations where the PubSub v1, Transco v1 and Matrix v1 components are used
+<details>
+<summary><h3 style={{ margin:0 }}>Identify all the locations where the PubSub v1, Transco v1 and Matrix v1 components are used</h3></summary>
 
 Create a list of locations where the PubSub v1, Transco v1 and Matrix v1 components are used in your interfaces. This will help you to identify which interfaces need to be migrated.
+</details>
 
-### Create an Application Registration in Active Directory
+<details>
+<summary><h3 style={{ margin:0 }}>Create an Application Registration in Active Directory</h3></summary>
 
-Go to Active Directory and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's. 👉🏼 A detailed description for this can be found [here](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). 
+Go to Active Directory and create a new application registration for the Invictus for Azure API's. This application registration will be used to authenticate calls to the Invictus for Azure API's.
+
+> 🔗 A detailed description for this can be found [here](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad). 
 
 Create a client secret and make sure to save the application id and client secret as you will need them later.
+</details>
 
 ## Deploying version 6 of Invictus for Azure
 
-### Update Invictus-GetSources.ps1
+<details>
+<summary><h3 style={{ margin:0 }}>Update Invictus-GetSources.ps1</h3></summary>
 
 Update the [`Invictus-GetSources.ps1`](../dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
+</details>
 
-### Update Your Invictus for Azure Pipelines
+<details>
+<summary><h3 style={{ margin: 0}}>Update Your Invictus for Azure Pipelines</h3></summary>
 
 The Azure build and release pipelines have been overhauled and you will need to update your pipelines to match these changes. 
 
@@ -52,8 +61,10 @@ The newly updated pipelines and template can be found here:
 | ---------------- | ---------------------- | ------------------------ |
 | Dashboard        | [dashboard.build.yaml](../dashboard/installation/pipelines/dashboard.build.yaml) | [dashboard.release.yaml](../dashboard/installation/pipelines/dashboard.release.yaml) |
 | Framework        | [framework.build.yaml](../framework/installation/pipelines/framework.build.yaml) | [framework.release.yaml](../framework/installation/pipelines/framework.release.yaml) |
+</details>
 
-### Deploy Invictus for Azure v6
+<details>
+<summary><h3 style={{ margin: 0 }}>Deploy Invictus for Azure v6</h3></summary>
 
 Now comes the time to deploy Invictus for Azure v6. Run your Invictus for Azure pipelines 🚀
 
@@ -69,7 +80,8 @@ After deployment the following components can be removed:
 - `invictus-{prefix}-appplan-linux`
 - `invictus-{prefix}-importjobappins`
 
-⚠️ Only after migrating all of your interfaces to version 6 of Invictus for Azure you can remove the following components:
+:::warning
+Only after migrating all of your interfaces to version 6 of Invictus for Azure you can remove the following components:
 - `invictus-{prefix}-matrixapp`
 - `invictus-{prefix}-pubsubapp`
 - `invictus-{prefix}-transcoapp`
@@ -86,7 +98,9 @@ After deployment the following components can be removed:
 - `invictus-{prefix}-appplan`
 - `invictus-{prefix}-consumptionplan`
 
-Ofcourse, if you are not using certain components you can remove these already since no migration is necessary.
+If you are not using certain components you can remove these already since no migration is necessary.
+:::
+</details>
 
 ### Additional steps
 - Assign the role assignments as shown in this [guide](../dashboard/accesscontrolrights.md) for the new DashboardGateway and FlowHandler container apps.
@@ -96,11 +110,8 @@ Ofcourse, if you are not using certain components you can remove these already s
 
 ## Migrating Your Interfaces
 
-### Update Devops Library References
-
-Make sure that your Devops pipelines are using the new libraries that you created in [this](#Set-up-new-Azure-Devops-libraries-for-Invictus-for-Azure-version-6) section.
-
-### Update Parameters Files
+<details>
+<summary><h3 style={{ margin: 0 }}>Update Logic Apps Parameters Files</h3></summary>
 
 Make sure to update your Logic App parameters files to represent the new components.
 
@@ -152,8 +163,10 @@ Make sure to update your Logic App parameters files to represent the new compone
     }
 }
 ```
+</details>
 
-### Invictus API Authentication
+<details>
+<summary><h3 style={{ margin:0 }}>Invictus API Authentication</h3></summary>
 
 The Invictus for Azure API's now require an access token to be passed in the Authorization header of the request instead of a function key. This can be implemented on the HTTP action in your Logic App as follows:
 ``` json
@@ -166,23 +179,17 @@ The Invictus for Azure API's now require an access token to be passed in the Aut
 
 In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the [newly created App Registration](#create-an-application-registration-in-active-directory) as the audience. 
 
-💡 It is also possible to use the auto created Invictus for Azure user assigned managed identity, but keep in mind that Logic Apps only supports a single user assigned managed identity so if you already have one in your environment make sure to keep using that one.
+:::tip
+It is also possible to use the auto created Invictus for Azure user assigned managed identity, but keep in mind that Logic Apps only supports a single user assigned managed identity so if you already have one in your environment make sure to keep using that one.
+:::
+</details>
 
 ### Deprecated Components
+We need to replace the following components with the new containerized API's. 
 
-We need to replace the PubSub v1, Transco v1 and Matrix v1 components with the new containerized API's. 
-
-#### Migrating PubSub v1 to v2
-
-See the documentation [here](../framework/pubsubV2.md#migrating-pubsub-v1-to-v2).
-
-#### Migrating Transco v1 to v2
-
-See the documentation [here](../framework/transcoV2.md#migrating-transco-v1-to-v2).
-
-#### Migrating Matrix v1 to Transco v2
-
-See the documentation [here](../framework/transcoV2.md#migrating-matrix-v1-to-transco-v2).
+* [Migrating PubSub v1 to v2](../framework/pubsubV2.md#migrating-pubsub-v1-to-v2)
+* [Migrating Transco v1 to v2](../framework/transcoV2.md#migrating-transco-v1-to-v2)
+* [Migrating Matrix v1 to Transco v2](../framework/transcoV2.md#migrating-matrix-v1-to-transco-v2)
 
 ## Common Migration Issues
 - **Pipeline Error**: `Operating system not supported`
