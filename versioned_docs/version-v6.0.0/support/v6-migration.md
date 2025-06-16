@@ -1,4 +1,8 @@
-﻿# Migrating to Invictus v6
+﻿---
+sidebar_label: Migrating to v6
+---
+
+# Migrating to Invictus v6
 This document will guide you through the process of migrating to version 6 of Invictus for Azure.
 
 ## Preparing Your Environment
