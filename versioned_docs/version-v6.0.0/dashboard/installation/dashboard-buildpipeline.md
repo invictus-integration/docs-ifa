@@ -29,4 +29,4 @@ Next step is to add a YAML pipeline to build the Invictus for Azure Dashboard. C
     - /src/customer.azure.invictus
 ```
 
-Afterwards add it in your DevOps environment as a pipeline. You may now proceed to the [release pipeline](dashboard-releasepipeline.md).
+Afterwards add it in your DevOps environment as a pipeline. You may now proceed to the [release pipeline](dashboard-releasepipeline.mdx).

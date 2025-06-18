@@ -148,3 +148,57 @@ nav.menu {
 .hidden {
   display: none !important;
 }
+
+.vnet table, .vnet td {
+    background-color: #8cd0de !important;
+}
+
+html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
+  background-color: #1c6d7c !important;
+}
+
+.toggle-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1rem;
+}
+
+.toggle-text {
+  display: contents;
+}
+
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-slider {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  background-color: #ccc;
+  border-radius: 9999px;
+  transition: background-color 0.3s;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggle-checkbox:checked + .toggle-slider {
+  background-color: #277983;
+}
+
+.toggle-checkbox:checked + .toggle-slider::before {
+  transform: translateX(24px);
+}
