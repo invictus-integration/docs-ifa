@@ -15,11 +15,11 @@ sidebar_class_name: hidden
 
 ## Introduction
 
-The Transco connector will be mainly used to promote properties from the database, it will use the content or the context to form the query and retrieve the data from the specified tables. The Transco now also support JSON content and will promote any key & value to the specified JPath. All configs are to be stored in the storage container setup by the Resources ARM Template. The container which will house all configs is named: `transcoconfigsstore`.
+The Transco connector will be mainly used to promote properties from the database, it will use the content or the context to form the query and retrieve the data from the specified tables. The Transco now also support JSON content and will promote any key & value to the specified JPath. All configs are to be stored in the storage container setup by the Resources Bicep Template. The container which will house all configs is named: `transcoconfigsstore`.
 
 This container will be made available on Startup of the Transco API. All Logic apps using this connector will have a dropdown available which loads all configs located in the storage blob container.
 
-All technical logs are pushed to Application Insights, the setting for this can be found in the AppSettings of the API and can be switched to any other AppInsights. Authentication between the API and Key Vault will be handled using Managed Service Identity. This is all setup through the ARM template release.
+All technical logs are pushed to Application Insights, the setting for this can be found in the AppSettings of the API and can be switched to any other AppInsights. Authentication between the API and Key Vault will be handled using Managed Service Identity. This is all setup through the Bicep template release.
 
 For more information about the matrix functionality, follow the guides in the below pages:
 
