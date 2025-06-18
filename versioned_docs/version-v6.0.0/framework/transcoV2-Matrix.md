@@ -2,13 +2,7 @@
 sidebar_class_name: hidden
 ---
 
-# Transco V2 - Matrix Functionality
-
-Matrix functionality has been rewritten in .NET 6.0 to modernize its capabilities. This functionality has now been included within the Transco V2 function, instead of its own standalone API.
-
-This functionality is used to promote properties from the content and from an SQL DB to the context. Unlike the older version of Matrix. a dedicated Matrix config file is no longer required as this functionality has been moved to the Transco configs and endpoints.
-
-## Basic Promotion
+# Transco V2 - Basic Matrix Promotion
 The basic promote is a simple way of promoting values to the context. This version accept a simple list of parameters and promotes them to the Context. Values are not required, any values not supplied will not be present in the response object and will be ignored.
 
 The following endpoint in the TranscoV2 function is used for basic promotion
