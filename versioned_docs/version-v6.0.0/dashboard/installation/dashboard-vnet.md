@@ -46,9 +46,9 @@ If the Invictus resources and the VNET are on different resource groups, then th
 
 ## Release Pipeline Changes
 
-The release pipeline remains the same as explained [here](dashboard-releasepipeline.md), but with a set of VNET specific parameters. The `enableVnetSupport` parameter must be set to `$true` to enable the functionality. The name of the resource group containing the VNET, as well as the VNET name itself must be passed to the `vnetResourceGroupName` and `vnetName` parameters. An array containing the names of the desired subnets must be passed to the `keyVaultSubnets`, `storageAccountSubnets`, `serviceBusSubnets`, `cosmosDbSubnets`, `eventHubSubnets` parameters. You will also need to pass the subnet names to connect the Container App Environment and private endpoints. These parameters are `containerAppEnvironmentSubnetName`, `privateEndpointSubnetName`.
+The release pipeline remains the same as explained [here](dashboard-releasepipeline.mdx), but with a set of VNET specific parameters. The `enableVnetSupport` parameter must be set to `$true` to enable the functionality. The name of the resource group containing the VNET, as well as the VNET name itself must be passed to the `vnetResourceGroupName` and `vnetName` parameters. An array containing the names of the desired subnets must be passed to the `keyVaultSubnets`, `storageAccountSubnets`, `serviceBusSubnets`, `cosmosDbSubnets`, `eventHubSubnets` parameters. You will also need to pass the subnet names to connect the Container App Environment and private endpoints. These parameters are `containerAppEnvironmentSubnetName`, `privateEndpointSubnetName`.
 
-A full list of VNET parameters can be found [here](dashboard-releasepipeline.md).
+A full list of VNET parameters can be found [here](dashboard-releasepipeline.mdx).
 
 ### Full Deploy Script Parameters Example
 

@@ -14,7 +14,7 @@ Follow [this guide](./dashboard-buildpipeline.md) to setup your build in Azure D
 
 ## 3. Release Pipeline
 
-Follow [this guide](./dashboard-releasepipeline.md) to setup your release in Azure DevOps.
+Follow [this guide](./dashboard-releasepipeline.mdx) to setup your release in Azure DevOps.
 
 ## 4. Setup
 

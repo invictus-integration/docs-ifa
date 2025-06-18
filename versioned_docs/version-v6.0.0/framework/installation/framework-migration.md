@@ -10,11 +10,11 @@ This document will guide you through the process of migrating the build & releas
 
 Nothing changes for the build pipeline.
 
-The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (powershells, resources, etc..), which greatly simplyfies the release pipeline.
+The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (scripts, resources, etc..), which greatly simplifies the release pipeline.
 
 ## Release Pipeline
 
-The task group is now replaced by a single Azure Powershell task included in the build artifacts. Please refer to the [release pipeline](framework-releasepipeline.md) for more information.
+The task group is now replaced by a single Azure Powershell task included in the build artifacts. Please refer to the [release pipeline](framework-releasepipeline.mdx) for more information.
 
 The following task group parameters should be used as the powershell's arguments:
 
