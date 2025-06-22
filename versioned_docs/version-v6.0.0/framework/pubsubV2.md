@@ -22,7 +22,7 @@ Invictus provides a solution called the PubSub, that allows Azure Service Bus to
 ## ➡️ Publish single message
 The `/api/Publish` endpoint allows users to send a single message to the configured Azure Service Bus topic (default: `pubsubv2router`) where subscribers are listening to.
 
-The following request properties are available during publication:
+The following request properties must/can be supplied:
 
 [`Body`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.body?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-body
 [`ApplicationProperties`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.applicationproperties?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-applicationproperties
@@ -57,7 +57,7 @@ The endpoint will respond with `202 Accepted`, if the message got published succ
 ## ⬅️ Subscribe for messages
 The `/api/Subscribe` endpoint allows users to periodically ask for any available published messages on the configured Azure Service Bus topic (default: `pubsubv2router`).
 
-The following request properties are available during subscription:
+The following request properties must/can be supplied:
 
 [`SubscriptionName`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.createsubscriptionoptions.subscriptionname?view=azure-dotnet#azure-messaging-servicebus-administration-createsubscriptionoptions-subscriptionname
 [`SqlExpression`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.sqlrulefilter.sqlexpression?view=azure-dotnet#azure-messaging-servicebus-administration-sqlrulefilter-sqlexpression
@@ -127,7 +127,7 @@ Because messages can be 'acknowledged' separately from the location where it is 
 ## ✔️ Acknowledge message
 The `/api/Acknowledge` endpoint allows users to 'settle' a previously received message via the [`/api/Subscribe` endpoint](#️-subscribe-for-messages). The **sequence number** of the message is required to run this operation.
 
-The following request properties are available during acknowledgement:
+The following request properties must/can be supplied:
 
 [`CreateReceiver`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusclient.createreceiver?view=azure-dotnet#azure-messaging-servicebus-servicebusclient-createreceiver(system-string-system-string)
 [Message settlement]: https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement
