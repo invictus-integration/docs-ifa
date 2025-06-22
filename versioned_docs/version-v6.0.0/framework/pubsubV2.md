@@ -15,7 +15,7 @@ Invictus provides a solution called the PubSub, that allows Azure Service Bus to
 ## Available endpoints
 * [`/api/Publish`](#️-publish-single-message): by sending a HTTP request with a custom content, it places a message on an Azure Service Bus topic.
 * [`/api/Subscribe`](#️-subscribe-for-messages): by sending a HTTP request with a specified Azure Service Bus topic subscription name, it response available messages.
-* [`/api/Acknowledge`](#-acknowledge-message): by sending a HTTP request with a specified message sequence number, it settles the Azure Service Bus message.
+* [`/api/Acknowledge`](#️-acknowledge-message): by sending a HTTP request with a specified message sequence number, it settles the Azure Service Bus message.
 
 ![PubSub pseudo Logic App diagram](/images/framework/pseudo-logic-app-w-pubsub.png)
 
