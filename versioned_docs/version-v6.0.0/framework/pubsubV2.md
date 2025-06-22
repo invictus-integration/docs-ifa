@@ -164,7 +164,7 @@ The following request properties are available during acknowledgement:
 | `pubSubV2TopicName`          | `pubsubv2router`    | Name of Azure Service Bus topic that acts as message broker for the PubSub V2 component. |.
 | `approvedMessageSizeInBytes` | `200000` (`200 KB`) | Threshold when Azure Service Bus messages' contents should be saved to Blob Storage, a.k.a. claim-checked. |
 | `blobContainerPrefix`        | `invictus` (final container name: `{blobContainerPrefix}{pubSubV2TopicName}`) | Prefix of the Azure Blob Storage container that gets created when messages are to big to be routed via Service Bus and gets saved in a container instead, a.k.a. claim-checked. |
-| `serviceBusMessageTimeToLiveMinutes` | `30 days` | Period the published message should be active on the Azure Service Bus topic (translates to [TimeToLive](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.timetolive?view=azure-dotnet)).
+| `serviceBusMessageTimeToLiveMinutes` | `30 days` | Period the published message should be active on the Azure Service Bus topic (translates to [`TimeToLive`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.timetolive?view=azure-dotnet)).
 | `pubSubSubscriptionLockTimeoutInMinutes` | `1 min` | Duration of the peek lock receive, see [`LockDuration`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.createsubscriptionoptions.lockduration?view=azure-dotnet). |
 </details>
 
