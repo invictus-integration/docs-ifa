@@ -28,4 +28,4 @@ Next step is to add YAML pipelines to build the Invictus for Azure Framework. Ch
     - /src/customer.azure.invictus
 ```
 
-Afterwards add the [framework.build.yaml](./pipelines/framework.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](framework-releasepipeline.md)
+Afterwards add the [framework.build.yaml](./pipelines/framework.build.yaml) in your DevOps environment as a pipeline, once you've saved the build pipeline you can create the [release pipeline](framework-releasepipeline.mdx)
