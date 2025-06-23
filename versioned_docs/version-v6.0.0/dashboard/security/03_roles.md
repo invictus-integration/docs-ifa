@@ -32,4 +32,4 @@ Permissions in the Invictus Dashboard are separated into two categories: user ro
   | Operations on flows*     | 🔴       | 🟢        | 🟢             |
   | View folder/flows        | 🟢       | 🟢        | 🟢             |
 
-> \* *Flows originating from LogicApps workflows can be resubmitted, resumed, and ignored via the Dashboard.*
+> \* *Flows originating from Azure Logic Apps workflows can be resubmitted, resumed, and ignored via the Dashboard.*

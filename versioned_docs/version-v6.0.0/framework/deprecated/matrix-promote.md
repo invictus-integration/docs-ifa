@@ -29,7 +29,7 @@ The below table applied to: ConversationId, CorrelationId, BatchId
 ## Creating a new Logic App & Using Matrix Connectors
 
 1. Start by creating a new Blank Logic App From Azure Portal
-2. Click on Edit to open the LogicApp Designer, if asked what type of template you want, choose blank
+2. Click on Edit to open the Azure Logic App Designer, if asked what type of template you want, choose blank
 
    ![template](/images/pubsub-template.png)
 
