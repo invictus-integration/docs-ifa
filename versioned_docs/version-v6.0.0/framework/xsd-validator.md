@@ -59,7 +59,7 @@ The following Bicep parameters control the inner workings of the **XSD Validator
 
 | Bicep parameter | Default | Description |
 | --------------- | ------- | ----------- |
-| `storageAccountName` | `invictus{resourcePrefix}store` | The name of the Azure Storage Account where the `xsdvalidatorstore` Azure Blob Storage container will be located (used by other Framework components as well). |
+| `storageAccountName` | `invictus{resourcePrefix}store` | The name of the Azure Storage Account (used by other Framework components as well) where the `xsdvalidatorstore` Azure Blob Storage container will be located. |
 | `xsdValidatorScaling` | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
 | `xsdValidatorFunctionName` | `inv-${resourcePrefix}-xsdvalidator` | The name of the Azure Container App to be created for the **XSD Validator** component. |
 </details>
