@@ -17,7 +17,7 @@ At the time of writing, there is no built-in way in Azure Logic Apps to 'control
 ![Pseudo Azure Logic App setup with Time Sequencer component](/images/framework/pseudo-logic-app-w-time-sequencer.png)
 
 ## Wait for execution
-By using an Azure Logic Apps [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook?tabs=standard#add-an-http-webhook-trigger), the **Time Sequencer** component can queue a workflow run signal the run when it can continue. Determining the order of workflow runs can be achieved by passing a custom `Timestamp` with the request body.
+By using an Azure Logic Apps [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook?tabs=standard#add-an-http-webhook-trigger) to send a HTTP POST request to `/api/WaitForExecution` endpoint, the **Time Sequencer** component can queue a workflow run signal the run when it can continue. Determining the order of workflow runs can be achieved by passing a custom `Timestamp` with the request body.
 
 The following request parameters need to be supplied in the request body:
 
