@@ -53,7 +53,7 @@ Referenced XSD schema files should be uploaded to the Azure Blob Storage contain
 ## Customization
 
 <details>
-<summary>**Affected Bicep parameters**</summary>
+<summary>**Related Bicep parameters**</summary>
 
 The following Bicep parameters control the inner workings of the **XSD Validator** component. See the [deployment of the Invictus Framework](./installation/framework-releasepipeline.mdx) to learn more.
 
