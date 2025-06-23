@@ -6,7 +6,7 @@ sidebar_class_name: hidden
 
 ## How to use this feature
 
-From the Invictus dashboard, navigate to the sidebar, and create a new flow/edit a new flow as in the following images:
+From the Invictus Dashboard, navigate to the sidebar, and create a new flow/edit a new flow as in the following images:
 
 _Creating a new flow_
 
