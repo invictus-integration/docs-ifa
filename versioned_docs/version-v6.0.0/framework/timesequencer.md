@@ -44,7 +44,7 @@ Signaling completion happens with a HTTP POST request to the `/api/CompleteExecu
 The **Time Sequencer** component stores the Azure Logic App workflow 'sequences' in an Azure Blob Storage container, called `invictustimesequencer`. The following policy rules are currently hardcoded on the Azure Storage Account in regards of cleaning these sequences:
 * **Move to cool storage**: greater than `10 days` after modification.
 * **Delete the blob**: greater than `60 days` after modification.
-* **Delete blob shapshot**: greater than `90 days` after creation.
+* **Delete blob snapshot**: greater than `90 days` after creation.
 
 🔗 [More info on Azure Storage Account policies](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-configure?tabs=azure-portal)
 :::
