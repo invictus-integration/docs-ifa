@@ -1,4 +1,4 @@
-# Import flow traces programmatically via EventHubs
+# Import flow traces programmatically via Azure Event Hubs
 Invictus allows developers to programmatically import flow traces via an Event Hub. This resource can be located by the following:
 
 * EventHub namespace: `invictus-{env}-we-sft-evnm`
@@ -73,7 +73,7 @@ Make sure that any of the `event` mappings match the the values in the [flow cre
 
 ## Execution tree of sequentially events
 To create parent-child relationships, the `Step.Id`/`Step.ParentId` combination
-is used. This link is similar as how the `x-iv-parent-workflow-run-id` is set when importing flows via Azure Logic App workflows.
+is used. This link is similar as how the `x-iv-parent-workflow-run-id` is set when importing flows via LogicApp workflows.
 
 ```json
 [
