@@ -1,0 +1,276 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Transco V2
+The Transco function is used to promote properties from the database, by using the content or context to create the SQL query which will be executed against the specified table. Transco can also perform transformations on XML content by simply specifying the XSLT file from storage (Transco supports XSLT 1.0 syntax.).
+
+## Available endpoints
+* `/api/TranscoXML`: used with XML content. A Transco config file is used to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file.
+
+* `/api/TranscoJson`: used with JSON content. A Transco config file is used to list the instructions necessary to promote values from an SQL database. Transformations cannot be performed on JSON content.
+
+:::note[basic matrix promote]
+The Transco also has a dedicated matrix promotion endpoint that accepts a simple list of parameters and promotes them to the `Context`. This endpoint is not discussed here. See [Transco V2 - Matrix Functionality](./transcoV2-Matrix.md) for more details.
+:::
+
+The Transco request requires three values:
+* XML or JSON content in Base64 string format
+* Context as key-value pair list
+* Name of Transco config file in Azure Blob Storage
+
+```json
+{
+  "Content": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PHJvb3Q+PG5hbWUgc3RhdHVzPSJNZW1iZXIiPkpvaG4gRG9lPC9uYW1lPjwvcm9vdD4=",
+  "Context": {
+    "CustomerActive": "true" 
+  }, 
+  "TranscoConfig": "docs_config.json"
+}
+```
+
+The Transco response has the same structure, with the transformed content:
+```json
+{
+  "Content": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PE1lbWJlcj5Kb2huIERvZTwvTWVtYmVyPg==",
+  "Context": {
+    "CustomerActive": "true"
+  },
+  "TranscoConfig": "docs_config.json"
+}
+```
+
+## Transco config file
+A JSON Transco config file is required to specify details about the instruction which will be performed. Instructions are executed in the order in which they appear. The name of the config file should be specified in the request so that it can be retrieved from the storage account.
+
+<Tabs groupId="Transco-instructions">
+<TabItem value="sql-command" label="SQL Commands" default>
+
+Transco can execute SQL commands to promote properties from a specified database and table. The connection to the database can be achieved via either a raw connection string or the name of an Azure Key Vault secret.
+
+The parameters of the SQL query can be populated from 3 sources:
+ - XML or JSON request content via XPath or JPath
+ - Request context
+ - Fixed value
+
+The SQL query result will inserted at the specified `destination` XPath or JPath. For XPaths ending at an attribute, e.g. `/persons/person/@name`, the value will be inserted in that attribute. Otherwise, it will be inserted in the inner text.
+
+* A `scopePath` can be defined so that the command affects only nodes within that path.
+* A connection to the SQL database must be provided (via a connection string in plain text or in an Azure Key Vault secret).
+* Parameters in the SQL query must be denoted with an `@` symbol. Parameters may be given a name or indexed with a number.
+  ```sql
+  SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
+  -- or
+  SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
+  ```
+
+</TabItem>
+<TabItem value="xml-transformation" label="XML Transformation">
+
+Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation. 
+
+This instruction can be added to the Transco Config to transform XML content via the specified XSLT file. Any required assemblies and dependencies used by the transformation can also be specified, while the respective DLL files are to be in the storage account.
+
+This instruction is only available when calling the `/TranscoXML` endpoint.
+```json
+{
+  "xsltTransform": [Name of XSLT file],
+  "extensions": [
+    {
+      "namespace": [Assembly namespace],
+      "assemblyName": [Assembly name],
+      "className": [Assembly class name],
+      "dependencies": [
+        "[DLL dependency file name]",
+        "[DLL dependency file name]"
+      ]
+    }
+  ]
+}
+```
+
+</TabItem>
+</Tabs>
+
+:::info[storage account]
+All required files are to be saved in an Azure Storage Account and in a Blob Storage container with the name: `Transcov2configstore` (This container is automatically created by Invictus):
+* `/Configs` folder with Transco config files
+* `/XSLTs` folder with transformation files
+* `/Assemblies` folder with assembly and dependency DLL files
+:::
+
+<details>
+<summary>**Full Transco config file specification**</summary>
+
+```json
+{
+  "instructions": [
+    {
+      "scopePath": [XPath/JPath of content scope],
+      "namespaces": [
+        {
+          "namespace": [XML Namespace],
+          "prefix": [XML Namespace prefix]
+        }
+      ],
+      "destination": [XPath/JPath of the results destination, or Context key if promoteToContext = true],
+      "promoteToContext": [If true query result is saved to Context at key destination],
+      "command": {
+        "databaseConnectionString":[Raw connection string to DB],
+         "databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
+         "commandValue": [SQL query to be executed],
+         "isMandatory": [If true, will throw error when result is null],
+        "columnName": [Obtain value from specified column if query returns multiple fields. If empty, value from first column is obtained],
+         "defaultValue": [Default value of result],
+         "parameters": [
+           {
+            "paramName": [Name of param in query],
+             "value": [Type dependent. XPath or JPath if valueType = "path"],
+             "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+             "valueType": ["path" or "fixedValue" or "context"]
+          },
+          {
+            "paramName": [Name of param in query],
+            "value": [Type dependent. Any string value if valueType = "fixedValue"],
+            "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+            "valueType": ["path" or "fixedValue" or "context"]
+          },
+          {
+            "paramName": [Name of param in query],
+            "value": [Type dependent. Key to value in context if valueType = "context"],
+            "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+            "valueType": ["path" or "fixedValue" or "context"]
+          }
+        ],
+        "cache": {
+          "useCaching": [If true, query result is cached],
+          "cachingTimeout": [Cache timeout timespan]
+        }
+      }
+    },
+    {
+      "xsltTransform": [Name of XSLT file],
+      "extensions": [
+        {
+          "namespace": [Assembly namespace],
+           "assemblyName": [Assembly name],
+           "className": [Assembly class name],
+           "dependencies": [
+             "[DLL dependency file name]",
+             "[DLL dependency file name]"
+           ]
+        }
+      ]
+    }
+  ],
+  "options": {
+    "configCache": {
+      "useCaching": [If true, config file is cached],
+      "cachingTimeout": [Cache timeout timespan]
+    },
+    "indentResult": [If true, Transco results will be formatted and indented]
+  }
+ }
+```
+</details>
+
+## Usage
+
+<details>
+<summary><h4 style={{ margin:0 }}>How to use TranscoV2 in Logic Apps setup</h4></summary>
+
+ 1. Create a new blank Logic App in the Azure Portal
+ 2. Open the Logic App designer
+ 3. Choose a trigger of your choice, we will use a *Request* trigger
+ 4. Add a "Azure Function" action
+ 
+ ![Azure Function Action](/images/transcoV2LAAction.png)
+  
+ 5. Select the appropriate TranscoV2 function from the list
+ 6. Select the Function endpoint you wish to use
+ 7. Set the Request Body to a valid Transco Request
+ 
+![Function Request](/images/transcoV2LA.png)
+
+ 8. Add any other actions you require and save
+
+</details>
+
+## Migrating v1 to v2
+
+<details>
+<summary><h4 id="migrating-Transco-v1-to-v2" style={{ margin:0 }}>Migrating Transco v1 to v2</h4></summary>
+
+We need to change the authentication and endpoint and remove the metadata links.
+
+Also we need to change the Transco configuration files, for this you can use the migration tool from Codit's integration practice that can be found [here](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-Transco--matrix-migration-tools).
+
+```diff
+"Transform_XML": {
+  "type": "Http",
+  "inputs": {
+    "method": "POST",
+-   "uri": "[parameters('invictus').Framework.Transco.v1.TranscoXmlUrl]",
++   "uri": "[parameters('invictus').Framework.Transco.v2.TranscoXmlUrl]",
+    "authentication": {
+-     "username": "Invictus",
+-     "password": "@parameters('invictusPassword')",
+-     "type": "Basic",
++     "identity": "[parameters('infra').managedIdentity.id]",
++     "audience": "[parameters('invictus').authentication.audience]",
++     "type": "ManagedServiceIdentity"
+    },
+    "body": {
+      "Content": "@triggerBody()?['Content']",
+      "Context": "",
+      "TranscoConfig": "EFACT_D96A_ORDERS-to-Generic_Order.json"
+    }
+  },
+  "runAfter": {}
+}
+```
+</details>
+
+<details>
+<summary><h4 id="migrating-matrix-v1-to-v2" style={{ margin:0 }}>Migrating Matrix v1 to Transco v2</h4></summary>
+
+The Matrix component's functionality has been placed in the Transco v2 API. 
+
+```diff
+"Extract_Message_Context": {
+  "type": "Http",
+  "inputs": {
+    "method": "POST",
+-   "uri": "[parameters('invictus').framework.matrix.v1.basicMatrixUrl]",
++   "uri": "[parameters('invictus').framework.Transco.v2.basicMatrixUrl]",
+    "body": {
+      "Domain": "B2B-Gateway",
+      "Service": "@{concat('AS2-Receive-', body('Decode_AS2_message')?.aS2Message?.aS2To)}",
+      "Action": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PayloadFormat}",
+      "Version": "1.0",
+      "Sender": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PartyName}",
+      "Content": "@{base64(body('Decode_AS2_message')?.AS2Message?.Content)}",
+      "KeyValueCollection": {
+        "ReceiveFileName": "@{body('Decode_AS2_message')?['AS2Message']?['FileName']}",
+        "ReceiveProtocol": "AS2",
+        "ReceiveProtocolDetails": "@{body('Decode_AS2_message')?['AS2Message']?['AS2From']} > @{body('Decode_AS2_message')?['AS2Message']?['AS2To']}",
+        "ReceiveReference": "@{body('Decode_AS2_message')?['AS2Message']?['OriginalMessageId']}",
+        "ReceiveTimeUtc": "@{utcNow()}"
+      }
+	},
+	"authentication": {
+-     "username": "Invictus",
+-     "password": "@parameters('invictusPassword')"
+-     "type": "Basic",
++     "identity": "[parameters('infra').managedIdentity.id]",
++     "audience": "[parameters('invictus').authentication.audience]",     
++     "type": "ManagedServiceIdentity"
+	}
+  },
+  "runAfter": {},
+- "metadata": {
+-   "apiDefinitionUrl": "[parameters('invictus').framework.matrix.v1.definitionUrl]",
+-   "swaggerSource": "custom"
+- }
+}
+```
+</details>

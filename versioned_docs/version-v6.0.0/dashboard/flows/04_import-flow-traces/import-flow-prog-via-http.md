@@ -72,7 +72,7 @@ Make sure that any of the `event` mappings match the the values in the [flow cre
 
 ## Execution tree of sequentially events
 To create parent-child relationships, the `Step.Id`/`Step.ParentId` combination
-is used. This link is similar as how the `x-iv-parent-workflow-run-id` is set when importing flows via LogicApp workflows.
+is used. This link is similar as how the `x-iv-parent-workflow-run-id` is set when importing flows via Azure Logic App workflows.
 
 ```json
 [

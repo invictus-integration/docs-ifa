@@ -40,7 +40,7 @@ The PubSub connector will be mainly used to push messages to service bus using t
 
 ### x-ms-workflow-run-id
 
-The **x-ms-workflow-run-id** HTTP header is passed by the LogicApp runtime to the Publish function. The Publish function then **promotes** this value to the **Message Context** which is then available for the developer within the subscribing logic app. This is mainly used for the execution tree to chain logic apps/workflows together.
+The **x-ms-workflow-run-id** HTTP header is passed by the Azure Logic App runtime to the Publish function. The Publish function then **promotes** this value to the **Message Context** which is then available for the developer within the subscribing logic app. This is mainly used for the execution tree to chain logic apps/workflows together.
 
 ### Message Id
 
@@ -51,7 +51,7 @@ The MessageId property in the Publish will be used for duplicate detection. This
 ### Publish Connector
 
 1. Start by creating a new Blank Logic App From Azure Portal
-2. Click on Edit to open the LogicApp Designer, if asked what type of template you want, choose blank
+2. Click on Edit to open the Azure Logic App Designer, if asked what type of template you want, choose blank
 
    ![template](/images/pubsub-template.png)
 
@@ -100,7 +100,7 @@ The MessageId property in the Publish will be used for duplicate detection. This
 ### Subscribe & Acknowledge
 
 1. Start by creating a new Blank Logic App From Azure Portal
-2. Click on Edit to Open the LogicApp Designer, if asked what type of template you want, choose blank.
+2. Click on Edit to Open the Azure Logic App Designer, if asked what type of template you want, choose blank.
 
    ![template](/images/pubsub-template.png)
 
@@ -115,7 +115,7 @@ The MessageId property in the Publish will be used for duplicate detection. This
     * Batch size is defaulted to 10 and can be left blank
     * Delete On Receive can also be ignored and is set to No by default, thus using PeekLock
     * Authentication needs to be set since the connector API uses basic authentication
-    * The Interval frequency is used by the LogicApp Runtime to indicate the frequency the Logic App is triggered.
+    * The Interval frequency is used by the Azure Logic App Runtime to indicate the frequency the Logic App is triggered.
 
       ![subscribe](/images/pubsub-subscribeconnector.png)
 
