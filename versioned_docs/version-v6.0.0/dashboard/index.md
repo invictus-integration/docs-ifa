@@ -6,4 +6,4 @@ Invictus™ Integration Dashboard is designed so that other integration solution
 
 ## Release Notes
 
-The release notes for the dashboard can be found [here](https://github.com/invictus-integration/docs-ifa/releases).
+The release notes for the Dashboard can be found [here](https://github.com/invictus-integration/docs-ifa/releases).

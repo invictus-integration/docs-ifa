@@ -1,4 +1,4 @@
-# Import flow traces programmatically via EventHubs
+# Import flow traces programmatically via Azure Event Hubs
 Invictus allows developers to programmatically import flow traces via an Event Hub. This resource can be located by the following:
 
 * EventHub namespace: `invictus-{env}-we-sft-evnm`

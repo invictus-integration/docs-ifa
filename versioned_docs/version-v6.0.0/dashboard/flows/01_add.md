@@ -11,7 +11,7 @@ Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flow
 3. **Mapping**: defines how a flow, and the messages it contains, are stored and indexed.
 4. **Business properties**: each mapping type contains a list of fields or properties pertinent to that type.
 5. **Advanced Settings**
-    * *Connected Dashboard*: if the flow has multiple dashboards and it needs to connect to another dashboard then this needs to be checked.  For this setting to apply, the Connected Dashboard needs to be enabled by your Admin through the settings page of the dashboard in order to switch on this feature.
+    * *Connected Dashboard*: if the flow has multiple Dashboards and it needs to connect to another Dashboard then this needs to be checked.  For this setting to apply, the Connected Dashboard needs to be enabled by your Admin through the settings page of the Dashboard in order to switch on this feature.
     * *Show milestone and event text*: Checking this option will enable the flow milestone and event text data to be displayed.
     * *Custom resubmit/resume URLs*: Check these options and provide the necessary URLs to use your own resume and resubmit logic.
 

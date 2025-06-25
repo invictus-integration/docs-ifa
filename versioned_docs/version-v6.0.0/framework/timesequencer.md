@@ -4,7 +4,7 @@
 
 Timesequencer is a component that ensures that old entity updates will never overwrite newer updates to the same entity.  This is done, based on the timestamp that originates from the source system.
 
-The Timesequencer uses Function authorization, so the URL will contain all the authentication details, no Authentication is to be passed when calling the Function. Internally the timesequencer uses SQL Server to manage and queue all its requests. A cleanup job is also added to DataFactory to cleanup the tables used by the function.
+The Timesequencer uses Function authorization, so the URL will contain all the authentication details, no Authentication is to be passed when calling the Function. Internally the timesequencer uses SQL Server to manage and queue all its requests. A cleanup job is also added to Azure Data Factory to cleanup the tables used by the function.
 
 ### Functions
 
@@ -22,13 +22,13 @@ The below two are used internally the Azure Function and should be ignored:
 
 ### WaitForExecution
 
-WaitForExecution should be used by a Webhook action in a LogicApp. This function will queue your request and check if processing should continue, stop or wait. This is determined by checking if a current request with the SameSequence name is already being processed. The logic will skip the request and return a Stopped result if it finds a more recent request queued in the database.
+WaitForExecution should be used by a Webhook action in an Azure Logic App. This function will queue your request and check if processing should continue, stop or wait. This is determined by checking if a current request with the SameSequence name is already being processed. The logic will skip the request and return a Stopped result if it finds a more recent request queued in the database.
 
 POST Request Object:
 
 ```
 {
-  "callbackUri": "@{listCallbackUrl()}", //This property is exposed by the Webhook LogicApp action, this value should be supplied to the Timesequencer
+  "callbackUri": "@{listCallbackUrl()}", //This property is exposed by the Webhook Azure Logic App action, this value should be supplied to the Timesequencer
   "instanceId": "[STRING]", //The ID associated to the request. SequenceName and InstanceId form the PrimaryKey for the request
   "sequenceName": "[STRING]", //The ID used to group requests together, //SequenceName and InstanceId form the PrimaryKey for the request
   "timestamp": "[DATETIME]" //The time the request was generated ex: file last update time
