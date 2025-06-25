@@ -1,78 +1,76 @@
 # Regex Translation
+:::note[motivation]
+At the time of writing, there is no built-in Logic App functionality available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component was created to fill this missing gap, by providing a HTTP-endpoint to run regular expression replacements. Available translations are stored in an Azure Table Storage. 
+:::
 
-## Introduction
+## Regex translate user content
+The **Regex Translation** component has a single endpoint available: `/api/RegexTranslation`. Given an user content and matched stored (Azure Table Storage) regex translation, the endpoint responds with the translated content.
 
-This documentation will give you an overview of the Regex Translation component and will help you use it. The following function will be exposed by this component:
+The following request body properties must be supplied:
 
-- RegexTranslation
+| JSON property | Required | Description                          |
+| ------------- | :------: | ------------------------------------ |
+| `Content`     | yes      | User content that should translated. |
+| `MatchKey`    | yes      | Set of 'keys' that translates to [Azure Table Storage partition keys](https://learn.microsoft.com/en-us/rest/api/storageservices/designing-a-scalable-partitioning-strategy-for-azure-table-storage). | 
 
-### Overview
-
-The scope of the Regex Translator is to translate a given message using regex and based on the **MatchKey** provided an entity will be retrieved from an Azure Table Storage with the associated translation of the message.
-
-### Parameters
-
-|Name|Required|Description|
-|--- |--- |--- |
-|Content|Yes|A base64 string that will be used in the translation|
-|MatchKey|Yes|An array of type string|
-
-## Azure Table Storage Config
-
-Create a table called RegexTranslator within a dedicated Storage Account. 
-
-By default the table will consist of 3 properties.
-
-- PartitionKey
-- RowKey
-- Timestamp
-
-Within the table 2 properties of type string have to be added when creating a new entity:
-
-- MatchPattern
-- OutputPattern
-
-![regextranslator](/images/regextranslator.PNG)
-
-**Note: Upon startup the application will check if a table called RegexTranslator exists. If the table does not exist a table with that name will be created. The newly created table will not have any properties these will have to be added manually.**
-
-## Input
-
-### Sample Request Schema
+<details>
+<summary>**Full request example**</summary>
 
 ```json
+// POST /api/RegexTranslation
 {
   "Content": "The provided host name 'website.com' could not be resolved",
   "MatchKey": ["OrderService", "InvoiceService"]
 }
 ```
+</details>
 
-When setting up your Logic App, the HttpRequest is to be setup as follows:
-
-![regextranslator](/images/regextranslationrequest.PNG)
-
-The request is then followed by the execution of the function **RegexTranslation** as follows:
-
-![regextranslator](/images/regextranslationfunction.PNG)
-
-## Output
-
-After the message is translated, the result for a successful translation returns the translated message:
+<details>
+<summary>**Full response example**</summary>
 
 ```json
+// Found stored translation:
+// 200 OK <- /api/RegexTranslation
 {
-    "content": "System X could not be reached at endpoint 'website.com', contact John"
+  "Content": "System could not reach endpoint 'website.com' as it is not available, please contact John to follow-up.",
+  "IsTranslated": true,
+  "RowKey": "2f71ec69-1fff-4b80-9ae1-947a58e4a039"
+}
+
+// Did not found stored translation:
+// 200 OK <- /api/RegexTranslation
+{
+  "Content": "The provided host name 'website.com' could not be resolved",
+  "IsTranslated": false,
+  "RowKey": ""
 }
 ```
 
-If the translation is unsuccessful, the output returned will either be the original message or specific error message:
+</details>
 
-```json
-{
-    "content": "The provided host name website.com could not be resolved"
-}
-```
+## Stored regex translations
+Regex translations should be stored in an Azure Table Storage table called `RegexTranslator` (created automatically by Invictus). Each stored entity should have following custom properties:
 
-The response to the function **RegexTranslation** is to be setup as follows:
+[named groups]: https://learn.microsoft.com/en-us/dotnet/standard/base-types/grouping-constructs-in-regular-expressions#named-matched-subexpressions
 
-![regextranslator](/images/regextranslationresponse.PNG)
+| Custom entity property name | Description |
+| --------------------------- | ----------- |
+| `MatchPattern`              | The regular expression to match the incoming user `Content`. It uses [named groups] to cut certain information from the content. |
+| `OutputPattern`             | The outgoing text, containing possible `{group-name}` occurrences to paste the subtracted information. |
+
+<details>
+<summary>**Full translation example**</summary>
+
+| Entity property name | Value                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------- |
+| `RowKey`             | `2f71ec69-1fff-4b80-9ae1-947a58e4a039`                                                                |
+| `PartitionKey`       | `OrderService`                                                                                        |
+| `MatchPattern`       | `"The provided host name '(?<url>[^]*)' could not be resolved."`                                      |
+| `OutputPattern`      | `"System could not reach endpoint '{url}' as it is not available, please contact John to follow-up."` |
+
+</details>
+
+Translation happens with the following:
+* **Multiple pastes**: the subtracted information from named groups can be pasted more than once.
+* **Single match**: the user `Content` can only be matched to a single stored translation - the first match will be picked.
+* **No pastes**: the `OutputPattern` does not necessarily *have* to contain `{group-name}` occurrences, it can only contain text.
