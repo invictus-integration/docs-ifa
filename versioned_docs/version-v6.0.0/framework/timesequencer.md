@@ -1,59 +1,63 @@
-# Timesequencer
+---
+sidebar_label: Time-controlled sequence
+---
 
-## Introduction
+# Time Sequencer
 
-Timesequencer is a component that ensures that old entity updates will never overwrite newer updates to the same entity.  This is done, based on the timestamp that originates from the source system.
+:::note[motivation]
+At the time of writing, there is no built-in way in Azure Logic Apps to 'control' the sequence in which multiple workflow runs are executing. In certain scenarios, even though a  workflow was triggered before another, you want the first one to wait for the second. A common example is entity updates, where you don't want older updates to override newer ones - even though the workflow with the older updates 'happened after' the newer ones.
 
-The Timesequencer uses Function authorization, so the URL will contain all the authentication details, no Authentication is to be passed when calling the Function. Internally the timesequencer uses SQL Server to manage and queue all its requests. A cleanup job is also added to Azure Data Factory to cleanup the tables used by the function.
+**Time Sequencer** is a Framework component that allows you by interacting with HTTP endpoints to set up sequences, controlled by custom timestamps, to ensure that workflows are run in a time-controlled fashion. Sequence information is stored in an Azure Blob Storage container, called `invictustimesequencer`.
+:::
 
-### Functions
+## Available endpoints
+* [`/api/WaitForExecution`](#wait-for-execution): by sending a request, it allows the currently running Azure Logic App workflow to possibly 'halt' its execution until it is their time to run actions.
+* [`/api/CompleteExecution`:](#complete-execution) by sending a request, it flags the currently running Azure Logic App workflow as 'completed', so that the next workflow run can continue to run.
 
-The Timesequencer Azure Function exposes four functions:
+![Pseudo Azure Logic App setup with Time Sequencer component](/images/framework/pseudo-logic-app-w-time-sequencer.png)
 
-The below two are used by the developers when setting up their flows:
+## Wait for execution
+By using an Azure Logic Apps [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook?tabs=standard#add-an-http-webhook-trigger) to send a HTTP POST request to `/api/WaitForExecution` endpoint, the **Time Sequencer** component can queue a workflow run signal the run when it can continue. Determining the order of workflow runs can be achieved by passing a custom `Timestamp` with the request body.
 
-* WaitForExecution [POST]
-* CompleteExecution [POST]
+The following request parameters need to be supplied in the request body:
 
-The below two are used internally the Azure Function and should be ignored:
+| JSON property  | Required | Description                                                                                                                              |
+| -------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `SequenceName` | yes      | Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs). | 
+| `InstanceId`   | yes      | Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run).                     |
+| `Timestamp`    | yes      | Date time to control the order of the Azure Logic App workflows in the 'sequence'.                                                       |
+| `CallbackUri`  | yes      | Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`.                                                   |
 
-* PerformCallbackAction
-* PerformCallbackOrchestrator
+## Complete execution
+When the [*Wait for exec.* operation](#wait-for-execution) responds with `Start`, then any custom user actions in the Azure Logic App workflow can be executed. Once those are done, the workflow should signal the **Time Sequencer** component, so that any waiting workflows can continue their execution.
 
-### WaitForExecution
+Signaling completion happens with a HTTP POST request to the `/api/CompleteExecution` endpoint, using following required request parameters in the request body:
 
-WaitForExecution should be used by a Webhook action in an Azure Logic App. This function will queue your request and check if processing should continue, stop or wait. This is determined by checking if a current request with the SameSequence name is already being processed. The logic will skip the request and return a Stopped result if it finds a more recent request queued in the database.
+| JSON property  | Required | Description                                                                                                                              |
+| -------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `SequenceName` | yes      | Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs). | 
+| `InstanceId`   | yes      | Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run).                     |
 
-POST Request Object:
+## Customization
 
-```
-{
-  "callbackUri": "@{listCallbackUrl()}", //This property is exposed by the Webhook Azure Logic App action, this value should be supplied to the Timesequencer
-  "instanceId": "[STRING]", //The ID associated to the request. SequenceName and InstanceId form the PrimaryKey for the request
-  "sequenceName": "[STRING]", //The ID used to group requests together, //SequenceName and InstanceId form the PrimaryKey for the request
-  "timestamp": "[DATETIME]" //The time the request was generated ex: file last update time
-}
-```
+:::info[sequence cleanup]
+The **Time Sequencer** component stores the Azure Logic App workflow 'sequences' in an Azure Blob Storage container, called `invictustimesequencer`. The following policy rules are currently hardcoded on the Azure Storage Account in regards of cleaning these sequences:
+* **Move to cool storage**: greater than `10 days` after modification.
+* **Delete the blob**: greater than `60 days` after modification.
+* **Delete blob snapshot**: greater than `90 days` after creation.
 
-### CompleteExecution
+🔗 [More info on Azure Storage Account policies](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-configure?tabs=azure-portal)
+:::
 
-CompleteExecution is used to complete a request and to trigger any pending webhook callbacks.
+<details>
+<summary>**Related Bicep parameters**</summary>
 
-POST Request Object:
+The following Bicep parameters control the inner workings of the **Time Sequencer** component. See the [deployment of the Invictus Framework](./installation/framework-releasepipeline.mdx) to learn more.
 
-```json
-{
- "instanceId": "[STRING]", //The ID associated to the request. SequenceName and InstanceId form the PrimaryKey for the request
- "sequenceName": "[STRING]"The ID used to group requests together, //SequenceName and InstanceId form the PrimaryKey for the request
-}
-```
+| Bicep parameter | Default | Description |
+| --------------- | ------- | ----------- |
+| `storageAccountName` | `invictus{resourcePrefix}store` | The name of the Azure Storage Account (used by other Framework components as well) where the `invictustimesequencer` Azure Blob Storage container will be located where Azure Logic App workflow sequences are stored. |
+| `timeSequencerScaling` | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
+| `timesequencerFunctionName` | `inv-${resourcePrefix}-timesequencer` | The name of the Azure Container App to be created for the **Time Sequencer** component. |
 
-### Logic App Timesequencer Sample Diagram
-
-> ![ifa-timesequencer-la](/images/ifa-timesequencer-la.png)
-
-As can be seen in the image above, the Webhook executes WaitForExecution to register the request and also check if it should proceed with the execution, wait for the callback to be called or if the process should terminate. If a Stop command is returned then the Terminate case will be executed. If the result is Start then the LA will proceed to executing CompleteExecution which will mark the request as Processed and also trigger any callbacks related to the current SequenceName.
-
-> ![ifa-timesequencer-we-la](/images/ifa-timesequencer-we-la.png)
-
-> ![ifa-timesequencer-ce-la](/images/ifa-timesequencer-ce-la.png)
+</details>
