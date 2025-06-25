@@ -1,47 +1,48 @@
+---
+sidebar_label: Exception handling
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Exception Handler
 
-Everyone who has worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a very generic error that offers no clear information on what went wrong.
+:::note[motivation]
+Most who have worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a very generic error that offers no clear information on what went wrong.
 
-The Exception Handler function can be used to retrieve the actual error message from a Logic App and optionally translate this to a human readable text.
-For more information on the translations and how to set this up see [here](#Translations).
-
-:::info[Access Rights]
-The ExceptionHandler function requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. These must be assigned on the ExceptionHandler function to the resource group where the Logic Apps are located.
+Invictus provides an **Exception Handler** Framework component that can be used to retrieve the actual error message from an Azure Logic App and optionally translate this to a human readable text.
 :::
 
-> See the [How to implement? section](#how-to-implement-ex-handler) to learn more about using this Framework component in Logic Apps setups.
+:::info[Access Rights]
+The Exception Handler component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. These must be assigned on the Exception Handler component to the resource group where the Logic Apps are located.
+:::
 
-## The `/ResolveException` endpoint
+## Resolve Azure Logic App exceptions
+The **Exception Handler** component has as single `/api/ResolveException` endpoint to request inspection of failed Azure Logic App workflow runs. Based on the type of Logic App, the request looks different.
 
 <Tabs groupId="la-type">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 If you want to resolve the exception of a Logic App Consumption use the following body:
 
-``` json
-{
-  "WorkflowRunId": "<the workflow run id of the failed Logic App>",
-  "WorkflowName": "<the name of your Logic App>",
-  "SubscriptionId": "<your subscription id>",
-  "ResourceGroupName": "<the resourcegroup name of the failed Logic App>",
-  "Type": "Consumption",
-  "SiteName": null
-}
-```
+| JSON property       | Required | Description                                                                                |
+| ------------------- | :------: | ------------------------------------------------------------------------------------------ |
+| `WorkflowRunId`     | yes      | The ID of the failed Azure Logic App workflow run.                                         |
+| `WorkflowName`      | yes      | The name of the Azure Logic App to inspect.                                                |
+| `SubscriptionId`    | yes      | The ID of the Azure subscription where the Logic App is located.                           |
+| `ResourceGroupName` | yes      | The ID of the Azure resource group within the subscription where the Logic App is located. | 
+
 <details>
 <summary>**Request example**</summary>
 
 ``` json
+// POST -> /api/ResolveException
 {
   "WorkflowRunId": "08584773878007282344320782622CU00",
   "WorkflowName": "cdt-dev-we-somelogicapp",
   "SubscriptionId": "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
   "ResourceGroupName": "some-resource-group",
-  "Type": "Consumption",
-  "SiteName": null
+  "Type": "Consumption"
 }
 ```
 </details>
@@ -49,21 +50,20 @@ If you want to resolve the exception of a Logic App Consumption use the followin
 <TabItem value="standard" label="Logic App Standard">
 If you want to resolve the exception of a Logic App Standard workflow use the following body:
 
-``` json
-{
-  "WorkflowRunId": "<the workflow run id of the failed Logic App workflow>",
-  "WorkflowName": "<the name of your Logic App workflow>",
-  "SubscriptionId": "<your subscription id>",
-  "ResourceGroupName": "<the resourcegroup name of the failed Logic App workflow>",
-  "Type": "Standard",
-  "SiteName": "<the Logic App site name>"
-}
-```
+
+| JSON property       | Required | Description                                                                                |
+| ------------------- | :------: | ------------------------------------------------------------------------------------------ |
+| `WorkflowRunId`     | yes      | The ID of the failed Azure Logic App workflow run.                                         |
+| `WorkflowName`      | yes      | The name of the Azure Logic App to inspect.                                                |
+| `SiteName`          | yes      | The site name of the Azure Logic App to inspect.                                           |
+| `SubscriptionId`    | yes      | The ID of the Azure subscription where the Logic App is located.                           |
+| `ResourceGroupName` | yes      | The ID of the Azure resource group within the subscription where the Logic App is located. | 
 
 <details>
 <summary>**Request example**</summary>
 
 ``` json
+// POST -> /api/ResolveException
 {
   "WorkflowRunId": "08584773878007282344320782622CU00",
   "WorkflowName": "ProcessMessage",
@@ -77,22 +77,27 @@ If you want to resolve the exception of a Logic App Standard workflow use the fo
 </TabItem>
 </Tabs>
 
+<details>
+<summary>**Response example**</summary>
+
 The function will respond with a list of errors for the failed actions, for example:
 ``` json
+// 200 OK <- /api/ResolveException
 {
-    "status": "Failed",
-    "code": "InvalidURL",
-    "description": "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
-    "errors": [
+    "Status": "Failed",
+    "Code": "InvalidURL",
+    "Description": "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
+    "Errors": [
         {
-            "code": "InvalidURL",
-            "description": "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'."
+            "Code": "InvalidURL",
+            "Description": "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'."
         }
     ]
 }
 ```
+</details>
 
-## Translations
+## Stored Azure Logic App exceptions translations
 
 :bulb: The ExceptionHandler function makes use of the [RegexTranslator](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/regextranslation.md) component to translate the original error from the Logic App.
 
@@ -159,7 +164,9 @@ By using the translation functionality we will get back the following response:
 }
 ```
 
-:::note[Ignoring Errors]
+<details>
+<summary>**Ignore Azure Logic App errors**</summary>
+
 By using the translation functionality we can also ignore errors. This can be very useful for scenario's where Logic Apps can generate an error that is not relevant to the business and the flow can be seen as successful. 
 
 Let's take an example where we have a Logic App that picks up a file from a network location and after it has been published will delete the file. We have seen situations at customers where this delete action will fail because the file has already been removed by another instance of the Logic App, this error can be safely ignored since the message is processed anyway.
@@ -180,11 +187,9 @@ This will result in the following response:
     "errors": []
 }
 ```
-:::
+</details>
 
-<details>
-<summary><h3 id="how-to-implement-ex-handler" style={{ margin: 0 }}>How To Implement The Exception Handler in your Azure Logic Apps?</h3></summary>
-
+## How to implement in your Azure Logic Apps?
 A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler function and return the response. This common Logic App can then be called by all other Logic Apps, this is a nice way to centralize your exception handling functionality.
 
 :::tip
@@ -193,7 +198,8 @@ use a webhook to call the common exception handler Logic App so that if anything
 
 ![diagram](exceptionhandler.drawio.svg)
 
-See an example of how to call the common exception handler Logic App and process the response:
+<details>
+<summary>**Logic Apps Exception Handling example**</summary>
 
 ![logic-app](/images/exceptionhandler-logic-app.png)
 
@@ -201,8 +207,6 @@ The code for the `Scope Exception Handling` is shown below, pay attention to the
 
 ![dashboard](/images/exceptionhandler-logic-app-dashboard.png)
 
-<details>
-<summary>**`Scope Exception Handling` Logic App JSON example**</summary>
 
 ``` json
 "Scope_ExceptionHandling": {
@@ -253,4 +257,16 @@ The code for the `Scope Exception Handling` is shown below, pay attention to the
 }
 ```
 </details>
+
+## Customization
+
+<details>
+<summary>**Affected Bicep parameters**</summary>
+
+The following Bicep parameters control the inner workings of the **Exception Handler** component. See the [deployment of the Invictus Framework](./installation/framework-releasepipeline.mdx) to learn more.
+
+| Bicep parameter | Default | Description |
+| --------------- | ------- | ----------- |
+| `exceptionHandlerScaling` | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
+| `exceptionHandlerFunctionName` | `inv-${resourcePrefix}-exceptionhandler` | The name of the Azure Container App to be created for the **Exception Handler** component. |
 </details>
