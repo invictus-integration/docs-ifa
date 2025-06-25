@@ -3,7 +3,7 @@
 
 ## Introduction
 
-This framework component can be used to transform either XML to JSON or JSON to XML. The following functions will be exposed by this components:
+This Framework component can be used to transform either XML to JSON or JSON to XML. The following functions will be exposed by this components:
 
 - JsonToXml
 - XmlToJson

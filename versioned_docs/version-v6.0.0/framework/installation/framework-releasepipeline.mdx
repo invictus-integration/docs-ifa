@@ -40,7 +40,7 @@ The following script parameters are used in the deploy script:
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
 [Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
 [build pipeline]: ./framework-buildpipeline.md
-[Container authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
+[Container App authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
 
 | Argument name       | Description                                                              |
 | ------------------- | ------------------------------------------------------------------------ |
@@ -49,8 +49,8 @@ The following script parameters are used in the deploy script:
 | `resourcePrefix`    | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`) |
 | `resourceGroupName` | Name of Azure resource group where Invictus should be deployed |
 | `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. Invictus_CosmosDb_DbName) |
-| `identityProviderApplicationId` | See [Container authentication] |
-| `identityProviderClientSecret` | See [Container authentication] |
+| `identityProviderApplicationId` | See [Container App authentication] |
+| `identityProviderClientSecret` | See [Container App authentication] |
 
 ### Optional Parameters    
 | Argument name | Default value | Description |
@@ -169,13 +169,13 @@ Parameters related to data that is stored during the component's interaction.
       <td>`storageAccountName`</td>
       <td>No</td>
       <td>`invictus{resourcePrefix}store`</td>
-      <td>Name for the Azure Storage resource. Any dashes (-) will be removed from `{resourcePrefix}`</td>
+      <td>Name for the Azure Storage Account resource. Any dashes (-) will be removed from `{resourcePrefix}`</td>
     </tr>
     <tr>
       <td>`blobContainerPrefix`</td>
       <td>No</td>
       <td>`invictus`</td>
-      <td>Prefix set for blob containers for pubsub</td>
+      <td>Prefix set for Azure Blob Storage containers for pubsub</td>
     </tr>
     <tr>
       <td>`storageAccountType`</td>
@@ -193,13 +193,13 @@ Parameters related to data that is stored during the component's interaction.
       <td>**`disableStorageAccountPublicNetworkAccess`**</td>
       <td>**No**</td>
       <td>`false`</td>
-      <td>**If true, the Invictus storage account will not be accessible from a public network.**</td>
+      <td>**If true, the Azure storage account used throughout Invictus will not be accessible from a public network.**</td>
     </ToggleRow>
     <ToggleRow>
       <td>**`storageAccountMinimumTLSVersion`**</td>
       <td>**No**</td>
       <td>`TLS1_2`</td>
-      <td>**Set the required TLS value for the storage account. Accepted values: `TLS1_0`, `TLS1_1`, `TLS1_2`**</td>
+      <td>**Set the required TLS value for the Azure storage account. Accepted values: `TLS1_0`, `TLS1_1`, `TLS1_2`**</td>
     </ToggleRow>
   </tbody>
 </table>

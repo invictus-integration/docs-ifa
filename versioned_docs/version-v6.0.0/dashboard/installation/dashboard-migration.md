@@ -7,7 +7,7 @@ sidebar_class_name: hidden
 Below is some useful information for when users are upgrading their Invictus installation from V1 to V2. To update your build and release pipelines, please refer to the [build pipeline](dashboard-buildpipeline.md) and [release pipeline](dashboard-releasepipeline.mdx) guides.
 
 ## Build pipeline
-The storage container for Dashboard V2 is `dashboard-v2`, so update the `StorageContainerName` parameter you use in the build pipeline.
+The Azure Blob Storage container for Dashboard V2 is `dashboard-v2`, so update the `StorageContainerName` parameter you use in the build pipeline.
 
 ## Release pipeline
 Make sure that the PowerShell script in the release pipeline which runs Deploy.ps1 has the following parameters:
@@ -49,9 +49,9 @@ Thats it! The data migration will now run as part of your release pipeline. The 
 Once you are satisfied with the migrated data, it is advised to change the `PerformSqlDataMigration` script parameter to `0` so that the migration process is entirely skipped in subsequent releases.
 
 ## Dashboard URL
-The Invictus V2 release pipeline will create a new App Service dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new dashboard. If instead you wish to maintain your current URLs for the dashboard, the old dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
+The Invictus V2 release pipeline will create a new App Service Dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new Dashboard. If instead you wish to maintain your current URLs for the Dashboard, the old Dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
 
-**NOTE: By doing this you will lose access to the old dashboard and the ability to view and query its historic data.**
+**NOTE: By doing this you will lose access to the old Dashboard and the ability to view and query its historic data.**
 
 ## Add Role Assignments
 
@@ -61,7 +61,7 @@ See also [Access Control Rights](../accesscontrolrights.md)
 ## Common Issues When Migrating
 - `You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS.`
 
-  If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the dashboard pipeline only*.
+  If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the Dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the Dashboard pipeline only*.
 
 - `The role assignment already exists`
 
