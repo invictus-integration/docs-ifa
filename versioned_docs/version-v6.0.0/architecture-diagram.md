@@ -7,7 +7,7 @@ sidebar_position: 2
 
 ## Invictus Dashboard Architecture
 
-![Architecture diagram](/images/InvictusV2Diagram_Dashboard.jpg "Invictus Dashboard architecture diagram")
+![Architecture diagram](/images/InvictusV2Diagram_Dashboard.png "Invictus Dashboard architecture diagram")
 
 ### Dashboard Components
 
@@ -20,7 +20,7 @@ sidebar_position: 2
 
 ## Invictus Framework Architecture
 
-![Architecture diagram](/images/InvictusV2Diagram_Framework.jpg "Invictus Framework architecture diagram")
+![Architecture diagram](/images/InvictusV2Diagram_Framework.png "Invictus Framework architecture diagram")
 
 ### Framework Components
 
