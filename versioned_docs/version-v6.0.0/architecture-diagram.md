@@ -4,7 +4,10 @@ sidebar_position: 2
 ---
 
 # Invictus for Azure Architecture Diagrams
-![Architecture diagram](/images/InvictusV2Diagram_Dashboard.jpg "Invictus dashboard architecture diagram")
+
+## Invictus Dashboard Architecture
+
+![Architecture diagram](/images/InvictusV2Diagram_Dashboard.jpg "Invictus Dashboard architecture diagram")
 
 ### Dashboard Components
 
@@ -17,11 +20,11 @@ sidebar_position: 2
 
 ## Invictus Framework Architecture
 
-![Architecture diagram](/images/InvictusV2Diagram_Framework.jpg "Invictus framework architecture diagram")
+![Architecture diagram](/images/InvictusV2Diagram_Framework.jpg "Invictus Framework architecture diagram")
 
 ### Framework Components
 
-Various useful Functions which can be used within your Logic App integration processes. For more information see the [Invictus framework documentation](./framework/index.md).
+Various useful Functions which can be used within your Azure Logic App integration processes. For more information see the [Invictus Framework documentation](./framework/index.md).
 
 - **PubSub Function**
 - **TimeSequencer Function**
@@ -37,7 +40,7 @@ Various useful Functions which can be used within your Logic App integration pro
 
 - Used by PubSub Function to push messages to subscriptions.
 - Used by ImportJob function to push data to CacheImportJob function after splitting data by ClientTrackingId.
-- Used by the dashboard to queue requests for Ignore/Resume/Resubmit which are then picked up by the Flow Handler.
+- Used by the Dashboard to queue requests for Ignore/Resume/Resubmit which are then picked up by the Flow Handler.
 
 ### Azure Storage
 
