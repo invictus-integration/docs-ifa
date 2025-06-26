@@ -192,8 +192,8 @@ It is also possible to use the auto created Invictus for Azure user assigned man
 We need to replace the following components with the new containerized API's. 
 
 * [Migrating PubSub v1 to v2](../framework/pubsubV2.md#migrating-pubsub-v1-to-v2)
-* [Migrating Transco v1 to v2](../framework/transcoV2.mdx#migrating-transco-v1-to-v2)
-* [Migrating Matrix v1 to Transco v2](../framework/transcoV2.mdx#migrating-matrix-v1-to-transco-v2)
+* [Migrating Transco v1 to v2](../framework/transcoV2.mdx#migrating-v1-to-v2)
+* [Migrating Matrix v1 to Transco v2](../framework/transcoV2.mdx#migrating-v1-to-v2)
 
 ## Common Migration Issues
 :::danger[pipeline error: `Operating system not supported`]
