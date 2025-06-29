@@ -202,3 +202,23 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
 .toggle-checkbox:checked + .toggle-slider::before {
   transform: translateX(24px);
 }
+
+[data-theme="light"] img[src$="#dark-mode-only"],
+[data-theme="dark"] img[src$="#light-mode-only"] {
+  display: none;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+}
+
+.flow-trace-text {
+  color: #734dc4;
+}
+
+.flow-text {
+  color: #406369;
+}
