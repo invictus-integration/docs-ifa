@@ -213,7 +213,6 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 30%;
 }
 
 .flow-trace-text {
