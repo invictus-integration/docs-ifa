@@ -4,8 +4,8 @@ sidebar_label: Welcome
 sidebar_position: 1
 ---
 
-![Invictus logo](/img/invictus.dark.png#dark-mode-only)
-![Invictus logo](/img/invictus.light.png#light-mode-only)
+![Invictus logo](/img/invictus.index.dark.png#dark-mode-only)
+![Invictus logo](/img/invictus.index.light.png#light-mode-only)
 ___
 
 ## What is Invictus for Azure?
