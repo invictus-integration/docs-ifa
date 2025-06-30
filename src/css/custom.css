@@ -208,7 +208,8 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
   display: none;
 }
 
-.center {
+[data-theme="light"] img,
+[data-theme="dark"] img {
   display: block;
   margin-left: auto;
   margin-right: auto;
