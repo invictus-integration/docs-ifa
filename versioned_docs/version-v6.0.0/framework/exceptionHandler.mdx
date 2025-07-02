@@ -112,37 +112,37 @@ These translations must be set up in the `RegexTranslator` table in your Invictu
 <Tabs groupId="la-type">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
-| PartitionKey            | RowKey     | MatchPattern                           | OutputPattern                                           |
-|-------------------------|------------|----------------------------------------|---------------------------------------------------------|
-| logicappname.actionname | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern |
+| PartitionKey              | RowKey     | MatchPattern                           | OutputPattern                                           |
+| ------------------------- |------------|----------------------------------------|---------------------------------------------------------|
+| `logicappname.actionname` | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern |
 
 <details>
 <summary>**Translation examples**</summary>
 
-| PartitionKey                                   | RowKey | MatchPattern                                                                    | OutputPattern                                                |
-|------------------------------------------------|--------|---------------------------------------------------------------------------------|--------------------------------------------------------------|
-| cdt-dev-we-somelogicapp.CallHTTP               | 1      | No such host is known                                                           | code(Availability)Application is not reachable               |
-| cdt-dev-we-somelogicapp.Create                 | 1      | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found |
-| cdt-dev-we-somelogicapp.ParseJSON              | 1      | Invalid JSON schema type: int                                                   | code(Data)The field is not an integer                        |
-| cdt-dev-we-somelogicapp.ExecuteStoredProcedure | 1      | Procedure or function 'upsertData' expects parameter '@Ordernumber'             | code(Data)Ordernumber is not supplied but is required        |
+| PartitionKey                                    | RowKey | MatchPattern                                                                    | OutputPattern                                                |
+| ------------------------------------------------ |--------|---------------------------------------------------------------------------------|--------------------------------------------------------------|
+| `cdt-dev-we-somelogicapp.CallHTTP`               | 1      | No such host is known                                                           | code(Availability)Application is not reachable               |
+| `cdt-dev-we-somelogicapp.Create`                 | 1      | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found |
+| `cdt-dev-we-somelogicapp.ParseJSON`              | 1      | Invalid JSON schema type: int                                                   | code(Data)The field is not an integer                        |
+| `cdt-dev-we-somelogicapp.ExecuteStoredProcedure` | 1      | Procedure or function 'upsertData' expects parameter '@Ordernumber'             | code(Data)Ordernumber is not supplied but is required        |
 </details>
 
 </TabItem>
 <TabItem value="standard" label="Logic App Standard">
 
-| PartitionKey                     | RowKey     | MatchPattern                           | OutputPattern                                           |
-|----------------------------------|------------|----------------------------------------|---------------------------------------------------------|
-| `sitename.workflowname.actionname` | Any RowKey | `The pattern to be matched in the error` | `code(YourTranslationCode)The output translation pattern` |
+| PartitionKey                       | RowKey     | MatchPattern                           | OutputPattern                                           |
+| ---------------------------------- |------------|----------------------------------------|---------------------------------------------------------|
+| `sitename.workflowname.actionname` | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern |
 
 <details>
 <summary>**Translation examples**</summary>
 
 | PartitionKey                                                  | RowKey | MatchPattern                                                                    | OutputPattern                                                |
 |---------------------------------------------------------------|--------|---------------------------------------------------------------------------------|--------------------------------------------------------------|
-| `cdt-dev-we-somelogicapp.ProcessMessage.CallHTTP`               | 1      | `No such host is known`                                                           | `code(Availability)Application is not reachable`               |
-| `cdt-dev-we-somelogicapp.ProcessMessage.Create`                 | 2      | `cannot be evaluated because array index '0' cannot be selected from empty array` | `code(Account)The accountid for the debtor could not be found` |
-| `cdt-dev-we-somelogicapp.ProcessMessage.ParseJSON`              | 3      | `Invalid JSON schema type: int`                                                   | `code(Data)The field is not an integer`                        |
-| `cdt-dev-we-somelogicapp.ProcessMessage.ExecuteStoredProcedure` | 4      | `Procedure or function 'upsertData' expects parameter '@Ordernumber'`             | `code(Data)Ordernumber is not supplied but is required`        |
+| `cdt-dev-we-somelogicapp.ProcessMessage.CallHTTP`               | 1      | No such host is known                                                           | code(Availability)Application is not reachable               |
+| `cdt-dev-we-somelogicapp.ProcessMessage.Create`                 | 2      | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found |
+| `cdt-dev-we-somelogicapp.ProcessMessage.ParseJSON`              | 3      | Invalid JSON schema type: int                                                   | code(Data)The field is not an integer                        |
+| `cdt-dev-we-somelogicapp.ProcessMessage.ExecuteStoredProcedure` | 4      | Procedure or function 'upsertData' expects parameter '@Ordernumber'             | code(Data)Ordernumber is not supplied but is required        |
 </details>
 
 </TabItem>
@@ -173,9 +173,9 @@ Let's take an example where we have a Logic App that picks up a file from a netw
 
 To achieve this we can configure the translation as follows:
 
-| PartitionKey                       | RowKey | MatchPattern               | OutputPattern |
-|------------------------------------|--------|----------------------------|---------------|
-| cdt-dev-we-somelogicapp.DeleteFile | 1      | There is no file with name | ignore        |
+| PartitionKey                         | RowKey | MatchPattern               | OutputPattern |
+| ------------------------------------ |--------|----------------------------|---------------|
+| `cdt-dev-we-somelogicapp.DeleteFile` | 1      | There is no file with name | ignore        |
 
 This will result in the following response:
 
@@ -190,20 +190,20 @@ This will result in the following response:
 </details>
 
 ## How to implement in your Azure Logic Apps?
-A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler function and return the response. This common Logic App can then be called by all other Logic Apps, this is a nice way to centralize your exception handling functionality.
+A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. This common Logic App can then be called by all other Logic Apps, this is a nice way to centralize your exception handling functionality.
 
 :::tip
 use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.
 :::
 
-![diagram](exceptionhandler.drawio.svg)
+![Logic Apps setup with Exception Handler](/images/framework/logic-app-setup-w-exception-handler.png)
 
 <details>
 <summary>**Logic Apps Exception Handling example**</summary>
 
 ![logic-app](/images/exceptionhandler-logic-app.png)
 
-The code for the `Scope Exception Handling` is shown below, pay attention to the `Terminate` action as this uses the information from the Exception Handler function and is nicely shown in the Invictus for Azure dashboard.
+The code for the `Scope Exception Handling` is shown below, pay attention to the `Terminate` action as this uses the information from the Exception Handler component and is nicely shown in the Invictus for Azure dashboard.
 
 ![dashboard](/images/exceptionhandler-logic-app-dashboard.png)
 
