@@ -38,11 +38,15 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
 
 - stage: deploy_tst
   displayName: 'Deploy to Test'
@@ -61,11 +65,15 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
 
 - stage: deploy_acc
   displayName: 'Deploy to Acceptance'
@@ -84,11 +92,15 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
 
 - stage: deploy_prd
   displayName: 'Deploy to Production'
@@ -107,8 +119,12 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/dashboard-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/dashboard/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
