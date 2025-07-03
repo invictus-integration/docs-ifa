@@ -1,0 +1,129 @@
+pr: none
+trigger: none
+
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.framework.build' 
+    trigger: true
+
+parameters:
+  - name: "Version"
+    type: string
+    default: "latest"
+  - name: "UseBeta"
+    type: string
+    default: "$false"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages: 
+- stage: deploy_dev
+  displayName: 'Deploy to Development'
+  variables:
+  - group: infra.dev
+  - group: prefix.invictus.dev
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_development
+    displayName: 'Deploy to Development'
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_tst
+  displayName: 'Deploy to Test'
+  dependsOn: deploy_dev
+  variables:
+  - group: infra.tst
+  - group: prefix.invictus.tst
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_tst
+    displayName: 'Deploy to Test'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_acc
+  displayName: 'Deploy to Acceptance'
+  dependsOn: deploy_tst
+  variables:
+  - group: infra.acc
+  - group: prefix.invictus.acc
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_acc
+    displayName: 'Deploy to Acceptance'
+    environment: Acceptance
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_prd
+  displayName: 'Deploy to Production'
+  dependsOn: deploy_acc
+  variables:
+  - group: infra.prd
+  - group: prefix.invictus.prd
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_prd
+    displayName: 'Deploy to Production'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
