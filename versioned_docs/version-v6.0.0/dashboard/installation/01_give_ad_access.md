@@ -20,7 +20,8 @@ To use your Azure Active Directory groups as a way of authentication and flow au
 
 2. [**Let app expose an API with scoped permissions**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-expose-web-apis#add-a-scope)
    * Use default <u>Application ID URI</u> (copy value for later use).
-   * Add scope with <u>Admin and users</u> consent. The scope must be named `access_as_user`.
+   * Add scope with <u>Admin and users</u> consent.
+   * Use name for scope: `access_as_user`.
 
 3. [**Add API permissions**](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis)
    * <u>Microsoft.Graph/</u>
