@@ -1,5 +1,4 @@
 pr: none
-
 trigger: none
 
 resources:
@@ -38,11 +37,16 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
 - stage: deploy_tst
   displayName: 'Deploy to Test'
   dependsOn: deploy_dev
@@ -60,11 +64,16 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
 - stage: deploy_acc
   displayName: 'Deploy to Acceptance'
   dependsOn: deploy_tst
@@ -82,11 +91,16 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
 - stage: deploy_prd
   displayName: 'Deploy to Production'
   dependsOn: deploy_acc
@@ -104,8 +118,12 @@ stages:
           steps:
           - download: '_build'
             displayName: Download Artifact
-          - template: ./templates/framework-release-steps.yaml
-            parameters:
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
               azureSubscription: 'NameOfYourServiceConnection'
-              scriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
-              deployScriptParameters: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
