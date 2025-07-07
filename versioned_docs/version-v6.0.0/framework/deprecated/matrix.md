@@ -9,7 +9,7 @@ sidebar_class_name: hidden
 > 
 > Maximum supported .NET version is .NET Framework 4.7.1
 > 
-> For the supported version, please see [Transco Matrix V2](../transcoV2-Matrix.md)
+> For the supported version, please see [Transco Matrix V2](../transcoV2.mdx)
 >
 > For the migration guide from Matrix v1 to Transco v2 see [here](../transcoV2.mdx#migrating-matrix-v1-to-v2)
 
