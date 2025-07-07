@@ -73,7 +73,7 @@ The following request properties must/can be supplied:
 | `Filter`         | no (subscribe on all messages) | [`SqlExpression`] | Optional SQL expression that acts as a filter rule for which messages to subscribe on. |
 | `BatchSize`      | no (10) | [`BatchSize`] | Maximum messages to receive during this single call. |
 | `TimeoutMilliseconds` | no (1min) | [`MaxWaitTime`] | Maximum time to wait for a message before responding with an empty set of messages. |
-| `ShouldDeleteOnReceive` | no (`false`) | [`ReceiveAndDelete`] | `true` means receiving messages with [`ReceiveAndDelete`], `false` (default) means [`PeekLock`]. |
+| `ShouldDeleteOnReceive` | no (`false`) | [`ReceiveAndDelete`] | `false` (default) means [`PeekLock`], `true` means receiving messages with [`ReceiveAndDelete`]. <br/><br/> **⚠️ In some rare cases, the use of `ShouldDeleteOnReceive=true` could cause messages to be lost when cancelled/scaled-down happens at the exact moment the message was received (and deleted) from the topic subscription.** |
 | `SkipSubscriptionUpsert` | no (`false`) | create/update subscription and rule | `true` means there should already be a topic subscription available, `false` (default) means that a subscription will be created with the provided `Filter`. |
 
 :::tip
