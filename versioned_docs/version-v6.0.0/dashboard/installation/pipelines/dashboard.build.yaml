@@ -26,7 +26,7 @@ stages:
   displayName: Package
   dependsOn: []
   variables:
-  - group: invictus.installation
+  - group: prefix.invictus.installation
   jobs:
   - job: publish
     displayName: Build and Publish Dashboard
@@ -35,10 +35,21 @@ stages:
       clean: true
       persistCredentials: true
 
-    - template: ./templates/build-steps.yaml
-      parameters:
-        type: 'dashboard-v2'
-        useBeta: '${{ parameters.useBeta }}'
-        storageAccountName: '$(Invictus.Installation.StorageAccount.Name)'
-        storageSasToken: '$(Invictus.Installation.StorageAccount.Dashboard.SasToken)'
-        version: '${{ parameters.Version }}'
+    - task: PowerShell@2
+      displayName: 'Pull Invictus sources'
+      inputs:
+        targetType: filePath
+        filePath: './scripts/Invictus-GetSources.ps1'
+        arguments: >
+          -StorageAccountName '$(Invictus.Installation.StorageAccount.Name)'
+          -StorageSasToken '$(Invictus.Installation.StorageAccount.Dashboard.SasToken)'
+          -StorageContainerName 'dashboard-v2'
+          -SaveLocation '$(Build.ArtifactStagingDirectory)'
+          -UseBeta ${{parameters.useBeta}}
+          -Version ${{ parameters.version }}
+              
+    - task: PublishPipelineArtifact@1
+      inputs:
+        TargetPath: $(Build.ArtifactStagingDirectory)
+        ArtifactName: dashboard-v2
+        publishLocation: 'pipeline'
