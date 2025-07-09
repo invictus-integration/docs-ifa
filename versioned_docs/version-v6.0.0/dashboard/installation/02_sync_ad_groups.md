@@ -5,7 +5,7 @@ sidebar_label: Sync your Active Directory groups
 # Sync your Azure Active Directory groups to Invictus
 > 👉 [Make sure that Invictus can access your Azure Active Directory](./02_sync_ad_groups.md)
 
-Groups available in your Azure Active Directory will be used to determine whether users can access certain flows in the Invictus Dashboard. (See [flow permissions](../flows/03_permissions.mdx)).
+Groups available in your Azure Active Directory will be used to determine whether users can access certain flows in the Invictus Dashboard. (See [flow permissions](../flows/01_add.mdx#permissions)).
 
 * [Add Azure Active Directory group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
 * [Add Azure Active Directory user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
@@ -17,7 +17,7 @@ Only groups of active users (Active Directory users that have already signed int
 :::
 
 ## Enable only required groups
-Once the groups are synced within the Dashboard, you have to manually enable the required groups which you want to use for [flow permissions](../flows/03_permissions.mdx).
+Once the groups are synced within the Dashboard, you have to manually enable the required groups which you want to use for [flow permissions](../flows/01_add.mdx#permissions).
 
 ![Enable Groups](/images/dashboard/Groups/groupman_3.jpg)
 
