@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Import flow traces via Azure Logic App workflows
 Invictus is fully supported to import flows from Azure Logic Apps. It allows to keep track of the **execution tree** of the ran workflows, plus with **tracked properties** you can trace specific data for your needs besides the general **diagnostic settings**.
 
@@ -16,6 +19,9 @@ Make sure that the `WorkflowRuntime` is **✅ checked**, but the `AllMetrics` is
 ![diagnostics](/images/ladiagnostics.png)
 
 > 🔗 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
+
+<details>
+<summary>**Bicep AVM alternative example**</summary>
 
 Alternatively, you can update your Bicep template to include them, using [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/logic/workflow#parameter-diagnosticsettings):
 
@@ -42,6 +48,7 @@ Alternatively, you can update your Bicep template to include them, using [AVM](h
     ]
 }
 ```
+</details>
 
 ## Map Dashboard flows to Azure Logic App workflow runs
 Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../01_add.md):
@@ -77,16 +84,14 @@ The `Milestone` and `EventText` are properties set and displayed by default. For
 
 ![execution tree](/images/v2_events2.png)
 
-### Azure Logic App inputs/outputs
+<details>
+<summary>**Azure Logic App input/outputs**</summary>
+
 > 🛡️ For this feature to function properly some role assignments need to be set in your Invictus installation. Please see [Access Control Rights](../../accesscontrolrights.md) for more info.
 
-The message content view allows the user to track the outputs and inputs of an action. The image below shows an example of the input and output of an action being tracked. These are visible per Azure Logic App in the workflow events table. 
+The message content view allows the user to track the outputs and inputs of an action. The links are the friendly names set in the tracked properties of the "tracked" action. The links will point to their respectively input/output content. These are visible per Azure Logic App in the workflow events table. 
 
-![execution tree](/images/v2_events3.png)
-
-The links in the above image are the friendly names set in the tracked properties of the "tracked" action. The links will point to their respectively input/output content.
-
-To track the input and output of an action in an Azure Logic App the below tracked properties have to be set in an action.
+To track the input/output of an action in an Azure Logic App the below tracked properties have to be set in an action.
 
 | Property Name                    | Sample Value | Description |
 | -------------------------------- | ------------ | ----------- |
@@ -99,48 +104,120 @@ To track the input and output of an action in an Azure Logic App the below track
 The inputs and outputs content views can be set up independently or together. The only requirement is that if the `-name` is present then the `-content-type` has to be also present for the desired output.
 :::
 
-### Errors on Azure Logic App level
+</details>
+
+<details>
+<summary>**Errors on Azure Logic App level**</summary>
+
 If the corresponding logic app has resulted in an error, the error information can be seen in the within the "Logic App Details" modal.
 
 ![execution tree](/images/v2_events5.png)
 
 For any additional details or insights, the user can also navigate directly to the Azure Portal.
+</details>
 
 ## Workflow operations via Dashboard
 :::warning
 Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run properly.
-Flows linked to Azure Logic Apps workflows can be resubmitted and resumed via the Dashboard both separately (`Flow Actions button`) and in batch (`Selecting multiple flows`).
+Flows linked to Azure Logic Apps workflows can be resubmitted and resumed via the Dashboard both separately (via the flow actions button) and in batch (via selecting multiple flows).
 :::
 
-To manipulate the default resubmit/resume operations, you can also do [custom resubmit/resume](./custom-resumeresubmit.md) of flows.
+<Tabs groupId="flow-operations">
+<TabItem value="default-resubmit" label="Resubmit">
 
-### Resubmit
-The Resubmit functionality will always trigger an "Azure Resubmit" for the first Azure Logic App in the Chain. Resubmit will trigger the execution of any corresponding flow, even completed ones. When Resubmit is triggered, the first Logic App in the chain (execution tree) is resubmitted on Azure thus retriggering the whole flow.
+The resubmit functionality will always trigger an "Azure Resubmit" for the first Azure Logic App in the chain. Resubmit will trigger the execution of any corresponding flow, even completed ones. When resubmit is triggered, the first Logic App in the chain (execution tree) is resubmitted on Azure thus retriggering the whole flow.
 
 ![resubmit](/images/dashboard/FlowHandler/fh-resubmit1.jpg)
 
-If we had to take the above image as an example. If Resubmit is executed for this flow, "LogicAppChain-A" is Resubmitted on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
+If we had to take the above image as an example. If resubmit is executed for this flow, "LogicAppChain-A" is resubmitted on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
 
 ![resubmit](/images/dashboard/FlowHandler/fh-resubmit2.jpg)
 
-### Resume
-The Resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status Failed. Also, the Resume does not start from the first logic app within its flow, as with the Resubmit, but instead executes only the failed logic apps.
+</TabItem>
+<TabItem value="default-resume" label="Resume">
 
-**The only exception is that if a Parent Logic App of a failed Logic App has also failed, then only the Parent is executed**.
+The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume does not start from the first logic app within its flow, as with the resubmit, but instead executes only the failed logic apps.
 
-### Ignore
+> ☝️ The only exception is that if a Parent Logic App of a failed Logic App has also failed, then only the Parent is executed.
+
+</TabItem>
+<TabItem value="ignore" label="Ignore">
+
 Users can choose to ignore a message, normally this could be the case when a message is in failed status. The user can select one or multiple messages and choose to "Ignore" them.
 
 When a message has been set to be ignore, its status will change and show as follows
 
 ![handling buttons](/images/v2_handling3.png)
 
-:::info
-It's possible to use a **custom resubmit and resume**, see [this page](./custom-resumeresubmit.md) for more information.
-:::
+</TabItem>
+<TabItem value="custom" label="Custom">
+
+Flows can be resumed or resubmitted via a custom interaction HTTP endpoint instead of the default Azure management URL, which will resume/resubmit the Azure Logic App workflow mapped to the flow (via **DSAV** and **Workflow name** properties).
+
+### Configure flow for custom resume/resubmit
+The *Advanced Settings* section is located on the right side of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The `(▷)` button will test the URL to see if it is reachable.
+
+A message will be displayed to indicate if the test was successful.
+
+![Advanced settings test url success](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
+
+You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, click the `(@)` button to open the HTTP headers dialog box where custom HTTP headers can be added.
+
+![Advanced settings headers dialog inputted header](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header.png)
+
+### Resume/Resubmit a flow
+Once configured, navigate to the [search flow traces](../02_search.mdx) page by selecting the flow in the sidebar you just adapted for custom resume/resubmit. Flows can only be resumed/resubmitted based on available flow traces. 
+
+![Clicking resubmit on a flow run](/images/v2_flowpage_clicking_resubmit.png)
+
+A HTTP `POST` request will be sent to the configured custom resubmit URL, with a body containing information about the flow run.
+
+<details>
+<summary>**Full JSON request body example**</summary>
+
+```json
+[
+  {
+    "id": "64d206051178624d80f70775",
+    "workflowEventId": "1f8be9e8-dc61-41c5-9146-13ce087cbc08",
+    "partitionKey": "02c1eacb-60a9-4fa9-937f-971b10f567d4",
+    "workFlowRunId": "08585101213801371750243005842CU150",
+    "dateInserted": "2023-08-07T09:08:21.028Z",
+    "parentWorkFlowRunId": "",
+    "chainId": "439f11e1-739e-461e-b785-f7adad7ff876",
+    "executionTime": "2023-08-08T09:05:05.372Z",
+    "appName": null,
+    "workflowName": "someworkflow",
+    "statusId": 2,
+    "subscriptionId": "07459384-7900-43c9-b940-8f90d6ab3c7c",
+    "resourceGroupName": "someresourcegroup",
+    "triggerName": "manual",
+    "userStatus": 1,
+    "workFlowActionCount": 10,
+    "errorInfo": "",
+    "properties": {
+      "x_iv_enqueued_time": "08/07/2023 09:07:06 +00:00",
+      "x_iv_importjob_pickuptime": "08/07/2023 09:07:06",
+      "Domain": "SomeDomain",
+      "Service": "SomeService",
+      "Action": "SomeAction",
+      "Version": "1.0"
+    },
+    "source": "1",
+    "eventText": "Some Event Text",
+    "messageContentView": null,
+    "actionName": null
+  }
+]
+```
+</details>
+</TabItem>
+
+</Tabs>
+
+___
 
 ### Example scenarios
-The below examples are a representation of the Flow Row and the Execution tree with different Resume and Resubmit scenarios.
 
 <details>
 <summary>Scenario One: resubmit first in the chain</summary>
