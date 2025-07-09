@@ -97,6 +97,12 @@ module.exports = {
           admonitions: {
             keywords: ['praise'],
             extendDefaults: true,
+          },
+          lastVersion: 'v6.0.0',
+          versions: {
+            'v6.0.0': {
+              label: 'v6'
+            }
           }
         },
         theme: {

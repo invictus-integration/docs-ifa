@@ -122,8 +122,7 @@ h1 {
   margin-top: 0.25rem;
 }
 
-p,
-.theme-doc-markdown li {
+p {
   font-size: 1.1rem;
   line-height: 150%;
 }
@@ -222,4 +221,65 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
 
 .flow-text {
   color: #406369;
+}
+
+.flow-add-number {
+  display: inline-block;
+  background-color: #d6955c;
+  color: white;
+  font-family: 'Bitter', sans-serif;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.custom-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  gap: 6px;
+  margin: 5px 5px 20px 5px;
+}
+
+.custom-breadcrumb img {
+  display: inline;
+  padding: 0;
+  width: 80%;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #014550;
+  color: #333;
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.breadcrumb-item.active {
+  background: #014550;
+  color: white;
+  cursor: default;
+  font-weight: 600;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.no-padding {
+  padding: 0;
 }
