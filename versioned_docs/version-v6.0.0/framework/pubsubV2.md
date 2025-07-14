@@ -234,8 +234,8 @@ Migrating to v2 includes changes in the authentication, endpoint and removal the
                 "filter": "Domain = 'B2B-Gateway' AND Action = 'EDI' AND Version = '1.0'",
                 "subscription": "[concat(substring(variables('logicAppName'), max(createarray(0, sub(length(variables('logicAppName')), 36)))), '-', uniquestring(variables('logicAppName')))]"
             },
--           "uri": "[parameters('invictus').framework.pubSub.v1.subscribeUrl]",
-+           "uri": "[parameters('invictus').framework.pubSub.v2.subscribeUrl]", 
+-           "uri": "[parameters('invictus').framework.pubSub.v1.subscribeUrl]"
++           "uri": "[parameters('invictus').framework.pubSub.v2.subscribeUrl]"
         },
 -       "metadata": {
 -           "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.definitionUrl]",
@@ -276,12 +276,13 @@ Migrating to v2 includes changes in the authentication, endpoint and removal the
                 "AcknowledgementType": "Complete",
                 "IgnoreNotFoundException": true,
                 "Subscription": "@triggerBody()?['subscription']",
++               "SequenceNumber": "@triggerBody()?['sequenceNumber']"
 -               "LockToken": "@triggerBody()?['LockToken']",
 -               "MessageReadTime": "@trigger()['startTime']"
             },
             "method": "post",
--           "uri": "[parameters('invictus').framework.pubSub.v1.acknowledgeUrl]",
-+           "uri": "[parameters('invictus').framework.pubSub.v2.acknowledgeUrl]",
+-           "uri": "[parameters('invictus').framework.pubSub.v1.acknowledgeUrl]"
++           "uri": "[parameters('invictus').framework.pubSub.v2.acknowledgeUrl]"
         },
 -       "metadata": {
 -           "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.v1.definitionUrl]",
