@@ -20,11 +20,11 @@ The Invictus **Dashboard** provides a business user-friendly UI to interact with
 * <u class="flow-text">**Flows**</u>
   * <u>**Dashboard App:**</u> the business user interacts with the **Dashboard** via a deployed web application which is used to monitor all 'flows'.
   * <u>**Dashboard Gateway:**</u> serves as the backend API for the **Dashboard App**. It shows the stored 'flows' (*Cosmos DB for MongoDB*) and triggers 'flow' operations (*Service Bus*).  
-  * <u>**Flow Handler:**</u> based on the required 'flow' action triggered by the business user (*Ignore*, *Resubmit*, *Resume*) in the **Dashboard App**, it interacts with the deployed Azure Logic Apps on the client environment (See [import flow traces via Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.md) for more info).
+  * <u>**Flow Handler:**</u> based on the required 'flow' action triggered by the business user (*Ignore*, *Resubmit*, *Resume*) in the **Dashboard App**, it interacts with the deployed Azure Logic Apps on the client environment (See [import flow traces via Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx) for more info).
 * <u class="flow-trace-text">**Flow traces**</u>
   * <u>**[type] import job:**</u> the Invictus installation provides several 'import jobs' which are interaction endpoints to push 'flow traces' into the **Dashboard**. These can come from various sources (Logic Apps, Data Factory, Event Hubs...). Once received, they push a canonical message into the system (*Service Bus*).
   * <u>**Cache job:**</u> listens for new canonical messages (*Service Bus*) and caches them as batches (*Blob Storage*).
-  * <u>**Merge job:**</u> listens for new batches (*Event Hubs*) and already upserts the system (*Cosmos DB for MongoDB*) with 'message content view' information (input/output of Azure Logic Apps, see [import flow traces via Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.md) for more info).
+  * <u>**Merge job:**</u> listens for new batches (*Event Hubs*) and already upserts the system (*Cosmos DB for MongoDB*) with 'message content view' information (input/output of Azure Logic Apps, see [import flow traces via Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx) for more info).
   * <u>**Store job:**</u> listens for new batches (*Event Hubs*), loads referenced canonical message (*Blob Storage*), and combines that information to store 'flow trace' models (*Cosmos DB for MongoDB*) which gets available via the **Dashboard App** to the business user.
 
 <br/>
