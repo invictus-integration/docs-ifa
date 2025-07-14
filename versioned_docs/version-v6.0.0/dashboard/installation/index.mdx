@@ -1,0 +1,918 @@
+---
+hide_table_of_contents: true
+---
+
+import { ToggleSwitch, ToggleSection, ToggleRow, ToggleProvider } from '@site/src/components/VnetToggleSwitch';
+import React from 'react';
+import InstallationWizard, { Step, StepGroup, GoToStep, SharedNote } from '@site/src/components/InstallationWizard';
+
+# Installing Invictus Dashboard
+
+<InstallationWizard>
+<Step title="Prerequisites">
+
+:::info[obtain access <SharedNote/>]
+To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
+:::
+
+<details>
+<summary>**Include VNET support <SharedNote/>**</summary>
+
+Invictus includes functionality which allows all its resources to run within an Azure Virtual Network (VNET).
+
+### Required deployment
+- An Azure Virtual Network
+  - Including two subnets, one each for:
+    - Private Endpoints
+    - Container App Environment
+  - The subnets must have the following services enabled
+    - `Microsoft.AzureCosmosDB`
+    - `Microsoft.EventHub`
+    - `Microsoft.KeyVault`
+    - `Microsoft.ServiceBus`
+    - `Microsoft.Storage`
+  - The Container App [subnet must also have the delegation `Microsoft.App/environments`](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation)
+        
+- Private DNS Zones ([Bicep template](../../scripts/invictusVnetDNSZones.bicep))
+  - `privatelink.azurecr.io`
+  - `privatelink.blob.core.windows.net`
+  - `privatelink.file.core.windows.net`
+  - `privatelink.mongo.cosmos.azure.com`
+  - `privatelink.queue.core.windows.net`
+  - `privatelink.servicebus.windows.net`
+  - `privatelink.table.core.windows.net`
+  - `privatelink.table.cosmos.azure.com`
+  - `privatelink.vaultcore.azure.net`
+  - `privatelink.{regionName}.azurecontainerapps.io`
+    
+- To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
+    - Powershell
+    - Azure Powershell
+    - Bicep CLI
+
+### Required role assignment
+If the Invictus resources and the VNET are on different resource groups, then the Invictus resource group will need to be assigned the role of `Network Contributor` onto the VNET resource group.
+
+</details>
+___
+
+## Migrate to older installations
+
+<details>
+<summary>**Migrate to Dashboard v2+**</summary>
+
+### Build pipeline
+The Azure Blob Storage container for Dashboard V2 is now `dashboard-v2`, this can be updated in the `-StorageContainerName` parameter you use in the build pipeline.
+
+### Release pipeline
+Make sure that the PowerShell script in the release pipeline which runs Deploy.ps1 has the following parameters:
+```yaml
+azurePowerShellVersion: LatestVersion
+pwsh: false
+```
+
+### Object ID update
+When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to the release pipeline should be updated. This must be changed to the **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection (not of the App Registration). This change is required for both Dashboard and Framework pipelines.
+
+### Remove existing role assignments
+Invictus V2 includes functionality to automatically deploy role assignments which were previously set manually. However, if these role assignments are already present, they will cause a conflict. In your Invictus resource group, remove any roles which are assigned to the Azure Functions. Typically, this is just 1 role assignment: 
+
+- *Monitoring Contributor* rights for the FlowHandler component for the Invictus resource group.
+
+### Azure AD setup
+If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](./01_give_ad_access.md) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
+
+### SQL data migration
+Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow data will **not** be migrated.
+
+#### Data migration release pipeline changes
+The data migration process forms part of the release pipeline. Please refer to **Dashboard release pipeline** installation step for more information. The deploy script parameter `PerformSqlDataMigration` must be set to `1`. The deploy script also accepts a few optional parameters to be able to connect to your SQL database:
+
+- `-sqlToMigrateServerName` : Server name hosting the SQL DB you wish to migrate. Defaults to `invictus-{ResourcePrefix}-sqlsvr`
+- `-sqlToMigrateDBName` : Name of the SQL DB you wish to migrate. Defaults to `coditcip`
+- `-sqlToMigrateUserName` : The login username used to connect to the SQL Server. Defaults to `InvictusFrameworkAdmin`
+
+In addition to these values, the SQL server password <u>must</u> be stored as a secret in your Invictus Azure Key Vault with the name `invictussqlserverpassword`.
+
+The data migration will now run as part of your release pipeline. The resultant data in Azure Cosmos DB will be validated against the original SQL data, with the validation results printed in the release logs. However it is still important to manually verify the migrated data. When complete, you will be able to login to the new Invictus V2 Dashboard with the same credentials as before.
+
+Once you are satisfied with the migrated data, it is advised to change the `PerformSqlDataMigration` script parameter to `0` so that the migration process is entirely skipped in subsequent releases.
+
+### Dashboard URL
+The Invictus V2 release pipeline will create a new App Service Dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new Dashboard. If instead you wish to maintain your current URLs for the Dashboard, the old Dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
+
+:::warning
+By doing this you will lose access to the old Dashboard and the ability to view and query its historic data.**
+:::
+
+### Add role assignments
+In addition to the Flow Handler component, in V2 also the Dashboard Gateway [must have Logic App Contribute access on the resource group or subscription which contains the Logic Apps](./03_give_la_access.md).
+
+### Common migrating issues
+:::danger[You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS]
+If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the Dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the Dashboard pipeline only*.
+:::
+
+:::danger[The role assignment already exists]
+If you have role assignments conflicts during deployment, you might have multiple role assignments defined at the Invictus resource group. This case, remove all role assignments defined at the Invictus resource group level.
+:::
+
+### Invictus configure dashboard script update
+If you are using the PowerShell script `Invictus-ConfigureDashboard.ps1` to deploy flows, etc, you must replace this script with the [V2 version](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1)
+
+</details>
+
+</Step>
+
+
+<Step title="Build pipeline">
+
+To deploy the Invictus Dashboard together with your customer solution, the Dashboard should be included in your release package.
+
+## Save installation script to your repository <SharedNote/>
+The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Dashboard.
+
+## Add variables to variable group <SharedNote/>
+Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
+
+* **{'{prefix}'}.Invictus.Installation**
+  * `Invictus.Installation.StorageAccount.Name`: invictusreleases
+  * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software
+  * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software (if you're also deploying the Framework)
+  * `Infra.Environment.ACRUsername`: value provided by Codit Software
+  * `Infra.Environment.ACRPassword`: value provided by Codit Software
+
+## Add YAML build pipeline
+Add a YAML pipeline to build the Invictus for Azure Dashboard. Change the following example file according to your needs, for example change the trigger path:
+``` yaml
+  paths:
+    include:
+    - /src/customer.azure.invictus
+```
+
+<details>
+<summary>**Full YAML build pipeline example**</summary>
+
+```yaml
+pr: none
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+  paths:
+    include:
+    - /src/customer.azure.invictus
+
+parameters:
+- name: Version
+  displayName: Invictus Version
+  type: string
+  default: '*'
+- name: useBeta
+  displayName: Use Beta
+  type: string
+  default: $False
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Package
+  displayName: Package
+  dependsOn: []
+  variables:
+  - group: prefix.invictus.installation
+  jobs:
+  - job: publish
+    displayName: Build and Publish Dashboard
+    steps:
+    - checkout: self
+      clean: true
+      persistCredentials: true
+
+    - task: PowerShell@2
+      displayName: 'Pull Invictus sources'
+      inputs:
+        targetType: filePath
+        filePath: './scripts/Invictus-GetSources.ps1'
+        arguments: >
+          -StorageAccountName '$(Invictus.Installation.StorageAccount.Name)'
+          -StorageSasToken '$(Invictus.Installation.StorageAccount.Dashboard.SasToken)'
+          -StorageContainerName 'dashboard-v2'
+          -SaveLocation '$(Build.ArtifactStagingDirectory)'
+          -UseBeta ${{parameters.useBeta}}
+          -Version ${{ parameters.version }}
+              
+    - task: PublishPipelineArtifact@1
+      inputs:
+        TargetPath: $(Build.ArtifactStagingDirectory)
+        ArtifactName: dashboard-v2
+        publishLocation: 'pipeline'
+
+```
+</details>
+
+</Step>
+<Step title="Release pipeline">
+
+The release pipeline will use the artifacts created from the build pipeline and publish this to the stage(s) you define. Each stage will deploy the resources to the Azure subscription and resource group you specify in the deployment tasks.
+
+The release uses variable groups and edits/adds variables.
+
+## Variable groups / deployment environment <SharedNote/>
+Create a variable group named **{'{prefix}'}.Invictus.{'{stage}'}** for all the stages (environments) and add at least one variable (eg: `Invictus.Secrets.ApiKey1.Name = apikey1`).
+
+:::warning[permit build service access to variable groups]
+Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml) has **Administrator** access to these variable groups (<u>Pipelines</u> > <u>Library</u> > <u>Security</u>)
+:::
+
+## YAML Release Pipeline
+This contains an example YAML pipeline to release the Invictus for Azure Dashboard, change the following example file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+``` yaml
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.dashboard.build' 
+    trigger: true
+```
+
+If you need to overwrite more bicep Template parameters make sure to add this to the `deployScriptParameters`. A complete list of Bicep Template parameters can be found [here](#bicep-template-parameters). 
+
+<details>
+<summary>**Full YAML release pipeline example**</summary>
+
+```yaml
+pr: none
+trigger: none
+
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.dashboard.build' 
+    trigger: true
+
+parameters:
+  - name: "Version"
+    type: string
+    default: "latest"
+  - name: "UseBeta"
+    type: string
+    default: "$false"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages: 
+- stage: deploy_dev
+  displayName: 'Deploy to Development'
+  variables:
+  - group: infra.dev
+  - group: prefix.invictus.dev
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_development
+    displayName: 'Deploy to Development'
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_tst
+  displayName: 'Deploy to Test'
+  dependsOn: deploy_dev
+  variables:
+  - group: infra.tst
+  - group: prefix.invictus.tst
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_tst
+    displayName: 'Deploy to Test'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_acc
+  displayName: 'Deploy to Acceptance'
+  dependsOn: deploy_tst
+  variables:
+  - group: infra.acc
+  - group: prefix.invictus.acc
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_acc
+    displayName: 'Deploy to Acceptance'
+    environment: Acceptance
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_prd
+  displayName: 'Deploy to Production'
+  dependsOn: deploy_acc
+  variables:
+  - group: infra.prd
+  - group: prefix.invictus.prd
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_prd
+    displayName: 'Deploy to Production'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/dashboard-v2/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/dashboard-v2 -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -azureActiveDirectoryClientId "$(Infra.AzAD.Client.Id)" -azureActiveDirectoryTenantId "$(Infra.DevOps.Tenant.Id)" -azureActiveDirectoryClientSecret "$(Infra.AzAD.Client.Secret)" -azureActiveDirectoryAudience "$(Infra.AzAd.Audience)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -performSqlDataMigration 0 -isProvisionedCosmos 0 -flowDataTTLInDays 90 -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+```
+</details>
+
+## Deploy Script Parameters
+The following script parameters are used in the deploy script:
+
+### Mandatory Parameters
+
+[publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
+[Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
+[Azure AD setup]: ./01_give_ad_access.md
+[Container authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
+
+| Argument name       | Description |
+| ------------------- | ----------- |
+| `artifactsPath`     | Path on the DevOps agent where the downloaded Invictus artifacts are stored <br/> ([publish and download build artifacts]) |
+| `devOpsObjectId`    | Object ID of the service principal that's connected to the DevOps service connection, which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
+| `acrUsername`       | ACR credentials provided by Codit Software to pull Invictus images. |
+| `acrPassword`       | ACR credentials provided by Codit Software to pull Invictus images. |
+| `resourcePrefix`    | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`) |
+| `resourceGroupName` | Name of Azure resource group where Invictus should be deployed |
+| `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`) |
+| `azureActiveDirectoryClientId` | See [Azure AD Setup] if AD enabled  |
+| `azureActiveDirectoryTenantId` | See [Azure AD Setup] if AD enabled |
+| `azureActiveDirectoryClientSecret` | See [Azure AD Setup] if AD enabled |
+| `azureActiveDirectoryAudience` | See [Azure AD Setup] if AD enabled |
+| `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the process will be skipped. See the [migration guide](#migration-from-older-installations) for more details. Once data migration has been performed and verified, it is recommended to then set this value to `0` so that the migration process is skipped for all subsequent releases. |
+| `flowDataTTLInDays` | Amount of days flow data can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md). |
+| `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
+| `identityProviderApplicationId` | See [Container Authentication]. |
+| `identityProviderClientSecret` | See [Container Authentication]. |
+
+### Optional Parameters
+| Argument name                  | Default value | Description  |
+| ------------------------------ | --------------| ------------ |
+| `resourceGroupLocation`        | 'West Europe' | Azure location where resources should be deployed |
+| `isAdDisabled`                 | `False`       | Boolean flag to indicate whether the Dashboard should use AD for authentication |
+| `additionalTemplateParameters` | []            | Additional named parameters for the Bicep template you wish to override. More on this below. |
+
+:::info[override [bicep parameters](#bicep-template-parameters)]
+The `AdditionalTemplateParameters` can be used to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the parameters of the `./Deploy.ps1` script.
+:::
+
+<details>
+<summary>**Full YAML task example**</summary>
+```yaml
+- task: AzureCLI@2
+  displayName: 'Azure CLI'
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  inputs:
+    azureSubscription: '[YOUR_SERVICE_CONNECTION]'
+    addSpnToEnvironment: true
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+
+      # Determine where the the provided Invictus 'Deploy.ps1' script is located
+      $artifactsPath = ${{ variables['Pipeline.Workspace'] }} + '/_build/dashboard' 
+      $scriptPath = $artifactsPath + '/Deploy.ps1'
+
+      # Use your service connection's service principal Object ID
+      $objectId = (az ad sp show --id $env:servicePrincipalId | ConvertFrom-Json).id
+
+      & $scriptPath `
+        -artifactsPath $artifactsPath `
+        -acrPath 'invictusreleases.azurecr.io' `
+        -useBeta false `
+        -acrUsername 'admin' `
+        -acrPassword '<pass>' `
+        -resourcePrefix 'dev' `
+        -resourceGroupName 'my-client-dev-rg' `
+        -variableGroupName 'My.Client.Dev' `
+        -devOpsObjectId $objectId `
+        -performSqlDataMigration 0 `
+        -isProvisionedCosmos 0 `
+        -azureActiveDirectoryClientId '4b559bfb-871a-4013-bce9-829e3aeb6bdd' `
+        -azureActiveDirectoryTenantId '97a944a1-04a0-45d2-b2f3-c424755c4167' `
+        -azureActiveDirectoryClientSecret '<pass>' `
+        -azureActiveDirectoryAudience 'https://contoso.com' `
+        -identityProviderApplicationId 'c84d34ea-f169-4787-a4af-81750debda0b' `
+        -identityProviderClientSecret '<pass>' `
+        -isProvisionedCosmos 1 `
+        -flowDataTTLInDays 90
+```
+</details>
+
+## Bicep Template Parameters
+The below tables lists the parameters accepted by the Bicep template.
+
+<ToggleProvider>
+<ToggleSwitch /><br/><br/>
+
+### Top-level parameters
+Resource-independent parameters that affect all resources in the deployed resource group.
+
+| Parameter                              | Required | Default             | Description                       |
+| -------------------------------------- | :------: | ------------------- | --------------------------------- |
+| `resourcePrefix`                       | Yes      |                     | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`) |
+| `devOpsObjectId`                       | Yes      |                     | Object ID of the service principal that's connected to the DevOps service connection, which will get the necessary role definitions to interact with Invictus' deployed resources (i.e. Key vault, Container registry) ([Azure CLI task]) |
+| `containerAppsEnvironmentLocation` | No | `resourceGroup().location` | Location of the ACA environment and Container Apps. |
+| `containerAppsEnvironmentName` | No | `invictus-${resourcePrefix}-cae` | The name of the [Container App environment](https://learn.microsoft.com/en-us/azure/container-apps/environment). |
+
+<ToggleSection>
+| VNET Parameter                  | Required | Default                       | Description                                                              |
+| ------------------------------- | :------: | ----------------------------- | ------------------------------------------------------------------------ |
+| **`enableVnetSupport`**         | **Yes**  | **`false`**                   | **Used to toggle VNET functionality on or off** |
+| **`vnetResourceGroupName`**     | **Yes**  |                               | **The name of the resource group on Azure where the VNET is located** |
+| **`vnetName`**                  | **Yes**  |                               | **The name of the VNET resource** |
+| **`privateEndpointSubnetName`** | **Yes**  |                               | **The name of the subnet to be used to connect the private endpoint resources** |
+| **`containerAppEnvironmentSubnetName`** | **Yes**  |                       | **The name of the subnet to be used to connect the Container App environment** |
+| **`caeVnetInfraRgName`**        | **No**  |**Auto-Generated by Azure**| **Overrides the name of the Azure auto-generated RG for Container App Environment infra** |
+| **`dnsZoneSubscriptionId`**     | **No**   | **Subscription ID of scope**  | **The subscription ID of the private DNS zones.** |
+| **`dnsZoneResourceGroupName`**  | **No**   | **VNET RG name**              | **The resource group name of where the private DNS zones are located.** |
+|**`caeVnetInfraRgName`**                | No       | `invictus-${resourcePrefix}-cae-infra` | The name of the Container App infrastructure resource group (when VNET is activated). |
+</ToggleSection>
+
+<details>
+<summary>Active Directory parameters</summary>
+
+Parameters related to the Azure Active Directory where the groups are synced from.
+
+| Parameter                              | Required | Default | Description                                           |
+| -------------------------------------- | :------: | ------- | ----------------------------------------------------- |
+| `azureActiveDirectoryClientId`         | Yes      |         | Client AAD ID required to enable AAD for dashboard    |
+| `azureActiveDirectoryTenantId`         | Yes      |         | Tenant AAD ID required to enable AAD for dashboard    |
+| `azureActiveDirectoryClientSecret`     | Yes      |         | Required for AD Login                                 |
+| `AzureActiveDirectoryAudience`         | Yes      |         | Required for AD Login                                 | 
+| `isAdDisabled`                         | No       | `0`     | isAdDisabled true or false                            |
+
+</details>
+
+<details>
+<summary>App service parameters</summary>
+
+Parameters related to the applications that are deployed, mostly Azure Functions.
+
+### Function names
+| Parameter                                 | Required | Default                                             | Description                                     |
+| ----------------------------------------- | :------: | --------------------------------------------------- | ----------------------------------------------- |
+| `invictusDashboardWebAppName`             | No       | `invictus-{resourcePrefix}-invictusdashboard-v2`    | Name for the dashboard web application          |
+| `invictusDashboardGatewayFunctionName`    | No       | `invictus-{resourcePrefix}-dashboardgateway`        | Name for Azure Function                         |
+| `invictusImportJobFunctionName`           | No       | `invictus-{resourcePrefix}-invictusimportjob`       | Name for Azure Function                         |
+| `invictusCacheImportJobFunctionName`      | No       | `invictus-{resourcePrefix}-cacheimportjob`          | Name for Azure Function                         |
+| `invictusStoreImportJobFunctionName`      | No       | `invictus-{resourcePrefix}-storeimportjob`          | Name for Azure Function                         |
+| `invictusFlowHandlerFunctionName`         | No       | `invictus-{resourcePrefix}-flowhandlerjob`          | Name for Azure Function                         |
+| `invictusGenericReceiverFunctionName`     | No       | `invictus-{resourcePrefix}-genericreceiver`         | Name for Azure Function                         |
+| `invictusHttpReceiverFunctionName`        | No       | `invictus-{resourcePrefix}-httpreceiver`            | Name for Azure Function                         |
+| `invictusDatabaseManagerFunctionName`     | No       | `invictus-{resourcePrefix}-database-storeimportjob` | Name for Azure Function                         |
+| `invictusDataFactoryReceiverFunctionName` | No       | `invictus-{resourcePrefix}-datafactoryreceiver`     | Name for Azure Function                         |
+
+### Function deployment
+| Parameter                           | Required | Default                        | Description                                                   |
+| ----------------------------------- | :------: | ------------------------------ | ------------------------------------------------------------- |
+| `servicePlanName`                   | No       | `invictus-{resourcePrefix}-appplan-linux` | Name for the service plan which will host the APIs |
+| `servicePlanSkuName`                | No       | S1                              | Size for the App Plan, the value of "I1" needs to be passed to install an isolated plan.|
+| `servicePlanSkuCapacity`            | No       | `1`                             | The SKU capacity setting for the App Plan   |
+
+</details>
+
+<details>
+<summary>Storage parameters</summary>
+
+Parameters related to the data that is stored throughout Invictus.
+
+### Cosmos
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`cosmosAccountName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-cosmos-serverless/provisoned`</td>
+      <td>Name for Cosmos account</td>
+    </tr>
+    <tr>
+      <td>`cosmosDatabaseName`</td>
+      <td>No</td>
+      <td>`InvictusDashboard`</td>
+      <td>Name for Cosmos database</td>
+    </tr>
+    <tr>
+      <td>`isProvisionedCosmos`</td>
+      <td>Yes</td>
+      <td>`0` (:`true`)</td>
+      <td>`isProvisionedCosmos` true or false</td>
+    </tr>
+    <ToggleRow>
+      <td>**`cosmosDbSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET.**</td>
+    </ToggleRow>
+  </tbody>
+</table>
+
+
+<details>
+<summary>Provisioned Throughput vs Serverless Cosmos DB</summary>
+| **Aspect**               | **Serverless in Production**                                                     | **Provisioned Throughput in Production**                                              |
+| ------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Cost-Efficiency**      | Optimized for variable workloads; scales down during low activity to reduce cost | Costs are fixed based on allocated RU/s; autoscale introduces a min-max pricing range |
+| **Traffic Handling**     | Ideal for sporadic or bursty traffic patterns                                    | Suitable for consistently high or predictable workloads                               |
+| **Scalability**          | Auto-scales based on workload; FlowData and WorkFlowEvents most affected         | RU/s can be manually adjusted for high-volume needs                                   |
+| **Usage Suitability**    | Best for unpredictable workloads with fluctuating volume                         | Best for stable, high-throughput scenarios                                            |
+| **Collections Behavior** | FlowData and WorkFlowEvents auto-scale with data insertion                       | FlowData and WorkFlowEvents have fixed RU/s with autoscale range                      |
+
+Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
+
+**Default Settings for Provisioned Throughput**
+| Collection    | RU/s          | Autoscale  |
+| ------------- | ------------- | ---------- |
+|Audits|500|No|
+|DashboardSettings|500|No|
+|Users|500|No|
+|Groups|500|No|
+|Statistics|500|No|
+|FolderFlows|500|No|
+|FlowData|2000|Yes|
+|WorkflowEvent|2000|Yes|
+|MessageContent|2000|Yes|
+
+</details>
+
+### Storage account
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`storageAccountName`</td>
+      <td>No</td>
+      <td>`invictus{resourcePrefix}store`</td>
+      <td>Name for the Azure Storage resource. Dashes (-) will be removed from `{resourcePrefix}`</td>
+    </tr>
+    <tr>
+      <td>`storageAccountType`</td>
+      <td>No</td>
+      <td>`Standard_LRS`</td>
+      <td>The Storage account `StorageAccountSkuType`</td>
+    </tr>
+    <tr>
+      <td>`messageStatusCacheDeleteAfterDays`</td>
+      <td>No</td>
+      <td>`30`</td>
+      <td>The number of days without modification for the message status cache to be deleted</td>
+    </tr>
+    <ToggleRow>
+      <td>**`storageAccountSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+    <ToggleRow>
+      <td>**`disableStorageAccountPublicNetworkAccess`**</td>
+      <td>**No**</td>
+      <td>**`false`**</td>
+      <td>**If true, the Invictus storage account will not be accessible from a public network.**</td>
+    </ToggleRow>
+    <ToggleRow>
+      <td>**`storageAccountMinimumTLSVersion`**</td>
+      <td>**No**</td>
+      <td>**`TLS1_2`**</td>
+      <td>**Set the required TLS value for the storage account. Accepted values: TLS1_0, TLS1_1, TLS1_2**</td>
+    </ToggleRow>
+  </tbody>
+</table>
+
+### Cleaning data
+| Parameter                                              | Required | Default | Description                                            |
+| ------------------------------------------------------ | :------: | ------- | ------------------------------------------------------ |
+| `flowDataTTLInDays`                                    | Yes      |         | A positive integer value which represents the amount of days flow data can live in the database |
+| `statisticsCutOffDays`                     | No       | `-3`    | The number of days in the past that homepage statistics will recalculate |
+| `cleanupJobIntervalInMinutes`                          | No       |  `1440` | Interval in minutes for the cleanup job                |
+| `workFlowCleanupJobIntervalInMinutes`                  | No       |  `180`  | Interval in minutes for the workflowevent cleanup job  |
+| `dataWorkFlowCleanupMaxRetentionDays`                  | No       |  `90`   | Max number of days the WorkFlowEvent data is stored    |
+
+</details>
+
+<details>
+<summary>Messaging parameters</summary>
+
+Parameters related to the messaging resources that import the flow information into storage.
+
+### Service Bus
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`serviceBusNamespaceName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-sbs`</td>
+      <td>Name for the Service Bus Namespace resource</td>
+    </tr>
+    <tr>
+      <td>`serviceBusSkuName`</td>
+      <td>No</td>
+      <td>Standard or Premium if VNET enabled</td>
+      <td>Name for the Service Bus SKU</td>
+    </tr>
+    <ToggleRow>
+      <td>**`serviceBusSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+  </tbody>
+</table>
+
+### Event Hubs
+#### Namespace
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`eventHubNamespaceName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-evnm`</td>
+      <td>Name for the Event Hub Namespace resource</td>
+    </tr>
+    <tr>
+      <td>`eventHubSkuName`</td>
+      <td>No</td>
+      <td>Basic</td>
+      <td>The SKU name of the EventHub Namespace</td>
+    </tr>
+    <tr>
+      <td>`eventHubSkuTier`</td>
+      <td>No</td>
+      <td>Basic</td>
+      <td>The Tier name for the EventHub Namespace</td>
+    </tr>
+    <tr>
+      <td>`eventHubSkuCapacity`</td>
+      <td>No</td>
+      <td>`1`</td>
+      <td>The SKU capacity for the EventHub Namespace</td>
+    </tr>
+    <tr>
+      <td>`eventHubAutoInflate`</td>
+      <td>No</td>
+      <td>`false`</td>
+      <td>The EventHub setting to enable auto-inflate</td>
+    </tr>
+    <tr>
+      <td>`eventHubMaxThroughputUnits`</td>
+      <td>No</td>
+      <td>`0`</td>
+      <td>Max throughput setting for EventHub</td>
+    </tr>
+    <tr>
+      <td>`eventHubMessageRetentionInDays`</td>
+      <td>No</td>
+      <td>`1`</td>
+      <td>
+        The number of days EventHub will retain messages.<br />
+        Note: `eventHubSkuName` and `eventHubSkuTier` must be set to `Standard` to exceed 1 day of retention.
+      </td>
+    </tr>
+    <ToggleRow>
+      <td>**`eventHubSubnets`**</td>
+      <td>**Yes**</td>
+      <td>`[]`</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+  </tbody>
+</table>
+
+#### Hubs
+| Parameter                           | Required | Default                                          | Description                                             |
+| ----------------------------------- | :------: | ------------------------------------------------ | ------------------------------------------------------- |
+| `eventHubName`                      | No       | `invictus-{resourcePrefix}-evhb`                 | Name for the Event Hub created on the Namespace |
+| `eventHubNameV2`                    | No       | `invictus-{resourcePrefix}-evhb-v2`              | Name for the Event Hub for standard LA's created on the Namespace |
+| `workflowEventHubName`              | No       | `invictus-{resourcePrefix}-workflow-evhb`        | EventHub name for the import job |
+| `dataMergeWorkflowEventHubName`     | No       | `invictus-{resourcePrefix}-mergeddata-evhb`      | EventHub name for the data merge import job |
+| `sideTasksWorkflowEventHubName`     | No       | `invictus-{resourcePrefix}-sidetasks-evhb`       | EventHub name for the side tasks |
+| `dataFactoryEventHubName`           | No       | `invictus-{resourcePrefix}-df-evhb`              | EventHub name for the data factory import job |
+| `genericEventHubName`               | No       | `invictus-{resourcePrefix}-genericreceiver-evhb` | EventHub name for the import job |
+
+</details>
+
+<details>
+<summary>Secret parameters</summary>
+
+Parameters related to the security of the deployed applications. 
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`keyVaultName`</td>
+      <td>No</td>
+      <td>`invictus-{resourcePrefix}-vlt`</td>
+      <td>Name for the Key Vault Service Namespace resource</td>
+    </tr>
+    <tr>
+      <td>`keyVaultEnablePurgeProtection`</td>
+      <td>No</td>
+      <td>`null`</td>
+      <td>If true, enables key vault purge protection. Once enabled, this property can never be disabled.</td>
+    </tr>
+    <tr>
+      <td>`jwtSecretToken`</td>
+      <td>No</td>
+      <td>Generated on first use</td>
+      <td>JWT Secret used for login</td>
+    </tr>
+    <ToggleRow>
+      <td>**`keyVaultSubnets`**</td>
+      <td>**Yes**</td>
+      <td>**`[]`**</td>
+      <td>**An array of string. The values need to match the subnet names on the VNET**</td>
+    </ToggleRow>
+  </tbody>
+</table>
+
+</details>
+
+<details>
+<summary>Observability parameters</summary>
+
+Parameters related to the observability of the deployed applications.
+
+| Parameter                                     | Required | Default                                     | Description                                                  |
+| -------------------------------------------   | :------: | ------------------------------------------- | ------------------------------------------------------------ |
+| `appInsightsName`                             | No       | `invictus-{resourcePrefix}-appins`          | Name for the Application Insights resource                   |
+| `alertingAppInsightsName`                     | No       | `invictus-{resourcePrefix}-alertingappins`  | Name for the Application Insights resource used for alerting |
+| `importjobAppInsightsName`                    | No       | `invictus-{resourcePrefix}-importjobappins` | Name for Application Insights used by importjob              |
+| `appInsightsSamplingPercentage`               | No       | `1`                                         | The sampling percentage for the Application Insights resource |
+| `importJobAppInsightsSamplingPercentage`      | No       | `1`                                         | The sampling percentage for the import job Application Insights resource |
+
+</details>
+
+<details>
+<summary><span id="scaling-parameters">Scaling parameters</span></summary>
+
+Azure Container Apps allow for flexible scaling customization. In Invictus we have provided default scaling values which can be customized according to your scenario.
+
+Container Apps have the ability to scale down to zero replicas. This is a great cost-saving option especially for components which are not used at all. An Azure Container App scaled to zero will automatically scale out when triggered, however this may take up to a few minutes to complete. This could prove to be an issue in scenarios with limited timeout e.g. logic apps with 120 seconds timeout. In such cases there is no option but to set a minimum replica count of 1.
+
+| Parameter                      | Required | Available options as JSON object (with defaults) |
+| ------------------------------ | :------: | ----------------- |
+| `dashboardScaling`             | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`5`)</li><li>`concurrentRequests` (`100`)</li></ul> |
+| `dashboardGatewayScaling`      | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`5`)</li><li>`concurrentRequests` (`100`)</li></ul> |
+| `cacheImportJobScaling`        | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`20`)</li><li>`messageCount` (`1000`)</li></ul> |
+| `dbImportJobScaling`           | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`20`)</li><li>`unprocessedEventThreshold` (`2000`)</li></ul> |
+| `datafactoryReceiverScaling`   | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`10`)</li></ul> |
+| `flowhandlerScaling`           | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`1`)</li></ul> |
+| `genericReceiverScaling`       | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`0`)</li><li>`scaleMaxReplicas` (`10`)</li></ul> |
+| `httpReceiverScaling`          | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`0`)</li><li>`scaleMaxReplicas` (`10`)</li></ul> |
+| `importJobScaling`             | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`20`)</li><li>`unprocessedEventThreshold` (`2000`)</li></ul> |
+| `storeImportJobScaling`        | No       | <ul><li>`cpuResources` (`0.5`)</li><li>`memoryResources` (`1.0Gi`)</li><li>`scaleMinReplicas` (`1`)</li><li>`scaleMaxReplicas` (`30`)</li><li>`unprocessedEventThreshold` (`2000`)</li></ul> |
+
+Each of the above parameters accepts an object with their options:
+```json
+{
+  scaleMinReplicas: int
+  scaleMaxReplicas: int
+  cpuResources: string
+  memoryResources: string
+}
+```
+
+| Parameter value             | Description                                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `cpuResources`              | The amount of cpu resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).       |
+| `memoryResources`           | The amount of memory resources to dedicate for the container resource. [See here for allowed values](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations).    |
+| `messageCount`              | The amount of active messages in your Azure Service Bus queue or topic to scale on. |
+| `scaleMinReplicas`          | The lowest number of replicas the Container App will scale in to.                                      |
+| `scaleMaxReplicas`          | The highest number of replicas the Container App will scale out to.                                    |
+| `unprocessedEventThreshold` | The target number of unprocessed events per worker for Event Hub-triggered functions. [Microsoft docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.webjobs.eventhubs.eventhuboptions.targetunprocessedeventthreshold) |
+
+</details>
+</ToggleProvider>
+
+</Step>
+<Step title="First-time login">
+
+During the deployment of the system, an administrator account has been generated for your initial login to the Dashboard.
+
+:::praise[recommended]
+It is recommended to create a new `System Admin` user with your own email address after logging in for the first time. This will help during the [Forgot Password](../security/01_users.mdx#Forgot-Password) procedure.
+:::
+
+Follow the steps below to log in to the Dashboard:
+
+1. Navigate to the Dashboard by visiting `https://{yourdashboardurl}` in your web browser.
+
+2. Enter the following credentials:
+   - **Username**: `admin`
+   - **Password**: (the `tempAdminPassword` available as an [Azure Key vault secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the accompanied deployed vault)
+
+   ![Dashboard login page](/images/dashboard/AdminAccount/adminAccount-4.jpg)
+
+3. After successfully logging in, you will be prompted to reset your password to one of your choice.
+
+   ![Dashboard reset password](/images/dashboard/AdminAccount/adminAccount-5.png)
+
+4. 🎉 Congratulations! You have logged into the Invictus Dashboard for the first time.
+
+Follow these additional guides related to authentication and authorization:
+* [Give access to your Active Directory](./01_give_ad_access.md)
+* [Sync your Active Directory groups](./02_sync_ad_groups.md)
+* [Give access to your Logic Apps](./03_give_la_access.md)
+
+</Step>
+</InstallationWizard>

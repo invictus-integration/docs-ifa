@@ -1,21 +1,191 @@
 ---
-sidebar_class_name: hidden
+hide_table_of_contents: true
 ---
 
 import { ToggleSwitch, ToggleSection, ToggleRow, ToggleProvider } from '@site/src/components/VnetToggleSwitch';
+import React from 'react';
+import InstallationWizard, { Step, StepGroup, SharedNote } from '@site/src/components/InstallationWizard';
 
-# Framework Release Pipeline
-The release pipeline will use the artifacts created from the build pipeline and publish this to the stage(s) you define. Each stage will deploy the resources to the Azure subscription and resource group you specify in the deployment tasks.
+# Installing Invictus Framework
 
-## Variable Group
-Create a variable group named `{prefix}.Invictus.{stage}` for all the stages (environments) and add at least one variable (eg: Invictus.Secrets.ApiKey1.Name = apikey1).
+<InstallationWizard>
+<Step title="Prerequisites">
 
-Make sure the Project Collection Build Service has Administrator access to these variable groups (Pipelines > Library > Security)
+:::info[obtain access <SharedNote/>]
+To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
+:::
 
-![Library Security](/images/ifa-library-security.png)
+<details>
+<summary>**Include VNET support <SharedNote/>**</summary>
+
+Invictus includes functionality which allows all its resources to run within an Azure Virtual Network (VNET).
+
+### Required deployment
+- An Azure Virtual Network
+  - Including two subnets, one each for:
+    - Private Endpoints
+    - Container App Environment
+  - The subnets must have the following services enabled
+    - `Microsoft.AzureCosmosDB`
+    - `Microsoft.EventHub`
+    - `Microsoft.KeyVault`
+    - `Microsoft.ServiceBus`
+    - `Microsoft.Storage`
+  - The Container App [subnet must also have the delegation `Microsoft.App/environments`](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation)
+        
+- Private DNS Zones ([Bicep template](../../scripts/invictusVnetDNSZones.bicep))
+  - `privatelink.azurecr.io`
+  - `privatelink.blob.core.windows.net`
+  - `privatelink.file.core.windows.net`
+  - `privatelink.mongo.cosmos.azure.com`
+  - `privatelink.queue.core.windows.net`
+  - `privatelink.servicebus.windows.net`
+  - `privatelink.table.core.windows.net`
+  - `privatelink.table.cosmos.azure.com`
+  - `privatelink.vaultcore.azure.net`
+  - `privatelink.{regionName}.azurecontainerapps.io`
+    
+- To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
+    - Powershell
+    - Azure Powershell
+    - Bicep CLI
+
+### Required role assignment
+If the Invictus resources and the VNET are on different resource groups, then the Invictus resource group will need to be assigned the role of `Network Contributor` onto the VNET resource group.
+
+</details>
+___
+
+## Migrating older pipelines to v2.4+
+
+<details>
+<summary>**Migrate to Framework v2.4+**</summary>
+
+### Build pipeline
+Nothing changes for the build pipeline.
+
+The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (scripts, resources, etc..), which greatly simplifies the release pipeline.
+
+### Release pipeline
+The task group is now replaced by a single Azure Powershell task included in the build artifacts. Please refer to the **Framework release pipeline** installation step for more information.
+
+The following task group parameters should be used as the PowerShell's arguments:
+
+- ArtifactsPath: `-ArtifactsPath`
+- ResourcePrefix: `-ResourcePrefix`
+- AzureResourceGroup: `-ResourceGroupName`
+- Location: `-ResourceGroupLocation`
+
+The AdditionalTemplateParameters can simply be copied and added to the Script Arguments.
+
+If you are using the Azure PowerShell task to retrieve the access policies from key vault, then this task should also be removed from the release pipeline as it is now also included in the deployment script.
+
+You can copy the `-keyvaultName` argument to the new PowerShell arguments.
+</details>
+</Step>
+
+<Step title="Build pipeline">
+
+## Save installation script to your repository <SharedNote/>
+The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Framework.
+
+## Add variables to variable group <SharedNote/>
+Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
+
+* **{'{prefix}'}.Invictus.Installation**
+  * `Invictus.Installation.StorageAccount.Name`: invictusreleases
+  * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software (if you're also deploying the Dashboard)
+  * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software
+  * `Infra.Environment.ACRUsername`: value provided by Codit Software
+  * `Infra.Environment.ACRPassword`: value provided by Codit Software
 
 ## YAML Pipeline
-Next step is to add a YAML pipeline to release the Invictus for Azure Framework. Change the [framework.release.yaml](./pipelines/framework.release.yaml) file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
+Next step is to add YAML pipelines to build the Invictus for Azure Framework. Change the following example file according to your needs, for example change the trigger path:
+``` yaml
+  paths:
+    include:
+    - /src/customer.azure.invictus
+```
+
+<details>
+<summary>**Full YAML build pipeline example**</summary>
+
+```yaml
+pr: none
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+  paths:
+    include:
+    - /src/customer.azure.invictus
+
+parameters:
+- name: Version
+  displayName: Invictus Version
+  type: string
+  default: '*'
+- name: useBeta
+  displayName: Use Beta
+  type: string
+  default: $False
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Package
+  displayName: Package
+  dependsOn: []
+  variables:
+  - group: prefix.invictus.installation
+  jobs:
+  - job: publish
+    displayName: Build and Publish Framework
+    steps:
+    - checkout: self
+      clean: true
+      persistCredentials: true
+
+    - task: PowerShell@2
+      displayName: 'Pull Invictus sources'
+      inputs:
+        targetType: filePath
+        filePath: './scripts/Invictus-GetSources.ps1'
+        arguments: >
+          -StorageAccountName '$(Invictus.Installation.StorageAccount.Name)'
+          -StorageSasToken '$(Invictus.Installation.StorageAccount.Framework.SasToken)'
+          -StorageContainerName 'framework'
+          -SaveLocation '$(Build.ArtifactStagingDirectory)'
+          -UseBeta ${{ parameters.useBeta }}
+          -Version ${{ parameters.version }}
+              
+    - task: PublishPipelineArtifact@1
+      inputs:
+        TargetPath: $(Build.ArtifactStagingDirectory)
+        ArtifactName: framework
+        publishLocation: 'pipeline'
+```
+</details>
+
+</Step>
+
+<Step title="Release pipeline">
+
+The release pipeline will use the artifacts created from the build pipeline and publish this to the stage(s) you define. Each stage will deploy the resources to the Azure subscription and resource group you specify in the deployment tasks.
+
+The release uses variable groups and edits/adds variables.
+
+## Variable groups / deployment environment <SharedNote/>
+Create a variable group named **{'{prefix}'}.Invictus.{'{stage}'}** for all the stages (environments) and add at least one variable (eg: `Invictus.Secrets.ApiKey1.Name = apikey1`).
+
+:::warning[permit build service access to variable groups]
+Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml) has **Administrator** access to these variable groups (<u>Pipelines</u> > <u>Library</u> > <u>Security</u>)
+:::
+
+## YAML Pipeline
+Next step is to add a YAML pipeline to release the Invictus for Azure Framework. Change the following example file according to your needs, for example change the needed environments and change the name of the build pipeline trigger:
 ``` yaml
 resources:
   pipelines:
@@ -26,11 +196,143 @@ resources:
     trigger: true
 ```
 
-Also make sure to change the bicep template parameters according to your needs.
-
 If you need to overwrite more bicep template parameters make sure to add this to the `deployScriptParameters`. A complete list of bicep template parameters can be found [here](#bicep-template-parameters). 
 
-Afterwards add the [framework.release.yaml](./pipelines/framework.release.yaml) in your DevOps environment as a pipeline.
+<details>
+<summary>**Full YAML release pipeline example**</summary>
+
+```yaml
+pr: none
+trigger: none
+
+resources:
+  pipelines:
+    # Name of the pipeline resource inside this workflow. Used to reference the pipeline resources later on (e.g. download artifacts).
+  - pipeline: _build
+    # Name of the pipeline in Azure Pipelines
+    source: 'customer.azure.invictus.framework.build' 
+    trigger: true
+
+parameters:
+  - name: "Version"
+    type: string
+    default: "latest"
+  - name: "UseBeta"
+    type: string
+    default: "$false"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages: 
+- stage: deploy_dev
+  displayName: 'Deploy to Development'
+  variables:
+  - group: infra.dev
+  - group: prefix.invictus.dev
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_development
+    displayName: 'Deploy to Development'
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_tst
+  displayName: 'Deploy to Test'
+  dependsOn: deploy_dev
+  variables:
+  - group: infra.tst
+  - group: prefix.invictus.tst
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_tst
+    displayName: 'Deploy to Test'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_acc
+  displayName: 'Deploy to Acceptance'
+  dependsOn: deploy_tst
+  variables:
+  - group: infra.acc
+  - group: prefix.invictus.acc
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_acc
+    displayName: 'Deploy to Acceptance'
+    environment: Acceptance
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+
+- stage: deploy_prd
+  displayName: 'Deploy to Production'
+  dependsOn: deploy_acc
+  variables:
+  - group: infra.prd
+  - group: prefix.invictus.prd
+  - group: prefix.invictus.installation
+  jobs:
+  - deployment: deploy_prd
+    displayName: 'Deploy to Production'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: '_build'
+            displayName: Download Artifact
+          - task: AzureCLI@2
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              azureSubscription: 'NameOfYourServiceConnection'
+              scriptType: 'pscore'
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/_build/framework/Deploy.ps1'
+              ScriptArguments: '-version ${{parameters.Version}} -location "West Europe" -useBeta ${{parameters.UseBeta}} -acrPath "invictusreleases.azurecr.io" -acrUsername $(Infra.Environment.ACRUsername) -acrPassword $(Infra.Environment.ACRPassword) -resourcePrefix $(Infra.Environment.ResourcePrefix) -artifactsPath $(Pipeline.Workspace)/_build/framework -resourceGroupName $(Infra.Environment.ResourceGroup) -variableGroupName invictus.$(Infra.Environment.ShortName) -devOpsObjectId "$(Infra.DevOps.Object.Id)" -identityProviderApplicationId "$(Infra.AzAD.Client.IdentityProviderApplicationId)"  -identityProviderClientSecret "$(Infra.AzAD.Client.IdentityProviderClientSecret)" -containerAppsEnvironmentLocation "$(Infra.Environment.ContainerAppsEnvironmentLocation)"'
+```
+</details>
 
 ## Deploy Script Parameters
 The following script parameters are used in the deploy script:
@@ -59,7 +361,7 @@ The following script parameters are used in the deploy script:
 | `additionalTemplateParameters` | `[]`          | Additional named parameters for the Bicep template you wish to override. More on this below. |
 
 :::info[[override bicep parameters](#bicep-template-parameters)]
-The `AdditionalTemplateParameters` can be used to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the parameters of the powershell script.
+The `AdditionalTemplateParameters` can be used to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different servicePlanSku you would add `-eventHubSkuName "Standard"` to the parameters of the PowerShell script.
 :::
 
 <details>
@@ -104,7 +406,7 @@ The `AdditionalTemplateParameters` can be used to override the default values us
 The below tables lists the parameters accepted by the Bicep template.
 
 <ToggleProvider>
-  <ToggleSwitch />
+<ToggleSwitch /><br/><br/>
 
 ### Top-level parameters
 Resource-independent parameters that affect all resources in the deployed resource group.
@@ -346,3 +648,7 @@ Each of the above parameters accepts an object:
 </details>
 
 </ToggleProvider>
+
+</Step>
+
+</InstallationWizard>
