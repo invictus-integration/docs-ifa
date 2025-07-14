@@ -52,7 +52,7 @@ The **Time Sequencer** component stores the Azure Logic App workflow 'sequences'
 <details>
 <summary>**Related Bicep parameters**</summary>
 
-The following Bicep parameters control the inner workings of the **Time Sequencer** component. See the [deployment of the Invictus Framework](./installation/framework-releasepipeline.mdx) to learn more.
+The following Bicep parameters control the inner workings of the **Time Sequencer** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
 
 | Bicep parameter | Default | Description |
 | --------------- | ------- | ----------- |
