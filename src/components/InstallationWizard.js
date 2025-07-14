@@ -47,7 +47,7 @@ export function SharedNote() {
             pointerEvents: 'none',
           }}
         >
-          This section is the same for both Dashboard and Framework. <br/>Can be skipped if done already.
+          This section is the same for both Dashboard and Framework. Can be skipped if done already.
           <span
             style={{
               position: 'absolute',
@@ -79,14 +79,6 @@ export default function InstallationWizard({ children }) {
   }).filter(Boolean);
 
   const [currentStep, setCurrentStep] = useState(0);
-
-  // expose setter globally
-  useEffect(() => {
-    window.setCurrentStep = setCurrentStep;
-    return () => {
-      delete window.setCurrentStep;
-    };
-  }, []);
 
   return (
     <div style={{ maxWidth: '900px', margin: '0' }}>
