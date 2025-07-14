@@ -875,6 +875,7 @@ Each of the above parameters accepts an object with their options when passing a
 | `scaleMinReplicas`          | `int`    | The lowest number of replicas the Container App will scale in to.                                      |
 | `scaleMaxReplicas`          | `int`    | The highest number of replicas the Container App will scale out to.                                    |
 | `unprocessedEventThreshold` | `int`    | The target number of unprocessed events per worker for Event Hub-triggered functions. [Microsoft docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.webjobs.eventhubs.eventhuboptions.targetunprocessedeventthreshold) |
+| `concurrentRequests`        | `int`    | When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. [See here fore allowed values](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep). |
 
 </details>
 </ToggleProvider>
