@@ -1,4 +1,4 @@
-import React, { useState, Children, useEffect } from 'react';
+import { useState, Children } from 'react';
 
 export function Step({ title, children }) {
   return null;
