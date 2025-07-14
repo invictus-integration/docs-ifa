@@ -47,7 +47,7 @@ export function SharedNote() {
             pointerEvents: 'none',
           }}
         >
-          This section is the same for both Dashboard and Framework.
+          This section is the same for both Dashboard and Framework. <br/>Can be skipped if done already.
           <span
             style={{
               position: 'absolute',
