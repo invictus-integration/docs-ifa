@@ -4,12 +4,13 @@ sidebar_label: Users
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { OnlyAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
 
 # Manage Users in the Dashboard
-The Invictus Dashboard allows you to access the application with multiple user accounts. These can be local users, managed by Invictus itself; or **Active Directory** users, managed by your Azure tenant.
+The Invictus Dashboard allows you to access the application with multiple user accounts. These can be **local** users, managed by Invictus itself; or **Active Directory** users, managed by your Azure tenant.
 
 :::praise[recommended]
-We recommend using **Active Directory** users over local users for security reasons.
+Use **Active Directory** users over local users for security reasons.
 :::
 
 ![users overview](/images/v2_users1.png)
@@ -17,126 +18,101 @@ We recommend using **Active Directory** users over local users for security reas
 <Tabs groupId="user-source">
 <TabItem value="ad" label="Active Directory" default>
 
-> 👤 Requires membership of a synced Active Directory group
+> 👤 Requires membership of a [synced Active Directory group](../installation/02_sync_ad_groups.md).
 
 The Invictus Dashboard can be configured to [use existing users in Azure Active Directory groups](../installation/01_give_ad_access.md). This removes the need to work with additional local Dashboard users.
 
 ### Add an Active Directory user to the Dashboard
 Azure Active Directory users can sign in automatically into the Invictus Dashboard if that user is part of an Active Directory group that is [synced into the Dashboard](../installation/02_sync_ad_groups.md).
 
-> ☝️ Make sure that the group has a [role assigned](./03_roles.md), otherwise the Dashboard will be unusable for the user.
+:::warning[requires role]
+Make sure that the group has a [role assigned](./03_roles.md), otherwise the Dashboard will be unusable for the user.
+:::
 
 ![Active Directory user sign in](/images/dashboard/AdminAccount/adminAccount-4.jpg)
 
-### Delete an Active Directory user from the Dashboard
-> 👤 Requires group membership with `System admin` role to delete users
+### Delete an Active Directory user from the Dashboard <OnlyAdminsBadge/>
+To delete a user click on the delete icon next to the user in the user list.
 
-1. To delete a user click on the delete icon next to the user in the user list. Confirm your decision in the confirmation box.
-  ![delete azure user](/images/delete-azure-user.PNG)
+![delete azure user](/images/delete-azure-user.PNG)
     > 👀 Linked Active Directory users can be distinguished as they do not have a personal role assigned. The role is determined by the group the user is a member of.
 
-### Edit an Active Directory user's role in the Dashboard
+### Edit an Active Directory user's role in the Dashboard <OnlyAdminsBadge/>
 Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/02_sync_ad_groups.md), so will the user.
 
-### Forgot Password
-Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and set it up with the Mail.Send API permissions. This is required because emails can only be sent through an OAuth 2.0 flow. Previously, emails were sent using an SMTP client with a username, password, and SMTP connection. However, Microsoft and Google no longer allow this and are deprecating this service.
+### Configure forgot password procedure <OnlyAdminsBadge/>
+Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and [set it up with the Mail.Send API permissions](../installation/01_give_ad_access.md). This is required because emails can only be sent through an OAuth 2.0 flow.
 
+:::warning
 Please note that the permission granted allows any email address within the organization to be used as the sender.
+:::
 
-To set up the Azure Active Directory application registration with the Mail.Send API permission, please follow the instructions [here](../installation/01_give_ad_access.md).
+<nav class="custom-breadcrumb">
+  <span class="breadcrumb-item no-padding">
+    <img src="/img/favicon.ico" alt="logo" />
+  </span>
+  <span>›</span>
+  <span class="breadcrumb-item">profile_name&nbsp;<svg width="19" height="20" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.90901 10.4545V1M2.90901 10.4545C3.29478 10.4545 3.66475 10.6078 3.93753 10.8806C4.21031 11.1534 4.36356 11.5233 4.36356 11.9091C4.36356 12.2949 4.21031 12.6648 3.93753 12.9376C3.66475 13.2104 3.29478 13.3636 2.90901 13.3636M2.90901 10.4545C2.52324 10.4545 2.15327 10.6078 1.88049 10.8806C1.60771 11.1534 1.45447 11.5233 1.45447 11.9091C1.45447 12.2949 1.60771 12.6648 1.88049 12.9376C2.15327 13.2104 2.52324 13.3636 2.90901 13.3636M2.90901 13.3636V17M14.5454 10.4545V1M14.5454 10.4545C14.9311 10.4545 15.3011 10.6078 15.5739 10.8806C15.8467 11.1534 15.9999 11.5233 15.9999 11.9091C15.9999 12.2949 15.8467 12.6648 15.5739 12.9376C15.3011 13.2104 14.9311 13.3636 14.5454 13.3636M14.5454 10.4545C14.1596 10.4545 13.7896 10.6078 13.5169 10.8806C13.2441 11.1534 13.0908 11.5233 13.0908 11.9091C13.0908 12.2949 13.2441 12.6648 13.5169 12.9376C13.7896 13.2104 14.1596 13.3636 14.5454 13.3636M14.5454 13.3636V17M8.72719 4.63636V1M8.72719 4.63636C9.11296 4.63636 9.48293 4.78961 9.75571 5.06239C10.0285 5.33517 10.1817 5.70514 10.1817 6.09091C10.1817 6.47668 10.0285 6.84665 9.75571 7.11943C9.48293 7.39221 9.11296 7.54545 8.72719 7.54545M8.72719 4.63636C8.34143 4.63636 7.97146 4.78961 7.69868 5.06239C7.4259 5.33517 7.27265 5.70514 7.27265 6.09091C7.27265 6.47668 7.4259 6.84665 7.69868 7.11943C7.97146 7.39221 8.34143 7.54545 8.72719 7.54545M8.72719 7.54545V17" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+  <span>›</span>
+  <span class="breadcrumb-item active">Settings</span>
+</nav>
 
-## Setup Email Address as the Sender
-
-![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_0.jpg)
-
-To set up the email address as the sender, follow these steps:
-
-1. Log in with an administrator account or any user with the role of System Admin.
-2. Navigate to the settings page by clicking the controls located at the top right next to the account name.
-3. In the **Forgot Password Settings** section, enter the email address you want to use.
-4. Click on **Save password settings** to save the email address being used.
+![Global settings page as system admin](/images/dashboard/settings-page-as-admin.png)
 
 </TabItem>
 <TabItem value="local" label="Local">
 
-> 👤 Requires personal `System admin` role to manage local users
-
 Local users are entirely managed by the Invictus Dashboard. They can have their own personal permissions assigned and can be deleted at anytime.
 
-To manage local users, go to the top navigation bar and click on the `Users` button. This brings you to the page that displays an overview of all the users that has access to your Dashboard. There is the option to `Add`, `Edit` or `Delete` users.
+### Add a local user to the Dashboard <OnlyAdminsBadge/>
+Local users can have a [role assigned](./03_roles.md).
 
-### Add a local user to the Dashboard
+<nav class="custom-breadcrumb">
+  <span class="breadcrumb-item no-padding">
+    <img src="/img/favicon.ico" alt="logo" />
+  </span>
+  <span>›</span>
+  <span class="breadcrumb-item">Users</span>
+  <span>›</span>
+  <span class="breadcrumb-item active">Add a new user</span>
+</nav>
 
-1. Click on the `Add a new user` button.
-  ![add local user](/images/add-local-user.PNG)
+![add user details](/images/v2_users2.png)
 
-1. Specify all the user information and the [user role](./03_roles.md).
-  ![add user details](/images/v2_users2.png)
+### Delete a local user from the Dashboard <OnlyAdminsBadge/>
+Local users can be distinguished as they have a personal role assigned.
 
-### Delete a local user from the Dashboard
+![delete local user](/images/delete-local-user.PNG)
 
-1. To delete a user click on the delete icon next to the user in the user list. Confirm your decision in the confirmation box.
-  ![delete local user](/images/delete-local-user.PNG)
-    > 👀 Local users can be distinguished as they have a personal role assigned.
+### Edit a local user's role in the Dashboard <OnlyAdminsBadge/>
+Local users can have a [role assigned](./03_roles.md).
 
-### Edit a local user's role in the Dashboard
+![edit local user](/images/edit-local-user.PNG)
 
-1. To edit a user click on the pencil edit icon next to the user in the user list
-  ![edit local user](/images/edit-local-user.PNG)
+![edit user role](/images/v2_users3.png)
 
-2. You can change the [role of the user](./03_roles.md) and save the changes. 
-  ![edit user role](/images/v2_users3.png)
+### Configure forgot password procedure <OnlyAdminsBadge/>
+For local users to allow them to run the 'Forgot password' procedure, the following details have to be configured to use to correct email server.
 
-### Forgot Password
+<nav class="custom-breadcrumb">
+  <span class="breadcrumb-item no-padding">
+    <img src="/img/favicon.ico" alt="logo" />
+  </span>
+  <span>›</span>
+  <span class="breadcrumb-item">profile_name&nbsp;<svg width="19" height="20" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.90901 10.4545V1M2.90901 10.4545C3.29478 10.4545 3.66475 10.6078 3.93753 10.8806C4.21031 11.1534 4.36356 11.5233 4.36356 11.9091C4.36356 12.2949 4.21031 12.6648 3.93753 12.9376C3.66475 13.2104 3.29478 13.3636 2.90901 13.3636M2.90901 10.4545C2.52324 10.4545 2.15327 10.6078 1.88049 10.8806C1.60771 11.1534 1.45447 11.5233 1.45447 11.9091C1.45447 12.2949 1.60771 12.6648 1.88049 12.9376C2.15327 13.2104 2.52324 13.3636 2.90901 13.3636M2.90901 13.3636V17M14.5454 10.4545V1M14.5454 10.4545C14.9311 10.4545 15.3011 10.6078 15.5739 10.8806C15.8467 11.1534 15.9999 11.5233 15.9999 11.9091C15.9999 12.2949 15.8467 12.6648 15.5739 12.9376C15.3011 13.2104 14.9311 13.3636 14.5454 13.3636M14.5454 10.4545C14.1596 10.4545 13.7896 10.6078 13.5169 10.8806C13.2441 11.1534 13.0908 11.5233 13.0908 11.9091C13.0908 12.2949 13.2441 12.6648 13.5169 12.9376C13.7896 13.2104 14.1596 13.3636 14.5454 13.3636M14.5454 13.3636V17M8.72719 4.63636V1M8.72719 4.63636C9.11296 4.63636 9.48293 4.78961 9.75571 5.06239C10.0285 5.33517 10.1817 5.70514 10.1817 6.09091C10.1817 6.47668 10.0285 6.84665 9.75571 7.11943C9.48293 7.39221 9.11296 7.54545 8.72719 7.54545M8.72719 4.63636C8.34143 4.63636 7.97146 4.78961 7.69868 5.06239C7.4259 5.33517 7.27265 5.70514 7.27265 6.09091C7.27265 6.47668 7.4259 6.84665 7.69868 7.11943C7.97146 7.39221 8.34143 7.54545 8.72719 7.54545M8.72719 7.54545V17" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+  <span>›</span>
+  <span class="breadcrumb-item active">Settings</span>
+</nav>
 
-#### Setting up Email Details
+![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
 
-To configure the email settings, follow these steps:
-
-1. **Access Dashboard**: Log in to the dashboard using a system admin account.
-
-2. **Navigate to Settings**: Once logged in, navigate to the settings page. You'll find a form with the necessary details to complete.
-
-     ![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
-
-3. **Fill in Details**:
-
-   - **Host**: Enter the host address. For instance, if it's a Gmail email account, the host should be "smtp.gmail.com".
+| Forgot password setting  | Description |
+| ------------------------ | ----------- |
+| `Host`                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be "smtp.gmail.com". |
+| `Port number`            | The port number for the email server from which the sender accounts originates, default is `587`. |
+| `Email key vault key`    | The Azure Key Vault secret name where the sender email address is stored (points to the Key Vault resource accompanied with the Invictus installation). |
+| `Password key vault key` | The Azure Key Vault secret name where the sender email password is stored (points to the Key Vault resource accompanied with the Invictus installation). |
+| `SSL Enabled`            | It's recommended to enable SSL, as major email providers often require this setting. |
    
-   - **Port Number**: The default port number is 587.
-   
-   - **Email API Key and Password API Key**: These keys are securely stored within the KeyVault service. Save the email address and password of the sending account within these secret keys.
-   
-   ![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_8.jpg)
-   
-   - **SSL Enabled**: It's recommended to enable SSL, as major email providers often require this setting. Ensure this option is checked.
-   
-4. **Save Changes**: Click the save button to store your settings.
-
-#### Forgot Your Password - User Flow
-
-![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_1.jpg)
-
-To reset your password, follow these steps:
-
-1. Click on **Forgot Password?** to initiate the password reset process.
-2. The form will be displayed, and you need to enter the email address associated with your account.
-
-![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_2.jpg)
-
-3. After submitting the form, a confirmation message will be displayed, indicating that the reset password request has been sent to the provided email address.
-
-![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_3.jpg)
-
-4. Access your email inbox and look for the email containing the reset password instructions. The email will have a template like the one shown below.
-
-![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_4.jpg)
-
-5. In the email content, click on the **here** hyperlink. You will be redirected to the reset password form, where you can enter your new password.
-
-![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_5.jpg)
-
-6. Once you have successfully entered your new password, you can proceed to log in with the newly registered password.
-
 </TabItem>
 </Tabs>
