@@ -17,13 +17,17 @@ Take a look at [Bicep AVM](https://github.com/Azure/bicep-registry-modules/tree/
 Besides the default application logs, Invictus can extract custom information from custom logs. These logs are indicated with the `EventName=InvictusLog`. Invictus assumes that the log message is a JSON object. The following JSON properties can be used to set customer information on all (including default) application logs, which can be used to map the entire set of application logs to pre-defined flows in the Dashboard.
 
 ```csharp
-logger.LogInformation(new EventId(0, "InvictusLog"),
-    "{{ \"x-invictus-domain\": \"<domain>\"," +
-       "\"x-invictus-service\": \"<service>\"," +
-       "\"x-invictus-action\": \"<action>\"," +
-       "\"x-invictus-version\": \"<version>\"," +
-       "\"x-invictus-Milestone\": \"<milestone>\"," +
-       "\"x-invictus-EventText\": \"<eventText>\"," +
-       "\"x-invictus-workflowname\": \"<workflow-name>\" }}");
+var properties = new Dictionary<string, string>
+{
+    ["x-invictus-domain"] = "<domain>",
+    ["x-invictus-service"] = "<service>",
+    ["x-invictus-action"] = "<action>",
+    ["x-invictus-version"] = "<version>",
+    ["x-invictus-Milestone"] = "<milestone>",
+    ["x-invictus-EventText"] = "<event-text>",
+    ["x-invictus-workflowname"] = "<workflow-name>"
+};
+
+logger.LogInformation(new EventId(0, "InvictusLog"), JsonSerializer.Serialize(properties));
 ```
 
