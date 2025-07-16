@@ -21,6 +21,10 @@ Without **Invictus for Azure**, business users are left with the Azure portal to
 ## How to use Invictus for Azure?
 To get a general overview of what an **Invictus for Azure** installation entails, see the [architecture overview](./architecture-diagram.md). This will provide the necessary context and relationships.
 
+To install **Invictus for Azure**, these installation guides will walk you through the process:
+* [Install Invictus Dashboard](./dashboard/installation/index.mdx)
+* [Install Invictus Framework](./framework/installation/index.mdx)
+
 ### Related documentation
 The following documentation sites are related to the **Invictus for Azure** integration methodology. (Some of these documentations are only accessible to authorized customers.)
 * *Invictus methodology (private)*

@@ -45,7 +45,7 @@ Create a client secret and make sure to save the application id and client secre
 <details>
 <summary><h3 style={{ margin:0 }}>Update Invictus-GetSources.ps1</h3></summary>
 
-Update the [`Invictus-GetSources.ps1`](../dashboard/installation/scripts/Invictus-GetSources.ps1) file with the latest version.
+Update the [`Invictus-GetSources.ps1`](../scripts/Invictus-GetSources.ps1) file with the latest version.
 </details>
 
 <details>
@@ -59,12 +59,8 @@ The changes include:
 - Different pipeline tasks
 - Release pipeline agent must be Ubuntu
 
-The newly updated pipelines and template can be found here:
+The newly updated pipelines and template can be found here in the [Dashboard installation guide](../dashboard/installation/index.mdx) and [Framework installation guide](../framework/installation/index.mdx).
 
-| Invictus project | Build pipeline         | Release pipeline         |
-| ---------------- | ---------------------- | ------------------------ |
-| Dashboard        | [dashboard.build.yaml](../dashboard/installation/pipelines/dashboard.build.yaml) | [dashboard.release.yaml](../dashboard/installation/pipelines/dashboard.release.yaml) |
-| Framework        | [framework.build.yaml](../framework/installation/pipelines/framework.build.yaml) | [framework.release.yaml](../framework/installation/pipelines/framework.release.yaml) |
 </details>
 
 <details>
@@ -107,9 +103,9 @@ If you are not using certain components you can remove these already since no mi
 </details>
 
 ### Additional steps
-- Assign the role assignments as shown in this [guide](../dashboard/accesscontrolrights.md) for the new DashboardGateway and FlowHandler Container Apps.
+- Assign the role assignments as shown in this [guide](../dashboard/installation/03_give_la_access.md) for the new DashboardGateway and FlowHandler Container Apps.
 - Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
-- Review the Container App scaling requirements for your scenario. See the [dashboard guide](../dashboard/installation/dashboard-releasepipeline.mdx#scaling-parameters) and [framework guide](../framework/installation/framework-releasepipeline.mdx#scaling-parameters) for more information.
+- Review the Container App scaling requirements for your scenario. See the [Dashboard installation](../dashboard/installation/index.mdx#scaling-parameters) and [Framework installation](../framework/installation/index.mdx#scaling-parameters) for more information.
 - Role assignment clean-up: The deployment of Invictus v6.0 will result in many lingering role assignments named `Unknown`. These can be deleted.
 
 ## Migrating Your Interfaces
