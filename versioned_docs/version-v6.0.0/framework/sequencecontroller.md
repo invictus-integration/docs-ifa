@@ -30,7 +30,7 @@ The idea is that workflows are processed in sequence after the **Wait**. The pla
 
 ![Pseudo Logic App workflow runs with Sequence Controller](/images/framework/pseudo-logic-app-workflow-runs-w-sequence-controller.png)
 
-### ⬅️ Get sequence number
+## ⬅️ Get sequence number
 
 First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
 
@@ -60,7 +60,7 @@ If you want to start the sequence at a later point, you can also pass the `seque
 ```
 :::
 
-### ⌛ Wait for sequence
+## ⌛ Wait for sequence
 
 The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
@@ -77,7 +77,7 @@ The following request needs to be send in this HTTP callback task:
 }
 ```
 
-### ☑️ Complete sequence
+## ☑️ Complete sequence
 
 The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This will allow the next workflow to proceed. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
@@ -91,7 +91,7 @@ To complete the in-sequence work of the workflow, a HTTP task is required that s
 }
 ```
 
-### 🔄 Reset sequence
+## 🔄 Reset sequence
 
 The deployed **Sequence Controller** allows admins to reset previously stored sequences. This could be useful if certain sequence names should be reused for other purposes, or for cleaning references.
 
