@@ -28,6 +28,16 @@ Flow detail URL's can be constructed that will redirect users to the details pag
 :::
 
 ### Edit folders
-> 👉 **Home > Your Flows >  ••• [Create/Edit/Delete] folder**
+<nav class="custom-breadcrumb">
+  <span class="breadcrumb-item no-padding">
+    <img src="/img/favicon.ico" alt="logo" />
+  </span>
+  <span>›</span>
+  <span class="breadcrumb-item">Your Flows</span>
+  <span>›</span>
+  <span class="breadcrumb-item">folder_name •••</span>
+  <span>›</span>
+  <span class="breadcrumb-item active">Create/Edit/Delete</span>
+</nav>
 
 Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../security/03_roles.md) on that folder. Only a name is required and possibly a parent.
