@@ -2,7 +2,7 @@
 sidebar_label: Time-controlled sequence
 ---
 
-# Time Sequencer
+# Run Logic App workflows in sequence by timestamps with the <u>Time Sequencer</u>
 
 :::note[motivation]
 At the time of writing, there is no built-in way in Azure Logic Apps to 'control' the sequence in which multiple workflow runs are executing. In certain scenarios, even though a  workflow was triggered before another, you want the first one to wait for the second. A common example is entity updates, where you don't want older updates to override newer ones - even though the workflow with the older updates 'happened after' the newer ones.
@@ -16,7 +16,11 @@ At the time of writing, there is no built-in way in Azure Logic Apps to 'control
 
 ![Pseudo Azure Logic App setup with Time Sequencer component](/images/framework/pseudo-logic-app-w-time-sequencer.png)
 
-## Wait for execution
+The idea is that workflows are processed in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 uses a custom timestamp that happened 'earlier' than the one used in workflow 2, the second workflow will wait for the first workflow.
+
+![Pseudo Azure Logic App workflow runs with Time Sequencer component](/images/framework/pseudo-logic-app-workflow-runs-w-time-sequencer.png)
+
+## ⌛ Wait for execution
 By using an Azure Logic Apps [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook?tabs=standard#add-an-http-webhook-trigger) to send a HTTP POST request to `/api/WaitForExecution` endpoint, the **Time Sequencer** component can queue a workflow run signal the run when it can continue. Determining the order of workflow runs can be achieved by passing a custom `Timestamp` with the request body.
 
 The following request parameters need to be supplied in the request body:
@@ -28,7 +32,7 @@ The following request parameters need to be supplied in the request body:
 | `Timestamp`    | yes      | Date time to control the order of the Azure Logic App workflows in the 'sequence'.                                                       |
 | `CallbackUri`  | yes      | Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`.                                                   |
 
-## Complete execution
+## ☑️ Complete execution
 When the [*Wait for exec.* operation](#wait-for-execution) responds with `Start`, then any custom user actions in the Azure Logic App workflow can be executed. Once those are done, the workflow should signal the **Time Sequencer** component, so that any waiting workflows can continue their execution.
 
 Signaling completion happens with a HTTP POST request to the `/api/CompleteExecution` endpoint, using following required request parameters in the request body:
