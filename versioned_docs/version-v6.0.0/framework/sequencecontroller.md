@@ -1,4 +1,8 @@
-# Sequence Controller
+---
+sidebar_label: Index-controlled sequence
+---
+
+# Run Logic App workflows in sequence by indexing with the <u>Sequence Controller</u>
 
 :::note[motivation]
 Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially (for example, by setting the concurrency on a Logic App to `1`) can be a solution, at the cost of a big performance impact.
@@ -20,11 +24,13 @@ The **Sequence Controller** component is available as a HTTP endpoint in your Lo
 
 > ⚡ There also exists a [`/api/ResetSequence`](#_4-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
 
-The idea is that workflows are processed in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 gets triggered before workflow 2, the second workflow will wait for the first workflow.
-
 ![Pseudo Logic App workflow with Sequence Controller](/images/framework/pseudo-logic-app-w-sequence-controller.png)
 
-### 1. Get sequence number
+The idea is that workflows are processed in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 gets triggered before workflow 2, the second workflow will wait for the first workflow.
+
+![Pseudo Logic App workflow runs with Sequence Controller](/images/framework/pseudo-logic-app-workflow-runs-w-sequence-controller.png)
+
+## ⬅️ Get sequence number
 
 First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
 
@@ -43,8 +49,7 @@ The most simple request body only contains the name of the sequence. This name c
 
 The response body containing this counter is required for the next step: [Wait for sequence](#_2-wait-for-sequence)
 
-#### Customization
-
+:::tip[start later]
 If you want to start the sequence at a later point, you can also pass the `sequenceStart` with your own start number. Only make sure that you pass this along subsequent calls.
 ```json
 // POST /api/GetSequenceNumber
@@ -53,8 +58,9 @@ If you want to start the sequence at a later point, you can also pass the `seque
   "sequenceStart": 10
 }
 ```
+:::
 
-### 2. Wait for sequence
+## ⌛ Wait for sequence
 
 The next step for the Logic App workflow to run in sequence, is to wait its turn. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
@@ -71,7 +77,7 @@ The following request needs to be send in this HTTP callback task:
 }
 ```
 
-### 3. Complete sequence
+## ☑️ Complete sequence
 
 The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This will allow the next workflow to proceed. To facilitate this, the counter collected from the previous [Get sequence number](#_1-get-sequence-number) step is required.
 
@@ -85,7 +91,7 @@ To complete the in-sequence work of the workflow, a HTTP task is required that s
 }
 ```
 
-### (4.) Reset sequence
+## 🔄 Reset sequence
 
 The deployed **Sequence Controller** allows admins to reset previously stored sequences. This could be useful if certain sequence names should be reused for other purposes, or for cleaning references.
 
@@ -101,3 +107,18 @@ Resetting can be done with sending the following request:
   "sequenceName": "<my-sequence-name>"
 }
 ```
+
+## Customization
+
+<details>
+<summary>**Related Bicep parameters**</summary>
+
+The following Bicep parameters control the inner workings of the **Sequence Controller** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
+
+| Bicep parameter | Default | Description |
+| --------------- | ------- | ----------- |
+| `storageAccountName` | `invictus{resourcePrefix}store` | The name of the Azure Storage Account (used by other Framework components as well) where the `sequencecontroller` Azure Blob Storage container will be located where Azure Logic App workflow sequences are stored. |
+| `sequenceControllerScaling` | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
+| `sequenceControllerFunctionName` | `inv-${resourcePrefix}-seqcontroller` | The name of the Azure Container App to be created for the **Sequence Controller** component. |
+
+</details>
