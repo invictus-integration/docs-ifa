@@ -252,7 +252,7 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
 .custom-breadcrumb img {
   display: inline;
   padding: 0;
-  width: 80%;
+  width: 50%;
 }
 
 .breadcrumb-item {
