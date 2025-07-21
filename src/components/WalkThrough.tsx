@@ -7,7 +7,7 @@ export function Walkthrough({ children }: WalkthroughProps) {
   return (
     <div className="walkthrough-container">
       <div className="walkthrough-line">
-        {React.Children.map(children, (child, index) =>
+        {React.Children.map(children, (child: any, index: number) =>
           React.isValidElement(child) ? React.cloneElement(child, { number: index + 1 }) : child
         )}
       </div>
