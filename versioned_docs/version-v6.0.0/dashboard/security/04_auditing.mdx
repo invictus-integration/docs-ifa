@@ -5,8 +5,6 @@ sidebar_label: Auditing
 import { OnlyAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
 
 # Auditing <OnlyAdminsBadge/>
-The audits page provides a list of mentionable actions happened throughout the system.
-
 <nav class="custom-breadcrumb">
   <span class="breadcrumb-item no-padding">
     <img src="/img/favicon.ico" alt="logo" />
@@ -15,8 +13,6 @@ The audits page provides a list of mentionable actions happened throughout the s
   <span class="breadcrumb-item active">Audits</span>
 </nav>
 
-![auditing](/images/v2_auditing.png)
+The audits page provides a list of mentionable actions happened throughout the system. Audits can be search specifically by their `Chain ID`, or by certain categories available in the `[Advanced Search]` pane: 
 
-Data will be retrieved from the past 24 hours by default. Further refinement to the date range can be made by opening the `Advanced Search` pane and selecting your desired option. More filters are also available here, allowing you to filter via the audit username, flow name, audit action and whether the action was successful or not. The user can also search via the `Chain ID` to retrieve the specific audits for an Azure Logic App chain.
-
-![auditing](/images/v2_auditing-search.png)
+![Searching for audits with Chain ID and 'Advance pane'](/images/dashboard/search-for-audits.gif)
