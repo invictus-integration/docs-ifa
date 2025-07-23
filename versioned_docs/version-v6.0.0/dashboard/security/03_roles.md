@@ -31,13 +31,13 @@ The following table describes what non-flow related parts of the Dashboard are a
 | -------- | -------------------- | :-: | :-: | --------------------- |
 | Users    | View **users**       | 🔴 | 🟢 | Accessing the `[Users]` page and viewing all **local** and **AD** users |
 |          | Add **local user**   | 🔴 | 🟢 | Adding a new **local** user with credentials to the Dashboard |
-|          | Add **AD user**      | 🟠 | 🟠 | 'Sign in with AD' on the login page automatically creates an user, when that user is a member of a [synced group](../installation/01_give_ad_access.md) |
+|          | Add **AD user**      | 🟠 | 🟠 | 'Sign in with AD' on the login page automatically creates an user, when that user is a member of a [synced group](../installation/01_give_ad_access.mdx) |
 |          | Edit **local user** role | 🔴 | 🟢 | Changing the user role of **local** users (**AD** users receive their role via their **group**)              |
 |          | Delete **user**      | 🔴 | 🟢 | Removing a **local** or **AD** user from accessing the Dashboard permanently (**AD** users will need to removed from synced groups as well, if they are not allowed to log back in)           |
 | Groups   | View **groups**      | 🔴 | 🟢  | Accessing the `[Groups]` page and viewing all synced groups |
-|          | Sync **groups**      | 🔴 | 🟢  | Running the [`[Sync all groups]`](../installation/01_give_ad_access.md) operation |
-|          | Disable **group**    | 🔴 | 🟢  | [Temporary pause the group's authority](../installation/01_give_ad_access.md) from accessing flows |
-|          | Edit **group** role  | 🔴 | 🟢  | [Changing the user role](../installation/01_give_ad_access.md) of a single group |
+|          | Sync **groups**      | 🔴 | 🟢  | Running the [`[Sync all groups]`](../installation/01_give_ad_access.mdx) operation |
+|          | Disable **group**    | 🔴 | 🟢  | [Temporary pause the group's authority](../installation/01_give_ad_access.mdx) from accessing flows |
+|          | Edit **group** role  | 🔴 | 🟢  | [Changing the user role](../installation/01_give_ad_access.mdx) of a single group |
 |          | Delete **group**     | 🔴 | 🟢  | Removing a group's authority from accessing flows (if an AD user is still a member of the group, the group will still be synced)  |
 | Settings | View **settings**    | 🟢 | 🟢  | Accessing the [`[Settings]`](../settings.md) page and viewing all Dashboard settings |
 |          | Edit **settings**    | 🔴 | 🟢  | [Changing the Dashboard settings](../settings.md) |
