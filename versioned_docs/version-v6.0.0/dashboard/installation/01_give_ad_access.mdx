@@ -11,42 +11,42 @@ To use your Azure Active Directory groups as a way of authentication and flow au
   <Task title="Register an Application for Invictus">
     <em>[🔗 Microsoft Docs: Register an application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate%2Cexpose-a-web-api)</em>
 
-    - Choose the <u>multi-tenant</u> account type option to let Invictus use the app registration.
-    - Add <u>Redirect URI's</u> to **your** Invictus pages:
-      - `https://your-invictusdashboard.azurewebsites.net/login`
-      - `https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad`
-    - Check the **☑️ Access tokens** box ([why?](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps))
-    - Add a new <u>client secret</u> (copy the value for later use).
-    - Linked Enterprise Application:
-      - Assign <u>Owners</u> ([more info](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/assign-app-owners?pivots=portal))
-      - Grant <u>Admin consent</u> ([more info](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal))
+    * Choose the <u>multi-tenant</u> account type option to let Invictus use the app registration.
+    * Add <u>Redirect URI's</u> to **your** Invictus pages:
+      * `https://your-invictusdashboard.azurewebsites.net/login`
+      * `https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad`
+    * Check the **☑️ Access tokens** box ([why?](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps))
+    * Add a new <u>client secret</u> (copy the value for later use).
+    * Linked Enterprise Application:
+      * Assign <u>Owners</u> ([more info](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/assign-app-owners?pivots=portal))
+      * Grant <u>Admin consent</u> ([more info](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal))
   </Task>
 
   <Task title="Expose an API with scoped permissions">
     <em>[ 🔗Microsoft Docs: Expose an API](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-expose-web-apis#add-a-scope)</em>
 
-    - Use the default <u>Application ID URI</u> (copy it).
-    - Add a scope with <u>Admin and users</u> consent.
-    - Use this name for the scope: `access_as_user`
+    * Use the default <u>Application ID URI</u> (copy it).
+    * Add a scope with <u>Admin and users</u> consent.
+    * Use this name for the scope: `access_as_user`
   </Task>
 
   <Task title="Add API permissions">
     <em>[🔗 Microsoft Docs: Configure API Permissions](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis)</em>
-    - **Microsoft Graph**
-      - `Directory.Read.All` — **Delegated**
-      - `User.Read` — **Delegated**
-      - `User.Read.All` — **Delegated** + **Application**
-      - `Group.Read.All` — **Application**
-      - `Mail.Send` — **Application**
-    - **My APIs**
-      - The `access_as_user` scope you created earlier — **Delegated**
+    * **Microsoft Graph**
+      * `Directory.Read.All` — **Delegated**
+      * `User.Read` — **Delegated**
+      * `User.Read.All` — **Delegated** + **Application**
+      * `Group.Read.All` — **Application**
+      * `Mail.Send` — **Application**
+    * **My APIs**
+      * The `access_as_user` scope you created earlier — **Delegated**
   </Task>
 
   <Task title="Pass App Registration values to Invictus deployment">
-    - `azureActiveDirectoryClientId` — from **App Registration > Overview**
-    - `azureActiveDirectoryTenantId` — from **App Registration > Overview**
-    - `azureActiveDirectoryClientSecret` — the one you copied earlier
-    - `azureActiveDirectoryAudience` — the default <u>Application ID URI</u>
+    * `azureActiveDirectoryClientId` — from **App Registration > Overview**
+    * `azureActiveDirectoryTenantId` — from **App Registration > Overview**
+    * `azureActiveDirectoryClientSecret` — the one you copied earlier
+    * `azureActiveDirectoryAudience` — the default <u>Application ID URI</u>
   </Task>
 
 </Walkthrough>
