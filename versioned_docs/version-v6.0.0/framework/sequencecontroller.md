@@ -18,11 +18,11 @@ The Invictus Framework provides a **Sequence Controller** component that allows 
 ## Available endpoints
 The **Sequence Controller** component is available as a HTTP endpoint in your Logic App workflow. To include sequence processing to your workflow, these three HTTP interaction tasks should normally be added:
 
-* [`/api/GetSequenceNumber`](#_1-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
-* [`/api/WaitForSequence`](#_2-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
-* [`/api/ConfirmExecutionCompleted`](#_3-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
+* [`/api/GetSequenceNumber`](#️-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
+* [`/api/WaitForSequence`](#-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
+* [`/api/ConfirmExecutionCompleted`](#️-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
 
-> ⚡ There also exists a [`/api/ResetSequence`](#_4-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
+> ⚡ There also exists a [`/api/ResetSequence`](#-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
 
 ![Pseudo Logic App workflow with Sequence Controller](/images/framework/pseudo-logic-app-w-sequence-controller.png)
 

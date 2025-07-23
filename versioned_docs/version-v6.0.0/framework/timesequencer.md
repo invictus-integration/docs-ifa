@@ -11,8 +11,8 @@ At the time of writing, there is no built-in way in Azure Logic Apps to 'control
 :::
 
 ## Available endpoints
-* [`/api/WaitForExecution`](#wait-for-execution): by sending a request, it allows the currently running Azure Logic App workflow to possibly 'halt' its execution until it is their time to run actions.
-* [`/api/CompleteExecution`:](#complete-execution) by sending a request, it flags the currently running Azure Logic App workflow as 'completed', so that the next workflow run can continue to run.
+* [`/api/WaitForExecution`](#-wait-for-execution): by sending a request, it allows the currently running Azure Logic App workflow to possibly 'halt' its execution until it is their time to run actions.
+* [`/api/CompleteExecution`:](#️-complete-execution) by sending a request, it flags the currently running Azure Logic App workflow as 'completed', so that the next workflow run can continue to run.
 
 ![Pseudo Azure Logic App setup with Time Sequencer component](/images/framework/pseudo-logic-app-w-time-sequencer.png)
 

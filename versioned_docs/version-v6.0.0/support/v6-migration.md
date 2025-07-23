@@ -105,7 +105,7 @@ If you are not using certain components you can remove these already since no mi
 ### Additional steps
 - Assign the role assignments as shown in this [guide](../dashboard/installation/03_give_la_access.md) for the new DashboardGateway and FlowHandler Container Apps.
 - Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
-- Review the Container App scaling requirements for your scenario. See the [Dashboard installation](../dashboard/installation/index.mdx#scaling-parameters) and [Framework installation](../framework/installation/index.mdx#scaling-parameters) for more information.
+- Review the Container App scaling requirements for your scenario. See the [Dashboard installation](../dashboard/installation/index.mdx#bicep-template-parameters) and [Framework installation](../framework/installation/index.mdx#bicep-template-parameters) for more information.
 - Role assignment clean-up: The deployment of Invictus v6.0 will result in many lingering role assignments named `Unknown`. These can be deleted.
 
 ## Migrating Your Interfaces
@@ -177,7 +177,7 @@ The Invictus for Azure API's now require an access token to be passed in the Aut
 }
 ```
 
-In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the [newly created App Registration](#create-an-application-registration-in-active-directory) as the audience. 
+In this example we are using a user assigned managed identity (of which we have specified the application id in the `customApplicationIds` in the Invictus for Azure pipelines) and using the application id from the newly created App Registration as the audience. 
 
 :::tip
 It is also possible to use the auto created Invictus for Azure user assigned managed identity, but keep in mind that Logic Apps only supports a single user assigned managed identity so if you already have one in your environment make sure to keep using that one.
@@ -188,8 +188,8 @@ It is also possible to use the auto created Invictus for Azure user assigned man
 We need to replace the following components with the new containerized API's. 
 
 * [Migrating PubSub v1 to v2](../framework/pubsubV2.md#migrating-pubsub-v1-to-v2)
-* [Migrating Transco v1 to v2](../framework/transcoV2.mdx#migrating-v1-to-v2)
-* [Migrating Matrix v1 to Transco v2](../framework/transcoV2.mdx#migrating-v1-to-v2)
+* [Migrating Transco v1 to v2](../framework/transcoV2.mdx#migrating-transco-v1-to-v2)
+* [Migrating Matrix v1 to Transco v2](../framework/transcoV2.mdx#migrating-transco-v1-to-v2)
 
 ## Common Migration Issues
 :::danger[pipeline error: `Operating system not supported`]
