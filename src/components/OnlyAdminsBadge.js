@@ -1,8 +1,19 @@
 import { useState } from 'react'
 
 export function OnlyAdminsBadge() {
-  const [visible, setVisible] = useState(false);
+  return OnlyBadge({ title: "Only Admins", tooltip: "This section describes functionality that's only available for users with a System Admin role." });
+}
 
+export function OnlyOperatorsBadge() {
+  return OnlyBadge({ title: "Requires Operator", tooltip: "This section describes functionality that requires at least Operator permissions on the flow" });
+}
+
+export function OnlyFolderAdminsBadge() {
+  return OnlyBadge({ title: "Only Admins", tooltip: "This section describes functionality that's only available for users with a Folder or System Admin role."});
+}
+
+export function OnlyBadge({title, tooltip}) {
+  const [visible, setVisible] = useState(false);
   return (
     <span
       style={{ position: 'relative', display: 'inline-block', marginLeft: '8px', textTransform: 'none', fontWeight: 'bold' }}
@@ -22,7 +33,7 @@ export function OnlyAdminsBadge() {
           userSelect: 'none',
         }}
       >
-        Only Admins
+        {title}
       </span>
       {visible && (
         <span
@@ -43,7 +54,7 @@ export function OnlyAdminsBadge() {
             pointerEvents: 'none',
           }}
         >
-          This section describes functionality that's only available for users with a System Admin role.
+          {tooltip}
           <span
             style={{
               position: 'absolute',

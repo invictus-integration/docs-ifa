@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { OnlyFolderAdminsBadge, OnlyOperatorsBadge } from '@site/src/components/OnlyAdminsBadge'
 
 # Import flow traces via Azure Logic App workflows
 Invictus is fully supported to import flows from Azure Logic Apps. It allows to keep track of the **execution tree** of the ran workflows, plus with **tracked properties** you can trace specific data for your needs besides the general **diagnostic settings**.
@@ -50,7 +51,7 @@ Alternatively, you can update your Bicep template to include them, using [AVM](h
 ```
 </details>
 
-## Map Dashboard flows to Azure Logic App workflow runs
+## Map Dashboard flows to Azure Logic App workflow runs <OnlyFolderAdminsBadge/>
 Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../01_add.mdx):
 * WorkflowName (if present)
 * Domain (if present)
@@ -116,7 +117,7 @@ If the corresponding logic app has resulted in an error, the error information c
 For any additional details or insights, the user can also navigate directly to the Azure Portal.
 </details>
 
-## Workflow operations via Dashboard
+## Workflow operations via Dashboard <OnlyOperatorsBadge/>
 :::warning
 Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run properly.
 Flows linked to Azure Logic Apps workflows can be resubmitted and resumed via the Dashboard both separately (via the flow actions button) and in batch (via selecting multiple flows).
