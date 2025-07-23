@@ -252,7 +252,7 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
 .custom-breadcrumb p img {
   margin: auto;
   padding: 0;
-  width: 80%;
+  width: 50%;
 }
 
 .custom-breadcrumb p {
@@ -287,4 +287,100 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
 .no-padding {
   padding: 0;
   margin: 0;
+}
+
+.walkthrough-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+  padding-left: 60px;
+  position: relative;
+}
+
+.walkthrough-line {
+  position: relative;
+}
+
+.walkthrough-line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 18px;
+  border-left: 2px dashed rgba(33, 92, 102, 0.3);
+  pointer-events: none;
+}
+
+.task-container {
+  position: relative;
+  padding-left: 56px;
+  border-radius: 12px;
+  user-select: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-container.open {
+  background-color: rgba(33, 92, 102, 0.08);
+  box-shadow: 0 4px 12px rgba(33, 92, 102, 0.15);
+}
+
+.task-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 14px 16px 14px 0;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 18px;
+  color: rgb(33, 92, 102);
+  user-select: none;
+}
+
+.task-circle {
+  position: absolute;
+  left: 0;
+  top: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgb(33, 92, 102);
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px rgba(33, 92, 102, 0.4);
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.task-content {
+  padding: 0 16px 12px 0;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #334e52;
+  user-select: text;
+}
+
+html[data-theme='dark'] .walkthrough-line::before {
+  border-left-color: rgb(33, 92, 102);
+}
+
+html[data-theme='dark'] .task-circle {
+  background-color:rgb(33, 92, 102);
+}
+
+html[data-theme='dark'] .task-container.open {
+  background-color: rgba(90, 180, 216, 0.15);
+  color: white;
+}
+
+html[data-theme='dark'] .task-header {
+  color: rgb(33, 92, 102);
+}
+
+html[data-theme='dark'] .task-content {
+  color: #cbd5e1;
 }

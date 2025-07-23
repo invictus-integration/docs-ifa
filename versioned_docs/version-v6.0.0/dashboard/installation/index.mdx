@@ -5,6 +5,7 @@ hide_table_of_contents: true
 import { ToggleSwitch, ToggleSection, ToggleRow, ToggleProvider } from '@site/src/components/VnetToggleSwitch';
 import React from 'react';
 import InstallationWizard, { Step, StepGroup, GoToStep, SharedNote } from '@site/src/components/InstallationWizard';
+import { Walkthrough, Task } from '@site/src/components/Walkthrough';
 
 # Installing Invictus Dashboard
 
@@ -80,7 +81,7 @@ Invictus V2 includes functionality to automatically deploy role assignments whic
 - *Monitoring Contributor* rights for the FlowHandler component for the Invictus resource group.
 
 ### Azure AD setup
-If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](./01_give_ad_access.md) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
+If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](./01_give_ad_access.mdx) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
 
 ### SQL data migration
 Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow traces will **not** be migrated.
@@ -385,7 +386,7 @@ The following script parameters are used in the deploy script:
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
 [Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
-[Azure AD setup]: ./01_give_ad_access.md
+[Azure AD setup]: ./01_give_ad_access.mdx
 [Container authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
 
 | Argument name       | Description |
@@ -906,8 +907,7 @@ Follow the steps below to log in to the Dashboard:
 4. 🎉 Congratulations! You have logged into the Invictus Dashboard for the first time.
 
 Follow these additional guides related to authentication and authorization:
-* [Give access to your Active Directory](./01_give_ad_access.md)
-* [Sync your Active Directory groups](./02_sync_ad_groups.md)
+* [Give access to your Active Directory](./01_give_ad_access.mdx)
 * [Give access to your Logic Apps](./03_give_la_access.md)
 
 </Step>
