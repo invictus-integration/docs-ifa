@@ -36,7 +36,7 @@ Within the client integrations (here always Azure Logic Apps), several common in
 * [**PubSub v2:**](./framework/pubsubV2.md) uses Azure Service Bus as a message broker to publish/subscribe on messages across Azure Logic Apps. 
 * [**TimeSequencer:**](./framework/timesequencer.md) control the order in which Azure Logic App workflows can run based on a custom timestamp.
 * [**Sequence Controller:**](./framework/sequencecontroller.md) control the order in which Azure Logic App workflow can run based on a custom sequence order.
-* [**XML/JSON Convertor:**](./framework/xmljsonconverter.md) convert XML-JSON based on a custom XSLT transformation.
+* [**XML/JSON Convertor:**](./framework/xmljsonconverter.mdx) convert XML-JSON based on a custom XSLT transformation.
 * [**XSD Validator:**](./framework/xsd-validator.md) validate XML based on a custom XSD schema.
 * [**Regex Translator**](./framework/regextranslation.md) translate user content based on custom regular expression patterns.
 * [**Transco v2:**](./framework/transcoV2.mdx) promote properties in an user content based on database records.
