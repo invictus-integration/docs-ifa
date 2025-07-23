@@ -83,7 +83,7 @@ Invictus V2 includes functionality to automatically deploy role assignments whic
 If your Invictus installation integrates with Azure AD, please follow the [Azure AD setup guide](./01_give_ad_access.md) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
 
 ### SQL data migration
-Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow data will **not** be migrated.
+Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow traces will **not** be migrated.
 
 #### Data migration release pipeline changes
 The data migration process forms part of the release pipeline. Please refer to **Dashboard release pipeline** installation step for more information. The deploy script parameter `PerformSqlDataMigration` must be set to `1`. The deploy script also accepts a few optional parameters to be able to connect to your SQL database:
@@ -402,7 +402,7 @@ The following script parameters are used in the deploy script:
 | `azureActiveDirectoryClientSecret` | See [Azure AD Setup] if AD enabled |
 | `azureActiveDirectoryAudience` | See [Azure AD Setup] if AD enabled |
 | `performSqlDataMigration` | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the process will be skipped. See the [migration guide](#migration-from-older-installations) for more details. Once data migration has been performed and verified, it is recommended to then set this value to `0` so that the migration process is skipped for all subsequent releases. |
-| `flowDataTTLInDays` | Amount of days flow data can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md). |
+| `flowDataTTLInDays` | Amount of days flow traces can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md). |
 | `isProvisionedCosmos` | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. See the [relevant section](#provisioned-throughput-vs-serverless-cosmos-db) below for more details. |
 | `identityProviderApplicationId` | See [Container Authentication]. |
 | `identityProviderClientSecret` | See [Container Authentication]. |
@@ -659,7 +659,7 @@ Always evaluate your application's needs and monitor performance to ensure the c
 ### Cleaning data
 | Parameter                                              | Required | Default | Description                                            |
 | ------------------------------------------------------ | :------: | ------- | ------------------------------------------------------ |
-| `flowDataTTLInDays`                                    | Yes      |         | A positive integer value which represents the amount of days flow data can live in the database |
+| `flowDataTTLInDays`                                    | Yes      |         | A positive integer value which represents the amount of days flow traces can live in the database |
 | `statisticsCutOffDays`                     | No       | `-3`    | The number of days in the past that homepage statistics will recalculate |
 | `cleanupJobIntervalInMinutes`                          | No       |  `1440` | Interval in minutes for the cleanup job                |
 | `workFlowCleanupJobIntervalInMinutes`                  | No       |  `180`  | Interval in minutes for the workflowevent cleanup job  |
