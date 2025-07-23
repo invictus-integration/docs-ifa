@@ -33,7 +33,7 @@ The following request parameters need to be supplied in the request body:
 | `CallbackUri`  | yes      | Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`.                                                   |
 
 ## ☑️ Complete execution
-When the [*Wait for exec.* operation](#wait-for-execution) responds with `Start`, then any custom user actions in the Azure Logic App workflow can be executed. Once those are done, the workflow should signal the **Time Sequencer** component, so that any waiting workflows can continue their execution.
+When the [*Wait for exec.* operation](#-wait-for-execution) responds with `Start`, then any custom user actions in the Azure Logic App workflow can be executed. Once those are done, the workflow should signal the **Time Sequencer** component, so that any waiting workflows can continue their execution.
 
 Signaling completion happens with a HTTP POST request to the `/api/CompleteExecution` endpoint, using following required request parameters in the request body:
 

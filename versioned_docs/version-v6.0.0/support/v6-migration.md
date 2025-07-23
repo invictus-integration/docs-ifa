@@ -105,7 +105,7 @@ If you are not using certain components you can remove these already since no mi
 ### Additional steps
 - Assign the role assignments as shown in this [guide](../dashboard/installation/03_give_la_access.md) for the new DashboardGateway and FlowHandler Container Apps.
 - Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
-- Review the Container App scaling requirements for your scenario. See the [Dashboard installation](../dashboard/installation/index.mdx#bicep-template-parameters) and [Framework installation](../framework/installation/index.mdx#bicep-template-parameters) for more information.
+- Review the Container App scaling requirements for your scenario. See the [Dashboard installation](../dashboard/installation/index.mdx) and [Framework installation](../framework/installation/index.mdx) for more information.
 - Role assignment clean-up: The deployment of Invictus v6.0 will result in many lingering role assignments named `Unknown`. These can be deleted.
 
 ## Migrating Your Interfaces
