@@ -1,12 +1,18 @@
+---
+sidebar_label: Transco promotion
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Transco V2
+# Promote user content from SQL in Logic App workflows with <u>Transco</u>
 :::note[motivation]
 Integration scenarios often need to 'promote' or 'enrich' messages/data from external stored systems. Codit is a long-term implementer of something called 'Transco', which was previously a BizTalk component, but is now been required in modern Azure Logic Apps integrations. 
 
 Invictus provides a Transco component to promote properties from a database, by using the content or context to create the SQL query which will be executed against the specified table. Transco can also perform transformations on XML content by simply specifying the XSLT file from storage (Transco supports XSLT 1.0 syntax.).
 :::
+
+![Transco v2 example with XML](/images/framework/transco-v2-example.png)
 
 ## Available endpoints
 * `/api/TranscoXML`: used with XML content. A Transco config file is used to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file.
@@ -201,25 +207,26 @@ Transco XML/JSON also supports promotion of values to the context. This is achie
 | Supported request parameter | type        |
 | --------------------------- | ----------- |
 | `KeyValueCollection` | Key-Value collection <br/> (each pair is individually promoted) |
-| `Flow` | string |
-| `Domain` | string |
-| `Service` | string |
-| `Action` | string |
-| `Version` | string |
-| `Sender` | string |
-| `ApplicationName` | string |
-| `Milestone` | string |
-| `ConversationId` | string |
-| `CorrelationId` | string |
-| `BatchId` | string |
-| `Data1` | string |
-| `Data2` | string |
-| `Data3` | string |
+| `Flow` | `string` |
+| `Domain` | `string` |
+| `Service` | `string` |
+| `Action` | `string` |
+| `Version` | `string` |
+| `Sender` | `string` |
+| `ApplicationName` | `string` |
+| `Milestone` | `string` |
+| `ConversationId` | `string` |
+| `CorrelationId` | `string` |
+| `BatchId` | `string` |
+| `Data1` | `string` |
+| `Data2` | `string` |
+| `Data3` | `string` |
 
 <details>
 <summary>**Full request body JSON example**</summary>
 
 ```json
+// POST /api/api/MatrixBasicPromote
 {
  "Content":  "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
  "Context":  {
@@ -257,6 +264,7 @@ Transco XML/JSON also supports promotion of values to the context. This is achie
 <summary>**Full response body JSON example**</summary>
 
 ```json
+// 200 OK /api/api/MatrixBasicPromote
 {
     "content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
     "context": {
