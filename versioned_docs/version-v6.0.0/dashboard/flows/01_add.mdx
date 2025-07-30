@@ -1,13 +1,18 @@
+---
+sidebar_label: Add new flows
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { OnlyFolderAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
 
 # Add new flows
 Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
 
-## Add/Edit a flow
+## Add/Edit a flow <OnlyFolderAdminsBadge/>
 <nav class="custom-breadcrumb">
   <span class="breadcrumb-item no-padding">
-    <img src="/img/favicon.ico" alt="logo" />
+    ![logo](/img/favicon.ico)
   </span>
   <span>›</span>
   <span class="breadcrumb-item">Your Flows</span>
@@ -27,7 +32,7 @@ Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flow
 | <span class="no-wrap"><span class="flow-add-number">4</span> **Business Properties**</span> | no | Additional properties to describe the flow. These are only here to provide metadata and are not used in the flow tracing. |
 | <span class="no-wrap"><span class="flow-add-number">5</span> **Advanced Settings**</span> | no | <ul><li>*Connected Dashboard:* if the flow has multiple Dashboards and it needs to connect to another Dashboard then this needs to be checked.  For this setting to apply, the Connected Dashboard needs to be enabled by your Admin through the settings page of the Dashboard in order to switch on this feature.</li><li>*Show milestone and event text:* Checking this option will enable the flow milestone and event text data to be displayed.</li><li>*Custom resubmit/resume URLs:* Check these options and provide the necessary URLs to use [your own resume and resubmit logic](./04_import-flow-traces/import-flows-via-la.mdx).</li></ul> |
 
-## Permissions
+## Permissions <OnlyFolderAdminsBadge/>
 To allow only certain users/groups to access the flows, you can assign permissions to the folder where the flow is located ([available roles](../security/03_roles.md)). System admins are automatically assigned to every folder available.
 
 <nav class="custom-breadcrumb">
@@ -61,7 +66,7 @@ Choose the desired non-admin user from the first drop down menu. Then, choose th
 </TabItem>
 </Tabs>
 
-## Alerting
+## Alerting <OnlyFolderAdminsBadge/>
 :::warning
 To manage alerts within Flows, make sure the [necessary **role assignments** are set](../installation/03_give_la_access.md) in your Invictus installation.
 :::
