@@ -18,12 +18,12 @@ Use **Active Directory** users over local users for security reasons.
 <Tabs groupId="user-source">
 <TabItem value="ad" label="Active Directory" default>
 
-> 👤 Requires membership of a [synced Active Directory group](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus).
+> 👤 Requires membership of a [synced Active Directory group](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus-).
 
 The Invictus Dashboard can be configured to [use existing users in Azure Active Directory groups](../installation/01_give_ad_access.mdx). This removes the need to work with additional local Dashboard users.
 
 ### Add an Active Directory user to the Dashboard
-Azure Active Directory users can sign in automatically into the Invictus Dashboard if that user is part of an Active Directory group that is [synced into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus).
+Azure Active Directory users can sign in automatically into the Invictus Dashboard if that user is part of an Active Directory group that is [synced into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus-).
 
 :::warning[requires role]
 Make sure that the group has a [role assigned](./03_roles.md), otherwise the Dashboard will be unusable for the user.
@@ -38,7 +38,7 @@ To delete a user click on the delete icon next to the user in the user list.
     > 👀 Linked Active Directory users can be distinguished as they do not have a personal role assigned. The role is determined by the group the user is a member of.
 
 ### Edit an Active Directory user's role in the Dashboard <OnlyAdminsBadge/>
-Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus), so will the user.
+Active Directory users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Active Directory group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus-), so will the user.
 
 ### Configure forgot password procedure <OnlyAdminsBadge/>
 Before you can use the forgot password feature, you need to create an Azure Active Directory application registration and [set it up with the Mail.Send API permissions](../installation/01_give_ad_access.mdx). This is required because emails can only be sent through an OAuth 2.0 flow.
