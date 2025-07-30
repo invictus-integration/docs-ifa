@@ -204,23 +204,23 @@ The basic promote is a simple way of promoting values to the context. This versi
 Transco XML/JSON also supports promotion of values to the context. This is achieved by setting the `promoteToContext=true` in the Transco configuration file. The `destination` property must also be set to the key of the desired destination in the context. With these two properties, any result from the SQL operation is saved to the context.
 :::
 
-| Supported request parameter | type        |
-| --------------------------- | ----------- |
-| `KeyValueCollection` | Key-Value collection <br/> (each pair is individually promoted) |
-| `Flow` | `string` |
-| `Domain` | `string` |
-| `Service` | `string` |
-| `Action` | `string` |
-| `Version` | `string` |
-| `Sender` | `string` |
-| `ApplicationName` | `string` |
-| `Milestone` | `string` |
-| `ConversationId` | `string` |
-| `CorrelationId` | `string` |
-| `BatchId` | `string` |
-| `Data1` | `string` |
-| `Data2` | `string` |
-| `Data3` | `string` |
+| Supported request parameter | type                                                            |
+| --------------------------- | --------------------------------------------------------------- |
+| `KeyValueCollection`        | Key-Value collection <br/> (each pair is individually promoted) |
+| `Flow`                      | `string`                                                        |
+| `Domain`                    | `string`                                                        |
+| `Service`                   | `string`                                                        |
+| `Action`                    | `string`                                                        |
+| `Version`                   | `string`                                                        |
+| `Sender`                    | `string`                                                        |
+| `ApplicationName`           | `string`                                                        |
+| `Milestone`                 | `string`                                                        |
+| `ConversationId`            | `string`                                                        |
+| `CorrelationId`             | `string`                                                        |
+| `BatchId`                   | `string`                                                        |
+| `Data1`                     | `string`                                                        |
+| `Data2`                     | `string`                                                        |
+| `Data3`                     | `string`                                                        |
 
 <details>
 <summary>**Full request body JSON example**</summary>
@@ -300,6 +300,17 @@ Transco XML/JSON also supports promotion of values to the context. This is achie
 </Tabs>
 
 ___
+
+## Customization
+<details>
+<summary>**Available Bicep parameters**</summary>
+
+| Bicep parameter         | Default                                                                                                               | Description                                                                                                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `storageAccountName`    | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) where the `transcov2configstore` Azure Blob Storage container will be located.                               |
+| `transcoV2FunctionName` | `inv-${resourcePrefix}-transco-v2`                                                                                    | The name of the Azure Container App to be created for the **Transco V2** component.                                                                                                             |
+| `transcoV2Scaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
+</details>
 
 ## Migrating Transco v1 to v2
 
