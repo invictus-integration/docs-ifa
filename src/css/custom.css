@@ -54,7 +54,8 @@ html[data-theme='dark'] {
   /* Dark background and greenish-blue primary */
   --ifm-background-color: var(--ifm-color-gray-900);
   --ifm-navbar-background-color: var(--ifm-color-gray-800);
-  --ifm-color-primary: #2a8f9c; /* brighter variant for contrast */
+  --ifm-color-primary: #2a8f9c;
+  /* brighter variant for contrast */
   --ifm-link-color: #36b1c5;
   --ifm-link-hover-color: #4fcadf;
   --ifm-toc-border-color: #2a8f9c;
@@ -113,7 +114,11 @@ html {
   font-weight: normal;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: 'Bitter', sans-serif;
   line-height: 110%;
 }
@@ -148,11 +153,13 @@ nav.menu {
   display: none !important;
 }
 
-.vnet table, .vnet td {
-    background-color: #8cd0de !important;
+.vnet table,
+.vnet td {
+  background-color: #8cd0de !important;
 }
 
-html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
+html[data-theme='dark'] .vnet table,
+html[data-theme='dark'] .vnet td {
   background-color: #1c6d7c !important;
 }
 
@@ -194,11 +201,11 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
   transition: transform 0.3s;
 }
 
-.toggle-checkbox:checked + .toggle-slider {
+.toggle-checkbox:checked+.toggle-slider {
   background-color: #277983;
 }
 
-.toggle-checkbox:checked + .toggle-slider::before {
+.toggle-checkbox:checked+.toggle-slider::before {
   transform: translateX(24px);
 }
 
@@ -252,11 +259,11 @@ html[data-theme='dark'] .vnet table, html[data-theme='dark'] .vnet td {
 .custom-breadcrumb p img {
   margin: auto;
   padding: 0;
-  width: 50%;
+  width: 80%;
 }
 
 .custom-breadcrumb p {
-  margin:0;
+  margin: 0;
 }
 
 .breadcrumb-item {
@@ -369,7 +376,7 @@ html[data-theme='dark'] .walkthrough-line::before {
 }
 
 html[data-theme='dark'] .task-circle {
-  background-color:rgb(33, 92, 102);
+  background-color: rgb(33, 92, 102);
 }
 
 html[data-theme='dark'] .task-container.open {
