@@ -2,12 +2,12 @@
 sidebar_label: Publish and subscribe
 ---
 
-# PubSub V2
+# Run Logic App workflows as publisher/subscriber with the <u>PubSub</u>
 
 :::note[motivation]
 Asynchronous messaging helps with decoupling publishers from consumers, as it avoids the blocking during publishing. Especially in Azure Logic Apps workflows, where the publisher and consumer is not always synchronous.
 
-Invictus provides a solution called the PubSub, that allows Azure Service Bus to act as a message broker and interact in a publish/subscribe-approach via HTTP endpoints; plus having Azure Blob Storage act as a claim-check provider for when messages are to big to be published directly.
+Invictus provides a solution called the **PubSub**, that allows Azure Service Bus to act as a message broker and interact in a publish/subscribe-approach via HTTP endpoints; plus having Azure Blob Storage act as a claim-check provider for when messages are to big to be published directly.
 
 *🔗 See also the [Publisher-Subscriber integration pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/publisher-subscriber).*
 :::
