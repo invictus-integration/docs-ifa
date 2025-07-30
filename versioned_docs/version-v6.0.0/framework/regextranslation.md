@@ -1,4 +1,8 @@
-# Regex Translation
+---
+sidebar_label: Regex replacements
+---
+
+# Replace user content in Logic App workflows with the <u>Regex Translator</u>
 :::note[motivation]
 At the time of writing, there is no built-in Logic App functionality available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component was created to fill this missing gap, by providing a HTTP-endpoint to run regular expression replacements. Available translations are stored in an Azure Table Storage. 
 :::
