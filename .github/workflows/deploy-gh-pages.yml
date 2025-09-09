@@ -19,7 +19,6 @@ jobs:
       - name: Install and Build
         run: |
           sed -i \
-            -e "s|baseUrl: '.*'|baseUrl: '/docs-ifa/'|" \
             -e 's/includeCurrentVersion: true/includeCurrentVersion: false/' \
             docusaurus.config.js
           cat docusaurus.config.js   
