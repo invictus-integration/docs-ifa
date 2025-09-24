@@ -640,6 +640,10 @@ Each of the above parameters accepts an object:
 | `scaleMaxReplicas`          | `int`    | `1`    | The highest number of replicas the Container App will scale out to.                                    |
 | `concurrentRequests`        | `int`    | `10`    | When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. [See here fore allowed values](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep). |
 
+:::warning[careful with `scaleMinReplicas`]
+When the `scaleMinReplicas` is set to a greater number than zero, then the amount of replicas and costs can increase rapidly when older replicas are not disposed of in time. Use with care.
+:::
+
 </details>
 
 </ToggleProvider>
