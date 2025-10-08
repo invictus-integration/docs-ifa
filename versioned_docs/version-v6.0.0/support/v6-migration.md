@@ -107,6 +107,7 @@ If you are not using certain components you can remove these already since no mi
 - Update the AD app registration redirect URLs used for the AD login with the URL of the new dashboard. This is done from the `Authentication` page of your app registration.
 - Review the Container App scaling requirements for your scenario. See the [Dashboard installation](../dashboard/installation/index.mdx) and [Framework installation](../framework/installation/index.mdx) for more information.
 - Role assignment clean-up: The deployment of Invictus v6.0 will result in many lingering role assignments named `Unknown`. These can be deleted.
+- We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
 
 ## Migrating Your Interfaces
 

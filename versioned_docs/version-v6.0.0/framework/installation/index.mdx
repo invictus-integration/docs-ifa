@@ -642,6 +642,7 @@ Each of the above parameters accepts an object:
 
 :::warning[careful with `scaleMinReplicas`]
 When the `scaleMinReplicas` is set to a greater number than zero, then the amount of replicas and costs can increase rapidly when older replicas are not disposed of in time. Use with care.
+[We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run in those cases after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
 :::
 
 </details>
