@@ -416,6 +416,7 @@ Resource-independent parameters that affect all resources in the deployed resour
 | `devOpsObjectId` | Yes      |         | The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps |
 | `containerAppsEnvironmentLocation` | No | `resourceGroup().location` | Location of the ACA environment and Container Apps. |
 | `containerAppsEnvironmentName` | No | `invictus-${resourcePrefix}-cae` | The name of the [Container App environment](https://learn.microsoft.com/en-us/azure/container-apps/environment). |
+| `invictusUserManagedIdentityName` | No | `invictus-user-managed-identity` | The name of the Azure user managed identity that has access to all the deployed Invictus Container App components. |
 
 <ToggleSection>
 | VNET Parameter                         | Required | Default | Description          |
