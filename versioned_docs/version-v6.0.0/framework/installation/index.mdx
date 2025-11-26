@@ -416,6 +416,7 @@ Resource-independent parameters that affect all resources in the deployed resour
 | `devOpsObjectId` | Yes      |         | The object-id associated with the service principal of the enterprise application that's connected to the service connection on DevOps |
 | `containerAppsEnvironmentLocation` | No | `resourceGroup().location` | Location of the ACA environment and Container Apps. |
 | `containerAppsEnvironmentName` | No | `invictus-${resourcePrefix}-cae` | The name of the [Container App environment](https://learn.microsoft.com/en-us/azure/container-apps/environment). |
+| `invictusUserManagedIdentityName` | No | `invictus-user-managed-identity` | The name of the Azure user managed identity that has access to all the deployed Invictus Container App components. |
 
 <ToggleSection>
 | VNET Parameter                         | Required | Default | Description          |
@@ -642,6 +643,7 @@ Each of the above parameters accepts an object:
 
 :::warning[careful with `scaleMinReplicas`]
 When the `scaleMinReplicas` is set to a greater number than zero, then the amount of replicas and costs can increase rapidly when older replicas are not disposed of in time. Use with care.
+[We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run in those cases after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
 :::
 
 </details>
