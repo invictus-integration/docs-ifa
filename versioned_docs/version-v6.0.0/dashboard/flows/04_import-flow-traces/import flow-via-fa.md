@@ -4,10 +4,10 @@ Invictus allows developers to import flow traces via application logs coming fro
 ## Send diagnostic traces from Function App
 Configure the [diagnostic settings](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/diagnostic-settings) on the target Function App to monitor, to send the [`Function Application Logs`](https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/functionapplogs) to the Invictus Event Hub that can import these logs:
 
-| Event Hub property | Value                                       |
-| ------------------ | ------------------------------------------- |
-| Namespace          | `invictus-{resourcePrefix}-we-sft-evnm`     |
-| Hub name           | `invictus-{resourcePrefix}-functions-evhb`  |
+| Event Hub property | Value                                      |
+| ------------------ | ------------------------------------------ |
+| Namespace          | `invictus-{resourcePrefix}-we-sft-evnm`    |
+| Hub name           | `invictus-{resourcePrefix}-functions-evhb` |
 
 :::tip[automate configuration]
 Take a look at [Bicep AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/insights/diagnostic-setting) to automate this diagnostic setting configuration in your deployment.
@@ -19,13 +19,15 @@ Besides the default application logs, Invictus can extract custom information fr
 ```csharp
 var properties = new Dictionary<string, string>
 {
-    ["x-invictus-domain"] = "<domain>",
-    ["x-invictus-service"] = "<service>",
-    ["x-invictus-action"] = "<action>",
-    ["x-invictus-version"] = "<version>",
-    ["x-invictus-Milestone"] = "<milestone>",
-    ["x-invictus-EventText"] = "<event-text>",
-    ["x-invictus-workflowname"] = "<workflow-name>"
+    ["x-iv-domain"] = "<domain>",
+    ["x-iv-service"] = "<service>",
+    ["x-iv-action"] = "<action>",
+    ["x-iv-version"] = "<version>",
+    ["x-iv-milestone"] = "<milestone>",
+    ["x-iv-eventtext"] = "<event-text>",
+    ["x-iv-operation-name"] = "<workflow-name>",
+    ["x-iv-chain-id"] = "<transaction-id>",
+    ["x-iv-parent-id"] = "<operation-parent-id>"
 };
 
 logger.LogInformation(new EventId(0, "InvictusLog"), JsonSerializer.Serialize(properties));
