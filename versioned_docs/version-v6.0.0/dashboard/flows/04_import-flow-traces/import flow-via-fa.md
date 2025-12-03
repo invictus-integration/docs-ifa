@@ -25,7 +25,7 @@ var properties = new Dictionary<string, string>
     ["x-iv-version"] = "<version>",
     ["x-iv-milestone"] = "<milestone>",
     ["x-iv-eventtext"] = "<event-text>",
-    ["x-iv-operation-name"] = "<workflow-name>",
+    ["x-iv-operation-name"] = "<operation-name>",
     ["x-iv-chain-id"] = "<transaction-id>",
     ["x-iv-parent-id"] = "<operation-parent-id>"
 };
