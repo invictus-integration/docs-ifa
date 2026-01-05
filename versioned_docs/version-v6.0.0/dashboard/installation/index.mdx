@@ -414,6 +414,32 @@ The following script parameters are used in the deploy script:
 | `resourceGroupLocation`        | 'West Europe' | Azure location where resources should be deployed                                            |
 | `isAdDisabled`                 | `False`       | Boolean flag to indicate whether the Dashboard should use AD for authentication              |
 | `additionalTemplateParameters` | []            | Additional named parameters for the Bicep template you wish to override. More on this below. |
+| `Dashboard`                    | -             | **Optional object** to configure custom settings for the Dashboard. Contains the `Gateway` property with custom URL configurations. |
+
+<details>
+<summary>**Dashboard object properties**</summary>
+
+The `Dashboard` parameter is an optional object that allows you to configure custom settings. If not provided, default values will be used.
+
+**Dashboard.ApplicationGateway** (optional object)
+- Configuration object for Application Gateway settings when using a custom gateway setup.
+
+| Property                       | Type     | Required | Description                                                                                  |
+| ------------------------------ | -------- | :------: | -------------------------------------------------------------------------------------------- |
+| `BaseApiRootUrl`  | `string` |    No    | Custom URL for the Dashboard Gateway Function. Use this when you have a custom gateway configuration that differs from the default deployment. |
+| `NextAuthUrl`     | `string` |    No    | Custom URL for accessing the Dashboard web application. Use this when you want to specify a custom domain or gateway endpoint for the Dashboard. |
+
+**Example usage in Bicep:**
+```bicep
+Dashboard: {
+  ApplicationGateway: {
+    BaseApiRootUrl: 'your-custom-domain.com'
+    NextAuthUrl: 'another-custom-domain.com'
+  }
+}
+```
+
+</details>
 
 :::info[override [bicep parameters](#bicep-template-parameters)]
 The `AdditionalTemplateParameters` can be used to override the default values used by the Bicep template. You simply name the argument as the parameter. For example if you want to use a different `servicePlanSku` you would add `-eventHubSkuName 'Standard'` to the parameters of the `./Deploy.ps1` script.
