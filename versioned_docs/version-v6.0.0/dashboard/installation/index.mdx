@@ -426,15 +426,15 @@ The `dashboard` parameter is an optional object that allows you to configure cus
 
 | Property                       | Type     | Required | Description                                                                                  |
 | ------------------------------ | -------- | :------: | -------------------------------------------------------------------------------------------- |
-| `baseApiRootUrl`  | `string` |    No    | Custom URL for the Dashboard Gateway Function. Use this when you have a custom gateway configuration that differs from the default deployment. No need to include `https://`. |
-| `nextAuthUrl`     | `string` |    No    | Custom URL for accessing the Dashboard web application. Use this when you want to specify a custom domain or gateway endpoint for the Dashboard. No need to include `https://`. |
+| `baseApiRootUrl`  | `string` |    No    | Custom URL for the Dashboard Gateway Function. Use this when you have a custom gateway configuration that differs from the default deployment. |
+| `nextAuthUrl`     | `string` |    No    | Custom URL for accessing the Dashboard web application. Use this when you want to specify a custom domain or gateway endpoint for the Dashboard. |
 
 **Example usage in Bicep:**
 ```bicep
 dashboard: {
   applicationGateway: {
-    baseApiRootUrl: 'your-custom-domain.com'
-    nextAuthUrl: 'another-custom-domain.com'
+    baseApiRootUrl: 'https://your-custom-domain.com'
+    nextAuthUrl: 'https://another-custom-domain.com'
   }
 }
 ```
