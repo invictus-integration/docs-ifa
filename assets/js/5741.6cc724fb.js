@@ -1,1 +1,0 @@
-(globalThis.webpackChunkinvictus_integration=globalThis.webpackChunkinvictus_integration||[]).push([[5741],{5741:()=>{}}]);
