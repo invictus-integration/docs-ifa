@@ -123,6 +123,10 @@ If you are using the PowerShell script `Invictus-ConfigureDashboard.ps1` to depl
 
 </details>
 
+:::warning[Container revisions]
+We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
+:::
+
 </Step>
 
 
