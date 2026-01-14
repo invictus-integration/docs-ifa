@@ -82,6 +82,11 @@ If you are using the Azure PowerShell task to retrieve the access policies from 
 
 You can copy the `-keyvaultName` argument to the new PowerShell arguments.
 </details>
+
+:::warning[Container revisions]
+We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
+:::
+
 </Step>
 
 <Step title="Build pipeline">
@@ -168,10 +173,6 @@ stages:
         publishLocation: 'pipeline'
 ```
 </details>
-
-:::warning[Container revisions]
-We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
-:::
 
 </Step>
 
