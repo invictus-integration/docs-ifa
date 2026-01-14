@@ -14,6 +14,9 @@ import InstallationWizard, { Step, StepGroup, SharedNote } from '@site/src/compo
 :::info[obtain access <SharedNote/>]
 To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
 :::
+:::warning[Container revisions]
+We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
+:::
 
 <details>
 <summary>**Include VNET support <SharedNote/>**</summary>
@@ -82,10 +85,6 @@ If you are using the Azure PowerShell task to retrieve the access policies from 
 
 You can copy the `-keyvaultName` argument to the new PowerShell arguments.
 </details>
-
-:::warning[Container revisions]
-We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
-:::
 
 </Step>
 
