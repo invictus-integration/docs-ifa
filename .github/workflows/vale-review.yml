@@ -16,6 +16,6 @@ jobs:
         with:
           reporter: github-check
           files: versioned_docs
-          vale_flags: --filter .Level in ['error'] --glob !**/deprecated/*
+          vale_flags: "--filter .Level in ['error'] --glob !**/deprecated/*"
           filter_mode: nofilter
           fail_on_error: true
