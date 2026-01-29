@@ -17,7 +17,7 @@ sidebar_label: Settings
 
 In a hybrid (BizTalk + Azure) setup, it is necessary to have a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows.  With the introduction of the claimcheck component, it is now possible to have one flow starting in the cloud and being continued on prem (and vice versa). With this feature it is possible to have a click-through experience between the two different Dashboards.
 
-You will find the option to enter the Connected Dashboard URL which is the base url of the other Dashboard which you want to connect to.
+You will find the option to enter the Connected Dashboard URL which is the base URL of the other Dashboard which you want to connect to.
 
 ![settings](/images/v2_settings1.png)
 
@@ -29,4 +29,4 @@ If you navigate to the page for that flow, a new button will be added at the rig
 
 ![settings](/images/v2_settings3.png)
 
-If you are not logged in the other Dashboard, it will direct you to the login page but with a return url. Once logged in, you will be redirected to the actual link.
+If you are not logged in the other Dashboard, it will direct you to the login page but with a return URL. Once logged in, you will be redirected to the actual link.

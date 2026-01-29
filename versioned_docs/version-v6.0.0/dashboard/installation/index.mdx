@@ -600,17 +600,17 @@ Parameters related to the data that is stored throughout Invictus.
 Always evaluate your application's needs and monitor performance to ensure the chosen capacity model meets expectations in the production environment.
 
 **Default Settings for Provisioned Throughput**
-| Collection        | RU/s | Autoscale |
-| ----------------- | ---- | --------- |
-| Audits            | 500  | No        |
-| DashboardSettings | 500  | No        |
-| Users             | 500  | No        |
-| Groups            | 500  | No        |
-| Statistics        | 500  | No        |
-| FolderFlows       | 500  | No        |
-| FlowData          | 2000 | Yes       |
-| WorkflowEvent     | 2000 | Yes       |
-| MessageContent    | 2000 | Yes       |
+| Collection                              | RU/s | Autoscale |
+| --------------------------------------- | ---- | --------- |
+| `auditsCollectionThroughput`            | 1000 | Yes       |
+| `dashboardSettingsCollectionThroughput` | 1000 | Yes       |
+| `flowDataCollectionThroughput`          | 2000 | Yes       |
+| `folderFlowsCollectionThroughput`       | 1000 | Yes       |
+| `groupsCollectionThroughput`            | 1000 | Yes       |
+| `messageContentCollectionThroughput`    | 2000 | Yes       |
+| `statisticsCollectionThroughput`        | 1000 | Yes       |
+| `usersCollectionThroughput`             | 1000 | Yes       |
+| `workflowEventsCollectionThroughput`    | 2000 | Yes       |
 
 </details>
 
