@@ -13,7 +13,7 @@ Furthermore, the PubSub v1, Transco v1 and Matrix v1 components have been deprec
 To prepare your environment for the migration, follow these steps.
 
 <details>
-<summary><h3 style={{ margin:0 }}>Set up new Azure Devops libraries for Invictus for Azure version 6</h3></summary>
+<summary><h3 style={{ margin:0 }}>Set up new Azure DevOps libraries for Invictus for Azure version 6</h3></summary>
 
 This is necessary to ensure that both the new and old versions of Invictus for Azure can coexist in the same environment.
 
