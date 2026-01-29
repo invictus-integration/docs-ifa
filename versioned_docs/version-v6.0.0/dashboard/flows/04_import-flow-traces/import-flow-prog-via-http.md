@@ -55,7 +55,7 @@ A `Started` event is always required to create at least a single event in Invict
 :::
 
 ## Map Dashboard flows to HTTP receive events
-Make sure that any of the `event` mappings match the the values in the [flow created via the Dashboard](../01_add.mdx)
+Make sure that any of the `event` mappings match the values in the [flow created via the Dashboard](../01_add.mdx)
 
 ```json
 // event
