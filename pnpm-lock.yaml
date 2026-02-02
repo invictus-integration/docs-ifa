@@ -56,6 +56,10 @@ importers:
       url-loader:
         specifier: ^4.1.1
         version: 4.1.1(file-loader@6.2.0(webpack@5.99.9))(webpack@5.99.9)
+    devDependencies:
+      xml-js:
+        specifier: ^1.6.11
+        version: 1.6.11
 
 packages:
 
