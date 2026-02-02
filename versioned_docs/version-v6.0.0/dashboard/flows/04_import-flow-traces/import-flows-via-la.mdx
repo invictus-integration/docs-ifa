@@ -15,13 +15,29 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
       * `invictus-{env}-we-sft-evhb` (Logic Apps Consumption) 
       * `invictus-{env}-we-sft-evhb-v2` (Logic Apps Standard)
 
-    :::warning
-    Make sure that the `WorkflowRuntime` is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise you will send far too much events to the EventHubs.
-    :::
 
-    ![diagnostics](/images/ladiagnostics.png)
+    <Tabs groupId="la">
+      <TabItem value="consumption" label="Consumption">
+        :::warning
+        Make sure that the `Workflow runtime` diagnostic events is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise the app will send far to much events to the Event Hubs.
+        :::
 
-    > 🔗 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
+        ![Diagnostic settings for Consumption](/images/dashboard/flowtrace/diagnostic-settings-la-consumption.png)
+
+        > 🔗 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
+
+      </TabItem>
+      <TabItem value="standard" label="Standard">
+      :::warning
+      Make sure that the `Workflow runtime` diagnostic events is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise the app will send far to much events to the Event Hubs.
+      :::
+
+      ![Diagnostic settings for Standard](/images/dashboard/flowtrace/diagnostic-settings-la-standard.png)
+    
+      > 🔗 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=standard) on how this can be configured manually.
+    
+      </TabItem>
+    </Tabs>
 
     <details>
     <summary>**Bicep AVM alternative example**</summary>
@@ -100,12 +116,12 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
 
     To track the input/output of an action in an Azure Logic App the below tracked properties have to be set in an action.
 
-    | Property Name                    | Sample Value | Description |
-    | -------------------------------- | ------------ | ----------- |
-    | `x-iv-messagecontent-input-name` | `ActionInput`  | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word |
-    | `x-iv-messagecontent-input-content-type` | `application/json` |This should have the same content type as the data type when opening the input link for an action|
-    | `x-iv-messagecontent-output-name` | `ActionOutput` | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word|
-    | `x-iv-messagecontent-output-content-type` | `application/json` | This should have the same content type as the data type when opening the input link for an action |
+    | Property Name                             | Sample Value       | Description                                                                                                                                  |
+    | ----------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `x-iv-messagecontent-input-name`          | `ActionInput`      | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word |
+    | `x-iv-messagecontent-input-content-type`  | `application/json` | This should have the same content type as the data type when opening the input link for an action                                            |
+    | `x-iv-messagecontent-output-name`         | `ActionOutput`     | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word |
+    | `x-iv-messagecontent-output-content-type` | `application/json` | This should have the same content type as the data type when opening the input link for an action                                            |
 
     :::warning
     The inputs and outputs content views can be set up independently or together. The only requirement is that if the `-name` is present then the `-content-type` has to be also present for the desired output.
