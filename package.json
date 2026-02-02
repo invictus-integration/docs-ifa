@@ -29,7 +29,8 @@
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "xml2js": "^0.6.2"
   },
   "browserslist": {
     "production": [
@@ -42,8 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "xml-js": "^1.6.11"
   }
 }
