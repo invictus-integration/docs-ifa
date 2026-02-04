@@ -1,7 +1,9 @@
 ---
 title: ""
+hide_title: true
 sidebar_label: Welcome
 sidebar_position: 1
+hide_table_of_contents: true
 ---
 
 ![Invictus logo](/img/invictus.index.dark.png#dark-mode-only)
@@ -9,24 +11,27 @@ sidebar_position: 1
 ___
 
 ## What is Invictus for Azure?
-**Invictus for Azure** is a smart business monitoring system designed by [Codit](https://codit.eu) to better control your integrations. Usually, these integrations are Azure Logic App workflows, but can be fully customizable to your needs.
+**Invictus for Azure** is a smart business monitoring system designed by [Codit](https://codit.eu) to better control and overview your integrations. Commonly used with Azure Logic App workflows, but the system also supports a wide range of other integration types.
 
-An on-premise deployed **Dashboard** takes away the burden of in-depth Azure knowledge and let's business users focus on the status of the integrations. Several **Framework** components help with common integration patterns in your Azure Logic App workflows, and so boosting your workflow capabilities!
+Invictus consists of two parts:
+* An on-premises **Dashboard** that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations.
+* A set of **Framework** components that supports commonly used integration patterns in Azure Logic App workflows.
 
 ## Why should we use Invictus for Azure?
-Without **Invictus for Azure**, business users are left with the Azure portal to see the status of set up integrations. This requires users to have in-depth Azure knowledge, plus authorization on more than is needed for their role.
+Without **Invictus for Azure**, business users need direct access to the Azure portal to manage their integrations. This requires both in-depth Azure knowledge and elevated permissions.
 
-**Invictus for Azure** adds a business-user-friendly layer between Azure technology and business operations. Increasing productivity, security and quality by building on top of production-proven software.
+**Invictus for Azure** introduces a user-friendly layer that separates business operations from underlying Azure technology, improving productivity, security, and reliability.
 
 ## How to use Invictus for Azure?
-To get a general overview of what an **Invictus for Azure** installation entails, see the [architecture overview](./architecture-diagram.md). This will provide the necessary context and relationships.
+The [architecture diagram](./architecture-diagram.md) gives a general overview of what an **Invictus for Azure** installation entails.
 
 To install **Invictus for Azure**, these installation guides will walk you through the process:
 * [Install Invictus Dashboard](./dashboard/installation/index.mdx)
 * [Install Invictus Framework](./framework/installation/index.mdx)
 
 ### Related documentation
-The following documentation sites are related to the **Invictus for Azure** integration methodology. (Some of these documentations are only accessible to authorized customers.)
-* *Invictus methodology (private)*
-* *Invictus jumpstart templates (private)*
+* [Invictus methodology (**)](https://github.com/invictus-integration/methodology)
+* [Invictus project templates (**)](https://codit.visualstudio.com/Invictus%20Templates/_wiki/wikis/Invictus%20Templates/4/Guidelines)
 * [Invictus for BizTalk](http://docs.invictus-integration.com/invictus-for-biztalk)
+
+> *(**) Codit personal & authorized customers only*
