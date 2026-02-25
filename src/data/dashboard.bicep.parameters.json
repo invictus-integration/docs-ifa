@@ -17,7 +17,7 @@
   },
   {
     "name": "isProvisionedCosmos",
-    "description": "Feature flag to control whether the Azure Cosmos DB resource should deploy as a provisioned or serverless resource. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless)",
+    "description": "Feature flag to control whether the Azure Cosmos DB resource should deploy as a provisioned or serverless resource. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
     "default": "0",
     "tags": [
       "storage"
