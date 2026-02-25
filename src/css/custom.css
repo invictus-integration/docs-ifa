@@ -143,70 +143,77 @@ strong,
   margin-top: 8px;
 }
 
-/* Sidebar tweaks */
 nav.menu {
   padding: 1rem;
 }
 
-/* Utility */
 .hidden {
   display: none !important;
 }
 
-.vnet table,
-.vnet td {
-  background-color: #8cd0de !important;
+.install-steps ul {
+  margin-bottom: 3rem;
+  align-items: center;
 }
 
-html[data-theme='dark'] .vnet table,
-html[data-theme='dark'] .vnet td {
-  background-color: #1c6d7c !important;
+.install-steps .tabs__list {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.toggle-container {
+.install-steps .tabs__item {
+  border-radius: 8px;
+  padding: 10px 18px;
+  margin-right: 32px;
+  background: var(--ifm-color-emphasis-200);
+  font-weight: 600;
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  transition: background 0.2s, border-color 0.2s;
   cursor: pointer;
-  user-select: none;
-  font-size: 1rem;
+  z-index: 1;
 }
 
-.toggle-text {
-  display: contents;
+.install-steps .tabs__item:hover {
+  background: var(--ifm-color-emphasis-300);
 }
 
-.toggle-checkbox {
-  display: none;
+.install-steps .tabs__item--active {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
 }
 
-.toggle-slider {
-  position: relative;
-  width: 52px;
-  height: 28px;
-  background-color: #ccc;
-  border-radius: 9999px;
-  transition: background-color 0.3s;
-}
-
-.toggle-slider::before {
-  content: "";
+/* Arrow between steps */
+.install-steps .tabs__item:not(:last-child)::after {
+  content: "→";
   position: absolute;
-  width: 24px;
-  height: 24px;
-  left: 2px;
-  top: 2px;
-  background-color: white;
-  border-radius: 50%;
-  transition: transform 0.3s;
+  right: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+  font-weight: 600;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.toggle-checkbox:checked+.toggle-slider {
-  background-color: #277983;
+.install-steps .tabs__item:last-child {
+  margin-right: 0;
 }
 
-.toggle-checkbox:checked+.toggle-slider::before {
-  transform: translateX(24px);
+/* Checkmark for completed steps */
+.install-steps .tabs__item:not(.tabs__item--active)::before {
+  content: "✔";
+  margin-right: 8px;
+  color: var(--ifm-color-primary);
+}
+
+/* Remove checkmark from future steps */
+.install-steps .tabs__item--active~.tabs__item::before {
+  content: "";
 }
 
 [data-theme="light"] img[src$="#dark-mode-only"],
