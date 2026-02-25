@@ -1,0 +1,1278 @@
+[
+  {
+    "name": "cosmosAccountName",
+    "description": "The name of the Azure Cosmos DB resource that acts as the main backend storage for the Dashboard. (The deployment ads a suffix `-serverless` or `-provisioned` based on the Azure Cosmos DB pricing tier).",
+    "default": "invictus-${resourcePrefix}-cosmos",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "cosmosDatabaseName",
+    "description": "The name of the singleton database in the Azure Cosmos DB resource that acts as the main backend storage for the Dashboard.",
+    "default": "InvictusDashboard",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "isProvisionedCosmos",
+    "description": "Feature flag to control whether the Azure Cosmos DB resource should deploy as a provisioned or serverless resource. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "0",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "resourcePrefix",
+    "description": "An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.",
+    "required": true,
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "jwtSecretToken",
+    "description": "The secret value of the Json Web Token (JWT) that the Dashboard users to facilitate authentication, stored as an Azure Key Vault secret.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "containerAppsEnvironmentName",
+    "description": "The name of the [Azure Container App environment](https://learn.microsoft.com/en-us/azure/container-apps/environment).",
+    "default": "invictus-${resourcePrefix}-cae",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusDashboardWebAppName",
+    "description": "The name of the Azure Container App deployed for the Dashboard web application.",
+    "default": "inv-${resourcePrefix}-dashboard-v2",
+    "tags": [
+      "container-apps",
+      "web"
+    ]
+  },
+  {
+    "name": "appInsightsName",
+    "description": "The name of the Azure Application Insights resource that tracks the general telemetry of the Dashboard backend infrastructure.",
+    "default": "invictus-${resourcePrefix}-appins",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "alertingAppInsightsName",
+    "description": "The name of the Azure Application Insights resource that holds the alerts which the Dashboard stores for client-created flows.",
+    "default": "invictus-${resourcePrefix}-alertingappins",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "serviceBusNamespaceName",
+    "description": "The name of the Azure Service Bus resource that acts as the backend messaging system for sending asynchronous messages within the Dashboard backend infrastructure.",
+    "default": "invictus-${resourcePrefix}-sbs",
+    "tags": [
+      "messaging"
+    ]
+  },
+  {
+    "name": "serviceBusSkuName",
+    "description": "The pricing tier of the Azure Service Bus, used by the Dashboard backend infrastructure.",
+    "default": "enableVnetSupport ? Premium : Standard",
+    "tags": [
+      "messaging"
+    ]
+  },
+  {
+    "name": "keyVaultName",
+    "description": "The name of the shared Azure Key Vault, used by the Dashboard backend infrastructure.",
+    "default": "invictus-${resourcePrefix}-vlt",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "storageAccountName",
+    "description": "The name of the shared Azure Storage Account, used by Dashboard backend infrastructure.",
+    "default": "invictus${resourcePrefix}store",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "storageAccountType",
+    "description": "The pricing tier of the shared Azure Storage Account, used by the Dashboard backend infrastructure.",
+    "default": "Standard_LRS",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "eventHubNamespaceName",
+    "description": "The name of the Azure Event Hubs namespace resource that acts as the backend event sink system for notifications within the Dashboard backend infrastructure.",
+    "default": "invictus-${resourcePrefix}-evnm",
+    "tags": [
+      "messaging"
+    ]
+  },
+  {
+    "name": "eventHubName",
+    "description": "The name of the Azure Event Hub within the namespace that receives diagnostic traces from client Azure Logic Apps with Consumption plan.",
+    "default": "invictus-${resourcePrefix}-evhb",
+    "tags": [
+      "messaging",
+      "importing"
+    ]
+  },
+  {
+    "name": "eventHubNameV2",
+    "description": "The name of the Azure Event Hub within the namespace that receives diagnostic traces from client Azure Logic Apps with Standard plan.",
+    "default": "invictus-${resourcePrefix}-evhb-v2",
+    "tags": [
+      "messaging",
+      "importing"
+    ]
+  },
+  {
+    "name": "eventHubSkuName",
+    "description": "The pricing tier of the Azure Event Hubs namespace that acts as the backend event sink system for notifications within the Dashboard backend infrastructure.",
+    "default": "enableVnetSupport ? 'Standard' : 'Basic'",
+    "tags": [
+      "messaging"
+    ]
+  },
+  {
+    "name": "eventHubSkuCapacity",
+    "description": "The limit of the chosen pricing tier of the Azure Event Hubs namespace. [More on Azure Event Hubs quotas and limits](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas).",
+    "default": 1,
+    "tags": [
+      "messaging"
+    ]
+  },
+  {
+    "name": "eventHubAutoInflate",
+    "description": "Indicates whether the Azure Event Hubs namespace should automatically scale up. [More on Azure Event Hubs throughput units](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-auto-inflate).",
+    "default": "false",
+    "tags": [
+      "messaging",
+      "scaling"
+    ]
+  },
+  {
+    "name": "eventHubMaxThroughputUnits",
+    "description": "The maximum amount of Azure Event Hubs throughput units for the namespace. [More on Azure Event Hubs throughput units](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-auto-inflate).",
+    "default": 0,
+    "tags": [
+      "messaging",
+      "scaling"
+    ]
+  },
+  {
+    "name": "invictusImportJobFunctionName",
+    "description": "The name of the Azure Container App deployed for the import job that [imports diagnostic traces from client Azure Logic Apps](/dashboard/flows/import-flow-traces/import-flows-via-la).",
+    "default": "inv-${resourcePrefix}-importjob",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusCacheImportJobFunctionName",
+    "description": "The name of the Azure Container App deployed for the Dashboard backend infrastructure that handles internal caching during the importing of diagnostic traces of client resources.",
+    "default": "inv-${resourcePrefix}-cacheimportjob",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusStoreImportJobFunctionName",
+    "description": "The name of the Azure Container App deployed for the Dashboard backend infrastructure that handles the final storage of flow traces within the Dashboard backend storage.",
+    "default": "inv-${resourcePrefix}-storeimportjob",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusFlowHandlerFunctionName",
+    "description": "The name of the Azure Container App deployed for handling flow operations requested by the Dashboard.",
+    "default": "inv-${resourcePrefix}-flowhandlerjob",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusGenericReceiverFunctionName",
+    "description": "The name of the Azure Container App deployed for the import job that allows developers to [programmatically import diagnostic traces via an Azure Event Hub](/dashboard/flows/import-flow-traces/import-flow-prog-via-eh).",
+    "default": "inv-${resourcePrefix}-genericreceiver",
+    "tags": [
+      "container-apps",
+      "importing"
+    ]
+  },
+  {
+    "name": "invictusDataFactoryReceiverFunctionName",
+    "description": "The name of the Azure Container App deployed for the import job that [imports diagnostic traces from client Azure Data Factory pipelines](/dashboard/flows/import-flow-traces/import-flow-via-df).",
+    "default": "inv-${resourcePrefix}-dfreceiver",
+    "tags": [
+      "container-apps",
+      "importing"
+    ]
+  },
+  {
+    "name": "invictusHttpReceiverFunctionName",
+    "description": "The name of the Azure Container App deployed for the import job that allows developers to [programmatically import diagnostic traces via a HTTP endpoint](/dashboard/flows/import-flow-traces/import-flow-prog-via-http).",
+    "default": "inv-${resourcePrefix}-httpreceiver",
+    "tags": [
+      "container-apps",
+      "importing"
+    ]
+  },
+  {
+    "name": "invictusFunctionAppImportJobFunctionName",
+    "default": "inv-${resourcePrefix}-fncimportjob",
+    "description": "The name of the Azure Container App deployed for the import job that [imports diagnostic traces from client Azure Function Apps](/dashboard/flows/import-flow-traces/import-flow-via-fa).",
+    "tags": [
+      "container-apps",
+      "importing"
+    ]
+  },
+  {
+    "name": "invictusDashboardGatewayFunctionName",
+    "description": "The name of the Azure Container App deployed for the Dashboard Gateway that acts as the backend/back office of the web application.",
+    "default": "inv-${resourcePrefix}-dashboardgateway",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusDatabaseManagerFunctionName",
+    "description": "The name of the Azure Container App deployed for the store job that eventually stores the imported flow trace to the Dashboard backend storage.",
+    "default": "inv-${resourcePrefix}-db-importjob",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "workFlowEventHubName",
+    "description": "The name of the Azure Event Hub where the cache job pushes pending flow traces, where merge job listens.",
+    "default": "invictus-${resourcePrefix}-workflow-evhb",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "dataMergeWorkflowEventHubName",
+    "description": "The name of the Azure Event Hub where the merge job pushes finalized flow traces, where the store job listens.",
+    "default": "invictus-${resourcePrefix}-mergeddata-evhb",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "sideTasksWorkflowEventHubName",
+    "description": "The name of the Azure Event Hub where the merge job determines Azure Logic App workflow action results to be packed with the flow traces.",
+    "default": "invictus-${resourcePrefix}-sidetasks-evhb",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "dataFactoryEventHubName",
+    "description": "The name of the Azure Event Hub for the [import job where Azure Data Factory pipeline diagnostic traces are send to](/dashboard/flows/import-flow-traces/import-flow-via-df).",
+    "default": "invictus-${resourcePrefix}-df-evhb",
+    "tags": [
+      "messaging",
+      "importing"
+    ]
+  },
+  {
+    "name": "genericEventHubName",
+    "description": "The name of the Azure Event Hub for the [import job that programmatically imports flow traces via Azure Event Hubs](/dashboard/flows/import-flow-traces/import-flow-prog-via-eh).",
+    "default": "invictus-${resourcePrefix}-genericreceiver-evhb",
+    "tags": [
+      "messaging",
+      "importing"
+    ]
+  },
+  {
+    "name": "caeVnetInfraRgName",
+    "description": "The name of the Azure Container Apps infrastructure resource group ([when VNET is enabled](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env)).",
+    "default": "invictus-${resourcePrefix}-cae-infra",
+    "tags": [
+      "container-apps",
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "devOpsObjectId",
+    "description": "The object ID associated with the service principal of the enterprise application that the Azure DevOps service connection is created for.",
+    "default": "deployer().objectId",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "enableVnetSupport",
+    "description": "Feature flag to control whether the Dashboard deploys within a VNET.",
+    "default": "false",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "vnetName",
+    "description": "The name of the Azure Virtual Network (VNET) resource that forms the base for all network-related rules and subnets throughout.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "serviceBusSubnets",
+    "description": "A list of subnet names to form the Azure Service Bus namespace resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "eventHubSubnets",
+    "description": "A list of subnet names to form the Azure Event Hubs namespace resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "storageAccountSubnets",
+    "description": "A list of subnet names to form the Azure Storage Account resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "storage"
+    ]
+  },
+  {
+    "name": "keyVaultSubnets",
+    "description": "A list of subnet names to form the Azure Key Vault resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "cosmosDbSubnets",
+    "description": "A list of subnet names to form the Azure Cosmos DB for MongoDB resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "storage"
+    ]
+  },
+  {
+    "name": "containerAppEnvironmentSubnets",
+    "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "containerAppEnvironmentSubnetName",
+    "description": "The name of the subnet to form the network rules of the Azure Container App environment, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "containerRegistryUrl",
+    "description": "The server URL of the Azure Container Apps registry that hosts the Dashboard's container images.",
+    "default": "${resourcePrefix}.acr.azurecr.io",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "azureActiveDirectoryClientId",
+    "description": "The application ID of the Azure Active Directory app registration that facilitates authentication towards the client's Azure Active Directory resource, useful when the Dashboard is configured for Azure Active Directory signin authentication.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "azureActiveDirectoryTenantId",
+    "description": "The tenant ID of the Azure Active Directory app registration that facilitates authentication towards the client's Azure Active Directory resource, useful when the Dashboard is configured for Azure Active Directory signin authentication.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "azureActiveDirectoryClientSecret",
+    "description": "The client secret of the Azure Active Directory app registration that facilitates authentication towards the client's Azure Active Directory resource, useful when the Dashboard is configured for Azure Active Directory signin authentication.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "azureActiveDirectoryAudience",
+    "description": "The allowed audience when the Dashboard interacts with the client's the Azure Active Directory during managing Azure Logic Apps alerts.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "appInsightsSamplingPercentage",
+    "description": "The sampling percentage for the Azure Application Insights that tracks the general telemetry of the Dashboard.",
+    "default": "1",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "messageStatusCacheDeleteAfterDays",
+    "description": "The time period (in days) after which the storage policy deletes the message status Azure Storage Account table.",
+    "default": "30",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "customTags",
+    "description": "A set of Azure resource tags to apply to all to the deployed Invictus resources.",
+    "default": "{}",
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "isAdDisabled",
+    "description": "Feature flag to control whether the Dashboard should use Azure Active Directory besides local authentication for signing in users into the Dashboard.",
+    "default": "false",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "maxHttpHeaderSizeInBytes",
+    "description": "The maximum allowed size (in bytes) of a HTTP header during interaction between the Dashboard web application and the Dashboard backend/back office.",
+    "default": "100000",
+    "tags": [
+      "web"
+    ]
+  },
+  {
+    "name": "keyVaultEnablePurgeProtection",
+    "description": "Indicates whether the shared Azure Key Vault should be protected against purging.",
+    "default": "false",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "logAnalyticsworkspaceNamelaV2",
+    "description": "The name of the Azure Log Analytics workspace besides the main workspace that collects the main telemetry of the Azure Application Insights resource.",
+    "default": "invictus-${resourcePrefix}-loganalytics",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "logAnalyticsWorkspaceAppInsightsName",
+    "description": "The name of the Azure Log Analytics workspace that acts as the main workspace that collects the main telemetry of the Azure Application Insights resource.",
+    "default": "invictus-${resourcePrefix}-loganalytics-appinsights",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "containerAppsEnvironmentLocation",
+    "description": "The Azure location for the Azure Container Apps and their environment.",
+    "default": "resourceGroup().location",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "disableStorageAccountPublicNetworkAccess",
+    "description": "Indicates whether the shared Azure Storage Account should disable public network access. If `true`, only private endpoints or VNET integration are allowed.",
+    "default": "false",
+    "tags": [
+      "storage",
+      "networking",
+      "security",
+      "vnet"
+    ]
+  },
+  {
+    "name": "storageAccountMinimumTLSVersion",
+    "description": "The minimum allowed TLS version of the shared Azure Storage Account, used by the Dashboard backend infrastructure.",
+    "default": "TLS1_2",
+    "tags": [
+      "storage",
+      "security"
+    ]
+  },
+  {
+    "name": "invictusDashboardWebAppLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Dashboard web application.",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/dashboard:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusCacheImportJobFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the cache job.",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/caching.importjob:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusStoreImportJobFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the merge job.",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/datamerge.importjob:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusFlowHandlerFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Flow Handler.",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/flowhandler:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusGenericReceiverFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the [import job that programmatically imports diagnostic traces via Azure Event Hubs](/dashboard/flows/import-flow-traces/import-flow-prog-via-eh).",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/genericreceiver.importjob:${version}-${date}",
+    "tags": [
+      "container-apps",
+      "importing"
+    ]
+  },
+  {
+    "name": "invictusDataFactoryReceiverFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the [import job that imports diagnostic traces from Azure Data Factory pipelines](/dashboard/flows/import-flow-traces/import-flow-via-df).",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/datafactoryreceiver.importjob:${version}-${date}",
+    "tags": [
+      "container-apps",
+      "importing"
+    ]
+  },
+  {
+    "name": "invictusHttpReceiverFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the [import job that programmatically imports diagnostic traces via a HTTP endpoint](/dashboard/flows/import-flow-traces/import-flow-prog-via-http).",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/httpreceiver.importjob:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusDashboardGatewayFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Dashboard Gateway that acts as the backend/back office of the web application.",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/dashboardgateway:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusDatabaseManagerFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the store job.",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/databasemanager.importjob:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusImportJobFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the [import job that imports diagnostic traces from Azure Logic Apps](/dashboard/flows/import-flow-traces/import-flows-via-la).",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/logicapps.importjob:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusFunctionAppImportJobFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the [import job that imports diagnostic traces from Azure Function Apps](/dashboard/flows/import-flow-traces/import-flow-via-fa).",
+    "default": "${resourcePrefix}.acr.azurecr.io/${env}/functionapp.importjob:${version}-${date}",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "flowDataCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the flow traces MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "2000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "workflowEventsCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the MongoDB collection for Azure Logic Apps workflows (mentioned in a flow trace) in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "2000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "messageContentCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the MongoDB collection for the Azure Logic Apps workflow actions (mentioned in a flow trace) in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "2000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "auditsCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the audits MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "1000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "dashboardSettingsCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the Dashboard settings MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "1000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "folderFlowsCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the flow folders MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "1000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "groupsCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the Azure Active Directory group references MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "1000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "statisticsCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the flow trace reports MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "1000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "usersCollectionThroughput",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the local and Active Directory user references MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "default": "1000",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "eventHubMessageRetentionInDays",
+    "description": "The amount of days Azure Event Hubs messages will be retained on all the hubs throughout [More on Microsoft documentation on Azure Event Hubs properties](https://learn.microsoft.com/en-us/azure/event-hubs/configure-event-hub-properties).",
+    "default": "1",
+    "tags": [
+      "messaging"
+    ]
+  },
+  {
+    "name": "identityProviderClientSecret",
+    "description": "The client secret of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Dashboard.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "allowStorageAccountSharedKeyAccess",
+    "description": "Indicates whether the shared Azure Storage Account allows authentication via a shared key access.",
+    "default": "null",
+    "tags": [
+      "storage",
+      "security"
+    ]
+  },
+  {
+    "name": "containerRegistryName",
+    "description": "The name of the Azure Container Apps registry that hosts the Dashboard's container images.",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "acaIdentityName",
+    "description": "The name of the user-assigned identity that pulls the container images from the Azure Container Registry.",
+    "default": "invictus-${resourcePrefix}-aca-identity",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "logicAppsImportJobErrorFilters",
+    "description": "A list of Azure Logic Apps workflow error codes (ex. 'ActionConditionFailed', 'ActionFailed'...) that the [import job importing diagnostic traces from Azure Logic App workflows](/dashboard/flows/import-flow-traces/import-flows-via-la) should use to filter in specific diagnostic traces. \n * Use `*` to include all error codes. \n * Use `<error-code>` for a single code. \n * Use  `<error-code>, <error-code>` for more than one code.",
+    "default": "*",
+    "tags": [
+      "importing"
+    ]
+  },
+  {
+    "name": "logAnalyticsWorkspaceImportFunctionV2Cron",
+    "description": "The time period in which the automatically Azure Functions timer trigger [imports Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
+    "deprecated": "Will be removed in v7, support for automatically triggering importing stops.",
+    "default": "0 */10 * * * *",
+    "tags": [
+      "importing"
+    ]
+  },
+  {
+    "name": "logAnalyticsWorkspaceMaxNoOfRows",
+    "description": "The maximum amount of rows to query the Azure Log Analytics workspace to automatically [import Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
+    "default": "1000",
+    "deprecated": "Will be removed in v7, support for automatically triggering importing stops.",
+    "tags": [
+      "importing"
+    ]
+  },
+  {
+    "name": "flowActivityIntervalInMinutes",
+    "description": "The time period threshold (in minutes) to update the active flow traces watermark during finalizing pending flow traces in the merge job.",
+    "deprecated": "Will be removed in v7, support for custom event tracking for flow activity stops.",
+    "default": "55",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "storeImportJobBatchSize",
+    "description": "The maximum amount of events included in a single batch for the store job. [More on Azure Event Hubs processor properties](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-event-hubs?tabs=isolated-process%2Cextensionv5&pivots=programming-language-csharp)",
+    "default": "250",
+    "tags": [
+      "messaging",
+      "scaling"
+    ]
+  },
+  {
+    "name": "storeImportJobPreFetchCount",
+    "description": "The number of events eagerly requested from Azure Event Hubs by the store job. [More on Azure Event Hubs processor properties](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-event-hubs?tabs=isolated-process%2Cextensionv5&pivots=programming-language-csharp)",
+    "default": "500",
+    "tags": [
+      "messaging",
+      "scaling"
+    ]
+  },
+  {
+    "name": "statisticsCutOffDays",
+    "description": "The number of days (in negative numbers) to go back from the current day, used when setting up a custom flow trace report based on active flows in the Dashboard.",
+    "default": "-3",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "flowBlobArchiverFunctionCron",
+    "description": "The CRON expression that represents the time period in which flow trace information is archived.",
+    "deprecated": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "default": "0 0 */3 * * *",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "hashCacheClearFunctionCron",
+    "description": "The CRON expression that represents the time period in which to clear the Dashboard storage backend cache.",
+    "default": "0 00 03 * * *",
+    "deprecated": "Will be removed in v7, clearing happens via Azure Storage Account policies.",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "workFlowEventsClearFunctionCron",
+    "description": "The CRON expression that represents the time period in which to clear the Azure Logic Apps workflow Dashboard backend storage.",
+    "default": "0 */15 * * * *",
+    "deprecated": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "azureWebJobsWorkFlowEventsClearFunctionDisabled",
+    "description": "Indicates whether the Azure Functions timer trigger should be disabled, meaning the Azure Logic Apps workflow Dashboard backend storage won't be cleared.",
+    "default": "true",
+    "deprecated": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "maxMessageStatusCacheInDay",
+    "description": "The maximum amount of messages per day cached during importing.",
+    "default": "60",
+    "deprecated": "Will be removed in v7, caching happens independently now.",
+    "tags": [
+      "storage",
+      "scaling"
+    ]
+  },
+  {
+    "name": "identityProviderApplicationId",
+    "description": "The application ID of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Dashboard.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "customApplicationIds",
+    "description": "A list of additional IDs referring to custom Azure Active Directory applications that should also be able to access the Azure Container Apps hosting the Dashboard.",
+    "default": "[]",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "flowDataTTLInDays",
+    "description": "The maximum amount of days the flow traces stay remain in the Dashboard backend storage.",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "performSqlDataMigration",
+    "description": "Indicates whether the old SQL data storage migrates to the new Azure Cosmos DB for MongoDB storage (< v6 installations).",
+    "default": "false",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "dashboardScaling",
+    "description": "The Azure Container App scaling options for the Dashboard web application.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "100"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling"
+    ]
+  },
+  {
+    "name": "dashboardGatewayScaling",
+    "description": "The Azure Container App scaling options for the Dashboard Gateway backend/back office.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "100"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling"
+    ]
+  },
+  {
+    "name": "cacheImportJobScaling",
+    "description": "The Azure Container App scaling options for the cache job.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "messageCount",
+        "description": "The amount of active messages in your Azure Service Bus queue or topic to scale on. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "1000"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling"
+    ]
+  },
+  {
+    "name": "dbImportJobScaling",
+    "description": "The Azure Container App scaling options for the merge job.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "unprocessedEventThreshold",
+        "description": "The average target value to trigger scaling actions. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "2000"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling"
+    ]
+  },
+  {
+    "name": "datafactoryReceiverScaling",
+    "description": "The Azure Container App scaling options for the [import job that imports diagnostic traces from Azure Data Factory pipelines](/dashboard/flows/import-flow-traces/import-flow-via-df).",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling",
+      "importing"
+    ]
+  },
+  {
+    "name": "flowhandlerScaling",
+    "description": "The Azure Container App scaling options for the Flow Handler.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "messageCount",
+        "description": "The amount of active messages in your Azure Service Bus queue or topic to scale on. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "50"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling"
+    ]
+  },
+  {
+    "name": "genericReceiverScaling",
+    "description": "The Azure Container App scaling options for the [import job that programmatically imports diagnostic traces via Azure Event Hubs](/dashboard/flows/import-flow-traces/import-flow-prog-via-eh).",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling",
+      "importing"
+    ]
+  },
+  {
+    "name": "httpReceiverScaling",
+    "description": "The Azure Container App scaling options for the [import job that programmatically imports diagnostic traces via a HTTP endpoint](/dashboard/flows/import-flow-traces/import-flow-prog-via-http).",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling",
+      "importing"
+    ]
+  },
+  {
+    "name": "importJobScaling",
+    "description": "The Azure Container App scaling options for the [import job that imports diagnostic traces from Azure Logic Apps](/dashboard/flows/import-flow-traces/import-flows-via-la).",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "unprocessedEventThreshold",
+        "description": "The average target value to trigger scaling actions. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "2000"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling",
+      "importing"
+    ]
+  },
+  {
+    "name": "storeImportJobScaling",
+    "description": "The Azure Container App scaling options for the store job.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "unprocessedEventThreshold",
+        "description": "The average target value to trigger scaling actions. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "2000"
+      }
+    ],
+    "tags": [
+      "container-apps",
+      "scaling"
+    ]
+  },
+  {
+    "name": "dnsZoneSubscriptionId",
+    "description": "The Azure subscription ID to control the private DNS zone throughout, useful for VNET deployments.",
+    "default": "subscription().subscriptionId",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "dnsZoneResourceGroupName",
+    "description": "The name of the Azure resource group where the private DNS zone deploys to.",
+    "default": "resourceGroup().name",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "vnetResourceGroupName",
+    "description": "The name of the Azure resource group where the VNET network rules deploys to.",
+    "default": "resourceGroup().name",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "useResourceLocks",
+    "description": "Feature flag to control whether the deployed Azure resources have [resource locks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources).",
+    "default": "false",
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "invictusUserManagedIdentityName",
+    "description": "The name of the Azure user managed identity that has access to all the deployed Azure Container App components.",
+    "default": "invictus-user-managed-identity",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "dashboard",
+    "description": "The options to configure the Dashboard web application.",
+    "properties": [
+      {
+        "name": "applicationGateway",
+        "description": "The options to configure the load balancer, application gateway. [More on Azure Application Gateway on Microsoft's documentation site.](https://learn.microsoft.com/en-us/azure/application-gateway/overview).",
+        "properties": [
+          {
+            "name": "customGatewayUrl",
+            "description": "Overrides the URL where the  Dashboard Gateway backend  is hosted.",
+            "default": "https://${DashboardGatewayContainerApp.outputs.fqdn}/"
+          },
+          {
+            "name": "customCallbackUrl",
+            "description": "Overrides the callback URL where the Dashboard frontend web application should redirect itself to.",
+            "default": "https://${invictusDashboardWebAppName}.${ContainerAppEnvironment.outputs.defaultDomain}"
+          }
+        ]
+      }
+    ],
+    "tags": [
+      "web",
+      "networking"
+    ]
+  }
+]
