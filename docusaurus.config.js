@@ -92,8 +92,6 @@ module.exports = {
           routeBasePath: '/',
           path: 'preview',
           sidebarCollapsible: false,
-          // Please change this to your repo.
-          editUrl: 'https://github.com/invictus-integration/docs-ifa/edit/master/docs',
           includeCurrentVersion: true,
           admonitions: {
             keywords: ['praise'],
