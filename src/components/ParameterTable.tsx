@@ -204,6 +204,7 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </span>
         <input
+          data-cy="search-input"
           type="text"
           placeholder="Search Bicep parameters by name..."
           value={search}
@@ -227,6 +228,7 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
       <div style={tagWrapperStyle}>
         {allTags.map((tag) => (
           <button
+            data-cy={tag}
             key={tag}
             onClick={() => toggleTag(tag)}
             aria-pressed={activeTags.includes(tag)}
@@ -240,12 +242,12 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
         ))}
       </div>
 
-      <div style={resultCountStyle}>
+      <div data-cy="search-results-summary" style={resultCountStyle}>
         Showing {filtered.length} parameter{filtered.length !== 1 ? "s" : ""}
       </div>
 
       <div style={{ ...tableWrapperStyle, maxHeight }}>
-        <table style={{ width: "100%", tableLayout: "fixed", borderCollapse: "separate" }}>
+        <table data-cy="search-results" style={{ width: "100%", tableLayout: "fixed", borderCollapse: "separate" }}>
           <thead>
             <tr>
               <th style={thStyle}>Name</th>
