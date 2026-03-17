@@ -14,8 +14,7 @@ jobs:
           version: 10
       - name: Install dependencies
         run: npm install
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm run build
-          start: npm start
+      - name: Run Cypress tests
+        run: |
+          npm run start & wait-on http://localhost:3000
+          npm run cy:run
