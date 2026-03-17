@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: Checkout the latest commit
         uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
