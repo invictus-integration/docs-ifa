@@ -52,12 +52,46 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Community',
+          title: 'Business users',
           items: [
             {
-              label: 'Invictus Integration Github',
-              href: 'https://github.com/invictus-integration',
+              label: 'How to view your flows',
+              to: '/dashboard/flows'
             },
+            {
+              label: 'How to create flows',
+              to: '/dashboard/flows/add'
+            },
+            {
+              label: 'How to search for flow traces',
+              to: '/dashboard/flows/search'
+            }
+          ]
+        },
+        {
+          title: 'Technical users',
+          items: [
+            {
+              label: 'Dashboard installation',
+              to: '/dashboard/installation'
+            },
+            {
+              label: 'Framework installation',
+              to: '/framework/installation'
+            }
+          ]
+        },
+        {
+          title: 'Support',
+          items: [
+            {
+              label: 'Create a support ticket',
+              href: 'https://github.com/invictus-integration/docs-ifa/issues/new/choose',
+            },
+            {
+              label: 'Migrate to v6',
+              to: '/support/v6-migration'
+            }
           ],
         },
       ],
