@@ -13,7 +13,8 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "test": "start-server-and-test start http://localhost:3000 cy:run"
   },
   "dependencies": {
     "@docusaurus/core": "^3.3.2",
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^15.11.0"
+    "cypress": "^15.11.0",
+    "start-server-and-test": "^2.1.5"
   }
 }
