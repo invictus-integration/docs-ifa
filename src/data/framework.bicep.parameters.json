@@ -1,0 +1,828 @@
+[
+  {
+    "name": "resourcePrefix",
+    "description": "An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.",
+    "required": true,
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "location",
+    "description": "The main Azure location where Invictus deploys its resources, some advanced resources can be configured with their own location.",
+    "default": "resourceGroup().location",
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "customTags",
+    "description": "A set of Azure resource tags to apply to all to the deployed Invictus resources.",
+    "default": "{}",
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "useResourceLocks",
+    "description": "Feature flag to control whether the deployed Azure resources have [resource locks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources).",
+    "default": "false",
+    "tags": [
+      "governance"
+    ]
+  },
+  {
+    "name": "timesequencerFunctionName",
+    "description": "The name of the Azure Container App deployed for the Time Sequencer component.",
+    "default": "inv-${resourcePrefix}-timesequencer",
+    "tags": [
+      "comp:time-sequencer",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "sequenceControllerFunctionName",
+    "description": "The name of the Azure Container App deployed for the Sequence Controller component.",
+    "default": "inv-${resourcePrefix}-seqcontroller",
+    "tags": [
+      "comp:sequence-controller",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "xmlJsonConverterFunctionName",
+    "description": "The name of the Azure Container App deployed for the XML-JSON Converter component.",
+    "default": "inv-${resourcePrefix}-xmljsonconverter",
+    "tags": [
+      "comp:xml-json-converter",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "xsdValidatorFunctionName",
+    "description": "The name of the Azure Container App deployed for the XML-JSON Converter component.",
+    "default": "inv-${resourcePrefix}-xsdvalidator",
+    "tags": [
+      "comp:xsd-validator",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "regexTranslatorFunctionName",
+    "description": "The name of the Azure Container App deployed for the Regex Translator component.",
+    "default": "inv-${resourcePrefix}-regextranslator",
+    "tags": [
+      "comp:regex-translator",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "transcoV2FunctionName",
+    "description": "The name of the Azure Container App deployed for the Transco component.",
+    "default": "inv-${resourcePrefix}-transco-v2",
+    "tags": [
+      "comp:transco",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "pubsubV2FunctionName",
+    "description": "The name of the Azure Container App deployed for the PubSub component.",
+    "default": "inv-${resourcePrefix}-pubsub-v2",
+    "tags": [
+      "comp:pubsub",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "exceptionHandlerFunctionName",
+    "description": "The name of the Azure Container App deployed for the Exception Handler component.",
+    "default": "inv-${resourcePrefix}-exceptionhandler",
+    "tags": [
+      "comp:exception-handler",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusTimeSequencerFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Time Sequencer component.",
+    "tags": [
+      "comp:time-sequencer",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusExceptionHandlerFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Exception Handler component.",
+    "tags": [
+      "comp:exception-handler",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusPubSubV2FunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the PubSub component.",
+    "tags": [
+      "comp:pubsub",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusRegexTranslatorFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Regex Translator component.",
+    "tags": [
+      "comp:regex-translator",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusSequenceControllerFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Sequence Controller component.",
+    "tags": [
+      "comp:sequence-controller",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusTranscoV2FunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the Transco component.",
+    "tags": [
+      "comp:transco",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusXmlJsonConverterFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the XML-JSON Converter component.",
+    "tags": [
+      "comp:xml-json-converter",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "invictusXsdValidatorFunctionLocalContainerImage",
+    "description": "The URL that navigates to the Azure Container App image of the XSD Validator component.",
+    "tags": [
+      "comp:xsd-validator",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "timeSequencerScaling",
+    "description": "The Azure Container App scaling options of the Time Sequencer component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:time-sequencer",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "exceptionHandlerScaling",
+    "description": "The Azure Container App scaling options of the Exception Handler component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:exception-handler",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "pubSubV2Scaling",
+    "description": "The Azure Container App scaling options of the PubSub component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:pubsub",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "regexTranslatorScaling",
+    "description": "The Azure Container App scaling options of the Regex Translator component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:regex-translator",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "sequenceControllerScaling",
+    "description": "The Azure Container App scaling options of the Sequence Controller component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:sequence-controller",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "transcoV2Scaling",
+    "description": "The Azure Container App scaling options of the Transco component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:transco",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "xmlJsonConverterScaling",
+    "description": "The Azure Container App scaling options of the XML-JSON Converter component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:xml-json-converter",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "xsdValidatorScaling",
+    "description": "The Azure Container App scaling options of the XSD Validator component.",
+    "properties": [
+      {
+        "name": "cpuResources",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "10"
+      },
+      {
+        "name": "concurrentRequests",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "10"
+      }
+    ],
+    "tags": [
+      "comp:xsd-validator",
+      "scaling",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "appInsightsName",
+    "description": "The name of the Azure Application Insights resource that tracks the general telemetry of the Framework components.",
+    "default": "invictus-${resourcePrefix}-appins",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "LogAnalyticsWorkspaceAppInsightsName",
+    "description": "The name of the Azure Log Analytics workspace that collects all Azure Application Insights resources deployed.",
+    "default": "invictus-${resourcePrefix}-loganalytics-appinsights",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "appInsightsSamplingPercentage",
+    "description": "The sampling percentage for the Azure Application Insights that tracks the general telemetry of the Framework components.",
+    "default": "1",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "serviceBusNamespaceName",
+    "description": "The name of the Azure Service Bus namespace resource where the PubSub component controls its messages.",
+    "default": "invictus-${resourcePrefix}-sbs",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "serviceBusSkuName",
+    "description": "The pricing tier of the Azure Service Bus, used by the PubSub component.",
+    "default": "enableVnetSupport ? Premium : Standard",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "pubSubV2TopicName",
+    "description": "The name of the Azure Service Bus topic, used by the PubSub component to send/receive messages from.",
+    "default": "pubsubv2router",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "approvedMessageSizeInBytes",
+    "description": "The maximum byte threshold where the PubSub component applies the claim-check functionality.",
+    "default": "200000",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "serviceBusMessageTimeToLiveMinutes",
+    "description": "The time limit of the send Azure Service Bus messages by the PubSub component, see [Microsoft's messages expiration](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration) for more details.",
+    "default": "43200",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "deferralMessageThresholdInMinutes",
+    "description": "The PubSub component will try to recover Azure Service Bus messages older than this time limit that were stuck in deferral.",
+    "default": "30",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "autoResubmitDeferredMessages",
+    "description": "Indicates whether the PubSub component should automatically resubmit/recover an Azure Service Bus message older than the deferral time limit.",
+    "default": "false",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "pubSubSubscriptionLockTimeoutInMinutes",
+    "description": "The amount of time in minutes the PubSub component locks an Azure Service Bus message received on a topic subscription.",
+    "default": "1",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
+    "name": "storageAccountName",
+    "description": "The name of the shared Azure Storage Account, used by all Framework components.",
+    "default": "invictus${resourcePrefix}store",
+    "tags": [
+      "comp:pubsub",
+      "comp:transco",
+      "comp:regex-translator",
+      "comp:xsd-validator",
+      "comp:xml-json-converter",
+      "comp:time-sequencer",
+      "comp:sequence-controller",
+      "storage"
+    ]
+  },
+  {
+    "name": "storageAccountType",
+    "description": "The pricing tier of the shared Azure Storage Account, used by all Framework components.",
+    "default": "Standard_LRS",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "storageAccountMinimumTLSVersion",
+    "description": "The minimum allowed TLS version of the shared Azure Storage Account, used by all Framework components.",
+    "default": "TLS1_2",
+    "tags": [
+      "storage",
+      "security"
+    ]
+  },
+  {
+    "name": "disableStorageAccountPublicNetworkAccess",
+    "description": "Indicates whether the shared Azure Storage Account should disable public network access. If `true`, only private endpoints or VNET integration are allowed.",
+    "default": "false",
+    "tags": [
+      "storage",
+      "networking",
+      "security",
+      "vnet"
+    ]
+  },
+  {
+    "name": "allowStorageAccountSharedKeyAccess",
+    "description": "Indicates whether the shared Azure Storage Account allows authentication via a shared key access.",
+    "default": "null",
+    "tags": [
+      "storage",
+      "security"
+    ]
+  },
+  {
+    "name": "blobContainerPrefix",
+    "description": "An custom abbreviation to include in the claim-check Azure Blob Storage container name, used by the PubSub component.",
+    "default": "invictus",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "messageStatusCacheDeleteAfterDays",
+    "description": "The time period (in days) after which the storage policy deletes the message status Azure Storage Account table.",
+    "default": "30",
+    "tags": [
+      "storage"
+    ]
+  },
+  {
+    "name": "keyVaultName",
+    "description": "The name of the shared Azure Key Vault, used by all Framework components.",
+    "default": "invictus-${resourcePrefix}-vlt",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "keyVaultEnablePurgeProtection",
+    "description": "Indicates whether the shared Azure Key Vault should be protected against purging.",
+    "default": "false",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "containerAppsEnvironmentName",
+    "description": "The name of the [Azure Container App environment](https://learn.microsoft.com/en-us/azure/container-apps/environment).",
+    "default": "invictus-${resourcePrefix}-cae",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "containerAppsEnvironmentLocation",
+    "description": "The Azure location for the Azure Container Apps and their environment.",
+    "default": "resourceGroup().location",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "acaIdentityName",
+    "description": "The name of the user-assigned identity that pulls the container images from the Azure Container Registry.",
+    "default": "invictus-${resourcePrefix}-aca-identity",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "containerRegistryName",
+    "description": "The name of the Azure Container Apps registry that hosts the Framework components' container images.",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "containerRegistryUrl",
+    "description": "The server URL of the Azure Container Apps registry that hosts the Framework components' container images.",
+    "default": "${resourcePrefix}.acr.azurecr.io",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
+    "name": "caeVnetInfraRgName",
+    "description": "The name of the Azure Container Apps infrastructure resource group ([when VNET is enabled](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env)).",
+    "default": "invictus-${resourcePrefix}-cae-infra",
+    "tags": [
+      "container-apps",
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "identityProviderApplicationId",
+    "description": "The application ID of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Framework components.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "identityProviderClientSecret",
+    "description": "The client secret of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Framework components.",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "devOpsObjectId",
+    "description": "The object ID associated with the service principal of the enterprise application that the Azure DevOps service connection is created for.",
+    "default": "deployer().objectId",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "invictusUserManagedIdentityName",
+    "description": "The name of the Azure user managed identity that has access to all the deployed Azure Container App components.",
+    "default": "invictus-user-managed-identity",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "customApplicationIds",
+    "description": "A list of additional IDs referring to custom Azure Active Directory applications that should also be able to access the Azure Container Apps hosting the Framework components.",
+    "default": "[]",
+    "tags": [
+      "security"
+    ]
+  },
+  {
+    "name": "vnetName",
+    "description": "The name of the Azure Virtual Network (VNET) resource that forms the base for all network-related rules and subnets throughout.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "serviceBusSubnets",
+    "description": "A list of subnet names to form the Azure Service Bus namespace resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "storageAccountSubnets",
+    "description": "A list of subnet names to form the Azure Storage Account resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "storage"
+    ]
+  },
+  {
+    "name": "keyVaultSubnets",
+    "description": "A list of subnet names to form the Azure Key Vault resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "aiServicesSubnets",
+    "description": "A list of subnet names to form the network rules for the Azure AI Foundry resource, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "containerAppEnvironmentSubnets",
+    "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "delegatedContainerAppEnvironmentSubnetName",
+    "description": "The name of the subnet to form the network rules of the Azure Container App environment, useful for VNET deployments.",
+    "tags": [
+      "networking",
+      "vnet",
+      "container-apps"
+    ]
+  },
+  {
+    "name": "virtualNetworkResourceGroupName",
+    "description": "The name of the Azure resource group where the VNET network rules deploys to.",
+    "default": "resourceGroup().name",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "dnsZoneSubscriptionId",
+    "description": "The Azure subscription ID to control the private DNS zone throughout, useful for VNET deployments.",
+    "default": "subscription().subscriptionId",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "dnsZoneResourceGroupName",
+    "description": "The name of the Azure resource group where the private DNS zone deploys to.",
+    "default": "resourceGroup().name",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "enableVnetSupport",
+    "description": "Feature flag to control whether the Framework deploys within a VNET.",
+    "default": "false",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "useAIExceptionHandlerInterpreter",
+    "description": "Feature flag to control whether the Framework deploys with Azure AI Foundry services, useful for the Exception Handler component.",
+    "default": "false",
+    "tags": [
+      "comp:exception-handler"
+    ]
+  }
+]

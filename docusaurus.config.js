@@ -81,7 +81,7 @@ module.exports = {
     ]
   ],
   plugins: [
-     'docusaurus-plugin-image-zoom'
+    'docusaurus-plugin-image-zoom'
   ],
   presets: [
     [
