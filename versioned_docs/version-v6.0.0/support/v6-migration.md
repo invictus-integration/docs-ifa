@@ -28,9 +28,9 @@ If you have a library with the name `invictus.{environment}` create a new one wi
 </details>
 
 <details>
-<summary><h3 style={{ margin:0 }}>Create an application registration in Azure Active Directory/Entra ID</h3></summary>
+<summary><h3 style={{ margin:0 }}>Create an application registration in Microsoft Entra ID</h3></summary>
 
-Go to Azure Active Directory/Entra ID and [create a new application registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) for the Invictus for Azure API's. [Authentication with the Invictus for Azure API's](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad) happens via this application.
+Go to Microsoft Entra ID and [create a new application registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) for the Invictus for Azure API's. [Authentication with the Invictus for Azure API's](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad) happens via this application.
 
 Create a new client secret for this application (and save it, as you will need it later).
 </details>
@@ -51,7 +51,7 @@ Pipeline/Bicep parameters changes, please follow the installation guides to see 
 
 ## After Deployment
 * [🛡️ Give Invictus access to client's Azure Logic Apps](../dashboard/installation/03_give_la_access.md)
-* [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri) (Azure Active Directory/Entra ID login into the Dashboard needs the new Dashboard Gateway URL.)
+* [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri) (Microsoft Entra ID login into the Dashboard needs the new Dashboard Gateway URL.)
 
 <details>
 <summary><h3 style={{ margin: 0 }}>Update your Azure Logic Apps parameters files</h3></summary>
