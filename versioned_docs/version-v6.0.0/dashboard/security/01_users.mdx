@@ -23,7 +23,7 @@ Use **Entra ID** users over local users for security reasons.
 The Invictus Dashboard can be configured to [use existing users in Microsoft Entra ID groups](../installation/01_give_ad_access.mdx). This removes the need to work with additional local Dashboard users.
 
 ### Add an Entra ID user to the Dashboard
-Microsoft Entra ID users can sign in automatically into the Invictus Dashboard if that user is part of an Entra ID group that is [synced into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus-).
+Microsoft Entra ID users can sign in automatically into the Invictus Dashboard if that user is part of an Entra ID group that is [synced into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
 :::warning[requires role]
 Make sure that the group has a [role assigned](./03_roles.md), otherwise the Dashboard will be unusable for the user.
@@ -38,7 +38,7 @@ To delete a user click on the delete icon next to the user in the user list.
     > 👀 Linked Entra ID users can be distinguished as they do not have a personal role assigned. The role is determined by the group the user is a member of.
 
 ### Edit an Entra ID user's role in the Dashboard <OnlyAdminsBadge/>
-Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Entra ID group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/01_give_ad_access.mdx#sync-your-azure-active-directory-groups-to-invictus-), so will the user.
+Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Entra ID group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so will the user.
 
 ### Configure forgot password procedure <OnlyAdminsBadge/>
 Before you can use the forgot password feature, you need to create an Microsoft Entra ID application registration and [set it up with the Mail.Send API permissions](../installation/01_give_ad_access.mdx). This is required because emails can only be sent through an OAuth 2.0 flow.
