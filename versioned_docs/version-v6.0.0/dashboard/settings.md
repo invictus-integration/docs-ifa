@@ -1,8 +1,8 @@
 ---
-sidebar_label: Settings
+sidebar_label: Customize Dashboard
 ---
 
-# Available settings
+# Customize the Dashboard to your needs
 <nav class="custom-breadcrumb">
   <span class="breadcrumb-item no-padding">
     ![logo](/img/favicon.ico)

@@ -398,3 +398,13 @@ html[data-theme='dark'] .task-header {
 html[data-theme='dark'] .task-content {
   color: #cbd5e1;
 }
+
+.footer-link {
+  color: var(--ifm-footer-link-color) !important;
+  transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+
+.footer-link::hover,
+.footer-link::focus {
+  color: var(--ifm-color-primary-dark);
+}

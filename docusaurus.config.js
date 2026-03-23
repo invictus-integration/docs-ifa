@@ -23,6 +23,10 @@ module.exports = {
       },
       items: [
         {
+          type: 'custom-user-type-switcher',
+          position: 'left',
+        },
+        {
           type: 'docsVersionDropdown',
 
           //// Optional
@@ -55,16 +59,13 @@ module.exports = {
           title: 'Business users',
           items: [
             {
-              label: 'How to view your flows',
-              to: '/dashboard/flows'
+              html: '<a class="footer-link" href="/dashboard/flows">How to view your flows</a>',
             },
             {
-              label: 'How to create flows',
-              to: '/dashboard/flows/add'
+              html: '<a class="footer-link" href="/dashboard/flows/add">How to create flows</a>',
             },
             {
-              label: 'How to search for flow traces',
-              to: '/dashboard/flows/search'
+              html: '<a class="footer-link" href="/dashboard/flows/search">How to search for flow traces</a>',
             }
           ]
         },
@@ -72,12 +73,10 @@ module.exports = {
           title: 'Technical users',
           items: [
             {
-              label: 'Dashboard installation',
-              to: '/dashboard/installation'
+              html: '<a class="footer-link" href="/dashboard/installation">Dashboard installation</a>'
             },
             {
-              label: 'Framework installation',
-              to: '/framework/installation'
+              html: '<a class="footer-link" href="/framework/installation">Framework installation</a>'
             }
           ]
         },
@@ -89,8 +88,7 @@ module.exports = {
               href: 'https://github.com/invictus-integration/docs-ifa/issues/new/choose',
             },
             {
-              label: 'Migrate to v6',
-              to: '/support/v6-migration'
+              html: '<a class="footer-link" href="/support/v6-migration">Migrate to v6</a>'
             }
           ],
         },
