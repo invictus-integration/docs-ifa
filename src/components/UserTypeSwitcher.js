@@ -48,6 +48,8 @@ export default function UserTypeSwitcher() {
       {toggleItems.map((item) => (
         <div
           key={item.key}
+          data-cy-toggle={`${item.key}`}
+          data-cy-toggle-active={userType === item.key}
           onClick={() => handleClick(item.key)}
           style={{
             flex: 1,

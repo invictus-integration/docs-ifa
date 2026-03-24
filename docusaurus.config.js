@@ -59,13 +59,13 @@ module.exports = {
           title: 'Business users',
           items: [
             {
-              html: '<a class="footer-link" href="/dashboard/flows">How to view your flows</a>',
+              html: '<a class="footer-link" data-cy-footer-link="view-flows" href="/dashboard/flows">How to view your flows</a>',
             },
             {
-              html: '<a class="footer-link" href="/dashboard/flows/add">How to create flows</a>',
+              html: '<a class="footer-link" data-cy-footer-link="create-flows" href="/dashboard/flows/add">How to create flows</a>',
             },
             {
-              html: '<a class="footer-link" href="/dashboard/flows/search">How to search for flow traces</a>',
+              html: '<a class="footer-link" data-cy-footer-link="search-flows" href="/dashboard/flows/search">How to search for flow traces</a>',
             }
           ]
         },
@@ -73,10 +73,10 @@ module.exports = {
           title: 'Technical users',
           items: [
             {
-              html: '<a class="footer-link" href="/dashboard/installation">Dashboard installation</a>'
+              html: '<a class="footer-link" data-cy-footer-link="dashboard-installation" href="/dashboard/installation">Dashboard installation</a>'
             },
             {
-              html: '<a class="footer-link" href="/framework/installation">Framework installation</a>'
+              html: '<a class="footer-link" data-cy-footer-link="framework-installation" href="/framework/installation">Framework installation</a>'
             }
           ]
         },
@@ -88,7 +88,7 @@ module.exports = {
               href: 'https://github.com/invictus-integration/docs-ifa/issues/new/choose',
             },
             {
-              html: '<a class="footer-link" href="/support/v6-migration">Migrate to v6</a>'
+              html: '<a class="footer-link" data-cy-footer-link="v6-migration" href="/support/v6-migration">Migrate to v6</a>'
             }
           ],
         },
