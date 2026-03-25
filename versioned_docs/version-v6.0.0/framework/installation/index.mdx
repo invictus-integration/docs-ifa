@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 <TabItem label="Prerequisites" value="prerequisites">
 
 :::info[obtain access <SharedNote/>]
-To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
+To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and Azure Container Registry password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
 :::
 :::warning[Container revisions]
 We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
@@ -58,8 +58,8 @@ Invictus includes functionality which allows all its resources to run within an 
   - `privatelink.{regionName}.azurecontainerapps.io`
     
 - To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
-    - Powershell
-    - Azure Powershell
+    - PowerShell
+    - Azure PowerShell
     - Bicep CLI
 
 ### Required role assignment
@@ -79,7 +79,7 @@ Nothing changes for the build pipeline.
 The difference lies in the artifacts that the build produces, everything needed for the release is now included in the build (scripts, resources, etc..), which greatly simplifies the release pipeline.
 
 ### Release pipeline
-The task group is now replaced by a single Azure Powershell task included in the build artifacts. Please refer to the **Framework release pipeline** installation step for more information.
+The task group is now replaced by a single Azure PowerShell task included in the build artifacts. Please refer to the **Framework release pipeline** installation step for more information.
 
 The following task group parameters should be used as the PowerShell's arguments:
 
@@ -106,7 +106,7 @@ The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script wi
 Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
 
 * **{'{prefix}'}.Invictus.Installation**
-  * `Invictus.Installation.StorageAccount.Name`: invictusreleases
+  * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software (if you're also deploying the Dashboard)
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
@@ -186,7 +186,7 @@ stages:
 
 <TabItem label="Deploy" value="deploy">
 
-## Create variable group(s) <SharedNote/>
+## Create variable group <SharedNote/>
 Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
 :::warning[permit build service access to variable groups]
@@ -194,7 +194,7 @@ Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-
 :::
 
 ## Use `Deploy.ps1` script for deployment
-The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and should be used as the main point of contact for deploying Invictus products.
+The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and is the central point of contact for deploying Invictus products.
 
 ### Mandatory Parameters
 
@@ -202,22 +202,22 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 [Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
 [Container App authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
 
-| Argument name       | Description                                                                                                                 |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `arcPath`           | The Azure Container App registry base path to form the source image location of the container images.                       |
-| `arcUsername`       | The username credential to authenticate the Docker CLI.                                                                     |
-| `arcPassword`       | The password credential to authenticate into the Docker CLI.                                                                |
-| `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.                |
-| `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                                         |
-| `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                                       |
-| `useBeta`           | Indicates the environment of the Azure Container App registry where the deployment gets its container images.               |
+| Argument name       | Description                                                                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `arcPath`           | The Azure Container App registry base path to form the source image location of the container images.         |
+| `arcUsername`       | The username credential to authenticate the Docker CLI.                                                       |
+| `arcPassword`       | The password credential to authenticate into the Docker CLI.                                                  |
+| `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.  |
+| `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                           |
+| `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                         |
+| `useBeta`           | Indicates the environment of the Azure Container App registry where the deployment gets its container images. |
 
 ### Optional Parameters    
 | Argument name                  | Default value   | Description                                                                                                                                |
 | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `artifactsPath`                | `$PSScriptRoot` | Path on the Azure DevOps agent that stores the downloaded Invictus artifacts ([publish and download build artifacts])                      |
 | `resourceGroupLocation`        | 'West Europe'   | In case no resource group is available with the name `resourceGroupName`, the deployment uses this location to create such resource group. |
-| `additionalTemplateParameters` | `[]`            | Additional named parameters for the Bicep template you wish to override. More on this below.                                               |
+| `additionalTemplateParameters` | `[]`            | Custom named parameters for the Bicep template you wish to override. More on this below.                                                   |
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.                      |
 
 <details>

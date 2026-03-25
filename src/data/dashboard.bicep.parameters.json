@@ -402,28 +402,28 @@
   },
   {
     "name": "azureActiveDirectoryClientId",
-    "description": "The application ID of the Azure Active Directory app registration that facilitates authentication towards the client's Azure Active Directory resource, useful when the Dashboard is configured for Azure Active Directory signin authentication.",
+    "description": "The application ID of the Microsoft Entra ID app registration that facilitates authentication towards the client's Microsoft Entra ID resource, useful when the Dashboard is configured for Microsoft Entra ID signin authentication.",
     "tags": [
       "security"
     ]
   },
   {
     "name": "azureActiveDirectoryTenantId",
-    "description": "The tenant ID of the Azure Active Directory app registration that facilitates authentication towards the client's Azure Active Directory resource, useful when the Dashboard is configured for Azure Active Directory signin authentication.",
+    "description": "The tenant ID of the Microsoft Entra ID app registration that facilitates authentication towards the client's Microsoft Entra ID resource, useful when the Dashboard is configured for Microsoft Entra ID signin authentication.",
     "tags": [
       "security"
     ]
   },
   {
     "name": "azureActiveDirectoryClientSecret",
-    "description": "The client secret of the Azure Active Directory app registration that facilitates authentication towards the client's Azure Active Directory resource, useful when the Dashboard is configured for Azure Active Directory signin authentication.",
+    "description": "The client secret of the Microsoft Entra ID app registration that facilitates authentication towards the client's Microsoft Entra ID resource, useful when the Dashboard is configured for Microsoft Entra ID signin authentication.",
     "tags": [
       "security"
     ]
   },
   {
     "name": "azureActiveDirectoryAudience",
-    "description": "The allowed audience when the Dashboard interacts with the client's the Azure Active Directory during managing Azure Logic Apps alerts.",
+    "description": "The allowed audience when the Dashboard interacts with the client's the Microsoft Entra ID during managing Azure Logic Apps alerts.",
     "tags": [
       "security"
     ]
@@ -454,7 +454,7 @@
   },
   {
     "name": "isAdDisabled",
-    "description": "Feature flag to control whether the Dashboard should use Azure Active Directory besides local authentication for signing in users into the Dashboard.",
+    "description": "Feature flag to control whether the Dashboard should use Microsoft Entra ID besides local authentication for signing in users into the Dashboard.",
     "default": "false",
     "tags": [
       "security"
@@ -666,7 +666,7 @@
   },
   {
     "name": "groupsCollectionThroughput",
-    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the Azure Active Directory group references MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the Microsoft Entra ID group references MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
     "default": "1000",
     "tags": [
       "storage",
@@ -684,7 +684,7 @@
   },
   {
     "name": "usersCollectionThroughput",
-    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the local and Active Directory user references MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
+    "description": "The [collection throughput (RU/s)](https://learn.microsoft.com/en-us/azure/cosmos-db/set-throughput) for the local and Microsoft Entra ID user references MongoDB collection in the Azure Cosmos DB resource, used when the [Azure Cosmos DB deploys as provisioned](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).",
     "default": "1000",
     "tags": [
       "storage",
@@ -701,7 +701,7 @@
   },
   {
     "name": "identityProviderClientSecret",
-    "description": "The client secret of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Dashboard.",
+    "description": "The client secret of the Microsoft Entra ID app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Dashboard.",
     "tags": [
       "security"
     ]
@@ -839,14 +839,14 @@
   },
   {
     "name": "identityProviderApplicationId",
-    "description": "The application ID of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Dashboard.",
+    "description": "The application ID of the Microsoft Entra ID app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Dashboard.",
     "tags": [
       "security"
     ]
   },
   {
     "name": "customApplicationIds",
-    "description": "A list of additional IDs referring to custom Azure Active Directory applications that should also be able to access the Azure Container Apps hosting the Dashboard.",
+    "description": "A list of additional IDs referring to custom Microsoft Entra ID applications that should also be able to access the Azure Container Apps hosting the Dashboard.",
     "default": "[]",
     "tags": [
       "security"
