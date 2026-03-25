@@ -1,12 +1,12 @@
 ---
-sidebar_label: Give access to your Active Directory
+sidebar_label: Give access to your Microsoft Entra ID
 ---
 
 import { Walkthrough, Task } from '@site/src/components/Walkthrough';
 import { OnlyAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
 
-# Give Invictus access to your Azure Active Directory
-To use your Azure Active Directory groups as a way of authentication and flow authorization, you need to follow these steps.
+# Give Invictus access to your Microsoft Entra ID
+To use your Microsoft Entra ID groups as a way of authentication and flow authorization, you need to follow these steps.
 
 <Walkthrough>
   <Task title="Register an Application for Invictus">
@@ -52,7 +52,7 @@ To use your Azure Active Directory groups as a way of authentication and flow au
 
 </Walkthrough>
 
-## Sync your Azure Active Directory groups to Invictus <OnlyAdminsBadge/>
+## Sync your Microsoft Entra ID groups to Invictus <OnlyAdminsBadge/>
 <nav class="custom-breadcrumb">
   <span class="breadcrumb-item no-padding">
     ![logo](/img/favicon.ico)
@@ -63,13 +63,13 @@ To use your Azure Active Directory groups as a way of authentication and flow au
   <span class="breadcrumb-item active">Sync all groups</span>
 </nav>
 
-Groups available in your Azure Active Directory will be used to determine whether users can access certain flows in the Invictus Dashboard. (See [flow permissions](../flows/01_add.mdx#permissions-)).
+Groups available in your Microsoft Entra ID will be used to determine whether users can access certain flows in the Invictus Dashboard. (See [flow permissions](../flows/01_add.mdx#permissions-)).
 
-* [Add Azure Active Directory group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
-* [Add Azure Active Directory user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
+* [Add Microsoft Entra ID group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
+* [Add Microsoft Entra ID user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
 
 :::warning
-Only groups of active users (Active Directory users that have already signed into the Dashboard) will be synced within the Dashboard.
+Only groups of active users (Entra ID users that have already signed into the Dashboard) will be synced within the Dashboard.
 :::
 
 ## Enable only required groups <OnlyAdminsBadge/>
