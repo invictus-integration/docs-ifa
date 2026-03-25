@@ -44,14 +44,11 @@ export function UserTypeProvider({ children }) {
 
   const businessIds = sidebar ? flattenItems(sidebar.business_users || []) : [];
   const technicalIds = sidebar ? flattenItems(sidebar.technical_users || []) : [];
-  console.log('Business IDs:', businessIds);
-  console.log('Technical IDs:', technicalIds);
 
   const [userType, setUserType] = useState('business');
   useEffect(() => {
     if (!sidebar) return;
     const path = location.pathname.replace(/^\/|\/$/g, '');
-    console.log('Current path:', path);
     if (businessIds.some(id => path.includes(id))) setUserType('business');
     else if (technicalIds.some(id => path.includes(id.replace('/index', '')))) setUserType('technical');
   }, [location.pathname, sidebar, businessIds, technicalIds]);
