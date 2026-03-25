@@ -3,21 +3,21 @@ const darkCodeTheme = require('./src/prism/dark');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'Invictus - Integration',
+  title: 'Invictus for Azure',
   url: 'https://invictus-integration.github.io/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   onBrokenAnchors: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'invictus-integration', // Usually your GitHub org/user name.
-  projectName: 'Invictus - Integration', // Usually your repo name.
+  organizationName: 'invictus-integration',
+  projectName: 'Invictus for Azure',
   themeConfig: {
     image: 'img/invictus.jpg',
     navbar: {
-      title: 'Invictus',
+      title: 'Invictus for Azure',
       logo: {
-        alt: 'Invictus',
+        alt: 'Invictus for Azure logo',
         src: 'img/logo.light.png',
         srcDark: 'img/logo.dark.png',
       },
@@ -95,7 +95,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()}, Invictus - Integration maintained by Codit`,
+      copyright: `Copyright © ${new Date().getFullYear()}, Invictus for Azure maintained by Codit.`,
     },
     prism: {
       theme: lightCodeTheme,
