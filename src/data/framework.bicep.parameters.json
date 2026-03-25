@@ -686,14 +686,14 @@
   },
   {
     "name": "identityProviderApplicationId",
-    "description": "The application ID of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Framework components.",
+    "description": "The application ID of the Microsoft Entra ID app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Framework components.",
     "tags": [
       "security"
     ]
   },
   {
     "name": "identityProviderClientSecret",
-    "description": "The client secret of the Azure Active Directory app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Framework components.",
+    "description": "The client secret of the Microsoft Entra ID app registration that facilitates managed identity authentication for the Azure Container Apps, hosting the Framework components.",
     "tags": [
       "security"
     ]
@@ -716,7 +716,7 @@
   },
   {
     "name": "customApplicationIds",
-    "description": "A list of additional IDs referring to custom Azure Active Directory applications that should also be able to access the Azure Container Apps hosting the Framework components.",
+    "description": "A list of additional IDs referring to custom Microsoft Entra ID applications that should also be able to access the Azure Container Apps hosting the Framework components.",
     "default": "[]",
     "tags": [
       "security"
