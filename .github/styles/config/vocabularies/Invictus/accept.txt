@@ -6,6 +6,8 @@ config
 
 DLL
 
+Entra
+
 folder_name
 
 hardcoded
