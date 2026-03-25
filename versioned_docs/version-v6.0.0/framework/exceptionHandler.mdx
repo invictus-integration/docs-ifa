@@ -8,29 +8,29 @@ import TabItem from '@theme/TabItem';
 # Explain Logic App workflows failures with the <u>Exception Handler</u>
 
 :::note[motivation]
-Most who have worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a very generic error that offers no clear information on what went wrong.
+Most who have worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a generic error that offers no clear information on what went wrong.
 
-Invictus provides an **Exception Handler** Framework component that can be used to retrieve the actual error message from an Azure Logic App and optionally translate this to a human readable text.
+Invictus provides an **Exception Handler** Framework component that retrieves the actual error message from an Azure Logic App and optionally translate this to a human readable text.
 :::
 
 :::info[Access Rights]
-The Exception Handler component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. These must be assigned on the Exception Handler component to the resource group where the Logic Apps are located.
+The Exception Handler component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. Assign these to the Exception Handler component to allow the component access to the client's Logic Apps.
 :::
 
 ## Resolve Azure Logic App exceptions
-The **Exception Handler** component has as single `/api/ResolveException` endpoint to request inspection of failed Azure Logic App workflow runs. Based on the type of Logic App, the request looks different.
+The **Exception Handler** component has as single `/api/ResolveException` endpoint to request inspection of failed Azure Logic App workflow runs. It differs based on the Logic App type.
 
 <Tabs groupId="la-type">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 If you want to resolve the exception of a Logic App Consumption use the following body:
 
-| JSON property       | Required | Description                                                                                |
-| ------------------- | :------: | ------------------------------------------------------------------------------------------ |
-| `WorkflowRunId`     | yes      | The ID of the failed Azure Logic App workflow run.                                         |
-| `WorkflowName`      | yes      | The name of the Azure Logic App to inspect.                                                |
-| `SubscriptionId`    | yes      | The ID of the Azure subscription where the Logic App is located.                           |
-| `ResourceGroupName` | yes      | The ID of the Azure resource group within the subscription where the Logic App is located. | 
+| JSON property       | Required | Description                                                                                        |
+| ------------------- | :------: | -------------------------------------------------------------------------------------------------- |
+| `WorkflowRunId`     |   yes    | The ID of the failed Azure Logic App workflow run.                                                 |
+| `WorkflowName`      |   yes    | The name of the Azure Logic App to inspect.                                                        |
+| `SubscriptionId`    |   yes    | The ID of the Azure subscription where the client hosts their Logic App.                           |
+| `ResourceGroupName` |   yes    | The ID of the Azure resource group within the subscription where the client hosts their Logic App. |
 
 <details>
 <summary>**Request example**</summary>
@@ -51,13 +51,13 @@ If you want to resolve the exception of a Logic App Consumption use the followin
 If you want to resolve the exception of a Logic App Standard workflow use the following body:
 
 
-| JSON property       | Required | Description                                                                                |
-| ------------------- | :------: | ------------------------------------------------------------------------------------------ |
-| `WorkflowRunId`     | yes      | The ID of the failed Azure Logic App workflow run.                                         |
-| `WorkflowName`      | yes      | The name of the Azure Logic App to inspect.                                                |
-| `SiteName`          | yes      | The site name of the Azure Logic App to inspect.                                           |
-| `SubscriptionId`    | yes      | The ID of the Azure subscription where the Logic App is located.                           |
-| `ResourceGroupName` | yes      | The ID of the Azure resource group within the subscription where the Logic App is located. | 
+| JSON property       | Required | Description                                                                                        |
+| ------------------- | :------: | -------------------------------------------------------------------------------------------------- |
+| `WorkflowRunId`     |   yes    | The ID of the failed Azure Logic App workflow run.                                                 |
+| `WorkflowName`      |   yes    | The name of the Azure Logic App to inspect.                                                        |
+| `SiteName`          |   yes    | The site name of the Azure Logic App to inspect.                                                   |
+| `SubscriptionId`    |   yes    | The ID of the Azure subscription where the client hosts their Logic App.                           |
+| `ResourceGroupName` |   yes    | The ID of the Azure resource group within the subscription where the client hosts their Logic App. |
 
 <details>
 <summary>**Request example**</summary>
@@ -103,46 +103,46 @@ The function will respond with a list of errors for the failed actions, for exam
 
 :flashlight: To show what we mean by translating the error to a human readable text let's take the following example.
 
-We have a Logic App that used to return the generic `An action failed. No dependent actions succeeded` error, by using the Exception Handler we have now improved this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
+A solution has an Azure Logic App that used to return the generic `An action failed. No dependent actions succeeded` error. By using the Exception Handler, we can improve this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
 
-However, we have a business user that does not really understand what this means. By using the translation functionality of the Exception Handler function we can translate this error to something like `Application is not reachable` which the business user can clearly understand.
+A business user doesn't understand what this means. By using the translation functionality of the Exception Handler function we can translate this error to something like `Application is not reachable` which the business user can understand.
 
-These translations must be set up in the `RegexTranslator` table in your Invictus storage account. Translations need to be added in the table as follows:
+Set these translations in the `RegexTranslator` table in your Invictus storage account. Add the translations in the table as follows:
 
 <Tabs groupId="la-type">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 | PartitionKey              | RowKey     | MatchPattern                           | OutputPattern                                           |
-| ------------------------- |------------|----------------------------------------|---------------------------------------------------------|
+| ------------------------- | ---------- | -------------------------------------- | ------------------------------------------------------- |
 | `logicappname.actionname` | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern |
 
 <details>
 <summary>**Translation examples**</summary>
 
-| PartitionKey                                    | RowKey | MatchPattern                                                                    | OutputPattern                                                |
-| ------------------------------------------------ |--------|---------------------------------------------------------------------------------|--------------------------------------------------------------|
-| `cdt-dev-we-somelogicapp.CallHTTP`               | 1      | No such host is known                                                           | code(Availability)Application is not reachable               |
-| `cdt-dev-we-somelogicapp.Create`                 | 1      | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found |
-| `cdt-dev-we-somelogicapp.ParseJSON`              | 1      | Invalid JSON schema type: int                                                   | code(Data)The field is not an integer                        |
-| `cdt-dev-we-somelogicapp.ExecuteStoredProcedure` | 1      | Procedure or function 'upsertData' expects parameter '@Ordernumber'             | code(Data)Ordernumber is not supplied but is required        |
+| PartitionKey                                     | RowKey | MatchPattern                                                                      | OutputPattern                                                  |
+| ------------------------------------------------ | ------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `cdt-dev-we-somelogicapp.CallHTTP`               | 1      | `No such host is known`                                                           | `code(Availability)Application is not reachable`               |
+| `cdt-dev-we-somelogicapp.Create`                 | 1      | `cannot be evaluated because array index '0' cannot be selected from empty array` | `code(Account)The accountid for the debtor could not be found` |
+| `cdt-dev-we-somelogicapp.ParseJSON`              | 1      | `Invalid JSON schema type: int`                                                   | `code(Data)The field is not an integer`                        |
+| `cdt-dev-we-somelogicapp.ExecuteStoredProcedure` | 1      | `Procedure or function 'upsertData' expects parameter '@Ordernumber'`             | `code(Data)Ordernumber is not supplied but is required`        |
 </details>
 
 </TabItem>
 <TabItem value="standard" label="Logic App Standard">
 
-| PartitionKey                       | RowKey     | MatchPattern                           | OutputPattern                                           |
-| ---------------------------------- |------------|----------------------------------------|---------------------------------------------------------|
-| `sitename.workflowname.actionname` | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern |
+| PartitionKey                       | RowKey     | MatchPattern                             | OutputPattern                                             |
+| ---------------------------------- | ---------- | ---------------------------------------- | --------------------------------------------------------- |
+| `sitename.workflowname.actionname` | Any RowKey | `The pattern to be matched in the error` | `code(YourTranslationCode)The output translation pattern` |
 
 <details>
 <summary>**Translation examples**</summary>
 
-| PartitionKey                                                  | RowKey | MatchPattern                                                                    | OutputPattern                                                |
-|---------------------------------------------------------------|--------|---------------------------------------------------------------------------------|--------------------------------------------------------------|
-| `cdt-dev-we-somelogicapp.ProcessMessage.CallHTTP`               | 1      | No such host is known                                                           | code(Availability)Application is not reachable               |
-| `cdt-dev-we-somelogicapp.ProcessMessage.Create`                 | 2      | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found |
-| `cdt-dev-we-somelogicapp.ProcessMessage.ParseJSON`              | 3      | Invalid JSON schema type: int                                                   | code(Data)The field is not an integer                        |
-| `cdt-dev-we-somelogicapp.ProcessMessage.ExecuteStoredProcedure` | 4      | Procedure or function 'upsertData' expects parameter '@Ordernumber'             | code(Data)Ordernumber is not supplied but is required        |
+| PartitionKey                                                    | RowKey | MatchPattern                                                                      | OutputPattern                                                  |
+| --------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `cdt-dev-we-somelogicapp.ProcessMessage.CallHTTP`               | 1      | `No such host is known`                                                           | `code(Availability)Application is not reachable`               |
+| `cdt-dev-we-somelogicapp.ProcessMessage.Create`                 | 2      | `cannot be evaluated because array index '0' cannot be selected from empty array` | `code(Account)The accountid for the debtor could not be found` |
+| `cdt-dev-we-somelogicapp.ProcessMessage.ParseJSON`              | 3      | `Invalid JSON schema type: int`                                                   | `code(Data)The field is not an integer`                        |
+| `cdt-dev-we-somelogicapp.ProcessMessage.ExecuteStoredProcedure` | 4      | `Procedure or function upsertData expects parameter @Ordernumber`                 | `code(Data)Ordernumber is not supplied but is required`        |
 </details>
 
 </TabItem>
@@ -167,15 +167,15 @@ By using the translation functionality we will get back the following response:
 <details>
 <summary>**Ignore Azure Logic App errors**</summary>
 
-By using the translation functionality we can also ignore errors. This can be very useful for scenario's where Logic Apps can generate an error that is not relevant to the business and the flow can be seen as successful. 
+By using the translation functionality we can also ignore errors. This can be useful for scenario's where Logic Apps generates an irrelevant error to the business while the flow ran successfully. 
 
-Let's take an example where we have a Logic App that picks up a file from a network location and after it has been published will delete the file. We have seen situations at customers where this delete action will fail because the file has already been removed by another instance of the Logic App, this error can be safely ignored since the message is processed anyway.
+An example: a solution with an Azure Logic App picks up a file from a network location. After publishing of the file, it will delete the file. In some situations this delete action will fail because another instance of the Logic App already removed this file. This error can be safely ignored since the message processing already happened.
 
 To achieve this we can configure the translation as follows:
 
-| PartitionKey                         | RowKey | MatchPattern               | OutputPattern |
-| ------------------------------------ |--------|----------------------------|---------------|
-| `cdt-dev-we-somelogicapp.DeleteFile` | 1      | There is no file with name | ignore        |
+| PartitionKey                         | RowKey | MatchPattern                 | OutputPattern |
+| ------------------------------------ | ------ | ---------------------------- | ------------- |
+| `cdt-dev-we-somelogicapp.DeleteFile` | 1      | `There is no file with name` | ignore        |
 
 This will result in the following response:
 
@@ -190,7 +190,7 @@ This will result in the following response:
 </details>
 
 ## How to implement in your Azure Logic Apps?
-A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. This common Logic App can then be called by all other Logic Apps, this is a nice way to centralize your exception handling functionality.
+A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. All the other Logic Apps can call this common Logic App. This centralizes your exception handling functionality.
 
 :::tip
 use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.
@@ -203,7 +203,7 @@ use a webhook to call the common exception handler Logic App so that if anything
 
 ![logic-app](/images/exceptionhandler-logic-app.png)
 
-The code for the `Scope Exception Handling` is shown below, pay attention to the `Terminate` action as this uses the information from the Exception Handler component and is nicely shown in the Invictus for Azure dashboard.
+Take a look at the code for the `Scope Exception Handling` below. Pay attention to the `Terminate` action as this uses the information from the Exception Handler component and is nicely shown in the Invictus for Azure dashboard.
 
 ![dashboard](/images/exceptionhandler-logic-app-dashboard.png)
 
@@ -265,8 +265,8 @@ The code for the `Scope Exception Handling` is shown below, pay attention to the
 
 The following Bicep parameters control the inner workings of the **Exception Handler** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
 
-| Bicep parameter | Default | Description |
-| --------------- | ------- | ----------- |
-| `exceptionHandlerScaling` | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
-| `exceptionHandlerFunctionName` | `inv-${resourcePrefix}-exceptionhandler` | The name of the Azure Container App to be created for the **Exception Handler** component. |
+| Bicep parameter                | Default                                                                                                               | Description                                                                                                                                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `exceptionHandlerScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
+| `exceptionHandlerFunctionName` | `inv-${resourcePrefix}-exceptionhandler`                                                                              | The name of the Azure Container App for the **Exception Handler** component.                                                                                                                    |
 </details>
