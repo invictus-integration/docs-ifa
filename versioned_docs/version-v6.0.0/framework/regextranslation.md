@@ -4,13 +4,11 @@ sidebar_label: Regex replacements
 
 # Replace user content in Logic App workflows with the <u>Regex Translator</u>
 :::note[motivation]
-At the time of writing, there is no built-in Logic App functionality available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component was created to fill this missing gap, by providing a HTTP-endpoint to run regular expression replacements. Available translations are stored in an Azure Table Storage.
+At the time of writing, there is no built-in Logic App functionality available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component fills this missing link. It provides a HTTP-endpoint to run regular expression replacements. All available translations are available in an Azure Table Storage.
 :::
 
 ## Regex translate user content
 The **Regex Translation** component has a single endpoint available: `/api/RegexTranslation`. Given an user content and matched stored (Azure Table Storage, default: `RegexTranslator` table) regex translation, the endpoint responds with the translated content.
-
-The following request body properties must be supplied:
 
 | JSON property | Required | Description                                                                                                                                                                                           |
 | ------------- | :------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -53,7 +51,7 @@ The following request body properties must be supplied:
 </details>
 
 ## Stored regex translations
-Regex translations should be stored in an Azure Table Storage table called `RegexTranslator` (created automatically by Invictus). Each stored entity should have following custom properties:
+Store available Regex translations in the Azure Table Storage table called `RegexTranslator` (Invictus creates this table automatically). Each stored entity should have following custom properties:
 
 [named groups]: https://learn.microsoft.com/en-us/dotnet/standard/base-types/grouping-constructs-in-regular-expressions#named-matched-subexpressions
 
@@ -74,10 +72,9 @@ Regex translations should be stored in an Azure Table Storage table called `Rege
 
 </details>
 
-Translation happens with the following:
-* **Multiple pastes**: the subtracted information from named groups can be pasted more than once.
-* **Single match**: the user `Content` can only be matched to a single stored translation - the first match will be picked.
-* **No pastes**: the `OutputPattern` does not necessarily *have* to contain `{group-name}` occurrences, it can only contain text.
+* **Many pastes**: the component pastes the subtracted information from named groups more than once.
+* **Single match**: the user `Content` can only match a single stored translation - the component picks the first match.
+* **No pastes**: the `OutputPattern` doesn't necessarily *have* to contain `{group-name}` occurrences, it can only contain text.
 
 ## Customization
 <details>
@@ -87,7 +84,7 @@ The following Bicep parameters control the inner workings of the **Regex Transla
 
 | Bicep parameter               | Default                                                                                                               | Description                                                                                                                                                                                     |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`          | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) where the `RegexTranslator` Azure Table Storage table will be located.                                       |
+| `storageAccountName`          | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) that has the `RegexTranslator` Azure Table Storage table.                                                    |
 | `regexTranslatorScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
-| `regexTranslatorFunctionName` | `inv-${resourcePrefix}-regextranslator`                                                                               | The name of the Azure Container App to be created for the **Regex Translator** component.                                                                                                       |
+| `regexTranslatorFunctionName` | `inv-${resourcePrefix}-regextranslator`                                                                               | The name of the Azure Container App for the **Regex Translator** component.                                                                                                                     |
 </details>
