@@ -18,7 +18,7 @@ module.exports = {
       title: 'Invictus',
       logo: {
         alt: 'Invictus',
-        src: 'img/logo.light.png',
+        src: 'img/logo.dark.png',
         srcDark: 'img/logo.dark.png',
       },
       items: [
