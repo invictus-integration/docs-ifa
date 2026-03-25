@@ -7,17 +7,17 @@ import TabItem from '@theme/TabItem';
 
 # Promote user content from SQL in Logic App workflows with <u>Transco</u>
 :::note[motivation]
-Integration scenarios often need to 'promote' or 'enrich' messages/data from external stored systems. Codit is a long-term implementer of something called 'Transco', which was previously a BizTalk component, but is now been required in modern Azure Logic Apps integrations. 
+Integration scenarios often need to 'promote' or 'enrich' messages/data from external stored systems. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
 
-Invictus provides a Transco component to promote properties from a database, by using the content or context to create the SQL query which will be executed against the specified table. Transco can also perform transformations on XML content by simply specifying the XSLT file from storage (Transco supports XSLT 1.0 syntax.).
+Invictus provides a Transco component to promote properties from a database, by using the content or context to create the SQL query which executes against the specified table. Transco can also perform transformations on XML content by simply specifying the XSLT file from storage (Transco supports XSLT 1.0 syntax.).
 :::
 
 ![Transco v2 XML example](/images/framework/transco-v2-example.png)
 
 ## Available endpoints
-* `/api/TranscoXML`: used with XML content. A Transco config file is used to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file.
+* `/api/TranscoXML`: uses XML content and a Transco configuration file to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file.
 
-* `/api/TranscoJson`: used with JSON content. A Transco config file is used to list the instructions necessary to promote values from an SQL database. Transformations cannot be performed on JSON content.
+* `/api/TranscoJson`: uses JSON content and a Transco configuration file to list the instructions necessary to promote values from an SQL database. The component can't perform transformations on JSON content.
 
 * `/api/MatrixBasicPromote`: accepts a simple list of parameters and promotes them to the `Context` in the response.
 
@@ -62,23 +62,25 @@ The Transco request requires following values:
 </details>
 
 ## Transco config file
-A JSON Transco config file is required to specify details about the instruction which will be performed. Instructions are executed in the order in which they appear. The name of the config file should be specified in the request so that it can be retrieved from the storage account.
+The component requires a JSON Transco configuration file to describe the instructions to perform. Execution of instructions happens in the order in which they appear.
+
+The request should specifies the name of the configuration file.
 
 <Tabs groupId="Transco-instructions">
 <TabItem value="sql-command" label="SQL Commands" default>
 
-Transco can execute SQL commands to promote properties from a specified database and table. The connection to the database can be achieved via either a raw connection string or the name of an Azure Key Vault secret.
+The Transco component can execute SQL commands to promote properties from a specified database and table. The database connection happens via either a raw connection string or the name of an Azure Key Vault secret holding the connection string.
 
-The parameters of the SQL query can be populated from 3 sources:
+You can populate the parameters of the SQL query from 3 sources:
  - XML/JSON request content via XPath/JPath
  - Request context
  - Fixed value
 
-The SQL query result will inserted at the specified `destination` XPath or JPath. For XPaths ending at an attribute, e.g. `/persons/person/@name`, the value will be inserted in that attribute. Otherwise, it will be inserted in the inner text.
+The component will insert the SQL query result at the specified `destination` XPath or JPath. For `XPaths` ending at an attribute (ex: `/persons/person/@name`), it inserts the value in that attribute. Otherwise, it insert the value in the inner text of the XML node.
 
-* A `scopePath` can be defined so that the command affects only nodes within that path.
-* A connection to the SQL database must be provided (via a connection string in plain text or in an Azure Key Vault secret).
-* Parameters in the SQL query must be denoted with an `@` symbol. Parameters may be given a name or indexed with a number.
+* The `scopePath` option sets the affected nodes to apply the command.
+* Always provide a connection to the SQL database (via a connection string in plain text or in an Azure Key Vault secret).
+* Denote parameters in the SQL query with an `@` symbol. You may give parameters a name or indexed with a number.
   ```sql
   SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
   -- or
@@ -88,9 +90,9 @@ The SQL query result will inserted at the specified `destination` XPath or JPath
 </TabItem>
 <TabItem value="xml-transformation" label="XML Transformation">
 
-Transformations can be performed on XML content. The name of the XSLT file in the storage account is required for this operation. 
+The Transco component can execute XSLT transformations on XML content. You must specify the name of the XSLT file in the storage account. 
 
-This instruction can be added to the Transco Config to transform XML content via the specified XSLT file. Any required assemblies and dependencies used by the transformation can also be specified, while the respective DLL files are to be in the storage account.
+Specify required assemblies and dependencies used by the transformation, while the respective DLL files are to be in the storage account.
 
 This instruction is only available when calling the `/TranscoXML` endpoint.
 ```json
@@ -114,7 +116,7 @@ This instruction is only available when calling the `/TranscoXML` endpoint.
 </Tabs>
 
 :::info[storage account]
-All required files are to be saved in an Azure Storage Account and in a Blob Storage container with the name: `Transcov2configstore` (This container is automatically created by Invictus):
+Save all required files in the Azure Storage Account and in a Blob Storage container with the name: `Transcov2configstore` (Invictus automatically creates this container):
 * `/Configs` folder with Transco config files
 * `/XSLTs` folder with transformation files
 * `/Assemblies` folder with assembly and dependency DLL files
@@ -198,10 +200,13 @@ All required files are to be saved in an Azure Storage Account and in a Blob Sto
 </TabItem>
 <TabItem value="matrix-basic" label="Matrix basic promote">
 
-The basic promote is a simple way of promoting values to the context. This version accept a simple list of parameters and promotes them to the Context. Values are not required, <u>any values not supplied will not be present in the response object and will be ignored.</u>
+The basic promote is a simple way of promoting values to the context. This version accept a simple list of parameters and promotes them to the Context. <u>The component only transfers found values to the response.</u>
 
 :::tip
-Transco XML/JSON also supports promotion of values to the context. This is achieved by setting the `promoteToContext=true` in the Transco configuration file. The `destination` property must also be set to the key of the desired destination in the context. With these two properties, any result from the SQL operation is saved to the context.
+Transco XML/JSON operations also support promotion of values to the context.
+* Set the option `promoteToContext=true` in the Transco configuration file.
+* Set the option `destination` to the key of the desired destination in the context. 
+The SQL operation will now save the result to the context.
 :::
 
 | Supported request parameter | type                                                            |
@@ -305,15 +310,15 @@ ___
 <details>
 <summary>**Available Bicep parameters**</summary>
 
-The following Bicep parameters control the inner workings of the **Transco V2** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
+The following Bicep parameters control the inner workings of the **Transco V2** component. See the [deployment of the Invictus Framework](./installation/index.mdx) to learn more.
 
-| Bicep parameter         | Default                                                                                                               | Description                                                                                                                                                                                     |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`    | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) where the `transcov2configstore` Azure Blob Storage container will be located.                               |
-| `keyVaultName`          | `invictus-${resourcePrefix}-vlt`                                                                                      | The name of the Azure Key Vault (used internally by other Framework components as well for Microsoft authentication) where the Transco retrieves its SQL connection string.                     |
-| `appInsightsName`       | `invictus-${resourcePrefix}-appins`                                                                                   | The name of the Azure Application Insights resource where the Transco V2 component sends its telemetry.                                                                                         |
-| `transcoV2FunctionName` | `inv-${resourcePrefix}-transco-v2`                                                                                    | The name of the Azure Container App to be created for the **Transco V2** component.                                                                                                             |
-| `transcoV2Scaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
+| Bicep parameter         | Default                                                                                                               | Description                                                                                                                                                                                                                                          |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `storageAccountName`    | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (reused across Framework components) for the `transcov2configstore` Azure Blob Storage container that stores the referenced Transco configurations, referenced XSLT transformations and assembly dependencies. |
+| `keyVaultName`          | `invictus-${resourcePrefix}-vlt`                                                                                      | The name of the Azure Key Vault (reused across Framework components and Microsoft authentication) where the Transco retrieves its SQL connection string.                                                                                             |
+| `appInsightsName`       | `invictus-${resourcePrefix}-appins`                                                                                   | The name of the Azure Application Insights resource where the Transco component sends its telemetry.                                                                                                                                                 |
+| `transcoV2FunctionName` | `inv-${resourcePrefix}-transco-v2`                                                                                    | The name of the Azure Container App for the Transco component.                                                                                                                                                                                       |
+| `transcoV2Scaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom).                                                      |
 </details>
 
 ## Migrating Transco v1 to v2
@@ -321,9 +326,14 @@ The following Bicep parameters control the inner workings of the **Transco V2** 
 <details>
 <summary><h4 id="migrating-Transco-v1-to-v2" style={{ margin:0 }}>Migrating Transco v1 to v2</h4></summary>
 
-We need to change the authentication and endpoint and remove the metadata links.
+The following changes in v2:
+* Authentication,
+* Endpoints,
+* Metadata links.
 
-Also we need to change the Transco configuration files, for this you can use the migration tool from Codit's integration practice that can be found [here](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-Transco--matrix-migration-tools).
+:::info[migrate Transco configuration files]
+Use the [migration tool from Codit's Integration Practice](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-Transco--matrix-migration-tools) to migrate your existing Transco v1 configuration files to the new v2 format.
+:::
 
 ```diff
 "Transform_XML": {
@@ -354,7 +364,7 @@ Also we need to change the Transco configuration files, for this you can use the
 <details>
 <summary><h4 id="migrating-matrix-v1-to-v2" style={{ margin:0 }}>Migrating Matrix v1 to Transco v2</h4></summary>
 
-The Matrix component's functionality has been placed in the Transco v2 API. 
+Transco v2 now embeds the Matrix v1 functionality, only authentication and endpoints requires changing.
 
 ```diff
 "Extract_Message_Context": {
