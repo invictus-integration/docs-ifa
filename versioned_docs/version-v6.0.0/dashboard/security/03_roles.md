@@ -1,8 +1,8 @@
 ---
-sidebar_label: Roles
+sidebar_label: Access to flows
 ---
 
-# Roles
+# Control the access to your flows
 
 ## Available flow permissions
 The following table describes what flow-related functionality is permitted for users, based on the set role they receive on a folder: *Reader*, *Operator* or *Folder admin*. Both single **local users** as well as **groups** can be assigned to folders.
