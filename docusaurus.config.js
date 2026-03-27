@@ -3,25 +3,29 @@ const darkCodeTheme = require('./src/prism/dark');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'Invictus - Integration',
+  title: 'Invictus for Azure',
   url: 'https://invictus-integration.github.io/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   onBrokenAnchors: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'invictus-integration', // Usually your GitHub org/user name.
-  projectName: 'Invictus - Integration', // Usually your repo name.
+  organizationName: 'invictus-integration',
+  projectName: 'Invictus for Azure',
   themeConfig: {
     image: 'img/invictus.jpg',
     navbar: {
-      title: 'Invictus',
+      title: 'Invictus for Azure',
       logo: {
-        alt: 'Invictus',
+        alt: 'Invictus for Azure logo',
         src: 'img/logo.dark.png',
         srcDark: 'img/logo.dark.png',
       },
       items: [
+        {
+          type: 'custom-user-type-switcher',
+          position: 'left',
+        },
         {
           type: 'docsVersionDropdown',
 
@@ -55,16 +59,13 @@ module.exports = {
           title: 'Business users',
           items: [
             {
-              label: 'How to view your flows',
-              to: '/dashboard/flows'
+              html: '<a class="footer-link" data-cy-footer-link="view-flows" href="/dashboard/flows">How to view your flows</a>',
             },
             {
-              label: 'How to create flows',
-              to: '/dashboard/flows/add'
+              html: '<a class="footer-link" data-cy-footer-link="create-flows" href="/dashboard/flows/add">How to create flows</a>',
             },
             {
-              label: 'How to search for flow traces',
-              to: '/dashboard/flows/search'
+              html: '<a class="footer-link" data-cy-footer-link="search-flows" href="/dashboard/flows/search">How to search for flow traces</a>',
             }
           ]
         },
@@ -72,12 +73,10 @@ module.exports = {
           title: 'Technical users',
           items: [
             {
-              label: 'Dashboard installation',
-              to: '/dashboard/installation'
+              html: '<a class="footer-link" data-cy-footer-link="dashboard-installation" href="/dashboard/installation">Dashboard installation</a>'
             },
             {
-              label: 'Framework installation',
-              to: '/framework/installation'
+              html: '<a class="footer-link" data-cy-footer-link="framework-installation" href="/framework/installation">Framework installation</a>'
             }
           ]
         },
@@ -89,13 +88,12 @@ module.exports = {
               href: 'https://github.com/invictus-integration/docs-ifa/issues/new/choose',
             },
             {
-              label: 'Migrate to v6',
-              to: '/support/v6-migration'
+              html: '<a class="footer-link" data-cy-footer-link="v6-migration" href="/support/v6-migration">Migrate to v6</a>'
             }
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()}, Invictus - Integration maintained by Codit`,
+      copyright: `Copyright © ${new Date().getFullYear()}, Invictus for Azure maintained by Codit.`,
     },
     prism: {
       theme: lightCodeTheme,
