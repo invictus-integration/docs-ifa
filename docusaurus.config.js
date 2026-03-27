@@ -132,7 +132,8 @@ module.exports = {
           lastVersion: 'v6.0.0',
           versions: {
             'v6.0.0': {
-              label: 'v6'
+              label: 'v6',
+              badge: false,
             }
           }
         },
