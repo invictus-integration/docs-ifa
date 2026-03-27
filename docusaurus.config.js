@@ -18,7 +18,7 @@ module.exports = {
       title: 'Invictus for Azure',
       logo: {
         alt: 'Invictus for Azure logo',
-        src: 'img/logo.light.png',
+        src: 'img/logo.dark.png',
         srcDark: 'img/logo.dark.png',
       },
       items: [

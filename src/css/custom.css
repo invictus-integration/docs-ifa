@@ -46,14 +46,38 @@
 
   /* Global spacing and borders */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
+  --ifm-navbar-background-color: var(--ifm-color-primary);
+  --ifm-navbar-link-color: var(--ifm-color-secondary-lightest);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary-darkest);
+  --ifm-navbar-search-input-background-color: var(--ifm-color-secondary-lighter);
+  --ifm-navbar-search-input-color: var(--ifm-color-gray-800);
   --ifm-toc-border-color: var(--ifm-color-primary);
   --ifm-global-spacing: 1.5rem;
+  --docusaurus-details-decoration-color: var(--ifm-color-primary);
 }
+
+.navbar {
+  box-shadow: none;
+}
+
+.navbar button svg {
+  color: #ffffff;
+}
+
+.navbar button:hover svg {
+  color: var(--ifm-color-primary-light);
+}
+
+html[data-theme='dark'] .navbar button:hover svg {
+  color: var(--ifm-color-primary-light);
+}
+
 
 html[data-theme='dark'] {
   /* Dark background and greenish-blue primary */
   --ifm-background-color: var(--ifm-color-gray-900);
   --ifm-navbar-background-color: var(--ifm-color-gray-800);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
   --ifm-color-primary: #2a8f9c;
   /* brighter variant for contrast */
   --ifm-link-color: #36b1c5;
@@ -64,6 +88,16 @@ html[data-theme='dark'] {
 html[data-theme='dark'] .footer--dark {
   background-color: var(--ifm-color-gray-800);
   border-top: 1px solid var(--ifm-color-primary);
+}
+
+details.alert {
+  background-color: var(--ifm-color-secondary-lightest);
+  border-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] details.alert {
+  /* background-color: var(--ifm-alert-background-color-highlight); */
+  background-color: var(--ifm-color-gray-800);
 }
 
 .alert--praise {
