@@ -12,6 +12,7 @@ export type Parameter = {
   required?: boolean;
   default?: any;
   deprecated?: string;
+  since?: string;
 };
 
 type ParameterTableProps = {
@@ -148,7 +149,7 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
                 </code>
               </div>
 
-              {(p.required || p.default !== undefined) && (
+              {(p.required || p.default !== undefined || p.since) && (
                 <div style={badgesContainerStyle}>
                   {p.required && (
                     <span style={requiredBadgeStyle}>required</span>
@@ -156,6 +157,11 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
                   {p.default !== undefined && (
                     <span style={defaultBadgeStyle}>
                       default: <code>{p.default.toString()}</code>
+                    </span>
+                  )}
+                  {p.since && (
+                    <span style={sinceBadgeStyle}>
+                      since v{p.since}
                     </span>
                   )}
                 </div>
@@ -357,6 +363,14 @@ const deprecatedBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
   backgroundColor: "var(--ifm-color-warning)",
+  color: "white",
+  borderRadius: "3px",
+};
+
+const sinceBadgeStyle: React.CSSProperties = {
+  fontSize: "0.75rem",
+  padding: "1px 4px",
+  backgroundColor: "var(--ifm-color-success)",
   color: "white",
   borderRadius: "3px",
 };
