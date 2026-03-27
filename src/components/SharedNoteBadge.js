@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
 
 export function SharedNote() {
   const [visible, setVisible] = useState(false);
+  const tooltipId = useId();
 
   return (
     <span
-      style={{ position: 'relative', display: 'inline-block', marginLeft: '8px', textTransform: 'none', fontWeight: 'bold' }}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
+      style={{
+        position: 'relative',
+        display: 'inline-block',
+        marginLeft: '8px',
+        textTransform: 'none',
+        fontWeight: 'bold',
+      }}
     >
       <span
+        tabIndex={0}
+        role="button"
+        aria-describedby={visible ? tooltipId : undefined}
+        onMouseEnter={() => setVisible(true)}
+        onMouseLeave={() => setVisible(false)}
+        onFocus={() => setVisible(true)}
+        onBlur={() => setVisible(false)}
         style={{
           backgroundColor: '#e0f7f7',
           color: '#0b6369',
@@ -20,12 +32,16 @@ export function SharedNote() {
           fontFamily: 'Bitter',
           cursor: 'default',
           userSelect: 'none',
+          outline: 'none',
         }}
       >
         Shared
       </span>
+
       {visible && (
         <span
+          id={tooltipId}
+          role="tooltip"
           style={{
             position: 'absolute',
             bottom: '125%',
