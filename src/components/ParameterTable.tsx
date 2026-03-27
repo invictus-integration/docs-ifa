@@ -362,7 +362,7 @@ const requiredBadgeStyle: React.CSSProperties = {
 const deprecatedBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "var(--ifm-color-warning)",
+  backgroundColor: "#b55d00",
   color: "white",
   borderRadius: "3px",
 };
@@ -370,7 +370,7 @@ const deprecatedBadgeStyle: React.CSSProperties = {
 const sinceBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "var(--ifm-color-success)",
+  backgroundColor: "#008800",
   color: "white",
   borderRadius: "3px",
 };
