@@ -22,7 +22,9 @@ Use **Entra ID** users over local users for security reasons.
 
 The Invictus Dashboard can be configured to [use existing users in Microsoft Entra ID groups](../installation/01_give_ad_access.mdx). This removes the need to work with additional local Dashboard users.
 
-### Add an Entra ID user to the Dashboard
+<details>
+<summary>**Add an Entra ID user to the Dashboard**</summary>
+
 Microsoft Entra ID users can sign in automatically into the Invictus Dashboard if that user is part of an Entra ID group that is [synced into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
 :::warning[requires role]
@@ -30,17 +32,28 @@ Make sure that the group has a [role assigned](./03_roles.md), otherwise the Das
 :::
 
 ![Entra ID user sign in](/images/dashboard/AdminAccount/adminAccount-4.jpg)
+</details>
 
-### Delete an Entra ID user from the Dashboard <OnlyAdminsBadge/>
+<details>
+<summary>**Delete an Entra ID user from the Dashboard** <OnlyAdminsBadge/></summary>
+
 To delete a user click on the delete icon next to the user in the user list.
 
 ![delete azure user](/images/delete-azure-user.PNG)
     > 👀 Linked Entra ID users can be distinguished as they do not have a personal role assigned. The role is determined by the group the user is a member of.
 
-### Edit an Entra ID user's role in the Dashboard <OnlyAdminsBadge/>
+</details>
+
+<details>
+<summary>**Edit an Entra ID user's role in the Dashboard** <OnlyAdminsBadge/></summary>
+
 Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The user role is determined by the Entra ID group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so will the user.
 
-### Configure forgot password procedure <OnlyAdminsBadge/>
+</details>
+
+<details>
+<summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
+
 Before you can use the forgot password feature, you need to create an Microsoft Entra ID application registration and [set it up with the Mail.Send API permissions](../installation/01_give_ad_access.mdx). This is required because emails can only be sent through an OAuth 2.0 flow.
 
 :::warning
@@ -59,12 +72,16 @@ Please note that the permission granted allows any email address within the orga
 
 ![Global settings page as system admin](/images/dashboard/settings-page-as-admin.png)
 
+</details>
+
 </TabItem>
 <TabItem value="local" label="Local">
 
 Local users are entirely managed by the Invictus Dashboard. They can have their own personal permissions assigned and can be deleted at anytime.
 
-### Add a local user to the Dashboard <OnlyAdminsBadge/>
+<details>
+<summary>**Add a local user to the Dashboard** <OnlyAdminsBadge/></summary>
+
 Local users can have a [role assigned](./03_roles.md).
 
 <nav class="custom-breadcrumb">
@@ -78,20 +95,29 @@ Local users can have a [role assigned](./03_roles.md).
 </nav>
 
 ![add user details](/images/v2_users2.png)
+</details>
 
-### Delete a local user from the Dashboard <OnlyAdminsBadge/>
+<details>
+<summary>**Delete a local user from the Dashboard** <OnlyAdminsBadge/></summary>
+
 Local users can be distinguished as they have a personal role assigned.
 
 ![delete local user](/images/delete-local-user.PNG)
+</details>
 
-### Edit a local user's role in the Dashboard <OnlyAdminsBadge/>
+<details>
+<summary>**Edit a local user's role in the Dashboard** <OnlyAdminsBadge/></summary>
+
 Local users can have a [role assigned](./03_roles.md).
 
 ![edit local user](/images/edit-local-user.PNG)
 
 ![edit user role](/images/v2_users3.png)
+</details>
 
-### Configure forgot password procedure <OnlyAdminsBadge/>
+<details>
+<summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
+
 For local users to allow them to run the 'Forgot password' procedure, the following details have to be configured to use to correct email server.
 
 <nav class="custom-breadcrumb">
@@ -106,13 +132,15 @@ For local users to allow them to run the 'Forgot password' procedure, the follow
 
 ![forgotpassword](/images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
 
-| Forgot password setting  | Description |
-| ------------------------ | ----------- |
+| Forgot password setting  | Description                                                                                                                                                      |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Host`                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be "smtp.gmail.com". |
-| `Port number`            | The port number for the email server from which the sender accounts originates, default is `587`. |
-| `Email key vault key`    | The Azure Key Vault secret name where the sender email address is stored (points to the Key Vault resource accompanied with the Invictus installation). |
-| `Password key vault key` | The Azure Key Vault secret name where the sender email password is stored (points to the Key Vault resource accompanied with the Invictus installation). |
-| `SSL Enabled`            | It's recommended to enable SSL, as major email providers often require this setting. |
-   
+| `Port number`            | The port number for the email server from which the sender accounts originates, default is `587`.                                                                |
+| `Email key vault key`    | The Azure Key Vault secret name where the sender email address is stored (points to the Key Vault resource accompanied with the Invictus installation).          |
+| `Password key vault key` | The Azure Key Vault secret name where the sender email password is stored (points to the Key Vault resource accompanied with the Invictus installation).         |
+| `SSL Enabled`            | It's recommended to enable SSL, as major email providers often require this setting.                                                                             |
+  
+</details>
+
 </TabItem>
 </Tabs>
