@@ -354,7 +354,7 @@ const badgesContainerStyle: React.CSSProperties = { marginTop: "2px", display: "
 const requiredBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "var(--ifm-color-danger)",
+  backgroundColor: "#dc2026",
   color: "white",
   borderRadius: "3px",
 };
