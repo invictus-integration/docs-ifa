@@ -741,7 +741,7 @@
   {
     "name": "logAnalyticsWorkspaceImportFunctionV2Cron",
     "description": "The time period in which the automatically Azure Functions timer trigger [imports Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
-    "deprecated": "Will be removed in v7, support for automatically triggering importing stops.",
+    "deprecatedSince": "v6.2, will be removed in v7, support for automatically triggering importing stops.",
     "default": "0 */10 * * * *",
     "tags": [
       "importing"
@@ -751,7 +751,7 @@
     "name": "logAnalyticsWorkspaceMaxNoOfRows",
     "description": "The maximum amount of rows to query the Azure Log Analytics workspace to automatically [import Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
     "default": "1000",
-    "deprecated": "Will be removed in v7, support for automatically triggering importing stops.",
+    "deprecatedSince": "v6.2, will be removed in v7, support for automatically triggering importing stops.",
     "tags": [
       "importing"
     ]
@@ -759,7 +759,7 @@
   {
     "name": "flowActivityIntervalInMinutes",
     "description": "The time period threshold (in minutes) to update the active flow traces watermark during finalizing pending flow traces in the merge job.",
-    "deprecated": "Will be removed in v7, support for custom event tracking for flow activity stops.",
+    "deprecatedSince": "v6.2, will be removed in v7, support for custom event tracking for flow activity stops.",
     "default": "55",
     "tags": [
       "monitoring"
@@ -794,7 +794,7 @@
   {
     "name": "flowBlobArchiverFunctionCron",
     "description": "The CRON expression that represents the time period in which flow trace information is archived.",
-    "deprecated": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
     "default": "0 0 */3 * * *",
     "tags": [
       "storage"
@@ -804,7 +804,7 @@
     "name": "hashCacheClearFunctionCron",
     "description": "The CRON expression that represents the time period in which to clear the Dashboard storage backend cache.",
     "default": "0 00 03 * * *",
-    "deprecated": "Will be removed in v7, clearing happens via Azure Storage Account policies.",
+    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Azure Storage Account policies.",
     "tags": [
       "storage"
     ]
@@ -813,7 +813,7 @@
     "name": "workFlowEventsClearFunctionCron",
     "description": "The CRON expression that represents the time period in which to clear the Azure Logic Apps workflow Dashboard backend storage.",
     "default": "0 */15 * * * *",
-    "deprecated": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
     "tags": [
       "storage"
     ]
@@ -822,7 +822,7 @@
     "name": "azureWebJobsWorkFlowEventsClearFunctionDisabled",
     "description": "Indicates whether the Azure Functions timer trigger should be disabled, meaning the Azure Logic Apps workflow Dashboard backend storage won't be cleared.",
     "default": "true",
-    "deprecated": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
     "tags": [
       "storage"
     ]
@@ -831,7 +831,7 @@
     "name": "maxMessageStatusCacheInDay",
     "description": "The maximum amount of messages per day cached during importing.",
     "default": "60",
-    "deprecated": "Will be removed in v7, caching happens independently now.",
+    "deprecatedSince": "v6.2, will be removed in v7, caching happens independently now.",
     "tags": [
       "storage",
       "scaling"
@@ -1252,7 +1252,7 @@
   {
     "name": "dashboard",
     "description": "The options to configure the Dashboard web application.",
-    "since": "6.3",
+    "newSince": "v6.3",
     "properties": [
       {
         "name": "applicationGateway",
