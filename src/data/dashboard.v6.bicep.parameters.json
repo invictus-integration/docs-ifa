@@ -1252,7 +1252,7 @@
   {
     "name": "dashboard",
     "description": "The options to configure the Dashboard web application.",
-    "newSince": "6.3",
+    "newSince": "v6.3",
     "properties": [
       {
         "name": "applicationGateway",

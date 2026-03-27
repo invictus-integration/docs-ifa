@@ -161,7 +161,7 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
                   )}
                   {p.newSince && (
                     <span style={sinceBadgeStyle}>
-                      new since v{p.newSince}
+                      new since {p.newSince}
                     </span>
                   )}
                 </div>
