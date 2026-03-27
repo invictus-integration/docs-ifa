@@ -11,8 +11,8 @@ export type Parameter = {
   properties?: Parameter[];
   required?: boolean;
   default?: any;
-  deprecated?: string;
-  since?: string;
+  deprecatedSince?: string;
+  newSince?: string;
 };
 
 type ParameterTableProps = {
@@ -149,7 +149,7 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
                 </code>
               </div>
 
-              {(p.required || p.default !== undefined || p.since) && (
+              {(p.required || p.default !== undefined || p.newSince) && (
                 <div style={badgesContainerStyle}>
                   {p.required && (
                     <span style={requiredBadgeStyle}>required</span>
@@ -159,18 +159,18 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
                       default: <code>{p.default.toString()}</code>
                     </span>
                   )}
-                  {p.since && (
+                  {p.newSince && (
                     <span style={sinceBadgeStyle}>
-                      since v{p.since}
+                      new since {p.newSince}
                     </span>
                   )}
                 </div>
               )}
 
-              {p.deprecated && (
+              {p.deprecatedSince && (
                 <div style={badgesContainerStyle}>
                   <span style={deprecatedBadgeStyle}>
-                    deprecated: {p.deprecated}
+                    deprecated since: {p.deprecatedSince}
                   </span>
                 </div>
               )}
@@ -354,7 +354,7 @@ const badgesContainerStyle: React.CSSProperties = { marginTop: "2px", display: "
 const requiredBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "var(--ifm-color-danger)",
+  backgroundColor: "#dc2026",
   color: "white",
   borderRadius: "3px",
 };
@@ -362,7 +362,7 @@ const requiredBadgeStyle: React.CSSProperties = {
 const deprecatedBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "var(--ifm-color-warning)",
+  backgroundColor: "#b55d00",
   color: "white",
   borderRadius: "3px",
 };
@@ -370,7 +370,7 @@ const deprecatedBadgeStyle: React.CSSProperties = {
 const sinceBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "var(--ifm-color-success)",
+  backgroundColor: "#008800",
   color: "white",
   borderRadius: "3px",
 };
