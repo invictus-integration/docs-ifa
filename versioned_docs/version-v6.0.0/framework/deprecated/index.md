@@ -1,3 +1,7 @@
+---
+sidebar_label: 'Deprecated components'
+---
+
 # Deprecated Framework components
 The following listed components are considered deprecated Invictus Framework components and will stop receiving support.
 
