@@ -759,7 +759,6 @@
   {
     "name": "flowActivityIntervalInMinutes",
     "description": "The time period threshold (in minutes) to update the active flow traces watermark during finalizing pending flow traces in the merge job.",
-    "deprecatedSince": "v6.2, will be removed in v7, support for custom event tracking for flow activity stops.",
     "default": "55",
     "tags": [
       "monitoring"
