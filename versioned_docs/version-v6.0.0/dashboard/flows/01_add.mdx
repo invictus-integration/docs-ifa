@@ -30,8 +30,8 @@ Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flow
 | **Business Properties** |    no    | Additional properties to describe the flow. These are only here to provide metadata and are not used in the flow tracing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | **Advanced Settings**   |    no    | <ul><li>*Connected Dashboard:* in a hybrid (BizTalk + Azure) setup, it is necessary to have a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. [More details on hybrid setups](../settings.md).</li><li>*Show milestone and event text:* Checking this option will enable the flow milestone and event text data to be displayed.</li><li><NewSinceBadge version="v6.2" /> *Show Resubmit / Resume*: make the 'Resubmit/Resume' flow action buttons available per flow.</li><li>*Custom resubmit/resume URLs:* Check these options and provide the necessary URLs to use [your own resume and resubmit logic](./04_import-flow-traces/import-flows-via-la.mdx).</li></ul> |
 | **Alerts**              |    no    | [See alerting](#flow-alerting)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-<details>
-<summary><span id="flow-permissions">**Allow access to flow**</span></summary>
+<details id="flow-permissions">
+<summary><span>**Allow access to flow**</span></summary>
 
 <nav class="custom-breadcrumb">
   <span class="breadcrumb-item no-padding">
@@ -52,8 +52,8 @@ Users with the `[System admin]` role can access all flows in every folder availa
 :::
 </details>
 
-<details>
-<summary><span id="flow-alerting">**Add an alert for a flow**</span></summary>
+<details id="flow-alerting">
+<summary><span>**Add an alert for a flow**</span></summary>
 
 :::warning[require role assignments after installation]
 The Invictus Dashboard [requires additional role assignments](../installation/03_give_la_access.md) to add alerts to flows.
