@@ -758,6 +758,7 @@
   {
     "name": "aiServicesSubnets",
     "description": "A list of subnet names to form the network rules for the Azure AI Foundry resource, useful for VNET deployments.",
+    "newSince": "v6.3",
     "tags": [
       "networking",
       "vnet"
@@ -821,6 +822,7 @@
     "name": "useAIExceptionHandlerInterpreter",
     "description": "Feature flag to control whether the Framework deploys with Azure AI Foundry services, useful for the Exception Handler component.",
     "default": "false",
+    "newSince": "v6.3",
     "tags": [
       "comp:exception-handler"
     ]
