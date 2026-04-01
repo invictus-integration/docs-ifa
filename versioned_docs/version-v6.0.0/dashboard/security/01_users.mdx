@@ -4,9 +4,20 @@ sidebar_label: Add new users
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { OnlyAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
+import { OnlyAdminsBadge, NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLock } from '@fortawesome/free-solid-svg-icons'
 
 # Manage Users in the Dashboard
+<nav class="custom-breadcrumb">
+  <span class="breadcrumb-item no-padding">
+    ![logo](/img/favicon.ico)
+  </span>
+  <span>›</span>
+  <span class="breadcrumb-item active">Users</span>
+</nav>
+
+
 The Invictus Dashboard allows you to access the application with multiple user accounts. These can be **local** users, managed by Invictus itself; or **Entra ID** users, managed by your Azure tenant.
 
 :::praise[recommended]
@@ -144,3 +155,19 @@ For local users to allow them to run the 'Forgot password' procedure, the follow
 
 </TabItem>
 </Tabs>
+
+<details>
+<summary>**Unlocking a user in the Dashboard** <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></summary>
+
+<nav class="custom-breadcrumb">
+  <span class="breadcrumb-item no-padding">
+    ![logo](/img/favicon.ico)
+  </span>
+  <span>›</span>
+  <span class="breadcrumb-item">Users</span>
+  <span>›</span>
+  <span class="breadcrumb-item">[user]&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} /></span>
+</nav>
+
+Users gets locked out if they try to sign in too many times with wrong credentials. System admins can unlock these users by clicking on the <FontAwesomeIcon icon={faLock} /> button of the user in the list.
+</details>
