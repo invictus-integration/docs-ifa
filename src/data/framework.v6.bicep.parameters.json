@@ -818,6 +818,15 @@
     ]
   },
   {
+    "name": "useOpenAPI",
+    "description": "Feature flag to control whether the Framework components deploys with OpenAPI/Swagger specifications",
+    "default": "false",
+    "newSince": "v6.3",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
     "name": "useAIExceptionHandlerInterpreter",
     "description": "Feature flag to control whether the Framework deploys with Azure AI Foundry services, useful for the Exception Handler component.",
     "default": "false",

@@ -1249,6 +1249,15 @@
     ]
   },
   {
+    "name": "useOpenAPI",
+    "description": "Feature flag to control whether the Framework components deploys with OpenAPI/Swagger specifications",
+    "default": "false",
+    "newSince": "v6.3",
+    "tags": [
+      "monitoring"
+    ]
+  },
+  {
     "name": "dashboard",
     "description": "The options to configure the Dashboard web application.",
     "newSince": "v6.3",
