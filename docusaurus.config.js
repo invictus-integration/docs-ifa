@@ -88,7 +88,10 @@ module.exports = {
               href: 'https://github.com/invictus-integration/docs-ifa/issues/new/choose',
             },
             {
-              html: '<a class="footer-link" data-cy-footer-link="v6-migration" href="/support/v6-migration">Migrate to v6</a>'
+              html: '<a class="footer-link" data-cy-footer-link="migrate-v4-to-v5" href="/support/migrate-v4-to-v5">Migrate v4 to v5</a>'
+            },
+            {
+              html: '<a class="footer-link" data-cy-footer-link="migrate-v5-to-v6" href="/support/migrate-v5-to-v6">Migrate v5 to v6</a>'
             }
           ],
         },
