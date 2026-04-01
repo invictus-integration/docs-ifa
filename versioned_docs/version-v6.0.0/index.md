@@ -6,8 +6,7 @@ sidebar_position: 1
 hide_table_of_contents: true
 ---
 
-![Invictus logo](/img/invictus.index.dark.png#dark-mode-only)
-![Invictus logo](/img/invictus.index.light.png#light-mode-only)
+<img alt="Invictus is a smart business monitoring system designed by Codit to better control and overview your integrations" src="/img/invictus-dashboard-illustration.jpg" />
 ___
 
 ## What is Invictus for Azure?

@@ -1,10 +1,10 @@
 ﻿---
-sidebar_label: Migrating to v6
+sidebar_label: Migrate from v5.x to v6
 pagination_prev: null
 pagination_next: null
 ---
 
-# Migrating to Invictus for Azure v6
+# Migrate from v5.x to Invictus v6
 :::warning[change of endpoints]
 In v6 we uses containerized API's instead of Web API's and Azure Functions. This means that the endpoints for the Dashboard and API's such as the PubSub and Transco components changes.
 :::
