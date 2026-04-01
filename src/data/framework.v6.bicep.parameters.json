@@ -826,5 +826,14 @@
     "tags": [
       "comp:exception-handler"
     ]
+  },
+  {
+    "name": "aiResourcesLocation",
+    "description": "Location where the Framework deploys the Azure AI Foundray services.",
+    "default": "swedencentral",
+    "newSince": "v6.3",
+    "tags": [
+        "comp:exception-handler"
+    ]
   }
 ]
