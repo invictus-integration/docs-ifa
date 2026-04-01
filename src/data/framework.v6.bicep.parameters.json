@@ -528,6 +528,7 @@
     "name": "deferralMessageThresholdInMinutes",
     "description": "The PubSub component will try to recover Azure Service Bus messages older than this time limit that were stuck in deferral.",
     "default": "30",
+    "newSince": "v6.2",
     "tags": [
       "comp:pubsub",
       "messaging"
