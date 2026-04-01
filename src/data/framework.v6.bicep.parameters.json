@@ -773,7 +773,7 @@
     ]
   },
   {
-    "name": "delegatedContainerAppEnvironmentSubnetName",
+    "name": "containerAppEnvironmentSubnetName",
     "description": "The name of the subnet to form the network rules of the Azure Container App environment, useful for VNET deployments.",
     "tags": [
       "networking",
@@ -782,7 +782,7 @@
     ]
   },
   {
-    "name": "virtualNetworkResourceGroupName",
+    "name": "vnetResourceGroupName",
     "description": "The name of the Azure resource group where the VNET network rules deploys to.",
     "default": "resourceGroup().name",
     "tags": [
