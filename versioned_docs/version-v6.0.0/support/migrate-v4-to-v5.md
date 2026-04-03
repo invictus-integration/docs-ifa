@@ -7,7 +7,7 @@ pagination_next: null
 # Migrate from v4.x to Invictus v5
 
 ## Preparing environment
-* ➖ Remove existing role assignments to Azure Functions, these are now assigned automatically (normally only *Monitoring Contributor* on the Flow Handler).
+* ➖ Remove existing role assignments to Azure Functions. The Bicep deployments now assigns these (normally only *Monitoring Contributor* on the Flow Handler).
 
 ## Deploying new version
 * ➡️ Update to `-StorageContainerName dashboard-v2` in the `Invictus-GetSources.ps1` script.
@@ -23,15 +23,15 @@ Invictus v5 can migrate your current Dashboard structure stored in SQL to the ne
 * ➕ Add `-sqlToMigrateUserName <name>` parameter for the SQL credentials (defaults to `InvictusFrameworkAdmin`).
 * ➕ Add `invictussqlserverpassword` as an Azure Key Vault secret in the accompanied vault.
 
-When complete, you will be able to login to the new Invictus Dashboard with the same credentials as before.
+When complete, you can sign in to the new Invictus Dashboard with the same credentials as before.
 
 :::warning[trust but verify]
 The deployment will validate the result data in Azure Cosmos DB against the original SQL data. Manually verify this migrated data. 
-Once you are satisfied with the migrated data, change the `-PerformSqlDataMigration 1` script parameter to `0`. This skips the migration process from future deployments.
+Once satisfied with the migrated data, change the `-PerformSqlDataMigration 1` script parameter to `0`. This skips the migration process from future deployments.
 :::
 
 ### New Dashboard endpoint
-The deployment creates a new Dashboard Azure App Service with the `-v2` prefix (ex: `invictus-dev-invictusdashboard-v2`), which means a new endpoint. If you want to keep the original URL endpoint:
+The deployment creates a new Dashboard Azure App Service with the `-v2` prefix (ex: `invictus-dev-invictusdashboard-v2`). This means a new endpoint. If you want to keep the original URL endpoint:
 * ❌ Delete the old Dashboard App Service (without the prefix) from the resource group.
 * ➕ Add `-invictusDashboardWebAppName <name>` parameter to the `Deploy.ps1` script to control the App Service's name.
 
@@ -45,10 +45,12 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 * ➡️ Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
 
 ### Common migrating issues
+<!-- vale write-good.TooWordy = NO -->
 :::danger[You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS]
-If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the Dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the Dashboard pipeline only*.
+<!-- vale write-good.TooWordy = YES -->
+If you pass the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the Dashboard release pipeline, update these by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the Dashboard pipeline only*.
 :::
 
 :::danger[The role assignment already exists]
-If you have role assignments conflicts during deployment, you might have multiple role assignments defined at the Invictus resource group. This case, remove all role assignments defined at the Invictus resource group level.
+If you have role assignments conflicts during deployment, remove all role assignments defined at the Invictus resource group level.
 :::
