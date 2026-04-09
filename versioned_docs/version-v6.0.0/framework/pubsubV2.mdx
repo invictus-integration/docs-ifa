@@ -1,6 +1,9 @@
 ---
-sidebar_label: Publish and subscribe
+sidebar_label: PubSub
 ---
+
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 
 # Run Logic App workflows as publisher/subscriber with the <u>PubSub</u>
 
@@ -149,18 +152,8 @@ The `/api/Acknowledge` endpoint allows users to 'settle' a received message via 
 ```
 </details>
 
-## Customization
-<details>
-<summary>**Available Bicep parameters**</summary>
-
-| Bicep parameter                          | Default                                                                       | Description                                                                                                                                                                                                                          |
-| ---------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `pubSubV2TopicName`                      | `pubsubv2router`                                                              | Name of Azure Service Bus topic that acts as message broker for the PubSub V2 component.                                                                                                                                             | . |
-| `approvedMessageSizeInBytes`             | `200000` (`200 KB`)                                                           | Threshold to save Azure Service Bus messages' contents Azure Blob Storage, a.k.a. claim-checked.                                                                                                                                     |
-| `blobContainerPrefix`                    | `invictus` (final container name: `{blobContainerPrefix}{pubSubV2TopicName}`) | Prefix of the Azure Blob Storage container to store messages with too big a size, a.k.a. claim-checked.                                                                                                                              |
-| `serviceBusMessageTimeToLiveMinutes`     | `30 days`                                                                     | Period the published message should be active on the Azure Service Bus topic (translates to [`TimeToLive`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.timetolive?view=azure-dotnet)). |
-| `pubSubSubscriptionLockTimeoutInMinutes` | `1 min`                                                                       | Duration of the peek lock receive, see [`LockDuration`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.createsubscriptionoptions.lockduration?view=azure-dotnet).                            |
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:pubsub"]} />
 
 ## Migrating PubSub v1 to v2
 Migrating to v2 includes changes in the authentication, endpoint and removal the metadata links.

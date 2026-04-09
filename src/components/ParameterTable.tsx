@@ -17,21 +17,22 @@ export type Parameter = {
 
 type ParameterTableProps = {
   parameters: Parameter[];
+  fixedTags?: string[];
   maxHeight?: string;
 };
 
-export default function ParameterTable({ parameters, maxHeight = "400px" }: ParameterTableProps) {
-  parameters = parameters.sort((p1, p2) => p1.name.localeCompare(p2.name));
+export default function ParameterTable({ parameters, fixedTags = [], maxHeight = "400px" }: ParameterTableProps) {
+  parameters = parameters.filter((p) => fixedTags.every((tag: string) => p.tags.includes(tag))).sort((p1, p2) => p1.name.localeCompare(p2.name));
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const toggleTag = (tag: string) => {
-    setActiveTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    setActiveTags((prev: string[]): string[] =>
+      prev.includes(tag) ? prev.filter((t: string): boolean => t !== tag) : [...prev, tag]
     );
   };
 
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const toggleRow = (name: string) => {
-    setExpandedRows((prev) => {
+    setExpandedRows((prev: Set<string>): Set<string> => {
       const newSet = new Set(prev);
       newSet.has(name) ? newSet.delete(name) : newSet.add(name);
       return newSet;
@@ -63,14 +64,16 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
     return selfMatch || childMatch;
   };
 
-  const matchesTags = (p: Parameter) =>
-    activeTags.length === 0 || activeTags.every((tag) => p.tags.includes(tag));
+  const matchesTags = (p: Parameter): boolean => {
+    const allActive = [...fixedTags, ...activeTags];
+    return allActive.length === 0 || allActive.every((tag: string): boolean => p.tags.includes(tag));
+  };
 
   const filtered = useMemo(() => {
     return parameters.filter(
       (p) => matchesSearchRecursive(p) && matchesTags(p)
     );
-  }, [parameters, search, activeTags]);
+  }, [parameters, search, activeTags, fixedTags]);
 
   useEffect(() => {
     if (!search) return;
@@ -232,20 +235,38 @@ export default function ParameterTable({ parameters, maxHeight = "400px" }: Para
       </div>
 
       <div style={tagWrapperStyle}>
-        {allTags.map((tag) => (
-          <button
-            data-cy={tag}
-            key={tag}
-            onClick={() => toggleTag(tag)}
-            aria-pressed={activeTags.includes(tag)}
-            style={{
+        {allTags
+          .filter((tag) => !fixedTags.includes(tag))
+          .map((tag) => {
+            const isActive = activeTags.includes(tag);
+            const [hover, setHover] = useState(false);
+
+            const style: React.CSSProperties = {
               ...tagButtonStyle,
-              ...(activeTags.includes(tag) ? tagButtonActiveStyle : {}),
-            }}
-          >
-            {tag}
-          </button>
-        ))}
+              ...(isActive ? tagButtonActiveStyle : {}),
+              ...(hover
+                ? {
+                  backgroundColor: isActive
+                    ? "var(--ifm-color-primary-darkest)"
+                    : "var(--ifm-color-emphasis-300)",
+                }
+                : {}),
+            };
+
+            return (
+              <button
+                key={tag}
+                data-cy={tag}
+                onClick={() => toggleTag(tag)}
+                aria-pressed={isActive}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                style={style}
+              >
+                {tag}
+              </button>
+            );
+          })}
       </div>
 
       <div data-cy="search-results-summary" style={resultCountStyle}>
@@ -298,7 +319,7 @@ const searchInputStyle: React.CSSProperties = {
   borderRadius: "0.5rem",
   border: `2px solid var(--ifm-color-primary)`,
   background: "var(--ifm-navbar-search-input-background-color)",
-  color: "var(--ifm-font-color-base)",
+  color: "var(--ifm-color-gray-900)",
   fontSize: "1rem",
   outline: "none",
   boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
@@ -347,14 +368,14 @@ const tdStyle: React.CSSProperties = {
 
 const nameContainerStyle: React.CSSProperties = { display: "flex", flexDirection: "column" };
 const nameRowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: "0.5rem" };
-const codeStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
+const codeStyle: React.CSSProperties = { color: "var(--ifm-color-primary)", backgroundColor: "var(--ifm-background-color)" };
 const arrowIconStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
 const badgesContainerStyle: React.CSSProperties = { marginTop: "2px", display: "flex", gap: "4px", flexWrap: "wrap" };
 
 const requiredBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
   padding: "1px 4px",
-  backgroundColor: "#dc2026",
+  backgroundColor: "#b10006",
   color: "white",
   borderRadius: "3px",
 };

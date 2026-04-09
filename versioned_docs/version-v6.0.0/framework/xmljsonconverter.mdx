@@ -1,9 +1,11 @@
 ---
-sidebar_label: Convert between XML/JSON
+sidebar_label: XML/JSON Converter
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Convert between XML/JSON in Logic Apps workflows with the <u>XML-JSON Converter</u>
 
@@ -110,16 +112,5 @@ The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON content
 
 ___
 
-## Customization
-
-<details>
-<summary>**Related Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **XML/JSON Converter** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter                | Default                                                                                                               | Description                                                                                                                                                                                     |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`           | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) that has the `xmltojsonconfigstore` Azure Blob Storage container.                                            |
-| `xmlJsonConverterScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
-| `xmlJsonConverterFunctionName` | `inv-{resourcePrefix}-xmljsonconverter`                                                                               | The name of the Azure Container App for the **XML/JSON Converter** component.                                                                                                                   |
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:xml-json-converter"]} />

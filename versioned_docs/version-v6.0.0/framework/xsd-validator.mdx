@@ -1,6 +1,9 @@
 ---
-sidebar_label: XSD validation
+sidebar_label: XSD Validator
 ---
+
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Validate XML user content in Logic App workflows with <u>XSD Validator</u>
 :::note[motivation]
@@ -48,16 +51,5 @@ The **XSD Validator** has a single endpoint available: `/api/ValidateXmlAgainstX
 ## Stored XSD schemas
 Upload referenced XSD schema files to the Azure Blob Storage container `xsdvalidatorstore` (available upon installation), within the Invictus Azure Storage Account that's part of the installation.
 
-## Customization
-
-<details>
-<summary>**Related Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **XSD Validator** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter            | Default                                                                                                               | Description                                                                                                                                                                                     |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`       | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) where the `xsdvalidatorstore` Azure Blob Storage container stores referenced XSD schemas.                    |
-| `xsdValidatorScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
-| `xsdValidatorFunctionName` | `inv-{resourcePrefix}-xsdvalidator`                                                                                   | The name of the Azure Container App for the **XSD Validator** component.                                                                                                                        |
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:xsd-validator"]} />
