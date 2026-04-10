@@ -37,7 +37,7 @@ Common integration patterns are not always built into tasks within the Azure Log
 
 * [**Publish and subscribe:**](./framework/pubsubV2.md) uses Azure Service Bus as a message broker to publish/subscribe on messages across Azure Logic Apps. 
 * [**Time-controlled sequences:**](./framework/timesequencer.md) control the order in which Azure Logic App workflows can run based on a custom timestamp.
-* [**Index-controlled sequences:**](./framework/sequencecontroller.md) control the order in which Azure Logic App workflow can run based on a custom sequence order.
+* [**Index-controlled sequences:**](./framework/sequencecontroller.mdx) control the order in which Azure Logic App workflow can run based on a custom sequence order.
 * [**Convert between XML/JSON:**](./framework/xmljsonconverter.mdx) convert XML-JSON based on a custom XSLT transformation.
 * [**Validate XML with XSD schema:**](./framework/xsd-validator.md) validate XML based on a custom XSD schema.
 * [**Regular expression replacements:**](./framework/regextranslation.md) translate user content based on custom regular expression patterns.
