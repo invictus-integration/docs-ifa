@@ -42,7 +42,7 @@
   --ifm-color-gray-600: #5b5f5f;
   --ifm-color-gray-700: #404343;
   --ifm-color-gray-800: #2c2f2f;
-  --ifm-color-gray-900: #1e2020;
+  --ifm-color-gray-900: #171a1a;
 
   /* Global spacing and borders */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);

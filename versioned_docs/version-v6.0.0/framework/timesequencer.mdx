@@ -1,6 +1,9 @@
 ---
-sidebar_label: Time-controlled sequence
+sidebar_label: Time Sequencer
 ---
+
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Run Logic App workflows in sequence by timestamps with the <u>Time Sequencer</u>
 
@@ -40,8 +43,6 @@ Signaling completion happens with a HTTP POST request to the `/api/CompleteExecu
 | `SequenceName` |   yes    | Transactional name of 'sequence' to group all Azure Logic App workflow runs that require sequencing (same across workflow runs). |
 | `InstanceId`   |   yes    | Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run).             |
 
-## Customization
-
 :::info[sequence cleanup]
 The **Time Sequencer** component stores the Azure Logic App workflow 'sequences' in an Azure Blob Storage container, called `invictustimesequencer`. The following policy rules are currently hardcoded on the Azure Storage Account in regards of cleaning these sequences:
 * **Move to cool storage**: greater than `10 days` after modification.
@@ -51,15 +52,5 @@ The **Time Sequencer** component stores the Azure Logic App workflow 'sequences'
 🔗 [More info on Azure Storage Account policies](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-configure?tabs=azure-portal)
 :::
 
-<details>
-<summary>**Related Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **Time Sequencer** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter             | Default                                                                                                               | Description                                                                                                                                                                                              |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`        | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) that has the `invictustimesequencer` Azure Blob Storage container that stores the Azure Logic App workflow sequences. |
-| `timeSequencerScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom).          |
-| `timesequencerFunctionName` | `inv-${resourcePrefix}-timesequencer`                                                                                 | The name of the Azure Container App for the **Time Sequencer** component.                                                                                                                                |
-
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:time-sequencer"]} />
