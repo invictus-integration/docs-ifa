@@ -45,9 +45,9 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 * ➡️ Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
 
 ### Common migrating issues
-<!-- vale write-good.TooWordy = NO -->
+{/* vale write-good.TooWordy = NO */}
 :::danger[You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS]
-<!-- vale write-good.TooWordy = YES -->
+{/* vale write-good.TooWordy = YES */}
 If you pass the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the Dashboard release pipeline, update these by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the Dashboard pipeline only*.
 :::
 
