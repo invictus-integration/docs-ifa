@@ -6,8 +6,8 @@ sidebar_position: 1
 hide_table_of_contents: true
 ---
 
-![Invictus is a smart business monitoring system designed by Codit to better control and overview your integrations](/img/invictus.index.dark.png#dark-mode-only)
-![Invictus is a smart business monitoring system designed by Codit to better control and overview your integrations](/img/invictus.index.light.png#light-mode-only)
+![Better control and overview your integrations with the Invictus, designed by Codit](/img/invictus.index.dark.png#dark-mode-only)
+![Better control and overview your integrations with the Invictus, designed by Codit](/img/invictus.index.light.png#light-mode-only)
 ___
 
 ## What is Invictus for Azure?
