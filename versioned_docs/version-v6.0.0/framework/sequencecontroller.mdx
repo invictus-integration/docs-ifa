@@ -95,9 +95,9 @@ Add a HTTP task with this request to complete the in-sequence work of the workfl
 The deployed **Sequence Controller** allows admins to reset stored sequences. This could be useful if you want to reuse certain sequence names or for cleaning references.
 
 :::danger
-<!-- vale Microsoft.Contractions = NO -->
+{/* vale Microsoft.Contractions = NO */}
 This action **SHOULD NOT** be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.
-<!-- vale Microsoft.Contractions = YES -->
+{/* vale Microsoft.Contractions = YES */}
 :::
 
 Reset the sequence by sending this request:

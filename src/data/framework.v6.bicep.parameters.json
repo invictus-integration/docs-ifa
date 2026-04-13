@@ -26,7 +26,7 @@
   {
     "name": "useResourceLocks",
     "description": "Feature flag to control whether the deployed Azure resources have [resource locks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources).",
-    "default": "false",
+    "default": "true",
     "tags": [
       "governance"
     ]
