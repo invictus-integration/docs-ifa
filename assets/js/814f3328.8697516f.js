@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkinvictus_integration=self.webpackChunkinvictus_integration||[]).push([["1833"],{5513(t){t.exports=JSON.parse('{"title":"Recent posts","items":[]}')}}]);
