@@ -1235,7 +1235,7 @@
   {
     "name": "useResourceLocks",
     "description": "Feature flag to control whether the deployed Azure resources have [resource locks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources).",
-    "default": "false",
+    "default": "true",
     "tags": [
       "governance"
     ]
@@ -1246,6 +1246,15 @@
     "default": "invictus-user-managed-identity",
     "tags": [
       "security"
+    ]
+  },
+  {
+    "name": "useOpenAPI",
+    "description": "Feature flag to control whether the Dashboard deploys with OpenAPI/Swagger specifications",
+    "default": "false",
+    "newSince": "v6.3",
+    "tags": [
+      "monitoring"
     ]
   },
   {

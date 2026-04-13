@@ -57,7 +57,8 @@ describe('Business/Technical user toggle', () => {
     { linkName: 'search-flows', audience: Audience.BUSINESS },
     { linkName: 'dashboard-installation', audience: Audience.TECHNICAL },
     { linkName: 'framework-installation', audience: Audience.TECHNICAL },
-    { linkName: 'v6-migration', audience: Audience.TECHNICAL }];
+    { linkName: 'migrate-v4-to-v5', audience: Audience.TECHNICAL },
+    { linkName: 'migrate-v5-to-v6', audience: Audience.TECHNICAL }];
 
   footerLinks.forEach(({ linkName, audience }) => {
     it(`switches to correct audience when clicking ${linkName} footer link`, () => {

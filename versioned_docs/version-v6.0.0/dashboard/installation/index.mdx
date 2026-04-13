@@ -67,73 +67,6 @@ Invictus includes functionality which allows all its resources to run within an 
 If the Invictus resources and the VNET are on different resource groups, then the Invictus resource group will need to be assigned the role of `Network Contributor` onto the VNET resource group.
 
 </details>
-___
-
-## Migrate from older installations
-
-<details>
-<summary>**Migrate to Dashboard v2+**</summary>
-
-### Build pipeline
-The Azure Blob Storage container for Dashboard V2 is now `dashboard-v2`, this can be updated in the `-StorageContainerName` parameter you use in the build pipeline.
-
-### Release pipeline
-Make sure that the PowerShell script in the release pipeline which runs Deploy.ps1 has the following parameters:
-```yaml
-azurePowerShellVersion: LatestVersion
-pwsh: false
-```
-
-### Object ID update
-When upgrading to Invictus V2, the `devOpsObjectId` parameter which is passed to the release pipeline should be updated. This must be changed to the **Enterprise Application** Object ID of the service principal thats connected to the DevOps service connection (not of the App Registration). This change is required for both Dashboard and Framework pipelines.
-
-### Remove existing role assignments
-Invictus V2 includes functionality to automatically deploy role assignments which were previously set manually. However, if these role assignments are already present, they will cause a conflict. In your Invictus resource group, remove any roles which are assigned to the Azure Functions. Typically, this is just 1 role assignment: 
-
-- *Monitoring Contributor* rights for the FlowHandler component for the Invictus resource group.
-
-### Microsoft Entra ID setup
-If your Invictus installation integrates with Microsoft Entra ID, please follow the [Microsoft Entra ID setup guide](./01_give_ad_access.mdx) to update your app registration, or set up a new one with the appropriate settings required for Invictus V2.
-
-### SQL data migration
-Invictus V2 includes functionality to migrate the SQL data from your previous installation into the Cosmos DB of the new version. Data relating to users, groups and the folder and flow structure will be migrated. Flow traces will **not** be migrated.
-
-#### Data migration release pipeline changes
-The data migration process forms part of the release pipeline. Please refer to **Dashboard release pipeline** installation step for more information. The deploy script parameter `PerformSqlDataMigration` must be set to `1`. The deploy script also accepts a few optional parameters to be able to connect to your SQL database:
-
-- `-sqlToMigrateServerName` : Server name hosting the SQL DB you wish to migrate. Defaults to `invictus-{ResourcePrefix}-sqlsvr`
-- `-sqlToMigrateDBName` : Name of the SQL DB you wish to migrate. Defaults to `coditcip`
-- `-sqlToMigrateUserName` : The login username used to connect to the SQL Server. Defaults to `InvictusFrameworkAdmin`
-
-In addition to these values, the SQL server password <u>must</u> be stored as a secret in your Invictus Azure Key Vault with the name `invictussqlserverpassword`.
-
-The data migration will now run as part of your release pipeline. The resultant data in Azure Cosmos DB will be validated against the original SQL data, with the validation results printed in the release logs. However it is still important to manually verify the migrated data. When complete, you will be able to login to the new Invictus V2 Dashboard with the same credentials as before.
-
-Once you are satisfied with the migrated data, it is advised to change the `PerformSqlDataMigration` script parameter to `0` so that the migration process is entirely skipped in subsequent releases.
-
-### Dashboard URL
-The Invictus V2 release pipeline will create a new App Service Dashboard resource with a -v2 suffix e.g invictus-dev-invictusdashboard-v2. This means that the URL of this resource will be used to access the new Dashboard. If instead you wish to maintain your current URLs for the Dashboard, the old Dashboard App Service resource must be deleted from your resource group. Then, pass `invictusDashboardWebAppName` as a parameter to the release script, passing the name of the app service as a value.
-
-:::warning
-By doing this you will lose access to the old Dashboard and the ability to view and query its historic data.**
-:::
-
-### Add role assignments
-In addition to the Flow Handler component, in V2 also the Dashboard Gateway [must have Logic App Contribute access on the resource group or subscription which contains the Logic Apps](./03_give_la_access.md).
-
-### Common migrating issues
-:::danger[You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS]
-If you are passing the `servicePlanName` or `autoscaleForPlanName` (or both) parameters to the Dashboard release pipeline, these must be updated by adding `-linux` to the end of their values (feel free to maintain your own naming conventions). *This change is required for the Dashboard pipeline only*.
-:::
-
-:::danger[The role assignment already exists]
-If you have role assignments conflicts during deployment, you might have multiple role assignments defined at the Invictus resource group. This case, remove all role assignments defined at the Invictus resource group level.
-:::
-
-### Invictus configure dashboard script update
-If you are using the PowerShell script `Invictus-ConfigureDashboard.ps1` to deploy flows, etc, you must replace this script with the [V2 version](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1)
-
-</details>
 
 </TabItem>
 <TabItem label="Download" value="download">
@@ -251,11 +184,11 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 | `resourcePrefix`                   | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`)                                                                                                                                                                                                                                                                                                                         |
 | `resourceGroupName`                | Name of Azure resource group where Invictus should be deployed                                                                                                                                                                                                                                                                                                                                  |
 | `variableGroupName`                | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                                                                                                                                                                                                                                                                                                           |
-| `azureActiveDirectoryClientId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                              |
-| `azureActiveDirectoryTenantId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                              |
-| `azureActiveDirectoryClientSecret` | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                              |
-| `azureActiveDirectoryAudience`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                              |
-| `performSqlDataMigration`          | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the process will be skipped. See the [migration guide](#migrate-from-older-installations) for more details. Once data migration has been performed and verified, it is recommended to then set this value to `0` so that the migration process is skipped for all subsequent releases. |
+| `azureActiveDirectoryClientId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
+| `azureActiveDirectoryTenantId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
+| `azureActiveDirectoryClientSecret` | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
+| `azureActiveDirectoryAudience`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
+| `performSqlDataMigration`          | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the process will be skipped. See the [migration guide](../../support/migrate-v4-to-v5.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to `0` so that the migration process is skipped for all subsequent releases. |
 | `flowDataTTLInDays`                | Amount of days flow traces can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md).                                                                                                                                                                                                                                                                    |
 | `isProvisionedCosmos`              | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).                                                                                                                   |
 | `identityProviderApplicationId`    | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                 |
@@ -267,7 +200,7 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 | ------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `artifactsPath`                | `$PSScriptRoot` | Path on the DevOps agent where the downloaded Invictus artifacts are stored <br/> ([publish and download build artifacts]) |
 | `resourceGroupLocation`        | 'West Europe'   | Azure location where resources should be deployed                                                                          |
-| `isAdDisabled`                 | `False`         | Boolean flag to indicate whether the Dashboard should use Microsoft Entra ID for authentication                                            |
+| `isAdDisabled`                 | `False`         | Boolean flag to indicate whether the Dashboard should use Microsoft Entra ID for authentication                            |
 | `additionalTemplateParameters` | []              | Additional named parameters for the Bicep template you wish to override. More on this below.                               |
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.      |
 

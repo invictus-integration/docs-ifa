@@ -26,7 +26,7 @@
   {
     "name": "useResourceLocks",
     "description": "Feature flag to control whether the deployed Azure resources have [resource locks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources).",
-    "default": "false",
+    "default": "true",
     "tags": [
       "governance"
     ]
@@ -528,6 +528,7 @@
     "name": "deferralMessageThresholdInMinutes",
     "description": "The PubSub component will try to recover Azure Service Bus messages older than this time limit that were stuck in deferral.",
     "default": "30",
+    "newSince": "v6.2",
     "tags": [
       "comp:pubsub",
       "messaging"
@@ -756,14 +757,6 @@
     ]
   },
   {
-    "name": "aiServicesSubnets",
-    "description": "A list of subnet names to form the network rules for the Azure AI Foundry resource, useful for VNET deployments.",
-    "tags": [
-      "networking",
-      "vnet"
-    ]
-  },
-  {
     "name": "containerAppEnvironmentSubnets",
     "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
     "tags": [
@@ -773,7 +766,7 @@
     ]
   },
   {
-    "name": "delegatedContainerAppEnvironmentSubnetName",
+    "name": "containerAppEnvironmentSubnetName",
     "description": "The name of the subnet to form the network rules of the Azure Container App environment, useful for VNET deployments.",
     "tags": [
       "networking",
@@ -782,7 +775,7 @@
     ]
   },
   {
-    "name": "virtualNetworkResourceGroupName",
+    "name": "vnetResourceGroupName",
     "description": "The name of the Azure resource group where the VNET network rules deploys to.",
     "default": "resourceGroup().name",
     "tags": [
@@ -818,11 +811,12 @@
     ]
   },
   {
-    "name": "useAIExceptionHandlerInterpreter",
-    "description": "Feature flag to control whether the Framework deploys with Azure AI Foundry services, useful for the Exception Handler component.",
+    "name": "useOpenAPI",
+    "description": "Feature flag to control whether the Framework components deploys with OpenAPI/Swagger specifications",
     "default": "false",
+    "newSince": "v6.3",
     "tags": [
-      "comp:exception-handler"
+      "monitoring"
     ]
   }
 ]
