@@ -2,16 +2,91 @@ const lightCodeTheme = require('./src/prism/light');
 const darkCodeTheme = require('./src/prism/dark');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config = {
   title: 'Invictus for Azure',
+  favicon: 'img/favicon.ico',
+
+  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
+  future: {
+    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+  },
+
   url: 'https://invictus-integration.github.io/',
   baseUrl: '/',
+
+  organizationName: 'invictus-integration',
+  projectName: 'Invictus for Azure',
+
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   onBrokenAnchors: 'throw',
-  favicon: 'img/favicon.ico',
-  organizationName: 'invictus-integration',
-  projectName: 'Invictus for Azure',
+
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
+  presets: [
+    [
+      'classic',
+      ({
+        docs: {
+          sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: '/',
+          path: 'preview',
+          sidebarCollapsible: false,
+          includeCurrentVersion: true,
+          admonitions: {
+            keywords: ['praise'],
+            extendDefaults: true,
+          },
+          lastVersion: 'v6.0.0',
+          versions: {
+            'v6.0.0': {
+              label: 'v6',
+              badge: false,
+            }
+          }
+        },
+        theme: {
+          customCss: require.resolve('./src/css/custom.css'),
+        },
+      }),
+    ],
+  ],
+
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      {
+        // `hashed` is recommended as long-term-cache of index file is possible.
+        hashed: true,
+        docsRouteBasePath: '/',
+        language: ["en", "zh"],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+
+        // For Docs using Chinese, it is recommended to set:
+        // language: ["en", "zh"],
+
+        // Customize the keyboard shortcut to focus search bar (default is "mod+k"):
+        // searchBarShortcutKeymap: "s", // Use 'S' key
+        // searchBarShortcutKeymap: "ctrl+shift+f", // Use Ctrl+Shift+F
+
+        // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
+        // forceIgnoreNoIndex: true,
+
+        // Enable Ask AI integration:
+        // askAi: {
+        //   project: "your-project-name",
+        //   apiUrl: "https://your-api-url.com/api/stream",
+        //   hotkey: "cmd+I", // Optional: keyboard shortcut to trigger Ask AI
+        // },
+      }
+    ],
+  ],
+
   themeConfig: {
     image: 'img/invictus.jpg',
     navbar: {
@@ -48,10 +123,7 @@ module.exports = {
         },
       ],
     },
-    zoom: {
-      // (optional) The selector to use for the images to zoom.
-      // selector: 'img-zoom',
-    },
+
     footer: {
       style: 'dark',
       links: [
@@ -88,62 +160,27 @@ module.exports = {
               href: 'https://github.com/invictus-integration/docs-ifa/issues/new/choose',
             },
             {
-              html: '<a class="footer-link" data-cy-footer-link="v6-migration" href="/support/v6-migration">Migrate to v6</a>'
+              html: '<a class="footer-link" data-cy-footer-link="migrate-v4-to-v5" href="/support/migrate-v4-to-v5">Migrate v4 to v5</a>'
+            },
+            {
+              html: '<a class="footer-link" data-cy-footer-link="migrate-v5-to-v6" href="/support/migrate-v5-to-v6">Migrate v5 to v6</a>'
             }
           ],
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()}, Invictus for Azure maintained by Codit.`,
     },
+
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
       additionalLanguages: ['csharp', 'diff', 'json', 'powershell', 'yaml'],
     },
   },
-  themes: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-      ({
-        // `hashed` is recommended as long-term-cache of index file is possible.
-        hashed: true,
-        docsRouteBasePath: '/'
-      }),
-    ]
-  ],
-  plugins: [
-    'docusaurus-plugin-zooming'
-  ],
-  presets: [
-    [
-      '@docusaurus/preset-classic',
-      {
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          routeBasePath: '/',
-          path: 'preview',
-          sidebarCollapsible: false,
-          includeCurrentVersion: true,
-          admonitions: {
-            keywords: ['praise'],
-            extendDefaults: true,
-          },
-          lastVersion: 'v6.0.0',
-          versions: {
-            'v6.0.0': {
-              label: 'v6',
-              badge: false,
-            }
-          }
-        },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      },
-    ],
-  ],
+
   stylesheets: [
     'https://fonts.googleapis.com/css2?family=Bitter:wght@700&family=Inter:wght@400;500&display=swap'
   ],
 };
+
+module.exports = config;
