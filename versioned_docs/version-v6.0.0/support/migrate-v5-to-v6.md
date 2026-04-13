@@ -173,8 +173,8 @@ The v6 installation results in lingering `Unknown` role assignments. You can del
 You should use a linux agent in your release pipeline, for example `vmImage: 'ubuntu-latest'`
 :::  
 
-<!-- vale write-good.E-Prime = NO -->
+{/* vale write-good.E-Prime = NO */}
 :::danger[Pipeline Error: `Invalid ContainerApp name....The length must be between 2 and 32 characters inclusive.`]
-<!-- vale write-good.E-Prime = YES -->
+{/* vale write-good.E-Prime = YES */}
 If you override the default app names, you've might have made it too long. Azure Container Apps has a name limit lower than for Function Apps.
 :::
