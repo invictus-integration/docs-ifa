@@ -271,6 +271,11 @@ nav.menu {
 
 }
 
+.illustration {
+  max-width: 80%;
+  height: auto;
+}
+
 .flow-trace-text {
   color: #734dc4;
 }

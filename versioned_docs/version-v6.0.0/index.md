@@ -6,8 +6,8 @@ sidebar_position: 1
 hide_table_of_contents: true
 ---
 
-![Better control and overview your integrations with the Invictus, designed by Codit](/img/invictus.index.dark.png#dark-mode-only)
-![Better control and overview your integrations with the Invictus, designed by Codit](/img/invictus.index.light.png#light-mode-only)
+<img class="illustration" src="/img/invictus-dashboard-illustration.dark.jpg#dark-mode-only" alt="Better control and overview your integrations with the Invictus, designed by Codit" />
+<img class="illustration" src="/img/invictus-dashboard-illustration.light.jpg#light-mode-only" alt="Better control and overview your integrations with the Invictus, designed by Codit" />
 ___
 
 ## What is Invictus for Azure?
