@@ -90,7 +90,8 @@
       "collapsed": true,
       "collapsible": true,
       "items": [
-        "support/v6-migration"
+        "support/migrate-v4-to-v5",
+        "support/migrate-v5-to-v6"
       ]
     }
   ]
