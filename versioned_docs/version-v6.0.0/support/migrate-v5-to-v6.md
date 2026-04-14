@@ -10,9 +10,9 @@ Invictus v6 uses containerized API instead of Web API or Azure Functions. This m
 :::
 :::danger[removal of v1 Framework components]
 Invictus v6 no longer supports the PubSub v1, Transco v1 and Matrix v1 components.
-* [Migrate PubSub](./migrate-v4-to-v5.md#migrating-pubsub-v1-to-v2)
-* [Migrate Transc](./migrate-v4-to-v5.md#migrating-transco-v1-to-v2)
-* [Migrate Matrix to Transco](./migrate-v4-to-v5.md#migrating-transco-v1-to-v2)
+* [Migrate PubSub](./migrate-v4-to-v5.md#migrate-pubsub)
+* [Migrate Transco](./migrate-v4-to-v5.md#migrate-transco)
+* [Migrate Matrix to Transco](./migrate-v4-to-v5.md#migrate-transco)
 :::
 
 ## Preparing Environment
