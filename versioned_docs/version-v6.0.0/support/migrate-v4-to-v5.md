@@ -59,7 +59,7 @@ If you have role assignments conflicts during deployment, remove all role assign
 Some Framework components need special attention when upgrading to v5.
 
 <details>
-<summary>**Migrate PubSub to v5.**</summary>
+<summary><h4 id="migrating-pubsub-v1-to-v2">**Migrate PubSub to v5.**</h4></summary>
 
 Migrating to v5 includes changes in the authentication, endpoint and removal the metadata links.
 
