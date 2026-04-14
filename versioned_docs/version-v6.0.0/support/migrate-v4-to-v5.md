@@ -188,7 +188,7 @@ Migrating to v5 includes changes in the authentication, endpoint and removal the
 </details>
 
 <details>
-<summary><h4 id="migrating-Transco-v1-to-v2" style={{ margin:0 }}>Migrating Transco to v5</h4></summary>
+<summary><h4 id="migrating-transco-v1-to-v2" style={{ margin:0 }}>Migrating Transco to v5</h4></summary>
 
 The following things change:
 * Authentication,
