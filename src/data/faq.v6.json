@@ -1,0 +1,100 @@
+[
+  {
+    "question": "Why does Entra ID sign in fail with HTTP 431 Request Header Fields Too Large error on some environments?",
+    "answer": "This issue occurs when the Entra ID sign-in process generates a large number of cookies, which can exceed the header size limit of some browsers or environments. To resolve this issue, you can try to disable the <code>Session Affinity</code>/<code>Cookie-based Affinity</code> option.",
+    "version": ">= v6.3",
+    "tags": [
+      "migration",
+      "entra-id"
+    ]
+  },
+  {
+    "question": "How to clear Azure Storage Account due to high volume of data?",
+    "answer": "You can clear Azure Table storage data by adding : <ul><li>Adding <code>RetentionDaysCleanupJob</code> and updating the <code>WorkFlowEventsClearFunctionCron</code> properties in the <strong>flowhandlerjob</strong> Azure Functions app</li><li>Turn on usage of the <code>WorkFlowEventsClearFunction</code></li></ul>The deployed Azure Storage Account has lifecycle management rules to clear the history of Framework components and Dashboard caching in Azure Blob storage: <ul><li><code>MessageStatusCacheCleanup</code></li><li><code>PubSubRouterCleanup</code></li><li><code>TimeSequencerCleanup</code></li></ul>",
+    "version": "<= v6.1",
+    "tags": [
+      "storage",
+      "cleanup"
+    ]
+  },
+  {
+    "question": "On what runtime version runs the Azure Functions apps?",
+    "answer": "The Azure Functions apps run on the <code>~4</code> runtime version as of Invictus v4.16.1.",
+    "version": ">= v4.16.1",
+    "tags": [
+      "dependencies"
+    ]
+  },
+  {
+    "question": "Transco API responds with HTTP 502 Web server received an invalid response while acting as a gateway or proxy server error",
+    "answer": "Possibly a timing/timeout issue. Recommendation is to upgrade to Transco with Azure Functions.",
+    "version": ">= v5.1",
+    "tags": [
+      "transco"
+    ]
+  },
+  {
+    "question": "Many Logic Apps acknowledging messages via PubSub API results in message lock exception",
+    "answer": "Combine setting the <code>IgnoreLockLostException</code> property to <code>true</code> and setting the <code>MessageReadTime</code> property to <code>@trigger()['startTime']</code>.",
+    "version": "<= v5.1",
+    "tags": [
+      "pubsub"
+    ]
+  },
+  {
+    "question": "Do Invictus for BizTalk require a new product key when migrating to a new server?",
+    "answer": "Technically, it can use the same product key, but if both the old and new environment need to coexist a new license would be appropriate.",
+    "version": "",
+    "tags": [
+      "migration"
+    ]
+  },
+  {
+    "question": "How to deal with slow dependency backends for the PubSub 'Subscribe' operation?",
+    "answer": "Set one Azure Logic App using the Invictus PubSub 'Subscribe' operation that calls a second Logic App with concurrency set to <code>1</code> and a HTTP response action with the <code>operationOptions: Asynchronous</code> option. This way, the first Logic App will be able to handle the incoming messages and the second Logic App will process them sequentially, avoiding timeouts and lock exceptions.",
+    "version": ">=v5.1",
+    "tags": [
+      "pubsub"
+    ]
+  },
+  {
+    "question": "Why does the PubSub API picks up a single message multiple times?",
+    "answer": "Combine setting the <code>IgnoreLockLostException</code> property to <code>true</code> and setting the <code>MessageReadTime</code> property to <code>@trigger()['startTime']</code>.",
+    "version": "<= v5.1",
+    "tags": [
+      "pubsub"
+    ]
+  },
+  {
+    "question": "Why does the PubSub 'Subscribe' trigger show a <code>splitOn</code> error in the new Logic App designer?",
+    "answer": "In the trigger configuration, set the <strong>Swagger source</strong> to <code>Custom</code> instead of <code>Website</code>. This resolves the <em>\"Invalid split on value\"</em> error and allows the splitOn property to be configured correctly in the new designer.",
+    "version": "",
+    "tags": [
+      "pubsub"
+    ]
+  },
+  {
+    "question": "Are named parameters supported in Stored Procedures with Transco?",
+    "answer": "Named parameters in Stored Procedures are currently <strong>not supported</strong> in Transco. This has been added to the product backlog.",
+    "version": "",
+    "tags": [
+      "transco"
+    ]
+  },
+  {
+    "question": "Can a flow that was accidentally deleted from the Dashboard be recovered?",
+    "answer": "Yes. The flow data is not permanently removed. In CosmosDB, open the <code>FolderFlows</code> collection and locate the deleted flow — it will have an <code>-Archived</code> suffix on its name. Remove the suffix and set <code>isVisible</code> to <code>true</code>. If the flow was recreated in the meantime, remove that duplicate document first to avoid conflicts.",
+    "version": ">= v6.0",
+    "tags": [
+      "dashboard"
+    ]
+  },
+  {
+    "question": "How can a locked non-SSO Dashboard user account be unlocked?",
+    "answer": "In MongoDB, query the <code>Users</code> collection and find the user's document. Set <code>IsBlocked</code> to <code>false</code> and reset <code>AccessFailedCount</code> to <code>0</code>.",
+    "version": ">= v6.0",
+    "tags": [
+      "dashboard"
+    ]
+  }
+]
