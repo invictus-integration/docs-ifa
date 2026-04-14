@@ -1,6 +1,9 @@
 ---
-sidebar_label: Regex replacements
+sidebar_label: Regex Translator
 ---
+
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Replace user content in Logic App workflows with the <u>Regex Translator</u>
 :::note[motivation]
@@ -76,15 +79,5 @@ Store available Regex translations in the Azure Table Storage table called `Rege
 * **Single match**: the user `Content` can only match a single stored translation - the component picks the first match.
 * **No pastes**: the `OutputPattern` doesn't necessarily *have* to contain `{group-name}` occurrences, it can only contain text.
 
-## Customization
-<details>
-<summary>**Related Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **Regex Translator** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter               | Default                                                                                                               | Description                                                                                                                                                                                     |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`          | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) that has the `RegexTranslator` Azure Table Storage table.                                                    |
-| `regexTranslatorScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
-| `regexTranslatorFunctionName` | `inv-${resourcePrefix}-regextranslator`                                                                               | The name of the Azure Container App for the **Regex Translator** component.                                                                                                                     |
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:regex-translator"]} />

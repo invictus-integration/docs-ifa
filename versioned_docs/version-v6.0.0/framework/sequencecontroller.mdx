@@ -1,6 +1,9 @@
 ---
-sidebar_label: Index-controlled sequence
+sidebar_label: Sequence Controller
 ---
+
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Run Logic App workflows in sequence by indexing with the <u>Sequence Controller</u>
 
@@ -95,9 +98,9 @@ Add a HTTP task with this request to complete the in-sequence work of the workfl
 The deployed **Sequence Controller** allows admins to reset stored sequences. This could be useful if you want to reuse certain sequence names or for cleaning references.
 
 :::danger
-<!-- vale Microsoft.Contractions = NO -->
+{/* vale Microsoft.Contractions = NO */}
 This action **SHOULD NOT** be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.
-<!-- vale Microsoft.Contractions = YES -->
+{/* vale Microsoft.Contractions = YES */}
 :::
 
 Reset the sequence by sending this request:
@@ -109,17 +112,5 @@ Reset the sequence by sending this request:
 }
 ```
 
-## Customization
-
-<details>
-<summary>**Related Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **Sequence Controller** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter                  | Default                                                                                                               | Description                                                                                                                                                                                          |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`             | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (used by other Framework components as well) that has the `sequencecontroller` Azure Blob Storage container that holds the Azure Logic App workflow sequences. |
-| `sequenceControllerScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom).      |
-| `sequenceControllerFunctionName` | `inv-${resourcePrefix}-seqcontroller`                                                                                 | The name of the Azure Container App for the **Sequence Controller** component.                                                                                                                       |
-
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:sequence-controller"]} />

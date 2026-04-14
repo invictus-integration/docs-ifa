@@ -1,9 +1,11 @@
 ---
-sidebar_label: Exception handling
+sidebar_label: Exception Handler
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Explain Logic App workflows failures with the <u>Exception Handler</u>
 
@@ -258,15 +260,5 @@ Take a look at the code for the `Scope Exception Handling` below. Pay attention 
 ```
 </details>
 
-## Customization
-
-<details>
-<summary>**Affected Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **Exception Handler** component. See the [release pipeline step of the deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter                | Default                                                                                                               | Description                                                                                                                                                                                     |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `exceptionHandlerScaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom). |
-| `exceptionHandlerFunctionName` | `inv-${resourcePrefix}-exceptionhandler`                                                                              | The name of the Azure Container App for the **Exception Handler** component.                                                                                                                    |
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:exception-handler"]} />

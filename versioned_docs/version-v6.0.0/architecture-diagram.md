@@ -35,10 +35,10 @@ The Invictus **Dashboard** provides a business user friendly UI for interacting 
 
 Common integration patterns are not always built into tasks within the Azure Logic App workflow editor. The Invictus **Framework** provides these patterns as HTTP endpoints that client workflows can interact with.
 
-* [**Publish and subscribe:**](./framework/pubsubV2.md) uses Azure Service Bus as a message broker to publish/subscribe on messages across Azure Logic Apps. 
-* [**Time-controlled sequences:**](./framework/timesequencer.md) control the order in which Azure Logic App workflows can run based on a custom timestamp.
-* [**Index-controlled sequences:**](./framework/sequencecontroller.md) control the order in which Azure Logic App workflow can run based on a custom sequence order.
-* [**Convert between XML/JSON:**](./framework/xmljsonconverter.mdx) convert XML-JSON based on a custom XSLT transformation.
-* [**Validate XML with XSD schema:**](./framework/xsd-validator.md) validate XML based on a custom XSD schema.
-* [**Regular expression replacements:**](./framework/regextranslation.md) translate user content based on custom regular expression patterns.
-* [**Transco promotion:**](./framework/transcoV2.mdx) promote properties in an user content based on database records.
+* [**PubSub:**](./framework/pubsubV2.mdx) uses Azure Service Bus as a message broker to publish/subscribe on messages across Azure Logic Apps. 
+* [**Time Sequencer:**](./framework/timesequencer.mdx) control the order in which Azure Logic App workflows can run based on a custom timestamp.
+* [**Sequence Controller:**](./framework/sequencecontroller.mdx) control the order in which Azure Logic App workflow can run based on a custom sequence order.
+* [**XML/JSON Converter:**](./framework/xmljsonconverter.mdx) convert XML-JSON based on a custom XSLT transformation.
+* [**XSD Validator:**](./framework/xsd-validator.mdx) validate XML based on a custom XSD schema.
+* [**Regex Translator:**](./framework/regextranslation.mdx) translate user content based on custom regular expression patterns.
+* [**Transco:**](./framework/transcoV2.mdx) promote properties in an user content based on database records.

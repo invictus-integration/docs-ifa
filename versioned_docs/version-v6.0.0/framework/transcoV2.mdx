@@ -1,9 +1,11 @@
 ---
-sidebar_label: Transco promotion
+sidebar_label: Transco
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ParameterTable from "@site/src/components/ParameterTable";
+import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 
 # Promote user content from SQL in Logic App workflows with <u>Transco</u>
 :::note[motivation]
@@ -306,20 +308,8 @@ The SQL operation will now save the result to the context.
 
 ___
 
-## Customization
-<details>
-<summary>**Available Bicep parameters**</summary>
-
-The following Bicep parameters control the inner workings of the **Transco V2** component. See the [deployment of the Invictus Framework](./installation/index.mdx) to learn more.
-
-| Bicep parameter         | Default                                                                                                               | Description                                                                                                                                                                                                                                          |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `storageAccountName`    | `invictus{resourcePrefix}store`                                                                                       | The name of the Azure Storage Account (reused across Framework components) for the `transcov2configstore` Azure Blob Storage container that stores the referenced Transco configurations, referenced XSLT transformations and assembly dependencies. |
-| `keyVaultName`          | `invictus-${resourcePrefix}-vlt`                                                                                      | The name of the Azure Key Vault (reused across Framework components and Microsoft authentication) where the Transco retrieves its SQL connection string.                                                                                             |
-| `appInsightsName`       | `invictus-${resourcePrefix}-appins`                                                                                   | The name of the Azure Application Insights resource where the Transco component sends its telemetry.                                                                                                                                                 |
-| `transcoV2FunctionName` | `inv-${resourcePrefix}-transco-v2`                                                                                    | The name of the Azure Container App for the Transco component.                                                                                                                                                                                       |
-| `transcoV2Scaling`      | `{ cpuResources: '0.5', memoryResources: '1.0Gi', scaleMaxReplicas: 1, scaleMinReplicas: 0, concurrentRequests: 10 }` | The Container App options to control scaling. See [scaling rules in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep#custom).                                                      |
-</details>
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={["comp:transco"]} />
 
 ## Migrating Transco v1 to v2
 
