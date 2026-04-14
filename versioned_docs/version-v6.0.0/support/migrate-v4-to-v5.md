@@ -45,7 +45,14 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 * ➡️ Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
 
 :::danger[Import before September 2026]
-If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).This affects the following running apps/components:
+* PubSub
+* Dashboard Gateway
+* HTTP receiver (import job)
+* Generic receiver (import job)
+* Data Factory receiver (import job)
+* Logic Apps import job
+* Logic Apps v2 import job
 :::
 
 ### Common migrating issues
