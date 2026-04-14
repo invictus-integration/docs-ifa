@@ -58,8 +58,8 @@ If you have role assignments conflicts during deployment, remove all role assign
 ### Framework component migrations
 Some Framework components need special attention when upgrading to v5.
 
-<details>
-<summary><h4 id="migrate-pubsub">Migrate PubSub to v5</h4></summary>
+<details id="migrate-pubsub">
+<summary><h4 style={{ margin: 0 }}>Migrate PubSub to v5</h4></summary>
 
 Migrating to v5 includes changes in the authentication, endpoint and removal the metadata links.
 
@@ -187,8 +187,8 @@ Migrating to v5 includes changes in the authentication, endpoint and removal the
 </details>
 </details>
 
-<details>
-<summary><h4 id="migrate-transco" style={{ margin:0 }}>Migrate Transco to v5</h4></summary>
+<details id="migrate-transco">
+<summary><h4 style={{ margin:0 }}>Migrate Transco to v5</h4></summary>
 
 The following things change:
 * Authentication,
@@ -225,8 +225,8 @@ Use the [migration tool from Codit's Integration Practice](https://github.com/Co
 ```
 </details>
 
-<details>
-<summary><h4 id="migrate-matrix" style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
+<details id="migrate-matrix">
+<summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
 
 The new Transco now embeds the Matrix functionality, only authentication and endpoints requires changing.
 
