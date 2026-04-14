@@ -53,6 +53,10 @@ Pipeline/Bicep parameters changes. Please follow the installation guides to see 
 * [🛡️ Give Invictus access to the client's Azure Logic Apps](../dashboard/installation/03_give_la_access.md)
 * [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri). Signing in via Microsoft Entra ID requires the new Dashboard Gateway URL.
 
+:::danger[Import before September 2026]
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).
+:::
+
 <details>
 <summary><h3 style={{ margin: 0 }}>Update your Azure Logic Apps parameters files</h3></summary>
 

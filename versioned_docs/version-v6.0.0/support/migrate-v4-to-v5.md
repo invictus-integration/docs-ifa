@@ -44,6 +44,10 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 * ➕ (if applicable) Update your app registration with the new [Microsoft Entra ID setup guide](../dashboard/installation/01_give_ad_access.mdx).
 * ➡️ Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
 
+:::danger[Import before September 2026]
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).
+:::
+
 ### Common migrating issues
 {/* vale write-good.TooWordy = NO */}
 :::danger[You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS]
