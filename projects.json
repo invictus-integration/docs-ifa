@@ -1,0 +1,6 @@
+{
+  "invictus-docs": {
+    "name": "Invictus for Azure",
+    "sourceDirs": ["preview", "versioned_docs"]
+  }
+}

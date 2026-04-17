@@ -77,12 +77,15 @@ const config = {
         // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
         // forceIgnoreNoIndex: true,
 
-        // Enable Ask AI integration:
-        // askAi: {
-        //   project: "your-project-name",
-        //   apiUrl: "https://your-api-url.com/api/stream",
-        //   hotkey: "cmd+I", // Optional: keyboard shortcut to trigger Ask AI
-        // },
+        // Ask AI — uses the Netlify edge function at /stream
+        // Disabled locally unless ENABLE_ASK_AI=true is set
+        ...(process.env.NODE_ENV !== 'development' || process.env.ENABLE_ASK_AI ? {
+          askAi: {
+            project: "invictus-docs",
+            apiUrl: process.env.ASK_AI_API_URL ?? "/stream",
+            hotkey: "cmd+I",
+          },
+        } : {}),
       }
     ],
   ],

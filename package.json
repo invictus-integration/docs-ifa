@@ -12,10 +12,12 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
+    "scan-docs": "tsx scripts/scan-docs.ts",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "start-server-and-test start http://localhost:3000 cy:run"
   },
+  "main": "index.js",
   "dependencies": {
     "@docusaurus/core": "3.10.0",
     "@docusaurus/faster": "3.10.0",
@@ -26,6 +28,7 @@
     "@mdx-js/react": "^3.0.0",
     "@svgr/webpack": "^8.1.0",
     "clsx": "^2.0.0",
+    "open-ask-ai": "^0.7.3",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -47,8 +50,10 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.0",
     "@docusaurus/types": "3.10.0",
+    "@types/node": "^25.6.0",
     "cypress": "^15.13.1",
-    "start-server-and-test": "^2.1.5"
+    "start-server-and-test": "^2.1.5",
+    "tsx": "^4.21.0"
   },
   "engines": {
     "node": ">=20.0"

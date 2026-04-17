@@ -263,6 +263,16 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# AI backend
+static/generated/
+dist/
+.env
+deno.lock
+
+# Docusaurus build output
+build/
+.docusaurus/
+
 # Visual Studio 6 build log
 *.plg
 
@@ -328,3 +338,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Local Netlify folder
+.netlify
