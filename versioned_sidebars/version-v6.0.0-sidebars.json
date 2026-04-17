@@ -91,7 +91,8 @@
       "collapsible": true,
       "items": [
         "support/migrate-v4-to-v5",
-        "support/migrate-v5-to-v6"
+        "support/migrate-v5-to-v6",
+        "support/faq"
       ]
     }
   ]
