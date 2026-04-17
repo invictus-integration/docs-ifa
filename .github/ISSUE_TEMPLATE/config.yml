@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: ❔ Ask a question about Invictus
+    url: https://github.com/invictus-integration/docs-ifa/discussions/new?category=q-a
+    about: Ask a question about using Invictus, or anything related to the product.
   - name: 💬 Discuss something Invictus
     url: https://github.com/invictus-integration/docs-ifa/discussions/new
     about: Ask a question, praise, speculate ideas or request support for using Invictus.
