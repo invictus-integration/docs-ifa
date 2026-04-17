@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronRight, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,13 +11,71 @@ export type FaqEntry = {
   version?: string;
 };
 
+const rehypeHighlightSearch = (search: string) => (tree: any) => {
+  if (!search) return;
+  const escaped = search.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+
+  const visit = (node: any) => {
+    if (!node.children) return;
+    const newChildren: any[] = [];
+    for (const child of node.children) {
+      if (child.type === "text") {
+        const parts = child.value.split(regex).filter(Boolean);
+        if (parts.length > 1) {
+          for (const part of parts) {
+            if (part.toLowerCase() === search) {
+              newChildren.push({
+                type: "element",
+                tagName: "mark",
+                properties: { style: "background-color:var(--ifm-color-primary);color:white" },
+                children: [{ type: "text", value: part }],
+              });
+            } else {
+              newChildren.push({ type: "text", value: part });
+            }
+          }
+        } else {
+          newChildren.push(child);
+        }
+      } else {
+        visit(child);
+        newChildren.push(child);
+      }
+    }
+    node.children = newChildren;
+  };
+
+  visit(tree);
+};
+
+const usePrefersReducedMotion = () => {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return reduced;
+};
+
 export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; maxHeight?: string }) {
+  const reducedMotion = usePrefersReducedMotion();
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const normalizedSearch = search.toLowerCase();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const noTransition: React.CSSProperties = reducedMotion ? { transition: "none" } : {};
+
+  useEffect(() => {
+    searchInputRef.current?.focus();
+  }, []);
 
   const toggleOpen = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
@@ -48,7 +108,7 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
     const bySearch = normalizedSearch
       ? byTags.filter((item) => {
         const inQuestion = item.question.toLowerCase().includes(normalizedSearch);
-        const inAnswer = item.answer.replace(/<[^>]*>/g, "").toLowerCase().includes(normalizedSearch);
+        const inAnswer = item.answer.toLowerCase().includes(normalizedSearch);
         return inQuestion || inAnswer;
       })
       : byTags;
@@ -56,57 +116,93 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
     return [...bySearch].sort((a, b) => parseVersion(b.version) - parseVersion(a.version));
   }, [data, activeTags, search]);
 
+  const answerOnlyMatchIndexes = useMemo(() => {
+    if (!normalizedSearch) return new Set<number>();
+    return new Set(
+      filtered
+        .map((item, index) => ({ item, index }))
+        .filter(({ item }) =>
+          !item.question.toLowerCase().includes(normalizedSearch) &&
+          item.answer.toLowerCase().includes(normalizedSearch)
+        )
+        .map(({ index }) => index)
+    );
+  }, [filtered, normalizedSearch]);
+
+  useEffect(() => {
+    setOpenIndex(null);
+  }, [search]);
+
   const highlightText = (text: string) => {
-    if (!normalizedSearch) return text;
+    if (!normalizedSearch) return <>{text}</>;
     const escaped = normalizedSearch.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
     const regex = new RegExp(`(${escaped})`, "gi");
     const parts = text.split(regex);
-    return parts.map((part, i) =>
-      part.toLowerCase() === normalizedSearch ? (
-        <mark key={i} style={highlightStyle}>{part}</mark>
-      ) : (
-        part
-      )
+    return (
+      <>
+        {parts.map((part, i) =>
+          part.toLowerCase() === normalizedSearch ? (
+            <mark key={i} style={highlightStyle}>{part}</mark>
+          ) : (
+            part
+          )
+        )}
+      </>
     );
   };
 
-  const highlightHtml = (html: string): string => {
-    if (!normalizedSearch) return html;
-    const escaped = normalizedSearch.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-    // Replace matches in text nodes only — skip content inside HTML tags
-    return html.replace(
-      new RegExp(`(<[^>]*>)|(${escaped})`, "gi"),
-      (match, tag, text) =>
-        tag ? tag : `<mark style="background-color:var(--ifm-color-primary);color:white">${text}</mark>`
+  const renderQuestion = (text: string) => {
+    const segments = text.split(/(`[^`]+`)/g);
+    return segments.map((segment, i) =>
+      segment.startsWith("`") && segment.endsWith("`") ? (
+        <code key={i}>{highlightText(segment.slice(1, -1))}</code>
+      ) : (
+        <React.Fragment key={i}>{highlightText(segment)}</React.Fragment>
+      )
     );
   };
 
   return (
     <div style={containerStyle}>
 
+      {/* Visually hidden description for screen readers — announced when focus lands on the search input */}
+      <span
+        id="faq-search-description"
+        style={srOnlyStyle}
+      >
+        Frequently asked questions. If you cannot find an answer, you can{" "}
+        <a href={`${GITHUB_REPO}/discussions/new?category=q-a`} target="_blank" rel="noopener noreferrer">
+          create a support ticket on GitHub
+        </a>.
+      </span>
+
       {/* Search input */}
       <div style={searchWrapperStyle}>
-        <span style={searchIconStyle}>
+        <span style={searchIconStyle} aria-hidden={true}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </span>
         <input
+          data-cy="search-input"
           type="text"
           placeholder="Search questions and answers..."
           value={search}
+          ref={searchInputRef}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => {
+            if (e.key === "Escape") { setSearch(""); return; }
             if (e.key === "Enter" && filtered.length === 0 && search) {
               window.open(newDiscussionUrl(search), "_blank", "noopener,noreferrer");
             }
           }}
-          style={searchInputStyle}
+          style={{ ...searchInputStyle, ...noTransition }}
           aria-label="Search FAQ questions and answers"
+          aria-describedby="faq-search-description"
           onFocus={(e) => (e.currentTarget.style.boxShadow = focusBoxShadowStyle)}
           onBlur={(e) => (e.currentTarget.style.boxShadow = defaultBoxShadowStyle)}
         />
         {search && (
           <button
-            onClick={() => setSearch("")}
+            onClick={() => { setSearch(""); searchInputRef.current?.focus(); }}
             style={clearButtonStyle}
             aria-label="Clear search input"
           >
@@ -120,12 +216,13 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
         {allTags
           .map((tag) => {
             const isActive = activeTags.includes(tag);
-            const [hover, setHover] = useState(false);
+            const isHovered = hoveredTag === tag;
 
             const style: React.CSSProperties = {
               ...tagButtonStyle,
+              ...noTransition,
               ...(isActive ? tagButtonActiveStyle : {}),
-              ...(hover
+              ...(isHovered
                 ? {
                   backgroundColor: isActive
                     ? "var(--ifm-color-primary-darkest)"
@@ -137,10 +234,11 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
             return (
               <button
                 key={tag}
+                data-cy={tag}
                 onClick={() => toggleTag(tag)}
                 aria-pressed={isActive}
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
+                onMouseEnter={() => setHoveredTag(tag)}
+                onMouseLeave={() => setHoveredTag(null)}
                 style={style}
               >
                 {tag}
@@ -150,7 +248,7 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       </div>
 
       {/* Results count */}
-      <div style={resultCountStyle} aria-live="polite" aria-atomic="true">
+      <div data-cy="search-results-summary" style={resultCountStyle} aria-live="polite" aria-atomic="true">
         Showing {filtered.length} question
         {filtered.length !== 1 ? "s" : ""}
       </div>
@@ -158,15 +256,17 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       {/* FAQ list / empty state */}
       <div style={{ ...faqListWrapperStyle, maxHeight }}>
         {filtered.length > 0 ? (
-          <div style={faqListStyle}>
+          <div data-cy="faq-list" style={faqListStyle}>
             {filtered.map((item, index) => {
-              const isOpen = openIndex === index;
+              const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
 
               return (
                 <div
+                  data-cy="faq-item"
                   key={index}
                   style={{
                     ...faqItemStyle,
+                    ...noTransition,
                     ...(isOpen ? faqItemOpenStyle : {}),
                     ...((hoveredIndex === index || focusedIndex === index) && !isOpen ? faqItemHoverStyle : {}),
                   }}
@@ -176,6 +276,7 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
                   <button
                     style={{
                       ...questionHeaderStyle,
+                      ...noTransition,
                       ...(hoveredIndex === index && !isOpen ? questionHeaderHoverStyle : {}),
                       ...(focusedIndex === index ? questionHeaderFocusStyle : {}),
                     }}
@@ -196,7 +297,7 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
                           style={iconStyle}
                           aria-hidden={true}
                         />
-                        <span>{highlightText(item.question)}</span>
+                        <span>{renderQuestion(item.question)}</span>
                       </div>
 
                       {item.version && (
@@ -218,14 +319,28 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
                     </div>
                   </button>
 
-                  <div aria-live="polite">
+                  <div>
                     {isOpen && (
                       <div
-                        role="region"
+                        data-cy="faq-answer"
                         aria-label={`Answer: ${item.question}`}
                         style={answerStyle}
-                        dangerouslySetInnerHTML={{ __html: highlightHtml(item.answer) }}
-                      />
+                      >
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          rehypePlugins={[[rehypeHighlightSearch, normalizedSearch]]}
+                          components={{
+                            a: ({ node, ...props }) => (
+                              <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+                                {props.children}
+                                <span style={srOnlyStyle}>(opens in new tab)</span>
+                              </a>
+                            ),
+                          }}
+                        >
+                          {item.answer}
+                        </ReactMarkdown>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -422,6 +537,20 @@ const tagBadgeStyle: React.CSSProperties = {
 const highlightStyle: React.CSSProperties = {
   backgroundColor: "var(--ifm-color-primary)",
   color: "white",
+};
+
+const linkStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
+
+const srOnlyStyle: React.CSSProperties = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0,0,0,0)",
+  whiteSpace: "nowrap",
+  border: 0,
 };
 
 const GITHUB_REPO = "https://github.com/invictus-integration/docs-ifa";
