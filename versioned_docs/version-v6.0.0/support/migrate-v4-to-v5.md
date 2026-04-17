@@ -47,12 +47,6 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 :::danger[Import before September 2026]
 If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).This affects the following running apps/components:
 * PubSub
-* Dashboard Gateway
-* HTTP receiver (import job)
-* Generic receiver (import job)
-* Data Factory receiver (import job)
-* Logic Apps import job
-* Logic Apps v2 import job
 :::
 
 ### Common migrating issues
