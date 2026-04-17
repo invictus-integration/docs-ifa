@@ -1,6 +1,10 @@
 [Settings]
 ID = "0e0ef928-92aa-41b4-9d53-a2ee648644d3"
 
+[dev]
+  command = "npm run start"
+  targetPort = 3000
+
 # Settings in the [build] context are global and are applied to all contexts
 # unless otherwise overridden by more specific contexts.
 [build]
@@ -13,7 +17,11 @@ ID = "0e0ef928-92aa-41b4-9d53-a2ee648644d3"
   publish = "build"
 
   # Default build command.
-  command = "npm run build"
+  command = "npm run scan-docs && npm run build"
 
 [build.environment]
   NODE_VERSION = "24.0"
+
+[[edge_functions]]
+  path = "/stream"
+  function = "stream"
