@@ -1,5 +1,5 @@
 ---
-sidebar_label: Migrate from v5.x to v6
+sidebar_label: Migrate from v4.x to v5
 pagination_prev: null
 pagination_next: null
 ---
@@ -44,6 +44,11 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 * ➕ (if applicable) Update your app registration with the new [Microsoft Entra ID setup guide](../dashboard/installation/01_give_ad_access.mdx).
 * ➡️ Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
 
+:::danger[Import before September 2026]
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).This affects the following running apps/components:
+* PubSub
+:::
+
 ### Common migrating issues
 {/* vale write-good.TooWordy = NO */}
 :::danger[You cannot change the OS hosting your app at this time. Please recreate your app with the desired OS]
@@ -54,3 +59,218 @@ If you pass the `servicePlanName` or `autoscaleForPlanName` (or both) parameters
 :::danger[The role assignment already exists]
 If you have role assignments conflicts during deployment, remove all role assignments defined at the Invictus resource group level.
 :::
+
+### Framework component migrations
+Some Framework components need special attention when upgrading to v5.
+
+<details id="migrate-pubsub">
+<summary><h4 style={{ margin: 0 }}>Migrate PubSub to v5</h4></summary>
+
+Migrating to v5 includes changes in the authentication, endpoint and removal the metadata links.
+
+> 👉 *The `/api/Subscribe` endpoint also needs to use a `POST` instead of a `GET` HTTP method.*
+
+<details>
+<summary>**Publish message example**</summary>
+
+```diff
+{
+    "PublishMessage": {
+        "type": "Http",
+        "inputs": {
+            "authentication": {
+-               "password": "@parameters('invictusPassword')",
+-               "type": "Basic",
+-               "username": "Invictus"
++               "audience": "[parameters('invictus').authentication.audience]",
++               "identity": "[parameters('infra').managedIdentity.id]",
++               "type": "ManagedServiceIdentity"
+            },
+            "method": "post",
+-           "uri": "[parameters('invictus').framework.pubSub.v1.publishUrl]",
++           "uri": "[parameters('invictus').framework.pubSub.v2.publishUrl]",
+            "body": {
+                "Content": "@{decodeBase64(body('Extract_Message_Context')['Content'])}",
+                "Context": "@body('Extract_Message_Context')?['Context']"
+            },
+        },
+-       "metadata": {
+-           "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.definitionUrl]",
+-           "swaggerSource": "custom"
+-       },
+        "runAfter": {
+            "Extract_Message_Context": [
+                "Succeeded"
+            ]
+        }
+    }
+}
+```
+</details>
+
+<details>
+<summary>**Subscribe message example**</summary>
+
+```diff
+{
+    "SubscribeMessage": {
+        "type": "Http"
+        "inputs": {
+            "authentication": {
+-               "password": "@parameters('invictusPassword')",
+-               "type": "Basic",
+-               "username": "Invictus"
++               "audience": "[parameters('invictus').authentication.audience]",
++               "identity": "[parameters('infra').managedIdentity.id]",
++               "type": "ManagedServiceIdentity"
+            },
+-           "method": "get",
++           "method": "post",
+            "queries": {
+                "deleteOnReceive": false,
+                "filter": "Domain = 'B2B-Gateway' AND Action = 'EDI' AND Version = '1.0'",
+                "subscription": "[concat(substring(variables('logicAppName'), max(createarray(0, sub(length(variables('logicAppName')), 36)))), '-', uniquestring(variables('logicAppName')))]"
+            },
+-           "uri": "[parameters('invictus').framework.pubSub.v1.subscribeUrl]"
++           "uri": "[parameters('invictus').framework.pubSub.v2.subscribeUrl]"
+        },
+-       "metadata": {
+-           "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.definitionUrl]",
+-           "swaggerSource": "custom"
+-       },
+        "recurrence": {
+            "frequency": "Second",
+            "interval": 1
+        },
+        "splitOn": "@triggerBody()",
+        "splitOnConfiguration": {
+            "correlation": {
+                "clientTrackingId": "@triggerBody()['Context']['x-ms-client-tracking-id']"
+            }
+        }
+    }
+}
+```
+</details>
+
+<details>
+<summary>**Acknowledge message example**</summary>
+
+```diff
+{
+    "AcknowledgeMessage": {
+        "type": "Http",
+        "inputs": {
+            "authentication": {
+-               "password": "@parameters('invictusPassword')",
+-               "type": "Basic",
+-               "username": "Invictus"
++               "audience": "[parameters('invictus').authentication.audience]",
++               "identity": "[parameters('infra').managedIdentity.id]",
++               "type": "ManagedServiceIdentity"
+            },
+            "body": {
+                "AcknowledgementType": "Complete",
+                "IgnoreNotFoundException": true,
+                "Subscription": "@triggerBody()?['subscription']",
++               "SequenceNumber": "@triggerBody()?['sequenceNumber']"
+-               "LockToken": "@triggerBody()?['LockToken']",
+-               "MessageReadTime": "@trigger()['startTime']"
+            },
+            "method": "post",
+-           "uri": "[parameters('invictus').framework.pubSub.v1.acknowledgeUrl]"
++           "uri": "[parameters('invictus').framework.pubSub.v2.acknowledgeUrl]"
+        },
+-       "metadata": {
+-           "apiDefinitionUrl": "[parameters('invictus').framework.pubSub.v1.definitionUrl]",
+-           "swaggerSource": "custom"
+-       },
+        "runAfter": {}
+    }
+}
+```
+</details>
+</details>
+
+<details id="migrate-transco">
+<summary><h4 style={{ margin:0 }}>Migrate Transco to v5</h4></summary>
+
+The following things change:
+* Authentication,
+* Endpoints,
+* Metadata links.
+
+:::info[migrate Transco configuration files]
+Use the [migration tool from Codit's Integration Practice](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-Transco--matrix-migration-tools) to migrate your existing Transco configuration files to the new format.
+:::
+
+```diff
+"Transform_XML": {
+  "type": "Http",
+  "inputs": {
+    "method": "POST",
+-   "uri": "[parameters('invictus').Framework.Transco.v1.TranscoXmlUrl]",
++   "uri": "[parameters('invictus').Framework.Transco.v2.TranscoXmlUrl]",
+    "authentication": {
+-     "username": "Invictus",
+-     "password": "@parameters('invictusPassword')",
+-     "type": "Basic",
++     "identity": "[parameters('infra').managedIdentity.id]",
++     "audience": "[parameters('invictus').authentication.audience]",
++     "type": "ManagedServiceIdentity"
+    },
+    "body": {
+      "Content": "@triggerBody()?['Content']",
+      "Context": "",
+      "TranscoConfig": "EFACT_D96A_ORDERS-to-Generic_Order.json"
+    }
+  },
+  "runAfter": {}
+}
+```
+</details>
+
+<details id="migrate-matrix">
+<summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
+
+The new Transco now embeds the Matrix functionality, only authentication and endpoints requires changing.
+
+```diff
+"Extract_Message_Context": {
+  "type": "Http",
+  "inputs": {
+    "method": "POST",
+-   "uri": "[parameters('invictus').framework.matrix.v1.basicMatrixUrl]",
++   "uri": "[parameters('invictus').framework.Transco.v2.basicMatrixUrl]",
+    "body": {
+      "Domain": "B2B-Gateway",
+      "Service": "@{concat('AS2-Receive-', body('Decode_AS2_message')?.aS2Message?.aS2To)}",
+      "Action": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PayloadFormat}",
+      "Version": "1.0",
+      "Sender": "@{outputs('Integration_Account_Artifact_Lookup_-_Get_SendingPartner')?.properties?.metadata?.PartyName}",
+      "Content": "@{base64(body('Decode_AS2_message')?.AS2Message?.Content)}",
+      "KeyValueCollection": {
+        "ReceiveFileName": "@{body('Decode_AS2_message')?['AS2Message']?['FileName']}",
+        "ReceiveProtocol": "AS2",
+        "ReceiveProtocolDetails": "@{body('Decode_AS2_message')?['AS2Message']?['AS2From']} > @{body('Decode_AS2_message')?['AS2Message']?['AS2To']}",
+        "ReceiveReference": "@{body('Decode_AS2_message')?['AS2Message']?['OriginalMessageId']}",
+        "ReceiveTimeUtc": "@{utcNow()}"
+      }
+	},
+	"authentication": {
+-     "username": "Invictus",
+-     "password": "@parameters('invictusPassword')"
+-     "type": "Basic",
++     "identity": "[parameters('infra').managedIdentity.id]",
++     "audience": "[parameters('invictus').authentication.audience]",     
++     "type": "ManagedServiceIdentity"
+	}
+  },
+  "runAfter": {},
+- "metadata": {
+-   "apiDefinitionUrl": "[parameters('invictus').framework.matrix.v1.definitionUrl]",
+-   "swaggerSource": "custom"
+- }
+}
+```
+</details>

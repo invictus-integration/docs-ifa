@@ -10,9 +10,9 @@ Invictus v6 uses containerized API instead of Web API or Azure Functions. This m
 :::
 :::danger[removal of v1 Framework components]
 Invictus v6 no longer supports the PubSub v1, Transco v1 and Matrix v1 components.
-* [Migrate PubSub v1 to v2](../framework/pubsubV2.mdx#migrating-pubsub-v1-to-v2)
-* [Migrate Transco v1 to v2](../framework/transcoV2.mdx#migrating-transco-v1-to-v2)
-* [Migrate Matrix v1 to Transco v2](../framework/transcoV2.mdx#migrating-transco-v1-to-v2)
+* [Migrate PubSub](./migrate-v4-to-v5.md#migrate-pubsub)
+* [Migrate Transco](./migrate-v4-to-v5.md#migrate-transco)
+* [Migrate Matrix to Transco](./migrate-v4-to-v5.md#migrate-transco)
 :::
 
 ## Preparing Environment
@@ -52,6 +52,11 @@ Pipeline/Bicep parameters changes. Please follow the installation guides to see 
 ## After Deployment
 * [🛡️ Give Invictus access to the client's Azure Logic Apps](../dashboard/installation/03_give_la_access.md)
 * [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri). Signing in via Microsoft Entra ID requires the new Dashboard Gateway URL.
+
+:::danger[Import before September 2026]
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10). This affects the following running apps/components:
+* PubSub
+:::
 
 <details>
 <summary><h3 style={{ margin: 0 }}>Update your Azure Logic Apps parameters files</h3></summary>
