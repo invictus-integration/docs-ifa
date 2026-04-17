@@ -1,23 +1,20 @@
-name: 💪 Enhancement request
-description: Suggest an improvement to the Invictus project.
-title: "💪 [Enhancement]: "
+name: 💪 Enhance request
+description: Suggest an improvement to the Invictus product.
+title: '💪 [Enhance]: '
 labels:
   - enhancement
+  - triage
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for you contribution to the Invictus project!
-  - type: dropdown
-    id: invictus-category
+        Thanks for your contribution to the Invictus product!
+  - type: input
+    id: invictus-version
     attributes:
-      label: Category
-      description: In what area of the project does this enhancement belong?
-      multiple: true
-      options:
-        - Dashboard visualization
-        - Framework components
-        - Documentation
+      label: Version
+      description: What version of the product are you running?
+      placeholder: Ex. 6.0.0
   - type: textarea
     id: description
     attributes:
