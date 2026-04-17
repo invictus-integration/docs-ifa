@@ -1,5 +1,5 @@
 ---
-sidebar_label: Migrate from v5.x to v6
+sidebar_label: Migrate from v4.x to v5
 pagination_prev: null
 pagination_next: null
 ---

@@ -1,23 +1,20 @@
 name: 🐞 Bug report
-description: Report a bug in the Invictus project.
-title: "🐞 [Bug]: "
+description: Report a bug in the Invictus product.
+title: '🐞 [Bug]: '
 labels:
   - bug
+  - triage
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your contribution to the Invictus project!
-  - type: dropdown
-    id: invictus-category
+        Thanks for your contribution to the Invictus product!
+  - type: input
+    id: invictus-version
     attributes:
-      label: Category
-      description: In what area of the project does this bug belong?
-      multiple: true
-      options:
-        - Dashboard visualization
-        - Framework components
-        - Documentation
+      label: Version
+      description: In what version of the product did this bug occur?
+      placeholder: Ex. 6.0.0
   - type: textarea
     id: expected-behavior
     attributes:
@@ -39,12 +36,6 @@ body:
         1. Provide the Transco with a configuration
         2. Reference the configuration in the request
         3. Notice how the response is incorrect
-  - type: input
-    id: invictus-version
-    attributes:
-      label: Invictus version
-      description: The version of the Invictus project where the bug occurred.
-      placeholder: Ex. 1.0.0
   - type: textarea
     id: context
     attributes:
