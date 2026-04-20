@@ -3,27 +3,38 @@ import { createPortal } from 'react-dom';
 
 export function SharedNote() {
   const [visible, setVisible] = useState(false);
-  const [usePortal, setUsePortal] = useState(false);
-  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0, arrowLeft: '50%', below: false });
   const badgeRef = useRef(null);
   const tooltipId = useId();
+  const TOOLTIP_WIDTH = 260;
+  const MARGIN = 10;
+  const NAV_HEIGHT = 60;
+  const GAP = 8;
 
   useLayoutEffect(() => {
     if (visible && badgeRef.current) {
       const rect = badgeRef.current.getBoundingClientRect();
-      const navHeight = 60; // adjust to match your nav height
-      const spaceAbove = rect.top - navHeight;
+      const vw = window.innerWidth;
 
-      if (spaceAbove < 50) {
-        // Tooltip would be hidden under nav → use portal
-        setUsePortal(true);
-        setTooltipPos({
-          top: rect.top - 40,
-          left: rect.left + rect.width / 2,
-        });
-      } else {
-        setUsePortal(false);
-      }
+      // Center tooltip on badge, then clamp within viewport
+      let left = rect.left + rect.width / 2 - TOOLTIP_WIDTH / 2;
+      left = Math.max(MARGIN, Math.min(left, vw - TOOLTIP_WIDTH - MARGIN));
+
+      // Arrow points to badge center, relative to clamped tooltip left
+      const arrowLeft = Math.min(
+        Math.max(rect.left + rect.width / 2 - left, 16),
+        TOOLTIP_WIDTH - 16
+      );
+
+      const spaceAbove = rect.top - NAV_HEIGHT;
+      const below = spaceAbove < 50;
+
+      setTooltipPos({
+        top: below ? rect.bottom + GAP : rect.top - GAP,
+        left,
+        arrowLeft,
+        below,
+      });
     }
   }, [visible]);
 
@@ -32,17 +43,17 @@ export function SharedNote() {
       id={tooltipId}
       role="tooltip"
       style={{
-        position: usePortal ? 'fixed' : 'absolute',
-        bottom: usePortal ? 'auto' : '125%',
-        top: usePortal ? tooltipPos.top : 'auto',
-        left: usePortal ? tooltipPos.left : '50%',
-        transform: 'translateX(-50%)',
+        position: 'fixed',
+        top: tooltipPos.below ? tooltipPos.top : 'auto',
+        bottom: tooltipPos.below ? 'auto' : `calc(100vh - ${tooltipPos.top}px)`,
+        left: tooltipPos.left,
+        width: TOOLTIP_WIDTH,
         backgroundColor: '#333',
         color: '#fff',
-        padding: '6px',
+        padding: '6px 8px',
         borderRadius: '6px',
-        whiteSpace: 'nowrap',
-        fontSize: '0.9rem',
+        whiteSpace: 'normal',
+        fontSize: '0.85rem',
         fontFamily: 'Bitter',
         fontWeight: 'normal',
         zIndex: 1000,
@@ -54,14 +65,14 @@ export function SharedNote() {
       <span
         style={{
           position: 'absolute',
-          top: '100%',
-          left: '50%',
+          [tooltipPos.below ? 'bottom' : 'top']: '100%',
+          left: tooltipPos.arrowLeft,
           marginLeft: '-5px',
           width: 0,
           height: 0,
           borderLeft: '5px solid transparent',
           borderRight: '5px solid transparent',
-          borderTop: '5px solid #333',
+          [tooltipPos.below ? 'borderBottom' : 'borderTop']: '5px solid #333',
         }}
       />
     </span>
@@ -102,10 +113,9 @@ export function SharedNote() {
         >
           Shared
         </span>
-        {!usePortal && visible && tooltipElement}
       </span>
 
-      {visible && usePortal && createPortal(tooltipElement, document.body)}
+      {visible && createPortal(tooltipElement, document.body)}
     </>
   );
 }
