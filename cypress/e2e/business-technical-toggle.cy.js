@@ -17,6 +17,7 @@ describe('Business/Technical user toggle', () => {
       if (deviceName === Mobile) {
         cy.get('body').then(($body) => {
           if (!$body.find(`[data-cy-toggle=${audience}]:visible`).length) {
+            cy.scrollTo('top');
             cy.get('[aria-label="Toggle navigation bar"]').click();
             cy.getToggle(audience).should('be.visible');
           }
