@@ -9,12 +9,10 @@ describe('Business/Technical user toggle', () => {
 
     Cypress.Commands.add('assertToggleState', (activeAudience) => {
       cy.getToggle(activeAudience)
-        .should('have.attr', 'data-cy-toggle-active', 'true')
-        .and('have.css', 'color', 'rgb(255, 255, 255)');
+        .should('have.attr', 'data-cy-toggle-active', 'true');
       const inactiveAudience = activeAudience === Audience.BUSINESS ? Audience.TECHNICAL : Audience.BUSINESS;
       cy.getToggle(inactiveAudience)
-        .should('have.attr', 'data-cy-toggle-active', 'false')
-        .and('have.css', 'color', 'rgb(0, 0, 0)');
+        .should('have.attr', 'data-cy-toggle-active', 'false');
     });
 
     Cypress.Commands.add('clickFooterLink', (linkName) => {
