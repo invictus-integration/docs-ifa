@@ -26,7 +26,11 @@ describe('Business/Technical user toggle', () => {
 
     Cypress.Commands.add('closeSidebar', (deviceName) => {
       if (deviceName === Mobile) {
-        cy.get('.navbar-sidebar__close').click();
+        cy.get('body').then(($body) => {
+          if ($body.find('.navbar-sidebar--show').length) {
+            cy.get('.navbar-sidebar__close').click();
+          }
+        });
       }
     });
 
@@ -38,13 +42,7 @@ describe('Business/Technical user toggle', () => {
     });
 
     Cypress.Commands.add('clickFooterLink', (deviceName, linkName) => {
-      if (deviceName === Mobile) {
-        cy.get('body').then(($body) => {
-          if ($body.find('[data-cy-toggle=business]:visible').length) {
-            cy.closeSidebar(deviceName);
-          }
-        });
-      }
+      cy.closeSidebar(deviceName);
       cy.get(`[data-cy-footer-link=${linkName}]`).scrollIntoView().click();
     });
 
@@ -57,6 +55,10 @@ describe('Business/Technical user toggle', () => {
         cy.viewport(width, height);
         cy.visit('/');
         cy.openSidebar(deviceName, Audience.BUSINESS);
+      });
+
+      afterEach(() => {
+        cy.closeSidebar(deviceName);
       });
 
       it('defaults to business users', () => {
