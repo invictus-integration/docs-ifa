@@ -16,17 +16,19 @@ describe('Business/Technical user toggle', () => {
     Cypress.Commands.add('openSidebar', (deviceName, audience) => {
       if (deviceName === Mobile) {
         cy.get('body').then(($body) => {
-          if (!$body.find(`[data-cy-toggle=${audience}]:visible`).length) {
+          const sidebarOpen = $body.find('.navbar-sidebar--show').length > 0;
+          const toggleVisible = $body.find(`[data-cy-toggle=${audience}]:visible`).length > 0;
+          if (!sidebarOpen && !toggleVisible) {
             cy.scrollTo('top');
             cy.get('[aria-label="Toggle navigation bar"]').click();
-            cy.getToggle(audience).should('be.visible');
           }
+          cy.getToggle(audience).should('be.visible');
         });
       }
     });
 
     Cypress.Commands.add('closeSidebar', (deviceName) => {
-      if (deviceName === Mobile) {
+      if (deviceName === Mobile && sidebarOpen) {
         cy.get('body').then(($body) => {
           if ($body.find('.navbar-sidebar--show').length) {
             cy.get('.navbar-sidebar__close').click();
