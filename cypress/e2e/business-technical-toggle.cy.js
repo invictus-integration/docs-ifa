@@ -28,7 +28,7 @@ describe('Business/Technical user toggle', () => {
     });
 
     Cypress.Commands.add('closeSidebar', (deviceName) => {
-      if (deviceName === Mobile && sidebarOpen) {
+      if (deviceName === Mobile) {
         cy.get('body').then(($body) => {
           if ($body.find('.navbar-sidebar--show').length) {
             cy.get('.navbar-sidebar__close').click();
