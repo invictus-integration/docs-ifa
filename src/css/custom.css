@@ -512,7 +512,6 @@ html[data-theme='dark'] .sidebar-switcher {
 
 .toggle-item:hover,
 .toggle-item:focus-visible {
-  opacity: 0.85;
   outline: none;
 }
 
