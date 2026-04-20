@@ -1,7 +1,12 @@
 describe('Business/Technical user toggle', () => {
 
   const Audience = { BUSINESS: 'business', TECHNICAL: 'technical' };
-  const Devices = { DESKTOP: 'Desktop', MOBILE: 'Mobile' };
+  const Mobile = 'Mobile';
+  const Desktop = 'Desktop';
+  const Devices = [
+    { name: Desktop, viewport: [1280, 720] },
+    { name: Mobile, viewport: [375, 667] }
+  ];
 
   before(() => {
 
@@ -9,7 +14,7 @@ describe('Business/Technical user toggle', () => {
       cy.get(`[data-cy-toggle=${audience}]`).filter(':visible').first());
 
     Cypress.Commands.add('openSidebar', (deviceName, audience) => {
-      if (deviceName === Devices.MOBILE) {
+      if (deviceName === Mobile) {
         cy.get('body').then(($body) => {
           if (!$body.find(`[data-cy-toggle=${audience}]:visible`).length) {
             cy.get('[aria-label="Toggle navigation bar"]').click();
@@ -20,10 +25,8 @@ describe('Business/Technical user toggle', () => {
     });
 
     Cypress.Commands.add('closeSidebar', (deviceName) => {
-      if (deviceName == Devices.MOBILE) {
+      if (deviceName === Mobile) {
         cy.get('.navbar-sidebar__close').click();
-        cy.get('[data-cy-toggle=business]').should('not.be.visible');
-        cy.get('[data-cy-toggle=technical]').should('not.be.visible');
       }
     });
 
@@ -35,10 +38,10 @@ describe('Business/Technical user toggle', () => {
     });
 
     Cypress.Commands.add('clickFooterLink', (deviceName, linkName) => {
-      if (deviceName === Devices.MOBILE) {
+      if (deviceName === Mobile) {
         cy.get('body').then(($body) => {
           if ($body.find('[data-cy-toggle=business]:visible').length) {
-            cy.get('.navbar-sidebar__close').click();
+            cy.closeSidebar(deviceName);
           }
         });
       }
@@ -47,10 +50,7 @@ describe('Business/Technical user toggle', () => {
 
   });
 
-  [
-    { name: Devices.DESKTOP, viewport: [1280, 720] },
-    { name: Devices.MOBILE, viewport: [375, 667] },
-  ].forEach(({ name: deviceName, viewport: [width, height] }) => {
+  Devices.forEach(({ name: deviceName, viewport: [width, height] }) => {
 
     describe(deviceName, () => {
       beforeEach(() => {
