@@ -504,3 +504,22 @@ html[data-theme='dark'] .sidebar-switcher {
   --toggle-track-bg: rgba(255, 255, 255, 0.1);
   --toggle-inactive-color: var(--ifm-color-secondary-light); /* #d6dcde on near-black → 9.6:1 */
 }
+
+.toggle-item {
+  border-radius: 999px;
+  transition: color 0.25s ease, opacity 0.2s ease;
+}
+
+.toggle-item:hover,
+.toggle-item:focus-visible {
+  opacity: 0.85;
+  outline: none;
+}
+
+.toggle-item:focus-visible {
+  box-shadow: 0 0 0 2px var(--ifm-color-primary);
+}
+
+.navbar-sidebar .toggle-item:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
