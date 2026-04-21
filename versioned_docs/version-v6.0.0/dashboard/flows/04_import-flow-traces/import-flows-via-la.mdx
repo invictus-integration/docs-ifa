@@ -254,9 +254,9 @@ In this scenario, a resubmit was executed on Logic App 1. Since the Azure Logic 
 <details>
 <summary>Scenario Two: resume further down the chain</summary>
 
-<!-- vale proselint.Diacritical = NO -->
+{/* vale proselint.Diacritical = NO */}
 In this scenario, the resubmitted logic app Is number 3. Since this isn't the first Azure Logic App in the Chain, this will be handled as a **Resume**. As soon as we receive the events for number 4 we can immediately link it to number 1 since it will still have the same x-iv-parent-workflow-run-id. Through the OriginWorkFlowRunId of 333 Azure Logic App 4 is then treated as a resubmit of 3. In the case of a resume, only the resubmitted Azure Logic Apps and its descendants are ignored and not the whole chain.
-<!-- vale proselint.Diacritical = YES -->
+{/* vale proselint.Diacritical = YES */}
 
 ![scenario 2](/images/import-scenario2.png)
 
