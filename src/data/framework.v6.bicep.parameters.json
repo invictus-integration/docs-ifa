@@ -893,7 +893,7 @@
         "properties": [
           {
             "name": "dnsRecords",
-            "description": "Specifies wether to create or delegate the DNS records creation for the attached private DNS zones. Can be set to <code>create</code> or <code>delegate</code>.",
+            "description": "Specifies whether to create or delegate the DNS records creation for the attached private DNS zones. Can be set to <code>create</code> or <code>delegate</code>.",
             "default": "create"
           },
           {
