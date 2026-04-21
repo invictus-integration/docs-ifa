@@ -157,9 +157,9 @@ If we had to take the above image as an example. If resubmit is executed for thi
 </TabItem>
 <TabItem value="default-resume" label="Resume">
 
-<!-- vale proselint.Diacritical = NO -->
+{/* vale proselint.Diacritical = NO */}
 The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume doesn't start from the first logic app within its flow, as with the resubmit, but instead executes only the failed logic apps.
-<!-- vale proselint.Diacritical = YES -->
+{/* vale proselint.Diacritical = YES */}
 
 > ☝️ The only exception is that if a Parent Logic App of a failed Logic App has also failed, then only the Parent is executed.
 
