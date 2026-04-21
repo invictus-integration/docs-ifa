@@ -491,7 +491,7 @@
   {
     "name": "serviceBusSkuName",
     "description": "The pricing tier of the Azure Service Bus, used by the PubSub component.",
-    "default": "enableVnetSupport ? Premium : Standard",
+    "default": "vnetDeployment.enabled ? Premium : Standard",
     "tags": [
       "comp:pubsub",
       "messaging"
@@ -587,6 +587,7 @@
   {
     "name": "disableStorageAccountPublicNetworkAccess",
     "description": "Indicates whether the shared Azure Storage Account should disable public network access. If `true`, only private endpoints or VNET integration are allowed.",
+    "deprecatedSince": "v6.4, will be removed in v7, as the `vnetDeployment` parameter now controls public network access.",
     "default": "false",
     "tags": [
       "storage",
@@ -679,6 +680,7 @@
     "name": "caeVnetInfraRgName",
     "description": "The name of the Azure Container Apps infrastructure resource group ([when VNET is enabled](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env)).",
     "default": "invictus-${resourcePrefix}-cae-infra",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `cae.resourceGroupName` property of the `vnetDeployment` parameter to configure the Azure Container App environment infrastructure resource group name.",
     "tags": [
       "container-apps",
       "networking",
@@ -726,6 +728,7 @@
   {
     "name": "vnetName",
     "description": "The name of the Azure Virtual Network (VNET) resource that forms the base for all network-related rules and subnets throughout.",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `vnet.name` property of the `vnetDeployment` parameter to configure the VNET name.",
     "tags": [
       "networking",
       "vnet"
@@ -734,6 +737,7 @@
   {
     "name": "serviceBusSubnets",
     "description": "A list of subnet names to form the Azure Service Bus namespace resource, useful for VNET deployments.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.serviceBus` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Service Bus namespace.",
     "tags": [
       "networking",
       "vnet"
@@ -742,6 +746,7 @@
   {
     "name": "storageAccountSubnets",
     "description": "A list of subnet names to form the Azure Storage Account resource, useful for VNET deployments.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.blob/table/queue` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Storage Account.",
     "tags": [
       "networking",
       "vnet",
@@ -751,6 +756,7 @@
   {
     "name": "keyVaultSubnets",
     "description": "A list of subnet names to form the Azure Key Vault resource, useful for VNET deployments.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.keyVault` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Key Vault.",
     "tags": [
       "networking",
       "vnet"
@@ -759,6 +765,7 @@
   {
     "name": "containerAppEnvironmentSubnets",
     "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.cae` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Container App environment.",
     "tags": [
       "networking",
       "vnet",
@@ -768,6 +775,7 @@
   {
     "name": "containerAppEnvironmentSubnetName",
     "description": "The name of the subnet to form the network rules of the Azure Container App environment, useful for VNET deployments.",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `vnet.cae.delegatedSubnetName` property of the `vnetDeployment` parameter to configure the Azure Container App environment subnet name.",
     "tags": [
       "networking",
       "vnet",
@@ -777,6 +785,7 @@
   {
     "name": "vnetResourceGroupName",
     "description": "The name of the Azure resource group where the VNET network rules deploys to.",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `vnet.resourceGroupName` property of the `vnetDeployment` parameter to configure the VNET resource group name.",
     "default": "resourceGroup().name",
     "tags": [
       "networking",
@@ -786,6 +795,7 @@
   {
     "name": "dnsZoneSubscriptionId",
     "description": "The Azure subscription ID to control the private DNS zone throughout, useful for VNET deployments.",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `vnet.privateDnsZone.subscriptionId` property of the `vnetDeployment` parameter to configure the DNS zone subscription ID.",
     "default": "subscription().subscriptionId",
     "tags": [
       "networking",
@@ -795,6 +805,7 @@
   {
     "name": "dnsZoneResourceGroupName",
     "description": "The name of the Azure resource group where the private DNS zone deploys to.",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `vnet.privateDnsZone.resourceGroupName` property of the `vnetDeployment` parameter to configure the DNS zone resource group name.",
     "default": "resourceGroup().name",
     "tags": [
       "networking",
@@ -804,7 +815,17 @@
   {
     "name": "enableVnetSupport",
     "description": "Feature flag to control whether the Framework deploys within a VNET.",
+    "deprecatedSince": "v6.4, will be removed in v7, please use the `enabled` property of the `vnetDeployment` parameter to control whether the Framework deploys within a VNET.",
     "default": "false",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+    "name": "privateEndpointSubnetName",
+    "description": "The name of the subnet to form the Azure Private Endpoint resources, useful for VNET deployments.",
+    "deprecatedSince": "v6.3, will be removed in v7, please use the `vnet.privateEndpointsSubnetName` property of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources.",
     "tags": [
       "networking",
       "vnet"
@@ -817,6 +838,124 @@
     "newSince": "v6.3",
     "tags": [
       "monitoring"
+    ]
+  },
+  {
+    "name": "vnetDeployment",
+    "description": "The related properties to a VNET deployment.",
+    "default": "null (no VNET-support)",
+    "newSince": "v6.4",
+    "tags": [
+      "networking",
+      "vnet"
+    ],
+    "properties": [
+      {
+        "name": "enabled",
+        "description": "Feature flag to control whether the Framework deploys within a VNET.",
+        "default": "false"
+      },
+      {
+        "name": "vnet",
+        "description": "The properties related to the Azure Virtual Network (VNET) resource.",
+        "properties": [
+          {
+            "name": "name",
+            "description": "The name of the Azure Virtual Network (VNET) resource."
+          },
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the Azure resource group where the VNET deploys to."
+          },
+          {
+            "name": "privateEndpointsSubnetName",
+            "description": "The name of the subnet to form the Azure Private Endpoint resources."
+          }
+        ]
+      },
+      {
+        "name": "cae",
+        "description": "The properties related to the [Azure Container App environment's VNET integration](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env).",
+        "properties": [
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the infrastructure Azure resource group where the Azure Container App environment's VNET integration deploys to."
+          },
+          {
+            "name": "delegatedSubnetName",
+            "description": "The name of the delegated subnet to form the Azure Container App environment's VNET integration."
+          }
+        ]
+      },
+      {
+        "name": "privateDnsZone",
+        "description": "The properties related to the [private DNS zone's VNET integration](https://learn.microsoft.com/en-us/azure/dns/private-dns-privatednszone).",
+        "properties": [
+          {
+            "name": "dnsRecords",
+            "description": "Specifies wether to create or delegate the DNS records creation for the attached private DNS zones. Can be set to <code>create</code> or <code>delegate</code>.",
+            "default": "create"
+          },
+          {
+            "name": "subscriptionId",
+            "description": "The Azure subscription ID to control the private DNS zone."
+          },
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the Azure resource group where the private DNS zone deploys to."
+          }
+        ]
+      },
+      {
+        "name": "privateEndpointNames",
+        "description": "The names of the [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
+        "properties": [
+          {
+            "name": "acr",
+            "description": "The name of the Azure Private Endpoint for the Azure Container Registry resource."
+          },
+          {
+            "name": "cae",
+            "description": "The name of the Azure Private Endpoint for the Azure Container App environment resource."
+          },
+          {
+            "name": "blob",
+            "description": "The name of the Azure Private Endpoint for the Azure Storage Account blob resource."
+          },
+          {
+            "name": "file",
+            "description": "The name of the Azure Private Endpoint for the Azure Storage Account file share resource."
+          },
+          {
+            "name": "table",
+            "description": "The name of the Azure Private Endpoint for the Azure Storage Account table resource."
+          },
+          {
+            "name": "queue",
+            "description": "The name of the Azure Private Endpoint for the Azure Storage Account queue resource."
+          },
+          {
+            "name": "mongo",
+            "description": "The name of the Azure Private Endpoint for the Azure Cosmos DB for MongoDB resource."
+          },
+          {
+            "name": "eventHub",
+            "description": "The name of the Azure Private Endpoint for the Azure Event Hubs resource."
+          },
+          {
+            "name": "serviceBus",
+            "description": "The name of the Azure Private Endpoint for the Azure Service Bus resource."
+          },
+          {
+            "name": "keyVault",
+            "description": "The name of the Azure Private Endpoint for the Azure Key Vault resource."
+          },
+          {
+            "name": "cognitiveServices",
+            "description": "The name of the Azure Private Endpoint for the Azure Cognitive Services resource."
+          }
+        ]
+      }
     ]
   }
 ]
