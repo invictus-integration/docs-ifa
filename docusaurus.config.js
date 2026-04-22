@@ -33,6 +33,7 @@ const config = {
         source: 'invictus-integration/docs-ifa',
         theme: 'auto',
         button: 'bottom-right',
+        brandColor: 'green'
       };`,
       attributes: {}
     },
