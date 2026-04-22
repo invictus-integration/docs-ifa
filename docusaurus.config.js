@@ -34,7 +34,7 @@ const config = {
         theme: 'auto',
         button: 'bottom-right',
       };`,
-      attributes: null
+      attributes: undefined
     },
   ],
 
