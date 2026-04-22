@@ -1,8 +1,10 @@
+import type { Config } from '@docusaurus/types';
+
 const lightCodeTheme = require('./src/prism/light');
 const darkCodeTheme = require('./src/prism/dark');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-const config = {
+const config: Config = {
   title: 'Invictus for Azure',
   favicon: 'img/favicon.ico',
 
@@ -25,6 +27,24 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
+  headTags: [
+    {
+      tagName: 'script',
+      innerHTML: `window.tlumaConfig = {
+        source: 'invictus-integration/docs-ifa',
+        theme: 'auto',
+        button: 'bottom-right',
+      };`,
+    },
+  ],
+
+  scripts: [
+    {
+      src: 'https://tluma.ai/widget.js',
+      async: true,
+    },
+  ],
 
   presets: [
     [
