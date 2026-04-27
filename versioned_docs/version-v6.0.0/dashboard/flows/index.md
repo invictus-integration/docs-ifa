@@ -1,4 +1,4 @@
-# Dashboard Homepage: overview of flow statuses
+# Dashboard Homepage: Overview of flow statuses
 The Dashboard home page shows you an overview of the current status of all your flows (= message chain). Flows are an aggregation of all diagnostic traces that can be linked to the same incoming message. Besides predefined properties, it can have optional custom properties to give context to the user.
 
 The aggregated status of the messages received by that flow can be:
