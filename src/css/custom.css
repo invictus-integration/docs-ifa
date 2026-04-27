@@ -215,6 +215,33 @@ nav.menu {
   z-index: 1;
 }
 
+@media (max-width: 640px) {
+  .install-steps .tabs__list {
+    flex-wrap: wrap;
+    border-bottom: none;
+    gap: 4px;
+  }
+
+  .install-steps .tabs__item {
+    flex: 1 1 auto;
+    border-radius: 8px;
+    border-bottom: 2px solid transparent;
+    margin-right: 0;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .install-steps .tabs__item--active {
+    border-bottom-color: var(--ifm-color-primary) !important;
+    border-radius: 8px;
+  }
+
+  .install-steps .tab-content {
+    border-radius: 8px;
+    border-top: 1px solid var(--ifm-color-emphasis-300);
+  }
+}
+
 .install-steps .tabs__item:last-child {
   margin-right: 0;
 }
