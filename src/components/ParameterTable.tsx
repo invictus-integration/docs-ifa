@@ -75,7 +75,24 @@ export default function ParameterTable({ parameters, fixedTags = [], maxHeight =
     return Array.from(tagSet).sort();
   }, [parameters]);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("q") ?? "";
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (search) {
+      params.set("q", search);
+    } else {
+      params.delete("q");
+    }
+    const newSearch = params.toString();
+    const currentSearch = location.search.replace(/^\?/, "");
+    if (newSearch !== currentSearch) {
+      history.replace({ ...location, search: newSearch ? `?${newSearch}` : "" });
+    }
+  }, [search]);
   const normalizedSearch = search.toLowerCase();
   const matchesSearchRecursive = (p: Parameter): boolean => {
     if (!normalizedSearch) return true;
