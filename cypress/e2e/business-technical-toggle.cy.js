@@ -22,9 +22,9 @@ describe('Business/Technical user toggle', () => {
             cy.scrollTo('top');
             cy.get('[aria-label="Toggle navigation bar"]').click();
           }
-          cy.getToggle(audience).should('be.visible');
         });
       }
+      cy.getToggle(audience).should('be.visible');
     });
 
     Cypress.Commands.add('closeSidebar', (deviceName) => {
