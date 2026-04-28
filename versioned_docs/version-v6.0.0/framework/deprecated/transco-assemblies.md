@@ -17,9 +17,9 @@ This documentation will give you an overview of the Transco custom assemblies an
 
 ## Extensions
 
-The extension file is used to link the XSLT with the Assembly(dll), this is then used by the Transco component to know which DLLs to download before executing the Transco.
+The extension file is used to link the XSLT with the Assembly(DLL), this is then used by the Transco component to know which DLLs to download before executing the Transco.
 
-Create an xml file with the xml below and upload it to the **extensions** subfolder within the Transco configs **transcoconfigsstore** container.
+Create an XML file with the XML below and upload it to the `extensions` subfolder within the Transco configs `transcoconfigsstore` container.
 
 ```xml
 <ExtensionObjects> 
@@ -37,11 +37,11 @@ If your assembly has **Dependencies** which are required during execution then a
 	</ExtensionObject>
 </ExtensionObjects>
 ```
-Notice the **DependenciesObject** and the **DependencyObject**. Ensure that the Assemblies are uploaded to storage inside the assemblies folder and that the exact name for the dll matches the one in storage. Note: Only add the required dependencies as adding all dependencies can greatly reduce the execution speed since each dll has to be downloaded from storage.
+Notice the **DependenciesObject** and the **DependencyObject**. Ensure that the Assemblies are uploaded to storage inside the assemblies folder and that the exact name for the DLL matches the one in storage. Note: Only add the required dependencies as adding all dependencies can greatly reduce the execution speed since each DLL has to be downloaded from storage.
 
 ## Assemblies
 
-To execute functions within your Transco function you will need to include the dll/assembly which contains the function, the assemblies need to be uploaded to the same container as the Transco configs **transcoconfigsstore** but need to be in a subfolder called **assemblies** example: "assemblies/[dllname].dll"
+To execute functions within your Transco function you will need to include the DLL/assembly which contains the function, the assemblies need to be uploaded to the same container as the Transco configs `transcoconfigsstore` but need to be in a subfolder called `assemblies` example: `assemblies/[dllname].dll`
 
 Sample code to be used later in the sample call:
 
@@ -83,21 +83,21 @@ As stated earlier you will need to set the Assembly and the BTM to be able to ex
 
 ## Example
 
-1. Create an extensions.xml file using the above XML in the Extensions section and upload it to the extensions subfolder mentioned.
-2. Create a project TVH.Sample and add a class named "Common". Within the class add the code found in the **Assemblies** section. Upload the dll for this project to the assemblies subfolder.
-3. Create a Transco config **transcoAssemblies.xml** and set the Assembly and BTM/XSLT ex: `<Mapping Assembly="extensions.xml" XSLT="transcoAssemblies.xslt" />`
-4. Create an XSLT file **transcoAssemblies.xslt** using the XML in the XSLT section and upload it to the **transcoconfigsstore** container.
+1. Create an `extensions.xml` file using the above XML in the Extensions section and upload it to the extensions subfolder mentioned.
+2. Create a project TVH.Sample and add a class named "Common". Within the class add the code found in the **Assemblies** section. Upload the DLL for this project to the assemblies subfolder.
+3. Create a Transco config `transcoAssemblies.xml` and set the Assembly and BTM/XSLT ex: `<Mapping Assembly="extensions.xml" XSLT="transcoAssemblies.xslt" />`
+4. Create an XSLT file `transcoAssemblies.xslt` using the XML in the XSLT section and upload it to the `transcoconfigsstore` container.
 
 The following files need to be present in storage before triggering the request:
 
-* transcoconfigsstore/transcoAssemblies.xslt
-* transcoconfigsstore/transcoAssemblies.xml
-* transcoconfigsstore/assemblies/TVH.Sample.dll
-* transcoconfigsstore/extensions/extensions.xml
+* `transcoconfigsstore/transcoAssemblies.xslt`
+* `transcoconfigsstore/transcoAssemblies.xml`
+* `transcoconfigsstore/assemblies/TVH.Sample.dll`
+* `transcoconfigsstore/extensions/extensions.xml`
 
 ## HTTP Request Test
 
-Target the transco Web App on your resource group, example: `https://invictus-dev-we-sft-transcoapp.azurewebsites.net/api/v1/transco`
+Target the Transco Web App on your resource group, example: `https://invictus-dev-we-sft-transcoapp.azurewebsites.net/api/v1/transco`
 
 Request:
 
