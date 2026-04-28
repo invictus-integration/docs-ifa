@@ -59,8 +59,8 @@ Invictus includes functionality which allows all its resources to run within an 
   - `privatelink.{regionName}.azurecontainerapps.io`
     
 - To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
-    - Powershell
-    - Azure Powershell
+    - PowerShell
+    - Azure PowerShell
     - Bicep CLI
 
 ### Required role assignment
@@ -80,7 +80,7 @@ The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script wi
 Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
 
 * **{'{prefix}'}.Invictus.Installation**
-  * `Invictus.Installation.StorageAccount.Name`: invictusreleases
+  * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software (if you're also deploying the Framework)
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
@@ -206,6 +206,7 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 
 <details>
 <summary>**Full YAML task example**</summary>
+
 ```yaml
 - task: AzureCLI@2
   displayName: 'Azure CLI'
