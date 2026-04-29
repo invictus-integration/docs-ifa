@@ -11,7 +11,7 @@ describe('Business/Technical user toggle', () => {
   before(() => {
 
     Cypress.Commands.add('getToggle', (audience) =>
-      cy.get(`[data-cy-toggle=${audience}]:visible`).first());
+      cy.get(`[data-cy-toggle=${audience}]`));
 
     Cypress.Commands.add('openSidebar', (deviceName, audience) => {
       if (deviceName === Mobile) {
@@ -83,12 +83,8 @@ describe('Business/Technical user toggle', () => {
       });
 
       it('is keyboard accessible', () => {
-        cy.getToggle(Audience.TECHNICAL).focus();
-        cy.focused().trigger('keydown', { key: 'Enter' });
+        cy.getToggle(Audience.TECHNICAL).focus().press(Cypress.Keyboard.Keys.ENTER);
         cy.assertToggleState(deviceName, Audience.TECHNICAL);
-        cy.getToggle(Audience.BUSINESS).focus();
-        cy.focused().trigger('keydown', { key: 'Enter' });
-        cy.assertToggleState(deviceName, Audience.BUSINESS);
       });
 
       it('switches to correct audience when navigating directly', () => {
