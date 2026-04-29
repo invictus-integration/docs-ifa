@@ -11,7 +11,7 @@ describe('Business/Technical user toggle', () => {
   before(() => {
 
     Cypress.Commands.add('getToggle', (audience) =>
-      cy.get(`[data-cy-toggle=${audience}]`).filter(':visible').first());
+      cy.get(`[data-cy-toggle=${audience}]:visible`).first());
 
     Cypress.Commands.add('openSidebar', (deviceName, audience) => {
       if (deviceName === Mobile) {
@@ -21,6 +21,7 @@ describe('Business/Technical user toggle', () => {
           if (!sidebarOpen && !toggleVisible) {
             cy.scrollTo('top');
             cy.get('[aria-label="Toggle navigation bar"]').click();
+            cy.get('.navbar-sidebar--show').should('exist');
           }
         });
       }
