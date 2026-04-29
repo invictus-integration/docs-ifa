@@ -44,12 +44,16 @@ export default function UserTypeSwitcher() {
       />
 
       {toggleItems.map((item) => (
-        <div
+        <button
           key={item.key}
+          type="button"
           className="toggle-item"
           data-cy-toggle={`${item.key}`}
           data-cy-toggle-active={userType === item.key}
           onClick={() => handleChange(item.key)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') handleChange(item.key);
+          }}
           style={{
             flex: 1,
             textAlign: 'center',
@@ -59,14 +63,14 @@ export default function UserTypeSwitcher() {
             color: userType === item.key ? 'white' : 'var(--toggle-inactive-color)',
             transition: 'color 0.25s ease',
             whiteSpace: 'nowrap',
-          }}
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') handleChange(item.key);
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            font: 'inherit',
           }}
         >
           {item.label}
-        </div>
+        </button>
       ))}
     </div>
   );
