@@ -34,7 +34,7 @@ describe('Business/Technical user toggle', () => {
       if (deviceName === Mobile) {
         cy.get('body').then(($body) => {
           if ($body.find('.navbar-sidebar--show').length) {
-            cy.get('.navbar-sidebar__close').click();
+            cy.get('.navbar-sidebar__close').click({ multiple: true });
           }
         });
       }
