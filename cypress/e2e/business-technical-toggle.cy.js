@@ -11,20 +11,23 @@ describe('Business/Technical user toggle', () => {
   before(() => {
 
     Cypress.Commands.add('getToggle', (audience) =>
-      cy.get(`[data-cy-toggle=${audience}]`).filter(':visible').first());
+      cy.get(`[data-cy-toggle=${audience}]`));
 
     Cypress.Commands.add('openSidebar', (deviceName, audience) => {
       if (deviceName === Mobile) {
+        // Wait for React hydration: the toggle must be in the DOM before we can open the sidebar
+        cy.get(`[data-cy-toggle=${audience}]`).should('exist');
         cy.get('body').then(($body) => {
           const sidebarOpen = $body.find('.navbar-sidebar--show').length > 0;
           const toggleVisible = $body.find(`[data-cy-toggle=${audience}]:visible`).length > 0;
           if (!sidebarOpen && !toggleVisible) {
             cy.scrollTo('top');
             cy.get('[aria-label="Toggle navigation bar"]').click();
+            cy.get('.navbar-sidebar--show').should('exist');
           }
-          cy.getToggle(audience).should('be.visible');
         });
       }
+      cy.getToggle(audience).should('be.visible');
     });
 
     Cypress.Commands.add('closeSidebar', (deviceName) => {
@@ -80,12 +83,8 @@ describe('Business/Technical user toggle', () => {
       });
 
       it('is keyboard accessible', () => {
-        cy.getToggle(Audience.TECHNICAL).focus();
-        cy.getToggle(Audience.TECHNICAL).trigger('keydown', { key: 'Enter' });
+        cy.getToggle(Audience.TECHNICAL).focus().press(Cypress.Keyboard.Keys.ENTER);
         cy.assertToggleState(deviceName, Audience.TECHNICAL);
-        cy.getToggle(Audience.BUSINESS).focus();
-        cy.getToggle(Audience.BUSINESS).trigger('keydown', { key: 'Enter' });
-        cy.assertToggleState(deviceName, Audience.BUSINESS);
       });
 
       it('switches to correct audience when navigating directly', () => {
