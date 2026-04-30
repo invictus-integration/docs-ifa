@@ -267,7 +267,7 @@ const filterBarStyle: React.CSSProperties = {
 const filterLabelStyle: React.CSSProperties = {
   fontSize: '0.85rem',
   fontWeight: 600,
-  color: 'var(--ifm-color-gray-600)',
+  color: 'var(--ifm-color-emphasis-700)',
   fontFamily: 'var(--ifm-font-family-base)',
   whiteSpace: 'nowrap',
 };
@@ -376,7 +376,7 @@ const dateStyle: React.CSSProperties = {
   fontSize: '0.875rem',
   fontWeight: 400,
   fontFamily: 'var(--ifm-font-family-base)',
-  color: 'var(--ifm-color-gray-500)',
+  color: 'var(--ifm-color-emphasis-600)',
 };
 
 const sectionPillsStyle: React.CSSProperties = {

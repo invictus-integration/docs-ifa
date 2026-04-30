@@ -8,10 +8,15 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  background: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-darkest);
   color: #fff;
+  border: 1px solid var(--ifm-color-primary-darkest);
   vertical-align: middle;
   line-height: 1.6;
+}
+
+html[data-theme='dark'] .rn-latest-badge {
+  border-color: var(--ifm-color-primary-light);
 }
 
 /* Section summary pills (shown when version is collapsed) */
