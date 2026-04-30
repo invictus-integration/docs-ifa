@@ -1,0 +1,146 @@
+/* Latest badge */
+.rn-latest-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  vertical-align: middle;
+  line-height: 1.6;
+}
+
+/* Section summary pills (shown when version is collapsed) */
+.rn-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.rn-pill--features {
+  background: #d4edda;
+  color: #155724;
+}
+
+.rn-pill--technical {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.rn-pill--fixes {
+  background: #fff3cd;
+  color: #856404;
+}
+
+html[data-theme='dark'] .rn-pill--features {
+  background: rgba(40, 167, 69, 0.2);
+  color: #75dd8a;
+}
+
+html[data-theme='dark'] .rn-pill--technical {
+  background: rgba(23, 162, 184, 0.2);
+  color: #6fd3e2;
+}
+
+html[data-theme='dark'] .rn-pill--fixes {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffd454;
+}
+
+/* Hover state for collapsed version blocks — covers the full block area */
+.rn-version-block--collapsed {
+  transition: background 0.15s;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.rn-version-block--collapsed:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme='dark'] .rn-version-block--collapsed:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Hover state for the header only when the block is already expanded */
+.rn-version-collapsible:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme='dark'] .rn-version-collapsible:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Custom admonition types for release notes sections */
+
+/* Features — green */
+.alert--feature {
+  --ifm-alert-background-color: #f0faf2;
+  --ifm-alert-background-color-highlight: rgba(40, 167, 69, 0.1);
+  --ifm-alert-foreground-color: var(--ifm-font-color-base);
+  --ifm-alert-border-color: #28a745;
+}
+
+.alert--feature .admonition-heading h5 {
+  color: #1a7431;
+}
+
+/* TechChanges — teal (brand primary) */
+.alert--tech {
+  --ifm-alert-background-color: #e8f4f6;
+  --ifm-alert-background-color-highlight: rgba(1, 69, 80, 0.08);
+  --ifm-alert-foreground-color: var(--ifm-font-color-base);
+  --ifm-alert-border-color: var(--ifm-color-primary);
+}
+
+.alert--tech .admonition-heading h5 {
+  color: var(--ifm-color-primary-darkest);
+}
+
+/* Fixes — amber */
+.alert--fix {
+  --ifm-alert-background-color: #fffbf0;
+  --ifm-alert-background-color-highlight: rgba(255, 151, 15, 0.1);
+  --ifm-alert-foreground-color: var(--ifm-font-color-base);
+  --ifm-alert-border-color: var(--ifm-color-warning);
+}
+
+.alert--fix .admonition-heading h5 {
+  color: #7a4800;
+}
+
+/* Dark mode overrides for admonitions */
+html[data-theme='dark'] .alert--feature {
+  --ifm-alert-background-color: rgba(40, 167, 69, 0.1);
+  --ifm-alert-border-color: #3dbb5e;
+}
+
+html[data-theme='dark'] .alert--feature .admonition-heading h5 {
+  color: #75dd8a;
+}
+
+html[data-theme='dark'] .alert--tech {
+  --ifm-alert-background-color: rgba(1, 69, 80, 0.25);
+  --ifm-alert-border-color: var(--ifm-color-primary-lighter);
+}
+
+html[data-theme='dark'] .alert--tech .admonition-heading h5 {
+  color: var(--ifm-color-primary-lightest);
+}
+
+html[data-theme='dark'] .alert--fix {
+  --ifm-alert-background-color: rgba(255, 151, 15, 0.1);
+  --ifm-alert-border-color: var(--ifm-color-warning-light);
+}
+
+html[data-theme='dark'] .alert--fix .admonition-heading h5 {
+  color: var(--ifm-color-warning-lightest);
+}
