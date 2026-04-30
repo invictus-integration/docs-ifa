@@ -54,7 +54,7 @@ describe('Business/Technical user toggle', () => {
 
   });
 
-  Devices.forEach(({ name: deviceName, viewport: [width, height] }) => {
+  Devices[0].forEach(({ name: deviceName, viewport: [width, height] }) => {
 
     describe(deviceName, () => {
       beforeEach(() => {
