@@ -5,7 +5,6 @@ describe('Business/Technical user toggle', () => {
   const Desktop = 'Desktop';
   const Devices = [
     { name: Desktop, viewport: [1280, 720] },
-    { name: Mobile, viewport: [375, 667] }
   ];
 
   before(() => {
@@ -54,7 +53,7 @@ describe('Business/Technical user toggle', () => {
 
   });
 
-  Devices[0].forEach(({ name: deviceName, viewport: [width, height] }) => {
+  Devices.forEach(({ name: deviceName, viewport: [width, height] }) => {
 
     describe(deviceName, () => {
       beforeEach(() => {
