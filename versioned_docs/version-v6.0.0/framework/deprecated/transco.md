@@ -28,11 +28,11 @@ For more information about the matrix functionality, follow the guides in the be
 
 ## DbAlias
 
-The Transco component for IfA uses KeyVault to retrieve the DBAlias connection string. All Database connection strings are stored as secrets.
+The Transco component for IfA uses KeyVault to retrieve the `DBAlias` connection string. All Database connection strings are stored as secrets.
 
-1. Get the DBAlias name from the Transco config.
+1. Get the `DBAlias` name from the Transco config.
 2. Create a connection string pointing to the Database you wish to connect to : `Server='[SERVERNAME]';Database='[DATABASENAME]';User Id='[USERLOGINID]';Password='[PASSWORD]';`
 3. Go to KeyVault that is located in the IfA setup in Azure
 4. Go to Secrets and Add a secret: Remember to use the DbAlias property value as the Name and the configured connection string as the Value.
 
-> ![dbalias](/images/transco-dbalias.png)
+> ![```DBAlias```](/images/transco-dbalias.png)

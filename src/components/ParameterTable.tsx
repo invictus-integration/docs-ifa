@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faChevronRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useLocation, useHistory } from "@docusaurus/router";
 
 export type Parameter = {
   name: string;
@@ -23,12 +24,35 @@ type ParameterTableProps = {
 
 export default function ParameterTable({ parameters, fixedTags = [], maxHeight = "400px" }: ParameterTableProps) {
   parameters = parameters.filter((p) => fixedTags.every((tag: string) => p.tags.includes(tag))).sort((p1, p2) => p1.name.localeCompare(p2.name));
-  const [activeTags, setActiveTags] = useState<string[]>([]);
+
+  const location = useLocation();
+  const history = useHistory();
+
+  const [activeTags, setActiveTags] = useState<string[]>(() => {
+    const params = new URLSearchParams(location.search);
+    const tagsParam = params.get("tags");
+    return tagsParam ? tagsParam.split(",").filter(Boolean) : [];
+  });
+
   const toggleTag = (tag: string) => {
     setActiveTags((prev: string[]): string[] =>
       prev.includes(tag) ? prev.filter((t: string): boolean => t !== tag) : [...prev, tag]
     );
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (activeTags.length > 0) {
+      params.set("tags", activeTags.join(","));
+    } else {
+      params.delete("tags");
+    }
+    const newSearch = params.toString();
+    const currentSearch = location.search.replace(/^\?/, "");
+    if (newSearch !== currentSearch) {
+      history.replace({ ...location, search: newSearch ? `?${newSearch}` : "" });
+    }
+  }, [activeTags]);
 
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const toggleRow = (name: string) => {
@@ -51,7 +75,24 @@ export default function ParameterTable({ parameters, fixedTags = [], maxHeight =
     return Array.from(tagSet).sort();
   }, [parameters]);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("q") ?? "";
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (search) {
+      params.set("q", search);
+    } else {
+      params.delete("q");
+    }
+    const newSearch = params.toString();
+    const currentSearch = location.search.replace(/^\?/, "");
+    if (newSearch !== currentSearch) {
+      history.replace({ ...location, search: newSearch ? `?${newSearch}` : "" });
+    }
+  }, [search]);
   const normalizedSearch = search.toLowerCase();
   const matchesSearchRecursive = (p: Parameter): boolean => {
     if (!normalizedSearch) return true;

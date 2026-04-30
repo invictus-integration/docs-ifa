@@ -98,10 +98,6 @@ const config = {
       },
       items: [
         {
-          type: 'custom-user-type-switcher',
-          position: 'left',
-        },
-        {
           type: 'docsVersionDropdown',
 
           //// Optional

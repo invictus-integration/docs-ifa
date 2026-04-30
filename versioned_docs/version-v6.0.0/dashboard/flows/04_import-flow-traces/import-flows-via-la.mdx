@@ -96,7 +96,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
 
     ![execution tree](/images/import-executiontree.png)
 
-    In the example above, the **x-iv-parent-workflow-run-id** was set in **LogicAppChain-B** linking it with **LogicAppChain-A**. **LogicAppChain-C** was not linked to **B** or **A** thus is not considered part of the chain.
+    In the example above, the **x-iv-parent-workflow-run-id** was set in **LogicAppChain-B** linking it with **LogicAppChain-A**. **LogicAppChain-C** wasn't linked to **B** or **A** thus isn't considered part of the chain.
 
     :::warning
     The **ClientTrackingId** is the identifier used to link transactional messages together, this ID is by default generated for every run in Azure Logic Apps, but can also be manually set by the developer. Since async flows might change their ClientTrackingId due to routing, the ClientTrackingId will need to be reset in the Azure Logic App as soon as possible.
@@ -157,7 +157,9 @@ If we had to take the above image as an example. If resubmit is executed for thi
 </TabItem>
 <TabItem value="default-resume" label="Resume">
 
-The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume does not start from the first logic app within its flow, as with the resubmit, but instead executes only the failed logic apps.
+{/* vale proselint.Diacritical = NO */}
+The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume doesn't start from the first logic app within its flow, as with the resubmit, but instead executes only the failed logic apps.
+{/* vale proselint.Diacritical = YES */}
 
 > ☝️ The only exception is that if a Parent Logic App of a failed Logic App has also failed, then only the Parent is executed.
 
@@ -176,11 +178,11 @@ When a message has been set to be ignore, its status will change and show as fol
 Flows can be resumed or resubmitted via a custom interaction HTTP endpoint instead of the default Azure management URL, which will resume/resubmit the Azure Logic App workflow mapped to the flow (via **DSAV** and **Workflow name** properties).
 
 ### Configure flow for custom resume/resubmit
-The *Advanced Settings* section is located on the right side of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The `(▷)` button will test the URL to see if it is reachable.
+The *Advanced Settings* section is located on the right side of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The `(▷)` button will test the URL to see if it's reachable.
 
 A message will be displayed to indicate if the test was successful.
 
-![Advanced settings test url success](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
+![Advanced settings test URL success](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
 
 You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, click the `(@)` button to open the HTTP headers dialog box where custom HTTP headers can be added.
 
@@ -252,7 +254,9 @@ In this scenario, a resubmit was executed on Logic App 1. Since the Azure Logic 
 <details>
 <summary>Scenario Two: resume further down the chain</summary>
 
-In this scenario, the resubmitted logic app Is number 3. Since this is not the first Azure Logic App in the Chain, this will be handled as a **Resume**. As soon as we receive the events for number 4 we can immediately link it to number 1 since it will still have the same x-iv-parent-workflow-run-id. Through the OriginWorkFlowRunId of 333 Azure Logic App 4 is then treated as a resubmit of 3. In the case of a resume, only the resubmitted Azure Logic Apps and its descendants are ignored and not the whole chain.
+{/* vale proselint.Diacritical = NO */}
+In this scenario, the resubmitted logic app Is number 3. Since this isn't the first Azure Logic App in the Chain, this will be handled as a **Resume**. As soon as we receive the events for number 4 we can immediately link it to number 1 since it will still have the same x-iv-parent-workflow-run-id. Through the OriginWorkFlowRunId of 333 Azure Logic App 4 is then treated as a resubmit of 3. In the case of a resume, only the resubmitted Azure Logic Apps and its descendants are ignored and not the whole chain.
+{/* vale proselint.Diacritical = YES */}
 
 ![scenario 2](/images/import-scenario2.png)
 

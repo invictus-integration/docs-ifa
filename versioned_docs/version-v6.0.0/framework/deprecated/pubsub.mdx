@@ -31,10 +31,10 @@ The PubSub connector will be mainly used to push messages to service bus using t
 * Each request can have a max size of 100mb
 * Delete on Receive is only there in case anyone really needs it. By default the connector will use PeekLock.
 * Topic name used by PubSub API will be "PubSubRouter"
-* Servicebus Rule name will use the following pattern: `$"{subscriptionName}-{DateTime.Now:yyyyMMddHHmm}"` ex: PublishLogicApp-201803211534
+* Service bus Rule name will use the following pattern: `$"{subscriptionName}-{DateTime.Now:yyyyMMddHHmm}"` ex: PublishLogicApp-201803211534
 * Timeout for Subscribe is set to 75 seconds by default
 * Blob Storage will only be used when message is greater than 256kb. This is configurable at API level.
-* Connectors can both be added using Http+Swagger and Azure App Services connector 
+* Connectors can both be added using HTTP+Swagger and Azure App Services connector 
 * Subscribe should always use the LogicAppName as the subscription property. This can be done when using Bicep deployments or typed manually 
 * Message time to live will be set to 3 months
 
@@ -57,18 +57,18 @@ The MessageId property in the Publish will be used for duplicate detection. This
 
 3. The first step when starting a new Logic app is to add a **Trigger.** A logic app must always start with a Trigger connector.
 4. Since the publish is **not** a **trigger** but an action we will need to choose a trigger from the list available. For this example we will add a **Request** trigger
-5. Setup the HTTP Request as seen in the image below. The Request Body is basically the schema of the json you will be Posting to this connector
+5. Setup the HTTP Request as seen in the image below. The Request Body is basically the schema of the JSON you will be Posting to this connector
 
-![http request](/images/pubsub-httprequest.png)
+![HTTP request](/images/pubsub-httprequest.png)
 
 6. After setting up the above trigger, we will now add an action connector. We will now use the Publish connector which uses the InvictusFramework API. All this is abstracted but in reality, all calls act exactly like API calls
 7. Click on **New Step** and select **Add an action**
-8. Choose Http+Swagger
+8. Choose HTTP+Swagger
 
 ![swagger](/images/pubsub-swagger.png)
 
 {/* md-dead-link-check: off */}
-9. Enter the swagger url (eg: for PubSub <a href="/">https://invictus-dev-we-sft-pubsubapp.azurewebsites.net/swagger/docs/v1</a>).
+9. Enter the Swagger URL (e.g.: for PubSub <a href="/">https://invictus-dev-we-sft-pubsubapp.azurewebsites.net/swagger/docs/v1</a>).
 {/* md-dead-link-check: on */}
 
 ![swagger connector](/images/pubsub-swaggerconnector.png)
@@ -80,13 +80,13 @@ The MessageId property in the Publish will be used for duplicate detection. This
 
 12. Notice that Content was wrapped in base64. The reason this needs to be done is because Publish takes a byte\[\] as input for **Message Content**. The Context object is simply passed without modification, this is expected to be a key value pair list.
 
-![json](/images/pubsub-jsoncontext.png)
+![JSON](/images/pubsub-jsoncontext.png)
 
 13. By clicking **Show advanced options**, you will get to see more properties which most of the time are not required.
 
 ![publish advanced](/images/pubsub-publishconnectoradvanced.png)
 
-14. Although Authentication can be found under advanced, since the API which is exposing the custom connectors is using Basic Authentication, this has to always be populated. Use the below Json structure to setup Basic Auth for the connector. **More info can be found with the official documentation of logic apps.**
+14. Although Authentication can be found under advanced, since the API which is exposing the custom connectors is using Basic Authentication, this has to always be populated. Use the below JSON structure to setup Basic Auth for the connector. **More info can be found with the official documentation of logic apps.**
 
 ![authentication](/images/pubsub-authentication.png)
 
@@ -105,11 +105,11 @@ The MessageId property in the Publish will be used for duplicate detection. This
 ![template](/images/pubsub-template.png)
 
 3. We will now add the Subscribe Trigger
-4. Search for Http+Swagger
-5. Enter the swagger url.
+4. Search for HTTP+Swagger
+5. Enter the Swagger URL.
 6. Then choose the function you wish to use as a connector. For this example choose **Subscribe**.
 7. Setup the connector
-    * The subscription name ideally should be set the same as the logic app name, this is then used by servicebus
+    * The subscription name ideally should be set the same as the logic app name, this is then used by Service Bus
     * Filter is used to filter on the context properties
     * Receive timeout is optional and is set to 75000 by default and can be left blank
     * Batch size is defaulted to 10 and can be left blank
@@ -124,7 +124,7 @@ The MessageId property in the Publish will be used for duplicate detection. This
     * Lock token is also supplied with the data returned by the Subscribe Connector
     * Choose the AcknowledgeType, normally it would always be Complete
     * Set IgnoreLockLostException if you do not want to throw an error if the lock is not found. For example in case of a Resubmit of the Logic App.
-    * Set the MessageReadTime to @trigger()['startTime'] when IgnoreLockLost=true and you want to avoid duplicate messages. Invictus will resend the message when it has not received an Acknowledgement within the lock timeout. By setting this parameter, the Acknowledge will not ignore the LockLostException if this startTime is more than the set lock timeout on the message (default 1 minute). The exception should be caught and handled.
+    * Set the MessageReadTime to ```@trigger()['startTime']``` when `IgnoreLockLost=true` and you want to avoid duplicate messages. Invictus will resend the message when it has not received an Acknowledgement within the lock timeout. By setting this parameter, the Acknowledge will not ignore the LockLostException if this startTime is more than the set lock timeout on the message (default 1 minute). The exception should be caught and handled.
     * Set the authentication the same as you did in the previous connectors 
 
 ![acknowledge](/images/pubsub-ackconnector.png)
@@ -135,13 +135,13 @@ The MessageId property in the Publish will be used for duplicate detection. This
 
 To test the above functions, you can use Postman. Before doing this part ensure that both Logic Apps have been setup as described. It is also important to have Subscribe setup before attempting to Post a request, as this will create both the topic and subscription on service bus. Without the Topic and Subscription, it is guaranteed that the first message posted will fail and no messages will be available.
 
-1. Get the url exposed by the **Publish Request trigger**
+1. Get the URL exposed by the **Publish Request trigger**
 
-![http](/images/pubsub-httprequestsmall.png)
+![HTTP](/images/pubsub-httprequestsmall.png)
 
-2. Send a POST request using the below Json or anything that matches the schema which you setup when creating the HTTP request trigger.
+2. Send a POST request using the below JSON or anything that matches the schema which you setup when creating the HTTP request trigger.
 
-![postman](/images/pubsub-json.png)
+![Postman](/images/pubsub-json.png)
 
 3. You should receive 202 if request was Accepted
 
