@@ -256,7 +256,7 @@ function TermHighlight({ termKey, label, termClass, tooltipMarkdown, variant = '
   const ref = useRef<HTMLSpanElement>(null);
   const tooltipId = useId();
 
-  const { visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, onTooltipMouseEnter, onTooltipMouseLeave } = usePinnedTooltip(ref);
+  const { visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, pin, onTooltipMouseEnter, onTooltipMouseLeave } = usePinnedTooltip(ref);
   const pos = useTooltipPosition(ref, visible, { tooltipWidth: TOOLTIP_WIDTH });
 
   // Carousel state — which term is currently shown in the tooltip
@@ -287,7 +287,7 @@ function TermHighlight({ termKey, label, termClass, tooltipMarkdown, variant = '
           <button
             className="invictus-tooltip__term-link"
             style={{ color: isDark ? target.accentDark : target.accent, borderBottomColor: isDark ? target.accentDark : target.accent }}
-            onClick={(e) => { e.stopPropagation(); setCurrentTermKey(key!); }}
+            onClick={(e) => { e.stopPropagation(); pin(); setCurrentTermKey(key!); }}
           >
             {children}
           </button>
@@ -319,7 +319,7 @@ function TermHighlight({ termKey, label, termClass, tooltipMarkdown, variant = '
         <div className="invictus-tooltip__nav">
           <button
             className="invictus-tooltip__nav-btn"
-            onClick={(e) => { e.stopPropagation(); setCurrentTermKey(prevKey); }}
+            onClick={(e) => { e.stopPropagation(); pin(); setCurrentTermKey(prevKey); }}
             aria-label={`Previous: ${TERM_REGISTRY[prevKey].label}`}
           >‹</button>
           <span className="invictus-tooltip__nav-label">
@@ -328,7 +328,7 @@ function TermHighlight({ termKey, label, termClass, tooltipMarkdown, variant = '
           </span>
           <button
             className="invictus-tooltip__nav-btn"
-            onClick={(e) => { e.stopPropagation(); setCurrentTermKey(nextKey); }}
+            onClick={(e) => { e.stopPropagation(); pin(); setCurrentTermKey(nextKey); }}
             aria-label={`Next: ${TERM_REGISTRY[nextKey].label}`}
           >›</button>
         </div>

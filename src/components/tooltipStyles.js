@@ -267,5 +267,8 @@ export function usePinnedTooltip(ref) {
       setTooltipHovered(true);
     },
     onTooltipMouseLeave: () => setTooltipHovered(false),
+    // Exposed so interactive elements inside the tooltip can pin it before
+    // causing a content re-render (which might trigger a spurious mouseleave).
+    pin: useCallback(() => setPinned(true), [setPinned]),
   };
 }
