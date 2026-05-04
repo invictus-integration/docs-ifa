@@ -737,7 +737,7 @@
   {
     "name": "serviceBusSubnets",
     "description": "A list of subnet names to form the Azure Service Bus namespace resource, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the optionally `privateEndpointNames.serviceBus` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connect to the Azure Service Bus namespace.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.serviceBus` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connect to the Azure Service Bus namespace.",
     "tags": [
       "networking",
       "vnet"
