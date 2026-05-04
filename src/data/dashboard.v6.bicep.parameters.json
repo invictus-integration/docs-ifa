@@ -338,7 +338,7 @@
   {
     "name": "serviceBusSubnets",
     "description": "A list of subnet names to form the Azure Service Bus namespace resource, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.serviceBus` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Service Bus namespace.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.serviceBus` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connect to the Azure Service Bus namespace.",
     "tags": [
       "networking",
       "vnet"
@@ -347,7 +347,7 @@
   {
     "name": "eventHubSubnets",
     "description": "A list of subnet names to form the Azure Event Hubs namespace resource, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.eventHub` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Event Hubs namespace.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.eventHub` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Event Hubs namespace.",
     "tags": [
       "networking",
       "vnet"
@@ -356,7 +356,7 @@
   {
     "name": "storageAccountSubnets",
     "description": "A list of subnet names to form the Azure Storage Account resource, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.blob/table/queue` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Storage Account resource.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.blob/table/queue` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Storage Account resource.",
     "tags": [
       "networking",
       "vnet",
@@ -366,7 +366,7 @@
   {
     "name": "keyVaultSubnets",
     "description": "A list of subnet names to form the Azure Key Vault resource, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.keyVault` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Key Vault resource.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.keyVault` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Key Vault resource.",
     "tags": [
       "networking",
       "vnet"
@@ -375,7 +375,7 @@
   {
     "name": "cosmosDbSubnets",
     "description": "A list of subnet names to form the Azure Cosmos DB for MongoDB resource, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as Azure Cosmos DB for MongoDB no longer supports VNET integration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.mongoDb` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connects to the Azure Cosmos DB for MongoDB resource.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.mongoDb` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connects to the Azure Cosmos DB for MongoDB resource.",
     "tags": [
       "networking",
       "vnet",
@@ -385,7 +385,7 @@
   {
     "name": "containerAppEnvironmentSubnets",
     "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
-    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the `privateEndpointNames.cae` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Container Apps environment.",
+    "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.cae` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Container Apps environment.",
     "tags": [
       "networking",
       "vnet",
@@ -1374,7 +1374,7 @@
       },
       {
         "name": "privateEndpointNames",
-        "description": "The names of the [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
+        "description": "The names of the optional [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
         "properties": [
           {
             "name": "acr",
