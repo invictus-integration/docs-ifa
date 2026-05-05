@@ -188,9 +188,9 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
 
   const sections = React.Children.toArray(children).filter(React.isValidElement);
   const sectionLabels = sections.map((s: React.ReactElement<any>) => {
-    if (s.type === Features) return 'Features';
-    if (s.type === TechChanges) return 'Technical';
-    if (s.type === Fixes) return 'Fixes';
+    if (s.type === Features) return { label: 'Features', admonition: 'tip' };
+    if (s.type === TechChanges) return { label: 'Technical', admonition: 'info' };
+    if (s.type === Fixes) return { label: 'Fixes', admonition: 'warning' };
     return null;
   }).filter(Boolean);
 
@@ -223,8 +223,8 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
           </h2>
           {!expanded && (
             <div style={sectionPillsStyle}>
-              {sectionLabels.map(label => (
-                <span key={label} className={`rn-pill rn-pill--${label.toLowerCase()}`}>{label}</span>
+              {sectionLabels.map(({ label, admonition }) => (
+                <span key={label} className={`rn-pill alert--${admonition}`}>{label}</span>
               ))}
             </div>
           )}
@@ -244,15 +244,15 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
 // ── Section types ────────────────────────────────────────────────
 
 export function Features({ children }: SectionProps) {
-  return <Admonition type="feature" icon={<FontAwesomeIcon icon={faStar} />}>{children}</Admonition>;
+  return <Admonition type="tip" icon={<FontAwesomeIcon icon={faStar} />} title="Features">{children}</Admonition>;
 }
 
 export function TechChanges({ children }: SectionProps) {
-  return <Admonition type="tech" icon={<FontAwesomeIcon icon={faGear} />}>{children}</Admonition>;
+  return <Admonition type="info" icon={<FontAwesomeIcon icon={faGear} />} title="Technical">{children}</Admonition>;
 }
 
 export function Fixes({ children }: SectionProps) {
-  return <Admonition type="fix" icon={<FontAwesomeIcon icon={faBug} />}>{children}</Admonition>;
+  return <Admonition type="warning" icon={<FontAwesomeIcon icon={faBug} />} title="Fixes">{children}</Admonition>;
 }
 
 // ── Styles ───────────────────────────────────────────────────────
