@@ -1,3 +1,5 @@
+import Breadcrumb from '@site/src/components/Breadcrumb';
+
 # Dashboard Homepage: Overview of flow statuses
 The Dashboard home page shows you an overview of the current status of all your flows (= message chain). Flows are an aggregation of all diagnostic traces that can be linked to the same incoming message. Besides predefined properties, it can have optional custom properties to give context to the user.
 
@@ -28,16 +30,6 @@ Flow detail URL's can be constructed that will redirect users to the details pag
 :::
 
 ### Edit folders
-<nav class="custom-breadcrumb">
-  <span class="breadcrumb-item no-padding">
-    <img src="/img/favicon.ico" alt="logo" />
-  </span>
-  <span>›</span>
-  <span class="breadcrumb-item">Your Flows</span>
-  <span>›</span>
-  <span class="breadcrumb-item">folder_name •••</span>
-  <span>›</span>
-  <span class="breadcrumb-item active">Create/Edit/Delete</span>
-</nav>
+<Breadcrumb paths={["Your Flows", "••• on a folder", "Create/Edit/Delete"]} />
 
 Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../security/03_roles.md) on that folder. Only a name is required and possibly a parent.

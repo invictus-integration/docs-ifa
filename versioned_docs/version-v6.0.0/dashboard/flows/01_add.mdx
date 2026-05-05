@@ -5,22 +5,13 @@ sidebar_label: Add new flows
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { OnlyFolderAdminsBadge, NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
+import Breadcrumb from '@site/src/components/Breadcrumb';
 
 # Add new flows <OnlyFolderAdminsBadge/>
-Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
+Each [folder](./index.mdx#organizing-flows-in-folders) can hold one or more 'flows'. These are message chains, an aggregation of all the messages that can be linked to the same incoming message. Flows are the functional representation of the message with an optional context property name and / or optional context property value.
 
 ## Add/Edit a flow
-<nav class="custom-breadcrumb">
-  <span class="breadcrumb-item no-padding">
-    ![logo](/img/favicon.ico)
-  </span>
-  <span>›</span>
-  <span class="breadcrumb-item">Your Flows</span>
-  <span>›</span>
-  <span class="breadcrumb-item">Click ••• of folder (for new)/flow (for existing)</span>
-  <span>›</span>
-  <span class="breadcrumb-item active">Create New/Edit Flow</span>
-</nav>
+<Breadcrumb paths={["Your Flows", "••• on a folder or flow", "Create New / Edit Flow"]} />
 
 | Flow property           | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ----------------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -28,22 +19,12 @@ Each [folder](./index.md#organizing-flows-in-folders) can hold one or more 'flow
 | **Folder**              |   yes    | The location of where to save the flow. Flows are always structured in folders.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | **Mapping**             |    no    | The mapping that's used to 'map' flow traces to this flow. The DSAV mapping are special business properties that are treated differently during flow trace importing, loaded from 'tracked properties, for instance, when using [importing them via Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx).). A dedicated `WorkflowName` is added in those cases as well to map the flow traces of the Logic App workflow to the flow.                                                                                                                                                                                                                                                               |
 | **Business Properties** |    no    | Additional properties to describe the flow. These are only here to provide metadata and aren't used in the flow tracing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Advanced Settings**   |    no    | <ul><li>*Connected Dashboard:* in a hybrid (BizTalk + Azure) setup, it's necessary to have a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. [More details on hybrid setups](../settings.md).</li><li>*Show milestone and event text:* Checking this option will enable the flow milestone and event text data to be displayed.</li><li><NewSinceBadge version="v6.2" /> *Show Resubmit / Resume*: make the 'Resubmit/Resume' flow action buttons available per flow.</li><li>*Custom resubmit/resume URLs:* Check these options and provide the necessary URLs to use [your own resume and resubmit logic](./04_import-flow-traces/import-flows-via-la.mdx).</li></ul> |
+| **Advanced Settings**   |    no    | <ul><li>*Connected Dashboard:* in a hybrid (BizTalk + Azure) setup, it's necessary to have a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. [More details on hybrid setups](../settings.mdx).</li><li>*Show milestone and event text:* Checking this option will enable the flow milestone and event text data to be displayed.</li><li><NewSinceBadge version="v6.2" /> *Show Resubmit / Resume*: make the 'Resubmit/Resume' flow action buttons available per flow.</li><li>*Custom resubmit/resume URLs:* Check these options and provide the necessary URLs to use [your own resume and resubmit logic](./04_import-flow-traces/import-flows-via-la.mdx).</li></ul> |
 | **Alerts**              |    no    | [See alerting](#flow-alerting)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 <details id="flow-permissions">
 <summary><span>**Allow access to flow**</span></summary>
 
-<nav class="custom-breadcrumb">
-  <span class="breadcrumb-item no-padding">
-    ![logo](/img/favicon.ico)
-  </span>
-  <span>›</span>
-  <span class="breadcrumb-item">Your Flows</span>
-  <span>›</span>
-  <span class="breadcrumb-item">Click ••• of folder</span>
-  <span>›</span>
-  <span class="breadcrumb-item active">Edit Folder Permissions</span>
-</nav>
+<Breadcrumb paths={["Your Flows", "Click ••• of folder", "Edit Folder Permissions"]} />
 
 You can allow both active Microsoft Entra ID groups and local users to access the flows in the folder. Based on the [chosen role](../security/03_roles.md), the user will receive their allowed permissions on the flow. 
 
@@ -59,19 +40,7 @@ Users with the `[System admin]` role can access all flows in every folder availa
 The Invictus Dashboard [requires additional role assignments](../installation/03_give_la_access.md) to add alerts to flows.
 :::
 
-<nav class="custom-breadcrumb">
-  <span class="breadcrumb-item no-padding">
-    ![logo](/img/favicon.ico)
-  </span>
-  <span>›</span>
-  <span class="breadcrumb-item">Your Flows</span>
-  <span>›</span>
-  <span class="breadcrumb-item">Click ••• of flow</span>
-  <span>›</span>
-  <span class="breadcrumb-item">Edit Flow</span>
-  <span>›</span>
-    <span class="breadcrumb-item active">(+) Alert rule</span>
-</nav>
+<Breadcrumb paths={["Your Flows", "Click ••• of flow", "Edit Flow", "(+) Alert rule"]} />
 
 <table border="1" cellpadding="4" cellspacing="0">
   <thead>

@@ -1,16 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Breadcrumb from '@site/src/components/Breadcrumb';
 
 # Search for flow traces
-<nav class="custom-breadcrumb">
-  <span class="breadcrumb-item no-padding">
-    ![logo](/img/favicon.ico)
-  </span>
-  <span>›</span>
-  <span class="breadcrumb-item">Your Flows</span>
-  <span>›</span>
-  <span class="breadcrumb-item active">Click on one of your flows</span>
-</nav>
+<Breadcrumb paths={["Your Flows", "Click on a flow"]} />
 
 The Dashboard allows business users to search for flow traces for a single or multiple flows during defect localization or verification of client integrations. The `[Select Flows]` dropdown provides you to select one or more flows for which the search query should take place.  
 
