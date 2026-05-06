@@ -1,3 +1,12 @@
+const versionFilter = () => cy.get('#rn-series-filter');
+const dropdownList = () => cy.get('[role=listbox]');
+const collapsedBlocks = () => cy.get('.rn-version-block--collapsed');
+const pills = () => cy.get('.rn-pill');
+const latestBadge = () => cy.get('.rn-latest-badge');
+const visibleHeadings = () => cy.get('h2').filter(':visible');
+
+const selectVersion = (label) => { versionFilter().click(); cy.get('[role=option]').contains(label).click(); };
+
 describe('Release notes', () => {
 
   const url = '/support/release-notes';
@@ -8,28 +17,28 @@ describe('Release notes', () => {
 
   describe('initial state', () => {
 
-    it('shows the series filter dropdown', () => {
-      cy.get('#rn-series-filter').should('be.visible');
-      cy.get('#rn-series-filter').should('contain', 'All versions');
+    it('shows the version filter dropdown', () => {
+      versionFilter().should('be.visible');
+      versionFilter().should('contain', 'All versions');
     });
 
     it('has the dropdown closed', () => {
-      cy.get('[role=listbox]').should('not.exist');
-      cy.get('#rn-series-filter').should('have.attr', 'aria-expanded', 'false');
+      dropdownList().should('not.exist');
+      versionFilter().should('have.attr', 'aria-expanded', 'false');
     });
 
     it('shows the latest version expanded with the Latest badge', () => {
-      cy.get('.rn-latest-badge').should('be.visible');
-      cy.get('.rn-latest-badge').closest('h2').should('contain', 'v6.3');
+      latestBadge().should('be.visible');
+      cy.get('[data-version]').first().find('.rn-latest-badge').should('exist');
     });
 
     it('shows older versions collapsed with section pills', () => {
-      cy.get('.rn-version-block--collapsed').should('have.length.greaterThan', 0);
-      cy.get('.rn-pill').should('be.visible');
+      collapsedBlocks().should('have.length.greaterThan', 0);
+      pills().should('be.visible');
     });
 
     it('does not show section pills on the latest expanded version', () => {
-      cy.get('.rn-latest-badge').parents('div').first().find('.rn-pill').should('not.exist');
+      latestBadge().parents('div').first().find('.rn-pill').should('not.exist');
     });
 
   });
@@ -37,135 +46,147 @@ describe('Release notes', () => {
   describe('series dropdown', () => {
 
     it('opens when clicked', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=listbox]').should('be.visible');
-      cy.get('#rn-series-filter').should('have.attr', 'aria-expanded', 'true');
+      versionFilter().click();
+      dropdownList().should('be.visible');
+      versionFilter().should('have.attr', 'aria-expanded', 'true');
     });
 
     it('lists All versions and one option per minor series', () => {
-      cy.get('#rn-series-filter').click();
+      versionFilter().click();
       cy.get('[role=option]').should('have.length.greaterThan', 1);
       cy.get('[role=option]').first().should('contain', 'All versions');
     });
 
     it('marks All versions as selected by default', () => {
-      cy.get('#rn-series-filter').click();
+      versionFilter().click();
       cy.get('[role=option][aria-selected=true]').should('contain', 'All versions');
     });
 
     it('closes when an option is selected', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.get('[role=listbox]').should('not.exist');
+      collapsedBlocks().first().invoke('attr', 'data-version').then(v => {
+        selectVersion(`v${v}`);
+        dropdownList().should('not.exist');
+      });
     });
 
     it('closes when clicking outside', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=listbox]').should('be.visible');
+      versionFilter().click();
+      dropdownList().should('be.visible');
       cy.get('h1').click();
-      cy.get('[role=listbox]').should('not.exist');
+      dropdownList().should('not.exist');
     });
 
     it('closes on Escape', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=listbox]').should('be.visible');
-      cy.get('#rn-series-filter').trigger('keydown', { key: 'Escape' });
-      cy.get('[role=listbox]').should('not.exist');
+      versionFilter().click();
+      dropdownList().should('be.visible');
+      versionFilter().trigger('keydown', { key: 'Escape' });
+      dropdownList().should('not.exist');
     });
 
     it('toggles open and closed with Enter', () => {
-      cy.get('#rn-series-filter').focus();
+      versionFilter().focus();
       cy.focused().trigger('keydown', { key: 'Enter' });
-      cy.get('[role=listbox]').should('be.visible');
+      dropdownList().should('be.visible');
       cy.focused().trigger('keydown', { key: 'Enter' });
-      cy.get('[role=listbox]').should('not.exist');
+      dropdownList().should('not.exist');
     });
 
   });
 
   describe('version filtering', () => {
 
-    it('shows only the selected series when a version is picked', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.get('h2').filter(':visible').should('have.length', 1);
-      cy.get('h2').filter(':visible').should('contain', 'v6.2');
+    beforeEach(() => {
+      collapsedBlocks().first().invoke('attr', 'data-version').as('filterVersion');
     });
 
-    it('force-expands the filtered version', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.get('.rn-version-block--collapsed').should('not.exist');
+    it('updates the URL with ?minor= when a version is selected via the dropdown', function () {
+      selectVersion(`v${this.filterVersion}`);
+      cy.location('search').should('include', `minor=${this.filterVersion}`);
     });
 
-    it('hides section pills when a version is force-expanded by filter', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.get('.rn-pill').should('not.exist');
+    describe('when a version is pre-selected via ?minor= URL parameter', () => {
+
+      beforeEach(function () {
+        cy.visit(`${url}?minor=${this.filterVersion}`);
+      });
+
+      it('reflects the active series in the dropdown', function () {
+        versionFilter().should('contain', `v${this.filterVersion}`);
+      });
+
+      it('shows only the selected series', function () {
+        visibleHeadings().should('have.length', 1);
+        visibleHeadings().should('contain', `v${this.filterVersion}`);
+      });
+
+      it('force-expands the filtered version', () => {
+        collapsedBlocks().should('not.exist');
+      });
+
+      it('hides section pills when a version is force-expanded by filter', () => {
+        pills().should('not.exist');
+      });
+
+      it('restores all versions when All versions is selected', () => {
+        selectVersion('All versions');
+        visibleHeadings().should('have.length.greaterThan', 1);
+      });
+
+      it('removes ?minor= from the URL when All versions is selected', () => {
+        selectVersion('All versions');
+        cy.location('search').should('not.include', 'minor=');
+      });
+
     });
 
-    it('restores all versions when All versions is selected', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('All versions').click();
-      cy.get('h2').filter(':visible').should('have.length.greaterThan', 1);
-    });
-
-    it('updates the URL with ?minor= when a version is selected', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.location('search').should('include', 'minor=6.2');
-    });
-
-    it('removes ?minor= from the URL when All versions is selected', () => {
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('v6.2').click();
-      cy.get('#rn-series-filter').click();
-      cy.get('[role=option]').contains('All versions').click();
-      cy.location('search').should('not.include', 'minor=');
-    });
-
-    it('applies the filter from a ?minor= URL parameter on load', () => {
-      cy.visit(`${url}?minor=6.1`);
-      cy.get('#rn-series-filter').should('contain', 'v6.1');
-      cy.get('h2').filter(':visible').should('have.length', 1);
-      cy.get('h2').filter(':visible').should('contain', 'v6.1');
+    it('applies the filter for a different version on load', () => {
+      collapsedBlocks().eq(1).invoke('attr', 'data-version').then(v => {
+        cy.visit(`${url}?minor=${v}`);
+        versionFilter().should('contain', `v${v}`);
+        visibleHeadings().should('have.length', 1);
+        visibleHeadings().should('contain', `v${v}`);
+      });
     });
 
   });
 
   describe('version block expand and collapse', () => {
 
+    beforeEach(() => {
+      collapsedBlocks().then($blocks => {
+        cy.wrap($blocks.eq(Math.floor(Math.random() * $blocks.length))).as('block');
+      });
+    });
+
     it('expands a collapsed version block when clicked', () => {
-      cy.get('.rn-version-block--collapsed').its('length').then((count) => {
-        cy.get('.rn-version-block--collapsed').first().click();
-        cy.get('.rn-version-block--collapsed').should('have.length', count - 1);
+      collapsedBlocks().its('length').then((count) => {
+        cy.get('@block').click();
+        collapsedBlocks().should('have.length', count - 1);
       });
     });
 
     it('shows section content after expanding a collapsed block', () => {
-      cy.get('.rn-version-block--collapsed').first().click();
-      cy.get('.rn-version-collapsible').first().next().find('.alert').should('exist');
+      cy.get('@block').click();
+      cy.get('@block').find('.alert').should('exist');
     });
 
     it('hides section pills after expanding a collapsed block', () => {
-      cy.get('.rn-version-block--collapsed').first().find('.rn-pill').should('be.visible');
-      cy.get('.rn-version-block--collapsed').first().click();
-      cy.get('.rn-version-collapsible').first().find('.rn-pill').should('not.exist');
+      cy.get('@block').find('.rn-pill').should('be.visible');
+      cy.get('@block').click();
+      cy.get('@block').find('.rn-pill').should('not.exist');
     });
 
     it('collapses an expanded block when its header is clicked', () => {
-      cy.get('.rn-version-block--collapsed').first().click();
-      cy.get('.rn-version-collapsible').first().click();
-      cy.get('.rn-pill').should('be.visible');
+      cy.get('@block').click();
+      cy.get('@block').find('.rn-version-collapsible').click();
+      cy.get('@block').find('.rn-pill').should('be.visible');
     });
 
     it('expands a collapsed block with Enter key', () => {
-      cy.get('.rn-version-block--collapsed').its('length').then((count) => {
-        cy.get('.rn-version-block--collapsed').first().focus();
+      collapsedBlocks().its('length').then((count) => {
+        cy.get('@block').focus();
         cy.focused().trigger('keydown', { key: 'Enter' });
-        cy.get('.rn-version-block--collapsed').should('have.length', count - 1);
+        collapsedBlocks().should('have.length', count - 1);
       });
     });
 

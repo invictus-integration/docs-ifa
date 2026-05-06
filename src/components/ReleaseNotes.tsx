@@ -62,7 +62,7 @@ export function ReleaseNotes({ children }: { children: ReactNode }) {
   return (
     <div>
       <div style={filterBarStyle}>
-        <label htmlFor="rn-series-filter" style={filterLabelStyle}>Series</label>
+        <label htmlFor="rn-series-filter" style={filterLabelStyle}>Version</label>
         <SeriesDropdown
           id="rn-series-filter"
           value={activeSeries}
@@ -198,6 +198,7 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
 
   return (
     <div
+      data-version={version}
       className={isCollapsible && !expanded ? 'rn-version-block--collapsed' : undefined}
       style={{ ...versionStyle, ...(isLatest ? latestVersionStyle : {}) }}
       onClick={isCollapsible && !expanded ? () => setExpanded(true) : undefined}
