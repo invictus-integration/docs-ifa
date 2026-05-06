@@ -1,5 +1,5 @@
 # Import flow traces via Azure Data Factory pipelines
-For the Invictus Dashboard to know if messages went through your Azure Data Factory pipelines correctly or not, diagnostic settings need to be configured on all pipelines you want to include. These settings should stream their diagnostic traces to the Invictus Event Hubs resource:
+For the Invictus Dashboard to know if messages went through your Azure Data Factory pipelines correctly or not, you need to configure diagnostic settings on all pipelines you want to include. These settings should stream their diagnostic traces to the Invictus Event Hubs resource:
 
 * `EventHubsNamespace`: `invictus-{env}-we-sft-evnm`
 * `EventHubsName`: `invictus-{env}-we-sft-df-evhb`
@@ -13,9 +13,9 @@ For the Invictus Dashboard to know if messages went through your Azure Data Fact
 
 ![Azure Data Factory diagnostic settings](/images/dfdiagnostics.png)
 
-See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics) on how this can be configured manually.
+See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics) on how you can configure this manually.
 
-Alternatively, you can update your Bicep template to include them:
+You can also update your Bicep template to include them:
 
 ```bicep
 resource factoryName_microsoft_insights_settingName 'Microsoft.DataFactory/factories/providers/diagnosticSettings@2017-05-01-preview' = {
