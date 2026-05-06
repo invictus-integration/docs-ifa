@@ -63,8 +63,7 @@ Invictus includes functionality which allows all its resources to run within an 
     - Bicep CLI
 
 ### Required role assignment
-If the Invictus resources and the VNET are on different resource groups, then the Invictus resource group will need to be assigned the role of `Network Contributor` onto the VNET resource group.
-
+If the Invictus resources and the VNET are on different resource groups, then you need to assign the role of `Network Contributor` to the Invictus resource group onto the VNET resource group.
 </details>
 
 </TabItem>
@@ -75,7 +74,7 @@ If the Invictus resources and the VNET are on different resource groups, then th
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Framework.
 
 ## Add variables to variable group <SharedNote/>
-Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
+Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
 * **{'{prefix}'}.Invictus.Installation**
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
