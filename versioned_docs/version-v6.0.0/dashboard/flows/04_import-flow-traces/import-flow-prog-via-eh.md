@@ -1,5 +1,5 @@
 # Import flow traces programmatically via Azure Event Hubs
-Invictus allows developers to programmatically import flow traces via an Event Hub. This resource can be located by the following:
+Invictus allows developers to programmatically import flow traces via an Event Hub. You can locate this resource by the following:
 
 * EventHub namespace: `invictus-{env}-we-sft-evnm`
 * Event Hub name: `invictus-{env}-we-sft-genericreceiver-evhb`
@@ -17,7 +17,7 @@ The Event Hub import accepts a series of `event` models in a JSON array, each re
 ]
 ```
 
-The minimal `event` values are defined as follows:
+The minimal `event` values are the following:
 
 ```json
 // event
@@ -72,8 +72,7 @@ Make sure that any of the `event` mappings match the values in the [flow created
 ```
 
 ## Execution tree of sequentially events
-To create parent-child relationships, the `Step.Id`/`Step.ParentId` combination
-is used. This link is similar as how the `x-iv-parent-workflow-run-id` is set when importing flows via LogicApp workflows.
+Use the `Step.Id`/`Step.ParentId` combination to create parent-child relationships. This link is similar as how you can set the `x-iv-parent-workflow-run-id` when [importing flows via Azure Logic App workflows](./import-flows-via-la.mdx).
 
 ```json
 [
@@ -98,7 +97,7 @@ is used. This link is similar as how the `x-iv-parent-workflow-run-id` is set wh
 ```
 
 ## Tracked properties of events
-Besides the `Milestone` and `EventText`, there also exists a set of custom `Data` properties that can be linked to the flow.
+Besides the `Milestone` and `EventText`, there also exists a set of custom `Data` properties that you can link to the flow.
 
 ```json
 // event
@@ -116,7 +115,7 @@ Besides the `Milestone` and `EventText`, there also exists a set of custom `Data
 ```
 
 ### Errors on events
-If an event represents an error, it can provide additional information in the form of a `code` and a `description`:
+If an event represents an error, it can provide context information in the form of a `code` and a `description`:
 
 ```json
 // event
@@ -130,7 +129,7 @@ If an event represents an error, it can provide additional information in the fo
 ```
 
 ### Azure link on events
-If an event can be traced back to an Azure resource, this information can be added to the event so that it can be provided as details in the Dashboard.
+Add a link and resource ID if you can track back an event to Azure. These details will populate the Dashboard for a click-through experience.
 
 ```json
 // event
