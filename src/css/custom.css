@@ -83,6 +83,7 @@ html[data-theme='dark'] {
   --ifm-link-color: #36b1c5;
   --ifm-link-hover-color: #4fcadf;
   --ifm-toc-border-color: #2a8f9c;
+  --ifm-breadcrumb-color-active: var(--ifm-link-color);
 }
 
 html[data-theme='dark'] .footer--dark {
