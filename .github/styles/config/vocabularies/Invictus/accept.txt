@@ -2,9 +2,11 @@ API's
 
 claimcheck
 Codit
-config
+[Cc]onfig
+[Cc]onfigs
 
 DLL
+DLLs
 
 Entra
 
@@ -23,11 +25,15 @@ linux
 
 [Nn]amespace
 
-profile_name
+OAuth
 
-Scope_prefix
+retriggering
+
+serverless
 sidebar_label
 subfolder
+subnet
+subnets
 
 Textbox
 Transco

@@ -191,8 +191,8 @@ This will result in the following response:
 ```
 </details>
 
-## How to implement in your Azure Logic Apps?
-A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. All the other Logic Apps can call this common Logic App. This centralizes your exception handling functionality.
+## How to use in your Azure Logic Apps?
+A good way to use the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. All the other Logic Apps can call this common Logic App. This centralizes your exception handling functionality.
 
 :::tip
 use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.

@@ -59,28 +59,28 @@ Invictus includes functionality which allows all its resources to run within an 
   - `privatelink.{regionName}.azurecontainerapps.io`
     
 - To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
-    - Powershell
-    - Azure Powershell
+    - PowerShell
+    - Azure PowerShell
     - Bicep CLI
 
 ### Required role assignment
-If the Invictus resources and the VNET are on different resource groups, then the Invictus resource group will need to be assigned the role of `Network Contributor` onto the VNET resource group.
+If the Invictus resources and the VNET are on different resource groups, then you need to assign the role of `Network Contributor` to the Invictus resource group onto the VNET resource group.
 
 </details>
 
 </TabItem>
 <TabItem label="Download" value="download">
 
-To deploy the Invictus Dashboard together with your customer solution, the Dashboard should be included in your release package.
+Include the Dashboard in your release package to deploy the Invictus Dashboard together with your customer solution.
 
 ## Save installation script to your repository <SharedNote/>
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Dashboard.
 
 ## Add variables to variable group <SharedNote/>
-Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
+Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
 * **{'{prefix}'}.Invictus.Installation**
-  * `Invictus.Installation.StorageAccount.Name`: invictusreleases
+  * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software (if you're also deploying the Framework)
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
@@ -168,7 +168,7 @@ Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-
 :::
 
 ## Use `Deploy.ps1` script for deployment
-The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and should be used as the main point of contact for deploying Invictus products.
+The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources. This should be the main point of contact for deploying Invictus products.
 
 ### Mandatory Parameters
 
@@ -177,35 +177,36 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 [Microsoft Entra ID setup]: ./01_give_ad_access.mdx
 [Container authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
 
-| Argument name                      | Description                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `arcUsername`                      | The username credential to authenticate the Docker CLI.                                                                                                                                                                                                                                                                                                                                         |
-| `arcPassword`                      | The password credential to authenticate into the Docker CLI.                                                                                                                                                                                                                                                                                                                                    |
-| `resourcePrefix`                   | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`)                                                                                                                                                                                                                                                                                                                         |
-| `resourceGroupName`                | Name of Azure resource group where Invictus should be deployed                                                                                                                                                                                                                                                                                                                                  |
-| `variableGroupName`                | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                                                                                                                                                                                                                                                                                                           |
-| `azureActiveDirectoryClientId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
-| `azureActiveDirectoryTenantId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
-| `azureActiveDirectoryClientSecret` | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
-| `azureActiveDirectoryAudience`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                      |
-| `performSqlDataMigration`          | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the process will be skipped. See the [migration guide](../../support/migrate-v4-to-v5.md) for more details. Once data migration has been performed and verified, it is recommended to then set this value to `0` so that the migration process is skipped for all subsequent releases. |
-| `flowDataTTLInDays`                | Amount of days flow traces can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md).                                                                                                                                                                                                                                                                    |
-| `isProvisionedCosmos`              | If the value is 1, a Cosmos DB with provisioned throughput will be deployed. If the value is 0, a serverless Cosmos DB will be deployed instead. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).                                                                                                                   |
-| `identityProviderApplicationId`    | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                 |
-| `identityProviderClientSecret`     | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                 |
-| `useBeta`                          | Indicates the environment of the Azure Container App registry where the deployment gets its container images.                                                                                                                                                                                                                                                                                   |
+| Argument name                      | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `arcUsername`                      | The username credential to authenticate the Docker CLI.                                                                                                                                                                                                                                                                                                                                                         |
+| `arcPassword`                      | The password credential to authenticate into the Docker CLI.                                                                                                                                                                                                                                                                                                                                                    |
+| `resourcePrefix`                   | Prefix used for deployed Azure resources (i.e. `invictus-{prefix}-vlt`)                                                                                                                                                                                                                                                                                                                                         |
+| `resourceGroupName`                | Name of Azure resource group where Invictus deploys to.                                                                                                                                                                                                                                                                                                                                                         |
+| `variableGroupName`                | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                                                                                                                                                                                                                                                                                                                           |
+| `azureActiveDirectoryClientId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
+| `azureActiveDirectoryTenantId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
+| `azureActiveDirectoryClientSecret` | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
+| `azureActiveDirectoryAudience`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
+| `performSqlDataMigration`          | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the installation skips this process. See the [migration guide](../../support/migrate-v4-to-v5.md) for more details. Once the installation performed the data migration and you verified the outcome, set this value to `0` so the installation skips the migration process for all future deployments. |
+| `flowDataTTLInDays`                | Amount of days flow traces can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md).                                                                                                                                                                                                                                                                                    |
+| `isProvisionedCosmos`              | If the value is 1, the installation deploys a Cosmos DB with provisioned throughput. Otherwise, a serverless Cosmos DB. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).                                                                                                                                                            |
+| `identityProviderApplicationId`    | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                                 |
+| `identityProviderClientSecret`     | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                                 |
+| `useBeta`                          | Indicates the environment of the Azure Container App registry where the deployment gets its container images.                                                                                                                                                                                                                                                                                                   |
 
 ### Optional Parameters
-| Argument name                  | Default value   | Description                                                                                                                |
-| ------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `artifactsPath`                | `$PSScriptRoot` | Path on the DevOps agent where the downloaded Invictus artifacts are stored <br/> ([publish and download build artifacts]) |
-| `resourceGroupLocation`        | 'West Europe'   | Azure location where resources should be deployed                                                                          |
-| `isAdDisabled`                 | `False`         | Boolean flag to indicate whether the Dashboard should use Microsoft Entra ID for authentication                            |
-| `additionalTemplateParameters` | []              | Additional named parameters for the Bicep template you wish to override. More on this below.                               |
-| `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.      |
+| Argument name                  | Default value   | Description                                                                                                           |
+| ------------------------------ | --------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `artifactsPath`                | `$PSScriptRoot` | Path on the DevOps agent where you downloaded the Invictus artifacts <br/> ([publish and download build artifacts])   |
+| `resourceGroupLocation`        | 'West Europe'   | Azure location where you want the Invictus resources deployed.                                                        |
+| `isAdDisabled`                 | `False`         | Boolean flag to activate Entra ID authentication in the Dashboard.                                                    |
+| `additionalTemplateParameters` | []              | Optional named parameters for the Bicep template you wish to override. More on this below.                            |
+| `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment. |
 
 <details>
 <summary>**Full YAML task example**</summary>
+
 ```yaml
 - task: AzureCLI@2
   displayName: 'Azure CLI'
@@ -332,10 +333,10 @@ stages:
 </TabItem>
 <TabItem label="First-time sign-in" value="first-time-sign-in">
 
-During the deployment of the system, an administrator account has been generated for your initial login to the Dashboard.
+The Invictus installation generates an administrator account for your initial login to the Dashboard.
 
 :::praise[recommended]
-It is recommended to create a new `System Admin` user with your own email address after signing in for the first time. This will help during the [Forgot Password](../security/01_users.mdx?user-type=local) procedure.
+Create a new `System Admin` user with your own email address after signing in for the first time. This will help during the [Forgot Password](../security/01_users.mdx?user-type=local) procedure.
 :::
 
 Follow the steps below to sign in to the Dashboard:
@@ -348,13 +349,13 @@ Follow the steps below to sign in to the Dashboard:
 
    ![Dashboard login page](/images/dashboard/AdminAccount/adminAccount-4.jpg)
 
-3. After successfully logging in, you will be prompted to reset your password to one of your choice.
+3. After successfully logging in, the Dashboard will prompt you to reset your password to one of your choice.
 
    ![Dashboard reset password](/images/dashboard/AdminAccount/adminAccount-5.png)
 
 4. 🎉 Congratulations! You have logged into the Invictus Dashboard for the first time.
 
-Follow these additional guides related to authentication and authorization:
+Further customer-specific setups related to authentication and authorization:
 * [Give access to your Microsoft Entra ID](./01_give_ad_access.mdx)
 * [Give access to your Logic Apps](./03_give_la_access.md)
 

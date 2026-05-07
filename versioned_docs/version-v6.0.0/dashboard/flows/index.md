@@ -1,8 +1,8 @@
-# Dashboard Homepage: overview of flow statuses
-The Dashboard home page shows you an overview of the current status of all your flows (= message chain). Flows are an aggregation of all diagnostic traces that can be linked to the same incoming message. Besides predefined properties, it can have optional custom properties to give context to the user.
+# Dashboard Homepage: Overview of flow statuses
+The Dashboard home page shows you an overview of the current status of all your flows (= message chain). Flows are an aggregation of all diagnostic traces that you can link to the same incoming message. Besides predefined properties, it can have optional custom properties to give context to the user.
 
 The aggregated status of the messages received by that flow can be:
-* 🔵 **Active:** messages currently being processed by the flow.
+* 🔵 **Active:** messages currently processed by the flow.
 * 🟢 **Completed:** messages completed successfully by the flow.
 * 🔴 **Error:** messages suspended, dehydrated or terminated by the flow.
 
@@ -40,4 +40,4 @@ Flow detail URL's can be constructed that will redirect users to the details pag
   <span class="breadcrumb-item active">Create/Edit/Delete</span>
 </nav>
 
-Folders and sub-folders can be created, edited and archived, depending on the [role permissions](../security/03_roles.md) on that folder. Only a name is required and possibly a parent.
+You can create/edit folders and sub-folders, depending on the [role permissions](../security/03_roles.md) on that folder.
