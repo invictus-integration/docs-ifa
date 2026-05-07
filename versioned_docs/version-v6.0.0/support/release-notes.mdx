@@ -11,7 +11,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 <ReleaseVersion version="6.3" date="March 2026">
   <Features>
     - **Dashboard Gateway as proxy for workflow actions results:** accessing the results of workflow actions now routes through the Dashboard Gateway instead of linking directly to the Azure Portal. Installations where Azure Logic Apps live in a separate VNET from Invictus can access action results through the Dashboard.
-    - **Unlock accounts with a System Admin role:** users with a System Admin role can now unlock locked accounts directly through user management in the Dashboard. Previously, unlocking required a direct storage change.
+    - **Unlock accounts with a System Admin role:** users with a System Admin role can now unlock locked accounts directly through user management in the Dashboard. In the past unlocking required a direct storage change.
     - **Swagger/OpenAPI:** the Swagger/OpenAPI API for the Invictus interfaces is re-enabled. A feature flag (`useOpenApi` Bicep parameter) controls it per environment.
     - **Search on Business Properties:** users can now search on Business Properties through the Flow advanced search pane.
   </Features>
@@ -37,11 +37,11 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Resubmit / Resume toggle:** operators can now enable or disable the resubmit and resume buttons from the Advanced Settings section.
   </Features>
   <TechChanges>
-    - **[Breaking] VNET parameter renames:** the following BICEP parameters have been renamed. Update existing deployments accordingly:
+    - **[Breaking] VNET parameter renames:** these BICEP parameters have new names. Update existing deployments accordingly:
       - `containerAppEnvironmentSubnetName` → `delegatedContainerAppEnvironmentSubnetName`
       - `disableStorageAccountPublicNetworkAccess` → `enableStorageAccountPublicNetworkAccess`
       - `vnetResourceGroupName` → `virtualNetworkResourceGroupName`
-    - **Standard Service Bus SKU with VNET integration:** Invictus no longer requires a Premium Service Bus SKU when using VNET integration. Teams can now configure a Standard SKU, significantly reducing costs for non-production environments like DEV and TEST.
+    - **Standard Service Bus SKU with VNET integration:** Invictus no longer requires a Premium Service Bus SKU when using VNET integration. Teams can now configure a Standard SKU, reducing costs for non-production environments like DEV and TEST.
     - **Resource locks are now optional:** a new `useResourceLocks` BICEP parameter lets teams disable resource locks during installation. See the documentation for details.
     - **Post-deployment script to clean up container revisions:** a post-deployment script now cleans up older Container App revisions. See the "Migrating to v6" topic in the documentation.
     - **Private endpoint naming change:** private endpoint names now use the `pep-` prefix instead of `conn-`.
@@ -50,7 +50,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Full flow path not shown:** the Dashboard now always shows the full folder path when opening a flow nested inside folders.
     - **PubSub V2: `x-ms-workflow-run-id` not overwritten:** PubSub V2 now correctly overwrites the `x-ms-workflow-run-id` property.
     - **ACR private endpoint unreachable:** Invictus no longer creates the Azure Container Registry with public access disabled before a private endpoint is available.
-    - **SequenceController fixes:** two bugs in the SequenceController Framework component are resolved:
+    - **SequenceController fixes:** two bugs resolved in the SequenceController Framework component:
       - A scaling issue that produced a high number of timeout errors for `WaitForExecution`.
       - The component keeping state indefinitely under certain conditions.
     - **Flow name editing: cursor jumping to end:** the cursor no longer jumps to the end of the text field when editing a flow name.
@@ -81,13 +81,13 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <Features>
     - **Auditing flow and folder changes:** the Audit screen now tracks group synchronization, folder creation and deletion, and flow creation and deletion.
     - **Logic Apps Standard workflow names include site name:** the *Workflow name* column in the Dashboard now includes the site name for Logic Apps Standard, making it easy to tell apart workflows with the same name across different sites.
-    - **Transco: retrieve a single field:** Transco can now return a value from a single column even when a query returns multiple results. Set the `columnName` property in the configuration to enable this.
+    - **Transco: retrieve a single field:** Transco can now return a value from a single column even when a query returns many results. Set the `columnName` property in the configuration to enable this.
     - **Managed Identity for Framework components:** all Framework components now authenticate using Managed Identity. See the documentation for implementation details.
   </Features>
   <TechChanges>
     - **Migration to Azure Container Apps:** both the Dashboard and the Framework components now run on Azure Container Apps. See the v6 Migration Guide for upgrade instructions.
     - **Cosmos DB authentication through Managed Identity:** Invictus now uses Managed Identity to retrieve a Cosmos DB access key at runtime, removing the need to store a connection string locally.
-    - **Removal of PubSub v1, Transco V1, and Matrix components:** v6 does not include the legacy V1 versions of PubSub, Transco, or Matrix. These components will not be removed from existing installations automatically, but they are deprecated — migrate to the containerised versions as soon as possible.
+    - **Removal of PubSub v1, Transco V1, and Matrix components:** v6 does not include the legacy V1 versions of PubSub, Transco, or Matrix. New installations do not remove these components automatically. Migrate to the containerized versions as soon as possible.
   </TechChanges>
   <Fixes>
     - **Flow column names respect configuration casing:** column names in the Dashboard now use the casing defined in the configuration instead of forcing everything to uppercase.
