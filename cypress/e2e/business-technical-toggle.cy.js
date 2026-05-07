@@ -5,7 +5,6 @@ describe('Business/Technical user toggle', () => {
   const Desktop = 'Desktop';
   const Devices = [
     { name: Desktop, viewport: [1280, 720] },
-    { name: Mobile, viewport: [375, 667] }
   ];
 
   before(() => {

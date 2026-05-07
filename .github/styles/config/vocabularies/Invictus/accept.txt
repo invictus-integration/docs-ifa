@@ -1,4 +1,5 @@
 API's
+ACLs
 
 claimcheck
 Codit
@@ -23,7 +24,7 @@ jumpstart
 
 linux
 
-[Nn]amespace
+[Nn]amespaces?
 
 OAuth
 
@@ -36,6 +37,7 @@ subnet
 subnets
 
 Textbox
+[Tt]ooltip
 Transco
 
 URL

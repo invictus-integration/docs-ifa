@@ -28,7 +28,8 @@
         },
         "dashboard/settings"
       ]
-    }
+    },
+    "support/release-notes"
   ],
   "technical_users": [
     "technical",
