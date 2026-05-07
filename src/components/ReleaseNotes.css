@@ -1,0 +1,57 @@
+/* Latest badge */
+.rn-latest-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border: 2px solid var(--ifm-color-primary);
+  vertical-align: middle;
+  line-height: 1.6;
+}
+
+/* Section summary pills (shown when version is collapsed) */
+.rn-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  border: none;
+}
+
+.rn-pill.alert--tip     { background: var(--ifm-color-success); }
+.rn-pill.alert--info    { background: var(--ifm-color-info); }
+.rn-pill.alert--warning { background: var(--ifm-color-warning); }
+
+/* Hover state for collapsed version blocks — covers the full block area */
+.rn-version-block--collapsed {
+  transition: background 0.15s;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.rn-version-block--collapsed:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme='dark'] .rn-version-block--collapsed:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Hover state for the header only when the block is already expanded */
+.rn-version-collapsible:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme='dark'] .rn-version-collapsible:hover {
+  background: rgba(255, 255, 255, 0.06);
+}

@@ -167,6 +167,29 @@ Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-
 ## Use `Deploy.ps1` script for deployment
 The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and is the central point of contact for deploying Invictus products.
 
+<details>
+<summary>**Least-privileged Azure role assignments for the deploying identity**</summary>
+
+The identity running the Bicep deployment (e.g. the service principal used by your Azure DevOps service connection) needs the following least-privileged roles assigned on the target resource group or subscription:
+
+| Role | Why It's Needed |
+| ---- | --------------- |
+| [`Container Apps Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-apps-contributor) | Create/update Container Apps environments, apps, authentication configurations and job definitions. |
+| [`Azure Event Hubs Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/analytics#azure-event-hubs-data-owner) | Create/update Event Hubs namespaces, hubs and network rule sets. |
+| [`Container Registry Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-contributor-and-data-access-configuration-administrator) | Create/update Azure Container Registry instances, locks and network settings. |
+| [`DocumentDB Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/databases#documentdb-account-contributor) | Create/update Cosmos DB accounts, MongoDB databases and collections. |
+| [`Managed Identity Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/identity#managed-identity-contributor) | Create/update user-assigned managed identities for Container Apps and functions. |
+| [`Key Vault Administrator`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/security#key-vault-administrator) | Create/update Key Vaults, access policies and network ACLs. |
+| [`Log Analytics Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#log-analytics-contributor) | Create/update Log Analytics workspaces and list workspace keys. |
+| [`Monitoring Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-contributor) | Create/update Application Insights components and associated locks. |
+| [`Network Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking#network-contributor) | Create/update private endpoints, VNET subnets and private DNS zone groups. |
+| [`Reader`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/general#reader) | Read existing Private DNS zones when linking DNS zone groups for private endpoints. |
+| [`Service Bus Data Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/integration#azure-service-bus-data-owner) | Create/update Service Bus namespaces, queues and network rule sets. |
+| [`Storage Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage#storage-account-contributor) | Create/update storage accounts, file shares, blob and table services. |
+| [`User Access Administrator`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#user-access-administrator) | Create role assignments (`Microsoft.Authorization/roleAssignments`) and resource locks. |
+
+</details>
+
 ### Mandatory Parameters
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
