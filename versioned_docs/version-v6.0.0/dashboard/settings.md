@@ -15,13 +15,15 @@ sidebar_label: Customize Dashboard
 
 ## Connected Dashboard
 
-A hybrid (BizTalk + Azure) setup requires a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. With the introduction of the claim-check component, you can now start from one flow in the cloud and continue on prem (and vice versa). It provides a click-through experience between the two different Dashboards.
+{/* vale Microsoft.Terms = NO */}
+A hybrid (BizTalk + Azure) setup requires a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. With the introduction of the claim-check component, you can now start from one flow in cloud and continue on prem (and vice versa). It provides a click-through experience between the two different Dashboards.
+{/* vale Microsoft.Terms = YES */}
 
 You will find the option to enter the Connected Dashboard URL which is the base URL of the other Dashboard which you want to connect to.
 
 ![settings](/images/v2_settings1.png)
 
-Now you need to enable the Connected Dashboard for the required flow. You can active this by either creating a new flow or editing an existing one. In this screen shot below, we are showing the Edit Flow example.
+Now you need to enable the Connected Dashboard for the required flow. You can active this by either creating a new flow or editing an existing one (showing 'Edit Flow' below).
 
 ![settings](/images/v2_settings2.png)
 
@@ -29,4 +31,4 @@ If you navigate to the page for that flow, you'll see a new button for each tabl
 
 ![settings](/images/v2_settings3.png)
 
-If you are not logged in the other Dashboard, it will direct you to the login page but with a return URL. Once logged in, the Dashboard redirects you to the actual link.
+If you're not signed in into the other Dashboard, it will direct you to the sign in page but with a return URL. Once signed in, the Dashboard redirects you to the actual link.

@@ -57,7 +57,9 @@ Invictus includes functionality which allows all its resources to run within an 
   - `privatelink.vaultcore.azure.net`
   - `privatelink.{regionName}.azurecontainerapps.io`
     
+{/* vale Microsoft.Terms = NO */}
 - To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
+{/* vale Microsoft.Terms = YES */}
     - PowerShell
     - Azure PowerShell
     - Bicep CLI
@@ -76,14 +78,16 @@ The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script wi
 ## Add variables to variable group <SharedNote/>
 Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
-* **{'{prefix}'}.Invictus.Installation**
+* `**{'{prefix}'}.Invictus.Installation**`
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software (if you're also deploying the Dashboard)
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
   * `Infra.Environment.ACRPassword`: value provided by Codit Software
 
+{/* vale Microsoft.HeadingAcronyms = NO */}
 ## YAML Pipeline
+{/* vale Microsoft.HeadingAcronyms = YES */}
 Next step is to add YAML pipelines to build the Invictus for Azure Framework. Change the following example file according to your needs, for example change the trigger path:
 ``` yaml
   paths:
@@ -170,7 +174,7 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 <details>
 <summary>**Least-privileged Azure role assignments for the deploying identity**</summary>
 
-The identity running the Bicep deployment (e.g. the service principal used by your Azure DevOps service connection) needs the following least-privileged roles assigned on the target resource group or subscription:
+The identity running the Bicep deployment (the service principal used by your Azure DevOps service connection) needs the following least-privileged roles assigned on the target resource group or subscription:
 
 | Role | Why It's Needed |
 | ---- | --------------- |
@@ -203,16 +207,18 @@ The identity running the Bicep deployment (e.g. the service principal used by yo
 | `arcPassword`       | The password credential to authenticate into the Docker CLI.                                                  |
 | `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.  |
 | `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                           |
-| `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                         |
+| `variableGroupName` | DevOps variable group to write the Bicep outputs to (ex. `Invictus_CosmosDb_DbName`).                         |
 | `useBeta`           | Indicates the environment of the Azure Container App registry where the deployment gets its container images. |
 
 ### Optional Parameters    
+{/* vale Microsoft.Terms = NO */}
 | Argument name                  | Default value   | Description                                                                                                                                |
 | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `artifactsPath`                | `$PSScriptRoot` | Path on the Azure DevOps agent that stores the downloaded Invictus artifacts ([publish and download build artifacts])                      |
 | `resourceGroupLocation`        | 'West Europe'   | In case no resource group is available with the name `resourceGroupName`, the deployment uses this location to create such resource group. |
 | `additionalTemplateParameters` | `[]`            | Custom named parameters for the Bicep template you wish to override. More on this below.                                                   |
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.                      |
+{/* Microsoft.Terms = YES */}
 
 <details>
 <summary>**Full YAML task example**</summary>

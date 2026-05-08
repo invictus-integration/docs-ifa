@@ -113,7 +113,10 @@ If you're running a version below v6, ensure your [Azure Service Bus connection 
 
 
 <details>
+
+{/* vale Microsoft.HeadingAcronyms = NO */}
 <summary><h3 style={{ margin:0 }}>Update your Azure Logic Apps Invictus API authentication</h3></summary>
+{/* vale Microsoft.HeadingAcronyms = YES */}
 
 The Invictus API's now requires an access token in the HTTP `Authorization` header instead of a function key. Add this on the HTTP action in your Logic App:
 ``` json
