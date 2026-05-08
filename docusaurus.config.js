@@ -133,7 +133,7 @@ const config = {
               html: '<a class="footer-link" data-cy-footer-link="create-flows" href="/dashboard/flows/add">How to create flows</a>',
             },
             {
-              html: '<a class="footer-link" data-cy-footer-link="search-flows" href="/dashboard/flows/search">How to search for flow traces</a>',
+              html: '<a class="footer-link" data-cy-footer-link="search-flows" href="/dashboard/flows/search">How to search for messages</a>',
             }
           ]
         },

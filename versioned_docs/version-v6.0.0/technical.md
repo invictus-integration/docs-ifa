@@ -19,7 +19,7 @@ Invictus consists of two parts:
 * A set of **Framework** components that supports commonly used integration patterns in Azure Logic App workflows.
 
 ## How to use Invictus for Azure?
-The [architecture diagram](./architecture-diagram.md) gives a general overview of what an **Invictus for Azure** installation entails.
+The [architecture diagram](./architecture-diagram.mdx) gives a general overview of what an **Invictus for Azure** installation entails.
 
 To install **Invictus for Azure**, these installation guides will walk you through the process:
 * [Install Invictus Dashboard](./dashboard/installation/index.mdx)
