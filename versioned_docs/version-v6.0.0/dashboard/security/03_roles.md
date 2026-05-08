@@ -5,7 +5,7 @@ sidebar_label: Access to flows
 # Control the access to your flows
 
 ## Available flow permissions
-The following table describes what flow-related functionality is permitted for users, based on the set role they receive on a folder: *Reader*, *Operator* or *Folder admin*. Both single **local users** as well as **groups** can be assigned to folders.
+The following table describes the permitted flow-related functionality for users, based on the set role they receive on a folder: *Reader*, *Operator* or *Folder admin*. You can both single **local users** and **groups** to folders.
 
 |          |                            | Reader | Operator | Folder admin | Description                                                                                                                                                               |
 | -------- | -------------------------- | :----: | :------: | :----------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -21,7 +21,7 @@ The following table describes what flow-related functionality is permitted for u
 |          | Delete **folder**          |   🔴    |    🔴     |      🔴       | Removing a folder from the hierarchy, removing all flows and sub-folders under it as well                                                                                 |
 
 :::info[System admins]
-Users with the *System admin* user role (either as a local user or via a member of a group with such role) benefit from the same permissions as the *Folder admin* permission on <u>all</u> flows in the Dashboard -- regardless whether the *System admin* user was assigned to the folder or not.
+Users with the *System admin* user role (either as a local user or via a member of a group with such role) has the same permissions as the *Folder admin* permission on <u>all</u> flows in the Dashboard -- regardless whether you assigned the *System admin* user to the folder or not.
 :::
 
 ## Available user roles
@@ -38,7 +38,7 @@ The following table describes what non-flow related parts of the Dashboard are a
 |          | Sync **groups**                 |     🔴     |      🟢       | Running the [`[Sync all groups]`](../installation/01_give_ad_access.mdx) operation                                                                                                              |
 |          | Disable **group**               |     🔴     |      🟢       | [Temporary pause the group's authority](../installation/01_give_ad_access.mdx) from accessing flows                                                                                             |
 |          | Edit **group** role             |     🔴     |      🟢       | [Changing the user role](../installation/01_give_ad_access.mdx) of a single group                                                                                                               |
-|          | Delete **group**                |     🔴     |      🟢       | Removing a group's authority from accessing flows (if a Microsoft Entra ID user is still a member of the group, the group will still be synced)                                                 |
+|          | Delete **group**                |     🔴     |      🟢       | Removing a group's authority from accessing flows (if a Microsoft Entra ID user is still a member of the group, the group still syncs)                                                          |
 | Settings | View **settings**               |     🟢     |      🟢       | Accessing the [`[Settings]`](../settings.md) page and viewing all Dashboard settings                                                                                                            |
 |          | Edit **settings**               |     🔴     |      🟢       | [Changing the Dashboard settings](../settings.md)                                                                                                                                               |
 | Audits   | View **audits**                 |     🔴     |      🟢       | Accessing the [`[Audits]`](../security/04_auditing.mdx) page and viewing all security audits                                                                                                    |
