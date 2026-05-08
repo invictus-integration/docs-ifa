@@ -83,8 +83,7 @@ describe('Bicep parameter search', () => {
         // children are visible immediately, and the user must still be able to toggle.
         cy.get('@searchInput').clear().type('Scaling');
 
-        cy.get('[data-cy=search-results] tbody tr')
-          .should('have.length.greaterThan', 0);
+        cy.get('[data-cy=search-results] tbody tr').should('have.length.greaterThan', 0);
 
         // Children (non-matching rows) are visible without any click because the
         // parent was auto-expanded when it self-matched the search term.
@@ -97,34 +96,27 @@ describe('Bicep parameter search', () => {
             ).to.be.true;
           });
 
-        // Click the first matched (auto-expanded) row to collapse it.
-        cy.get('[data-cy=search-results] tbody tr').first().click();
+        // Record the total row count before collapsing.
+        cy.get('[data-cy=search-results] tbody tr').then(($rows) => {
+          const totalBefore = $rows.length;
 
-        cy.get('[data-cy=search-results] tbody tr td:first-child code')
-          .then(($codes) => {
-            const texts = $codes.toArray().map((el) => el.textContent.toLowerCase());
-            expect(
-              texts.every((t) => t.includes('scaling')),
-              'child rows should be hidden after clicking to collapse'
-            ).to.be.true;
-          });
+          // Click the first matched (auto-expanded) row to collapse it — its children
+          // disappear so the row count must drop.
+          cy.get('[data-cy=search-results] tbody tr').first().click();
 
-        // Click again to re-expand.
-        cy.get('[data-cy=search-results] tbody tr').first().click();
+          cy.get('[data-cy=search-results] tbody tr')
+            .should('have.length.lessThan', totalBefore);
 
-        cy.get('[data-cy=search-results] tbody tr td:first-child code')
-          .then(($codes) => {
-            const texts = $codes.toArray().map((el) => el.textContent.toLowerCase());
-            expect(
-              texts.some((t) => !t.includes('scaling')),
-              'child rows should be visible again after clicking to re-expand'
-            ).to.be.true;
-          });
+          // Click again to re-expand — row count must return to the original total.
+          cy.get('[data-cy=search-results] tbody tr').first().click();
+
+          cy.get('[data-cy=search-results] tbody tr')
+            .should('have.length', totalBefore);
+        });
 
         cy.get('@searchInput').clear();
 
-        cy.get('[data-cy=search-results] tbody tr')
-          .should('have.length.greaterThan', 0);
+        cy.get('[data-cy=search-results] tbody tr').should('have.length.greaterThan', 0);
 
       });
 

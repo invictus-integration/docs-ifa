@@ -22,8 +22,13 @@ type ParameterTableProps = {
   maxHeight?: string;
 };
 
-export default function ParameterTable({ parameters, fixedTags = [], maxHeight = "400px" }: ParameterTableProps) {
-  parameters = parameters.filter((p) => fixedTags.every((tag: string) => p.tags.includes(tag))).sort((p1, p2) => p1.name.localeCompare(p2.name));
+const EMPTY_TAGS: string[] = [];
+
+export default function ParameterTable({ parameters: rawParameters, fixedTags = EMPTY_TAGS, maxHeight = "400px" }: ParameterTableProps) {
+  const parameters = useMemo(
+    () => rawParameters.filter((p) => fixedTags.every((tag: string) => p.tags.includes(tag))).sort((p1, p2) => p1.name.localeCompare(p2.name)),
+    [rawParameters, fixedTags]
+  );
 
   const location = useLocation();
   const history = useHistory();
