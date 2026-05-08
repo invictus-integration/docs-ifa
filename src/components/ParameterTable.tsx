@@ -133,6 +133,14 @@ export default function ParameterTable({ parameters, fixedTags = [], maxHeight =
             newExpanded.add(p.name);
           }
         }
+
+        // When the parent itself matches the search and has children, expand it so
+        // all sub-properties are immediately visible. Without this, the effect would
+        // replace any manual-click expansion with an empty set (race condition between
+        // the async useEffect and the onClick handler).
+        if (selfMatch) {
+          newExpanded.add(p.name);
+        }
       }
 
       return selfMatch || childMatched;
@@ -472,4 +480,5 @@ const linkStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
 const highlightStyle: React.CSSProperties = {
   backgroundColor: "var(--ifm-color-primary)",
   color: "white",
+  cursor: "inherit",
 };
