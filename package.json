@@ -49,6 +49,7 @@
     "@docusaurus/module-type-aliases": "3.10.0",
     "@docusaurus/types": "3.10.0",
     "cypress": "^15.13.1",
+    "dotenv": "^17.4.2",
     "start-server-and-test": "^2.1.5"
   },
   "engines": {

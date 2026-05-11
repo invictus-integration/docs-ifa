@@ -1,5 +1,6 @@
 const lightCodeTheme = require('./src/prism/light');
 const darkCodeTheme = require('./src/prism/dark');
+require('dotenv').config();
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -55,37 +56,25 @@ const config = {
     ],
   ],
 
-  themes: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-      {
-        // `hashed` is recommended as long-term-cache of index file is possible.
-        hashed: true,
-        docsRouteBasePath: '/',
-        language: ["en", "zh"],
-        highlightSearchTermsOnTargetPage: true,
-        explicitSearchResultPath: true,
+  themes: [],
 
-        // For Docs using Chinese, it is recommended to set:
-        // language: ["en", "zh"],
-
-        // Customize the keyboard shortcut to focus search bar (default is "mod+k"):
-        // searchBarShortcutKeymap: "s", // Use 'S' key
-        // searchBarShortcutKeymap: "ctrl+shift+f", // Use Ctrl+Shift+F
-
-        // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
-        // forceIgnoreNoIndex: true,
-
-        // Enable Ask AI integration:
-        // askAi: {
-        //   project: "your-project-name",
-        //   apiUrl: "https://your-api-url.com/api/stream",
-        //   hotkey: "cmd+I", // Optional: keyboard shortcut to trigger Ask AI
-        // },
-      }
-    ],
-  ],
+  customFields: {
+    azureSearch: {
+      endpoint: 'https://invictus-docs.search.windows.net',
+      index: 'v6-docs',
+      apiKey: process.env.AZURE_SEARCH_API_KEY ?? '',
+      adminKey: process.env.AZURE_SEARCH_ADMIN_KEY ?? '',
+    },
+    // Fill these in once your Azure OpenAI resource is ready.
+    // Endpoint:   Azure portal → your OpenAI resource → Keys and Endpoint
+    // Deployment: the model deployment name (e.g. "gpt-4o")
+    // ApiKey:     add AZURE_OPENAI_API_KEY to your .env file
+    azureOpenAI: {
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT ?? '',
+      deployment: process.env.AZURE_OPENAI_DEPLOYMENT ?? '',
+      apiKey: process.env.AZURE_OPENAI_API_KEY ?? '',
+    },
+  },
 
   themeConfig: {
     image: 'img/invictus.jpg',
