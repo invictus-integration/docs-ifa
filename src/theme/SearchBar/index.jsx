@@ -174,21 +174,48 @@ export default function SearchBar() {
     setIsSearching(true);
     setAiActive(false);
 
-    const params = new URLSearchParams({
+    const baseParams = {
       'api-version': '2024-07-01',
-      search: debouncedQuery,
       searchFields: 'title,content',
-      select: 'id,title,filepath,category',
+      select: 'id,title,filepath,category,content',
+      highlight: 'content',
+      highlightPreTag: '<mark>',
+      highlightPostTag: '</mark>',
       top: '8',
-    });
+    };
 
-    fetch(`${azureSearch.endpoint}/indexes/${azureSearch.index}/docs?${params}`, {
-      headers: { 'api-key': azureSearch.apiKey },
-      signal: controller.signal,
-    })
-      .then(res => { if (!res.ok) return res.json().then(e => { throw e; }); return res.json(); })
+    // Try semantic search first (handles typos + intent); fall back to simple fuzzy on error.
+    const doSearch = (query, semantic) => {
+      const params = new URLSearchParams({
+        ...baseParams,
+        search: semantic ? query : query.trim().split(/\s+/).map(w => `${w}~`).join(' '),
+        ...(semantic ? {
+          queryType: 'semantic',
+          semanticConfiguration: 'default',
+          speller: 'lexicon',
+          queryLanguage: 'en-us',
+        } : {
+          queryType: 'simple',
+        }),
+      });
+
+      return fetch(`${azureSearch.endpoint}/indexes/${azureSearch.index}/docs?${params}`, {
+        headers: { 'api-key': azureSearch.apiKey },
+        signal: controller.signal,
+      }).then(res => {
+        if (!res.ok) return res.json().then(e => { throw Object.assign(e, { status: res.status }); });
+        return res.json();
+      });
+    };
+
+    doSearch(debouncedQuery, true)
+      .catch(err => {
+        // Semantic search unavailable (index not configured or service tier) — fall back to fuzzy
+        if (err?.status === 400 || err?.status === 404) return doSearch(debouncedQuery, false);
+        throw err;
+      })
       .then(data => { setResults(data.value ?? []); setActiveIndex(-1); })
-      .catch(err => console.error('[Azure Search]', err))
+      .catch(err => { if (err?.name !== 'AbortError') console.error('[Azure Search]', err); })
       .finally(() => setIsSearching(false));
 
     return () => controller.abort();
@@ -254,8 +281,33 @@ export default function SearchBar() {
     setIsOpen(false);
   }
 
-  // When query is empty we show recents; when query is set we show search results + Ask AI.
+  function getSnippet(result) {
+    // Prefer Azure Search highlights — already contain <mark> tags around matches
+    const highlights = result['@search.highlights']?.content;
+    if (highlights?.length) return highlights[0];
+
+    // Fallback: extract from raw content
+    const content = result.content;
+    if (!content) return null;
+    const q = debouncedQuery.toLowerCase().trim();
+    const idx = content.toLowerCase().indexOf(q);
+    const start = Math.max(0, idx === -1 ? 0 : idx - 40);
+    const end   = Math.min(content.length, start + 150);
+    const raw   = (start > 0 ? '…' : '') + content.slice(start, end).replace(/\s+/g, ' ').trim() + (end < content.length ? '…' : '');
+    if (idx === -1) return raw;
+    return raw.replace(
+      new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),
+      '<mark>$1</mark>',
+    );
+  }
+
   const showingRecents = !query && recentSearches.recents.length > 0;
+  const aiAtTop = aiEnabled && !!query && (() => {
+    const q = query.trim().toLowerCase();
+    return q.endsWith('?')
+      || /^(how|what|why|when|where|who|which|can|does|do|is|are|will|should|could|would)\b/.test(q)
+      || q.split(/\s+/).length >= 5;
+  })();
   const totalItems = showingRecents
     ? recentSearches.recents.length
     : results.length + (aiEnabled && query ? 1 : 0);
@@ -371,7 +423,7 @@ export default function SearchBar() {
                 spellCheck={false}
               />
 
-              {(isSearching || isStreaming)
+              {isStreaming
                 ? <span className={styles.spinner} aria-hidden="true" />
                 : query
                   ? (
@@ -528,9 +580,48 @@ export default function SearchBar() {
                 </div>
               ) : (
                 <>
+                  {/* ── Ask AI — prominent card at top for question-like queries ── */}
+                  {aiEnabled && query && aiAtTop && !isSearching && (
+                    <div className={styles.askAiPromo}>
+                      <button
+                        role="option"
+                        aria-selected={activeIndex === askAiIndex}
+                        className={`${styles.askAiPromoBtn} ${activeIndex === askAiIndex ? styles.active : ''}`}
+                        onMouseEnter={() => setActiveIndex(askAiIndex)}
+                        onClick={() => askAi()}
+                      >
+                        <span className={styles.askAiPromoIcon} aria-hidden="true">
+                          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
+                          </svg>
+                        </span>
+                        <span className={styles.askAiPromoText}>
+                          <span className={styles.askAiPromoTitle}>Ask AI</span>
+                          <span className={styles.askAiPromoQuery}>&ldquo;{query}&rdquo;</span>
+                        </span>
+                        <kbd className={styles.askAiPromoKbd}>
+                          {shortcutLabel.includes('⌘') ? '⌘' : 'Ctrl'}&thinsp;↵
+                        </kbd>
+                      </button>
+                    </div>
+                  )}
+
                   {/* ── Search results ── */}
                   <div className={styles.resultsList}>
-                    {results.length === 0 && query ? (
+                    {isSearching ? (
+                      <div className={styles.skeletonList} aria-hidden="true">
+                        {[88, 72, 95, 65].map((w, i) => (
+                          <div key={i} className={styles.skeletonItem}>
+                            <div className={styles.skeletonIcon} />
+                            <div className={styles.skeletonContent}>
+                              <div className={styles.skeletonTitle} style={{ width: `${w}%` }} />
+                              <div className={styles.skeletonSnippet} style={{ width: `${Math.max(w - 15, 50)}%` }} />
+                              <div className={styles.skeletonPath} style={{ width: '30%' }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : results.length === 0 && query ? (
                       <div className={styles.empty}>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                           <circle cx="9" cy="9" r="6" /><path d="M15 15l3 3" strokeLinecap="round" />
@@ -568,6 +659,7 @@ export default function SearchBar() {
                               </span>
                               <span className={styles.resultContent}>
                                 <span className={styles.resultTitle}>{result.title}</span>
+                                {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
                                 {breadcrumb && <span className={styles.resultPath}>{breadcrumb}</span>}
                               </span>
                               <svg className={styles.resultChevron} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -580,8 +672,8 @@ export default function SearchBar() {
                     })()}
                   </div>
 
-                  {/* ── Ask AI row ── */}
-                  {aiEnabled && query && (
+                  {/* ── Ask AI row — shown at bottom for keyword (non-question) queries ── */}
+                  {aiEnabled && query && !aiAtTop && (
                     <div className={styles.askAiSection}>
                       <button
                         role="option"
