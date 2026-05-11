@@ -68,36 +68,13 @@ function useRecentSearches() {
   return { recents, add, remove, clear };
 }
 
-async function streamAiResponse({ openAI, search, question, onChunk, onCitations, onDone, onError, signal }) {
-  const url = `${openAI.endpoint}/openai/deployments/${openAI.deployment}/chat/completions?api-version=2024-02-01`;
-
-  const body = JSON.stringify({
-    stream: true,
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful assistant for the Invictus for Azure documentation. Answer questions accurately and concisely based only on the provided documentation. If the answer is not in the docs, say so.',
-      },
-      { role: 'user', content: question },
-    ],
-    data_sources: [
-      {
-        type: 'azure_search',
-        parameters: {
-          endpoint: search.endpoint,
-          index_name: search.index,
-          authentication: { type: 'api_key', key: search.adminKey },
-        },
-      },
-    ],
-  });
-
+async function streamAiResponse({ question, onChunk, onCitations, onDone, onError, signal }) {
   let res;
   try {
-    res = await fetch(url, {
+    res = await fetch('/api/ask-ai', {
       method: 'POST',
-      headers: { 'api-key': openAI.apiKey, 'Content-Type': 'application/json' },
-      body,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
       signal,
     });
   } catch (e) {
@@ -146,9 +123,9 @@ async function streamAiResponse({ openAI, search, question, onChunk, onCitations
 
 export default function SearchBar() {
   const { siteConfig } = useDocusaurusContext();
-  const { azureSearch, azureOpenAI } = siteConfig.customFields;
+  const { azureSearch } = siteConfig.customFields;
+  const aiEnabled = !!(siteConfig.customFields.aiEnabled);
   const history = useHistory();
-  const aiEnabled = !!(azureOpenAI?.endpoint && azureOpenAI?.deployment && azureOpenAI?.apiKey);
   const recentSearches = useRecentSearches();
 
   const [query, setQuery] = useState('');
@@ -256,8 +233,6 @@ export default function SearchBar() {
     setIsStreaming(true);
 
     streamAiResponse({
-      openAI: azureOpenAI,
-      search: azureSearch,
       question: queryToAsk,
       signal: controller.signal,
       onChunk: chunk => setAiAnswer(prev => prev + chunk),
@@ -279,11 +254,17 @@ export default function SearchBar() {
     setIsOpen(false);
   }
 
-  // Total navigable items: results + (1 Ask AI row if aiEnabled)
-  const totalItems = results.length + (aiEnabled ? 1 : 0);
-  const askAiIndex = results.length; // virtual index for the Ask AI row
+  // When query is empty we show recents; when query is set we show search results + Ask AI.
+  const showingRecents = !query && recentSearches.recents.length > 0;
+  const totalItems = showingRecents
+    ? recentSearches.recents.length
+    : results.length + (aiEnabled && query ? 1 : 0);
+  const askAiIndex = results.length; // virtual index for the Ask AI row (only valid when !showingRecents)
 
   function handleKeyDown(e) {
+    // Let ArrowLeft / ArrowRight always move the cursor inside the input
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return;
+
     // Ctrl+Enter / Cmd+Enter → Ask AI directly, from anywhere in the input
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && aiEnabled && query.trim()) {
       e.preventDefault();
@@ -306,16 +287,29 @@ export default function SearchBar() {
         inputRef.current?.blur();
         break;
       case 'ArrowDown':
-        e.preventDefault();
-        setActiveIndex(i => Math.min(i + 1, totalItems - 1));
+        if (totalItems > 0) {
+          e.preventDefault();
+          setActiveIndex(i => Math.min(i + 1, totalItems - 1));
+        }
         break;
       case 'ArrowUp':
-        e.preventDefault();
-        setActiveIndex(i => Math.max(i - 1, -1));
+        if (activeIndex >= 0) {
+          e.preventDefault();
+          setActiveIndex(i => Math.max(i - 1, -1));
+        }
         break;
       case 'Enter':
-        if (activeIndex === askAiIndex && aiEnabled) { askAi(); }
-        else if (activeIndex >= 0 && results[activeIndex]) { navigate(results[activeIndex]); }
+        if (showingRecents && activeIndex >= 0) {
+          const r = recentSearches.recents[activeIndex];
+          if (r) {
+            if (r.isAi) { askAi(r.query); }
+            else { setQuery(r.query); }
+          }
+        } else if (activeIndex === askAiIndex && aiEnabled && query) {
+          askAi();
+        } else if (activeIndex >= 0 && results[activeIndex]) {
+          navigate(results[activeIndex]);
+        }
         break;
     }
   }
@@ -364,7 +358,7 @@ export default function SearchBar() {
 
               <input
                 ref={inputRef}
-                type="search"
+                type="text"
                 className={styles.input}
                 placeholder="Search docs…"
                 aria-label="Search documentation"
@@ -495,11 +489,13 @@ export default function SearchBar() {
                       Clear all
                     </button>
                   </div>
-                  {recentSearches.recents.map(r => (
+                  {recentSearches.recents.map((r, i) => (
                     <div
                       key={r.filepath}
-                      className={styles.result}
+                      className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
                       role="option"
+                      aria-selected={i === activeIndex}
+                      onMouseEnter={() => setActiveIndex(i)}
                       onClick={() => r.isAi ? askAi(r.query) : navigate(r)}
                       style={{ cursor: 'pointer' }}
                     >

@@ -263,6 +263,10 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# Local environment variables (never commit secrets)
+.env
+.env.local
+
 # Visual Studio 6 build log
 *.plg
 
@@ -331,3 +335,6 @@ ASALocalRun/
 
 # Vale styles
 .github/styles/
+
+# Local Netlify folder
+.netlify

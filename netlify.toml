@@ -15,5 +15,21 @@ ID = "0e0ef928-92aa-41b4-9d53-a2ee648644d3"
   # Default build command.
   command = "npm run build"
 
+  # Edge functions directory
+  edge_functions = "netlify/edge-functions"
+
 [build.environment]
   NODE_VERSION = "24.0"
+
+# Local development -- run with: netlify dev
+# Starts Docusaurus dev server and the edge function runtime together.
+[dev]
+  command    = "npm run start"   # starts Docusaurus on port 3000
+  targetPort = 3000              # port Docusaurus listens on
+  port       = 8888              # port netlify dev exposes (open this in your browser)
+  framework  = "#custom"
+
+# Route /api/ask-ai to the edge function (both locally and in production)
+[[edge_functions]]
+  path     = "/api/ask-ai"
+  function = "ask-ai"

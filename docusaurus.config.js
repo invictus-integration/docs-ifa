@@ -63,17 +63,16 @@ const config = {
       endpoint: 'https://invictus-docs.search.windows.net',
       index: 'v6-docs',
       apiKey: process.env.AZURE_SEARCH_API_KEY ?? '',
-      adminKey: process.env.AZURE_SEARCH_ADMIN_KEY ?? '',
+      // adminKey is intentionally absent — it lives only in Netlify env vars,
+      // used server-side by the /api/ask-ai edge function.
     },
-    // Fill these in once your Azure OpenAI resource is ready.
-    // Endpoint:   Azure portal → your OpenAI resource → Keys and Endpoint
-    // Deployment: the model deployment name (e.g. "gpt-4o")
-    // ApiKey:     add AZURE_OPENAI_API_KEY to your .env file
-    azureOpenAI: {
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT ?? '',
-      deployment: process.env.AZURE_OPENAI_DEPLOYMENT ?? '',
-      apiKey: process.env.AZURE_OPENAI_API_KEY ?? '',
-    },
+    // Signals to the UI that AI search is available without exposing any key.
+    // True at build time only when the OpenAI env vars are present.
+    aiEnabled: !!(
+      process.env.AZURE_OPENAI_API_KEY &&
+      process.env.AZURE_OPENAI_ENDPOINT &&
+      process.env.AZURE_OPENAI_DEPLOYMENT
+    ),
   },
 
   themeConfig: {
