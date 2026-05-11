@@ -1,3 +1,16 @@
+/* ── Screen-reader only utility ── */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── Navbar trigger button ── */
 .triggerButton {
   display: flex;
@@ -385,9 +398,25 @@
   border-left-color: var(--ifm-color-primary);
 }
 
+/* Keyboard focus — matches hover/active style with an explicit ring */
+.result:focus-visible,
+.result:focus-within {
+  outline: none;
+  background: var(--ifm-color-secondary-lightest);
+  border-left-color: var(--ifm-color-primary);
+  box-shadow: inset 2px 0 0 var(--ifm-color-primary);
+}
+
 [data-theme='dark'] .result:hover,
 [data-theme='dark'] .result.active {
   background: rgba(42, 143, 156, 0.1);
+}
+
+[data-theme='dark'] .result:focus-visible,
+[data-theme='dark'] .result:focus-within {
+  outline: none;
+  background: rgba(42, 143, 156, 0.1);
+  box-shadow: inset 2px 0 0 var(--ifm-color-primary);
 }
 
 /* Result icon */
@@ -774,14 +803,18 @@
   opacity: 1;
 }
 
-.recentRemove:hover {
+.recentRemove:hover,
+.recentRemove:focus-visible {
   background: rgba(0, 0, 0, 0.08);
   color: rgba(0, 0, 0, 0.8);
+  outline: none;
 }
 
-:global([data-theme='dark']) .recentRemove:hover {
+:global([data-theme='dark']) .recentRemove:hover,
+:global([data-theme='dark']) .recentRemove:focus-visible {
   background: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.9);
+  outline: none;
 }
 
 .recentRemove svg {

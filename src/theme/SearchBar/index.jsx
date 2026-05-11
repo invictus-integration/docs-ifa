@@ -155,6 +155,7 @@ export default function SearchBar() {
   const panelRef = useRef(null);
   const abortRef = useRef(null);
   const skipSearchResetRef = useRef(false);
+  const listboxId = 'search-listbox';
   const debouncedQuery = useDebounce(query, 300);
 
   // Search
@@ -241,6 +242,29 @@ export default function SearchBar() {
     }
   }, [isOpen]);
 
+  // Focus trap — keep Tab/Shift+Tab inside the modal
+  useEffect(() => {
+    if (!isOpen) return;
+    function onKeyDown(e) {
+      if (e.key !== 'Tab') return;
+      const modal = document.querySelector('[data-search-modal]');
+      if (!modal) return;
+      const focusable = Array.from(
+        modal.querySelectorAll('button, input, a[href], [tabindex]:not([tabindex="-1"])')
+      ).filter(el => !el.disabled);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen]);
+
   useEffect(() => () => abortRef.current?.abort(), []);
 
   function askAi(queryToAsk = query) {
@@ -313,6 +337,17 @@ export default function SearchBar() {
     : results.length + (aiEnabled && query ? 1 : 0);
   const askAiIndex = results.length; // virtual index for the Ask AI row (only valid when !showingRecents)
 
+  // Derive the active descendant ID for aria-activedescendant
+  const activeDescendantId = activeIndex >= 0 ? `search-opt-${activeIndex}` : undefined;
+
+  // Live region announcement
+  const liveMessage = (() => {
+    if (isSearching) return '';
+    if (!query) return showingRecents ? `${recentSearches.recents.length} recent searches` : '';
+    if (results.length === 0) return `No results for ${query}`;
+    return `${results.length} result${results.length === 1 ? '' : 's'} for ${query}`;
+  })();
+
   function handleKeyDown(e) {
     // Let ArrowLeft / ArrowRight always move the cursor inside the input
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return;
@@ -379,7 +414,9 @@ export default function SearchBar() {
       <button
         className={styles.triggerButton}
         onClick={() => setIsOpen(true)}
-        aria-label="Search documentation"
+        aria-label={`Search documentation, press ${shortcutLabel} to open`}
+        aria-keyshortcuts={shortcutLabel.includes('⌘') ? 'Meta+k' : 'Control+k'}
+        aria-haspopup="dialog"
       >
         <svg className={styles.searchIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
@@ -400,7 +437,17 @@ export default function SearchBar() {
           onMouseDown={e => { if (e.target === e.currentTarget) closeModal(); }}
           role="presentation"
         >
-          <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Search documentation">
+          <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search documentation"
+            data-search-modal
+          >
+            {/* Live region — announces result count to screen readers */}
+            <div role="status" aria-live="polite" aria-atomic="true" className={styles.srOnly}>
+              {liveMessage}
+            </div>
 
             {/* Input row */}
             <div className={`${styles.inputWrapper} ${isFocused ? styles.inputWrapperFocused : ''}`}>
@@ -414,6 +461,12 @@ export default function SearchBar() {
                 className={styles.input}
                 placeholder="Search docs…"
                 aria-label="Search documentation"
+                role="combobox"
+                aria-expanded={isOpen && (results.length > 0 || showingRecents)}
+                aria-controls={listboxId}
+                aria-activedescendant={activeDescendantId}
+                aria-autocomplete="list"
+                aria-haspopup="listbox"
                 value={query}
                 onChange={e => { setQuery(e.target.value); setAiActive(false); }}
                 onKeyDown={handleKeyDown}
@@ -446,7 +499,7 @@ export default function SearchBar() {
             </div>
 
             {/* Results / AI / Recents area */}
-            <div ref={panelRef} className={styles.panel} role="listbox" aria-label="Search results">
+            <div ref={panelRef} id={listboxId} className={styles.panel} role="listbox" aria-label="Search results">
 
               {/* ── AI answer view ── */}
               {aiActive ? (
@@ -544,11 +597,20 @@ export default function SearchBar() {
                   {recentSearches.recents.map((r, i) => (
                     <div
                       key={r.filepath}
+                      id={`search-opt-${i}`}
                       className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
                       role="option"
                       aria-selected={i === activeIndex}
+                      tabIndex={0}
                       onMouseEnter={() => setActiveIndex(i)}
+                      onFocus={() => setActiveIndex(i)}
                       onClick={() => r.isAi ? askAi(r.query) : navigate(r)}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          r.isAi ? askAi(r.query) : navigate(r);
+                        }
+                      }}
                       style={{ cursor: 'pointer' }}
                     >
                       <span className={styles.resultIconWrap} aria-hidden="true">
@@ -637,13 +699,15 @@ export default function SearchBar() {
                         return (
                           <React.Fragment key={result.id}>
                             {showHeader && (
-                              <div className={styles.groupHeader} aria-hidden="true">
+                              <div className={styles.groupHeader} role="presentation" aria-label={result.category}>
                                 {result.category}
                               </div>
                             )}
                             <button
+                              id={`search-opt-${i}`}
                               role="option"
                               aria-selected={i === activeIndex}
+                              aria-label={`${result.title}${breadcrumb ? `, ${breadcrumb}` : ''}`}
                               className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
                               onMouseEnter={() => setActiveIndex(i)}
                               onClick={() => navigate(result)}
@@ -676,8 +740,10 @@ export default function SearchBar() {
                   {aiEnabled && query && !aiAtTop && (
                     <div className={styles.askAiSection}>
                       <button
+                        id={`search-opt-${askAiIndex}`}
                         role="option"
                         aria-selected={activeIndex === askAiIndex}
+                        aria-label={`Ask AI: ${query}`}
                         className={`${styles.askAiRow} ${activeIndex === askAiIndex ? styles.active : ''}`}
                         onMouseEnter={() => setActiveIndex(askAiIndex)}
                         onClick={() => askAi()}
