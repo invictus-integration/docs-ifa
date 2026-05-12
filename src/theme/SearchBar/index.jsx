@@ -3,6 +3,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useHistory } from '@docusaurus/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faXmark, faChevronLeft, faChevronRight, faFileLines, faClock } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.css';
 
 function filepathToUrl(filepath) {
@@ -14,13 +16,58 @@ function filepathToUrl(filepath) {
   return '/' + parts.filter(Boolean).join('/');
 }
 
-function filepathToBreadcrumb(filepath) {
-  return filepath
+function filepathToBreadcrumb(filepath, sidebarLabel, title) {
+  const segments = filepath
     .replace(/\.mdx?$/, '')
     .split('/')
     .map(seg => seg.replace(/^\d+_/, '').replace(/-/g, ' '))
     .filter(seg => seg !== 'index' && seg)
-    .join(' › ');
+    .map(seg => seg.charAt(0).toUpperCase() + seg.slice(1));
+  const lastSegmentOverride = sidebarLabel || title;
+  if (lastSegmentOverride && segments.length > 0) {
+    segments[segments.length - 1] = lastSegmentOverride;
+  }
+  return segments.join(' › ');
+}
+
+function BreadcrumbPath({ path, className }) {
+  if (!path) return null;
+  const segments = path.split(' › ');
+  return (
+    <span className={className}>
+      {segments.map((seg, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && <span className={styles.breadcrumbSeparator} aria-hidden="true">›</span>}
+          {seg}
+        </React.Fragment>
+      ))}
+    </span>
+  );
+}
+
+function stripMarkdown(text) {
+  return text
+    .replace(/```[\s\S]*?```/g, '')                  // fenced code blocks
+    .replace(/`([^`]+)`/g, '$1')                     // inline code
+    .replace(/!\[.*?\]\(.*?\)/g, '')                 // images
+    .replace(/\[([^\]]+)\]\([^)]*\)?/g, '$1')       // inline links, complete or truncated
+    .replace(/\[([^\]]+)\]\[[^\]]*\]?/g, '$1')       // reference-style links, complete or truncated
+    .replace(/^\[[^\]]+\]:\s*\S+.*$/gm, '')          // reference-style link definitions
+    .replace(/\[([^\]]*)\]/g, '$1')                  // any remaining bare [text] brackets
+    .replace(/^#{1,6}\s+/gm, '')                     // headings
+    .replace(/(\*\*|__)([^*_]+?)\1/g, '$2')          // bold
+    .replace(/(\*|_)([^*_]+?)\1/g, '$2')             // italic
+    .replace(/^[-*+]\s+/gm, '')                      // unordered list markers
+    .replace(/^\d+\.\s+/gm, '')                      // ordered list markers
+    .replace(/^>\s*/gm, '')                          // blockquotes
+    .replace(/^[-*_]{3,}$/gm, '')                    // horizontal rules
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function toPascalCase(str) {  return str
+    .replace(/[-_]+/g, ' ')
+    .replace(/\w+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
 }
 
 function useDebounce(value, delay) {
@@ -178,7 +225,7 @@ export default function SearchBar() {
     const baseParams = {
       'api-version': '2024-07-01',
       searchFields: 'title,content',
-      select: 'id,title,filepath,category,content',
+      select: 'id,title,filepath,category,content,sidebar_label',
       highlight: 'content',
       highlightPreTag: '<mark>',
       highlightPostTag: '</mark>',
@@ -308,7 +355,7 @@ export default function SearchBar() {
   function getSnippet(result) {
     // Prefer Azure Search highlights — already contain <mark> tags around matches
     const highlights = result['@search.highlights']?.content;
-    if (highlights?.length) return highlights[0];
+    if (highlights?.length) return stripMarkdown(highlights[0]);
 
     // Fallback: extract from raw content
     const content = result.content;
@@ -318,8 +365,9 @@ export default function SearchBar() {
     const start = Math.max(0, idx === -1 ? 0 : idx - 40);
     const end   = Math.min(content.length, start + 150);
     const raw   = (start > 0 ? '…' : '') + content.slice(start, end).replace(/\s+/g, ' ').trim() + (end < content.length ? '…' : '');
-    if (idx === -1) return raw;
-    return raw.replace(
+    const stripped = stripMarkdown(raw);
+    if (idx === -1) return stripped;
+    return stripped.replace(
       new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),
       '<mark>$1</mark>',
     );
@@ -418,9 +466,7 @@ export default function SearchBar() {
         aria-keyshortcuts={shortcutLabel.includes('⌘') ? 'Meta+k' : 'Control+k'}
         aria-haspopup="dialog"
       >
-        <svg className={styles.searchIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-        </svg>
+        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} aria-hidden="true" />
         <span className={styles.triggerText}>Search docs…</span>
         <span className={styles.shortcutBadge} aria-hidden="true">
           {shortcutLabel.includes('⌘')
@@ -451,9 +497,7 @@ export default function SearchBar() {
 
             {/* Input row */}
             <div className={`${styles.inputWrapper} ${isFocused ? styles.inputWrapperFocused : ''}`}>
-              <svg className={styles.searchIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-              </svg>
+              <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} aria-hidden="true" />
 
               <input
                 ref={inputRef}
@@ -485,9 +529,7 @@ export default function SearchBar() {
                       aria-label="Clear search"
                       onClick={() => { setQuery(''); setAiActive(false); inputRef.current?.focus(); }}
                     >
-                      <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                      </svg>
+                      <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
                     </button>
                   )
                   : null
@@ -510,9 +552,7 @@ export default function SearchBar() {
                       onClick={() => { setAiActive(false); abortRef.current?.abort(); }}
                       aria-label="Back to results"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <polyline points="15 18 9 12 15 6" />
-                      </svg>
+                      <FontAwesomeIcon icon={faChevronLeft} aria-hidden="true" />
                       Back to results
                     </button>
                     <span className={styles.aiLabel}>
@@ -559,21 +599,13 @@ export default function SearchBar() {
                                       onClick={e => { e.preventDefault(); navigate({ title: c.title, filepath: c.filepath }); }}
                                     >
                                       <span className={styles.resultIconWrap} aria-hidden="true">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                          <polyline points="14 2 14 8 20 8" />
-                                          <line x1="16" y1="13" x2="8" y2="13" />
-                                          <line x1="16" y1="17" x2="8" y2="17" />
-                                          <polyline points="10 9 9 9 8 9" />
-                                        </svg>
+                                        <FontAwesomeIcon icon={faFileLines} />
                                       </span>
                                       <span className={styles.resultContent}>
                                         <span className={styles.resultTitle}>{c.title || filepathToBreadcrumb(c.filepath)}</span>
-                                        <span className={styles.resultPath}>{filepathToBreadcrumb(c.filepath)}</span>
+                                        <BreadcrumbPath path={filepathToBreadcrumb(c.filepath, null, c.title)} className={styles.resultPath} />
                                       </span>
-                                      <svg className={styles.resultChevron} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                        <polyline points="9 18 15 12 9 6" />
-                                      </svg>
+                                      <FontAwesomeIcon icon={faChevronRight} className={styles.resultChevron} aria-hidden="true" />
                                     </a>
                                   </li>
                                 ))}
@@ -619,23 +651,22 @@ export default function SearchBar() {
                             <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
                           </svg>
                         ) : (
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 15 15" />
-                          </svg>
+                          <FontAwesomeIcon icon={faClock} />
                         )}
                       </span>
                       <span className={styles.resultContent}>
                         <span className={styles.resultTitle}>{r.query}</span>
-                        <span className={styles.resultPath}>{r.isAi ? 'AI Answer' : (r.title || filepathToBreadcrumb(r.filepath))}</span>
+                        {r.isAi
+                          ? <span className={styles.resultPath}>AI Answer</span>
+                          : <BreadcrumbPath path={r.title || filepathToBreadcrumb(r.filepath)} className={styles.resultPath} />
+                        }
                       </span>
                       <button
                         className={styles.recentRemove}
                         aria-label={`Remove "${r.query}" from recent searches`}
                         onClick={e => { e.stopPropagation(); recentSearches.remove(r.filepath); }}
                       >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
+                        <FontAwesomeIcon icon={faXmark} />
                       </button>
                     </div>
                   ))}
@@ -685,9 +716,7 @@ export default function SearchBar() {
                       </div>
                     ) : results.length === 0 && query ? (
                       <div className={styles.empty}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                          <circle cx="9" cy="9" r="6" /><path d="M15 15l3 3" strokeLinecap="round" />
-                        </svg>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} aria-hidden="true" />
                         <span>No results for &ldquo;{query}&rdquo;</span>
                       </div>
                     ) : (() => {
@@ -695,12 +724,12 @@ export default function SearchBar() {
                       return results.map((result, i) => {
                         const showHeader = result.category && result.category !== lastCategory;
                         lastCategory = result.category;
-                        const breadcrumb = filepathToBreadcrumb(result.filepath);
+                        const breadcrumb = filepathToBreadcrumb(result.filepath, result.sidebar_label, result.title);
                         return (
                           <React.Fragment key={result.id}>
                             {showHeader && (
                               <div className={styles.groupHeader} role="presentation" aria-label={result.category}>
-                                {result.category}
+                                {toPascalCase(result.category)}
                               </div>
                             )}
                             <button
@@ -713,22 +742,14 @@ export default function SearchBar() {
                               onClick={() => navigate(result)}
                             >
                               <span className={styles.resultIconWrap} aria-hidden="true">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                  <polyline points="14 2 14 8 20 8" />
-                                  <line x1="16" y1="13" x2="8" y2="13" />
-                                  <line x1="16" y1="17" x2="8" y2="17" />
-                                  <polyline points="10 9 9 9 8 9" />
-                                </svg>
+                                <FontAwesomeIcon icon={faFileLines} />
                               </span>
                               <span className={styles.resultContent}>
                                 <span className={styles.resultTitle}>{result.title}</span>
                                 {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
-                                {breadcrumb && <span className={styles.resultPath}>{breadcrumb}</span>}
+                                {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
                               </span>
-                              <svg className={styles.resultChevron} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                <polyline points="9 18 15 12 9 6" />
-                              </svg>
+                              <FontAwesomeIcon icon={faChevronRight} className={styles.resultChevron} aria-hidden="true" />
                             </button>
                           </React.Fragment>
                         );
