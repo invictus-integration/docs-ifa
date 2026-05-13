@@ -122,58 +122,8 @@ function useRecentSearches() {
   return { recents, add, remove, clear };
 }
 
-async function streamAiResponse({ question, onChunk, onCitations, onDone, onError, signal }) {
-  let res;
-  try {
-    res = await fetch('/api/ask-ai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question }),
-      signal,
-    });
-  } catch (e) {
-    onError(e);
-    return;
-  }
+import { streamAiResponse } from '../../components/streamAiResponse';
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
-    onError(new Error(err?.error?.message ?? res.statusText));
-    return;
-  }
-
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (data === '[DONE]') { onDone(); return; }
-        try {
-          const parsed = JSON.parse(data);
-          const delta = parsed.choices?.[0]?.delta;
-          if (delta?.content) onChunk(delta.content);
-          if (delta?.context?.citations?.length) onCitations(delta.context.citations);
-        } catch { /* skip malformed lines */ }
-      }
-    }
-    onDone();
-  } catch (e) {
-    if (e?.name !== 'AbortError' && e?.message !== 'BodyStreamBuffer was aborted') {
-      onError(e);
-    } else {
-      onDone();
-    }
-  }
-}
 
 export default function SearchBar() {
   const { siteConfig } = useDocusaurusContext();
@@ -208,6 +158,7 @@ export default function SearchBar() {
   const inputRef = useRef(null);
   const panelRef = useRef(null);
   const abortRef = useRef(null);
+  const triggerRef = useRef(null);
   const skipSearchResetRef = useRef(false);
   const listboxId = 'search-listbox';
   const debouncedQuery = useDebounce(query, 300);
@@ -395,6 +346,13 @@ export default function SearchBar() {
   // Derive the active descendant ID for aria-activedescendant
   const activeDescendantId = activeIndex >= 0 ? `search-opt-${activeIndex}` : undefined;
 
+  // Scroll active item into view when navigating with arrow keys
+  useEffect(() => {
+    if (activeIndex < 0) return;
+    const el = document.getElementById(`search-opt-${activeIndex}`);
+    el?.scrollIntoView({ block: 'nearest' });
+  }, [activeIndex]);
+
   // Live region announcement
   const liveMessage = (() => {
     if (isSearching) return '';
@@ -461,12 +419,14 @@ export default function SearchBar() {
     setQuery('');
     setAiActive(false);
     abortRef.current?.abort();
+    setTimeout(() => triggerRef.current?.focus(), 0);
   }
 
   return (
     <>
       {/* ── Navbar trigger button ── */}
       <button
+        ref={triggerRef}
         className={styles.triggerButton}
         onClick={() => setIsOpen(true)}
         aria-label={`Search documentation, press ${shortcutLabel} to open`}
@@ -513,11 +473,12 @@ export default function SearchBar() {
                 placeholder="Search docs…"
                 aria-label="Search documentation"
                 role="combobox"
-                aria-expanded={isOpen && (results.length > 0 || showingRecents)}
+                aria-expanded={isOpen}
                 aria-controls={listboxId}
                 aria-activedescendant={activeDescendantId}
                 aria-autocomplete="list"
                 aria-haspopup="listbox"
+                aria-busy={isSearching || isStreaming}
                 value={query}
                 onChange={e => { setQuery(e.target.value); setAiActive(false); }}
                 onKeyDown={handleKeyDown}
@@ -548,7 +509,15 @@ export default function SearchBar() {
             </div>
 
             {/* Results / AI / Recents area */}
-            <div ref={panelRef} id={listboxId} className={styles.panel} role="listbox" aria-label="Search results">
+            <div
+              ref={panelRef}
+              id={listboxId}
+              className={styles.panel}
+              role={aiActive ? 'region' : 'listbox'}
+              aria-label={aiActive ? 'AI Answer' : 'Search results'}
+              aria-live={aiActive ? 'polite' : undefined}
+              aria-busy={aiActive ? isStreaming : isSearching}
+            >
 
               {/* ── AI answer view ── */}
               {aiActive ? (
@@ -595,8 +564,8 @@ export default function SearchBar() {
                           </div>
 
                           {aiCitations.length > 0 && (
-                            <div className={styles.aiSources}>
-                              <p className={styles.aiSourcesLabel}>Related pages</p>
+                            <div className={styles.aiSources} role="group" aria-labelledby="search-related-label">
+                              <p id="search-related-label" className={styles.aiSourcesLabel}>Related pages</p>
                               <ul className={styles.aiSourcesList}>
                                 {aiCitations.map((c, i) => (
                                   <li key={i}>
@@ -619,6 +588,11 @@ export default function SearchBar() {
                               </ul>
                             </div>
                           )}
+                          {!isStreaming && (
+                            <p className={styles.aiDisclaimer}>
+                              AI answers may be inaccurate — always verify against the documentation.
+                            </p>
+                          )}
                         </>
                       )
                       : <p className={styles.aiPlaceholder}>Thinking…</p>
@@ -626,48 +600,49 @@ export default function SearchBar() {
                 </div>
               ) : !query && recentSearches.recents.length > 0 ? (
                 /* ── Recent searches ── */
-                <div className={styles.recentSection}>
+                <div className={styles.recentSection} role="group" aria-labelledby="search-recents-label">
                   <div className={styles.recentHeader}>
-                    <span className={styles.recentLabel}>Recent searches</span>
+                    <span id="search-recents-label" className={styles.recentLabel}>Recent searches</span>
                     <button className={styles.recentClearAll} onClick={recentSearches.clear}>
                       Clear all
                     </button>
                   </div>
                   {recentSearches.recents.map((r, i) => (
-                    <div
-                      key={r.filepath}
-                      id={`search-opt-${i}`}
-                      className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
-                      role="option"
-                      aria-selected={i === activeIndex}
-                      tabIndex={0}
-                      onMouseEnter={() => setActiveIndex(i)}
-                      onFocus={() => setActiveIndex(i)}
-                      onClick={() => r.isAi ? askAi(r.query) : navigate(r)}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          r.isAi ? askAi(r.query) : navigate(r);
-                        }
-                      }}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <span className={styles.resultIconWrap} aria-hidden="true">
-                        {r.isAi ? (
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
-                          </svg>
-                        ) : (
-                          <FontAwesomeIcon icon={faClock} />
-                        )}
-                      </span>
-                      <span className={styles.resultContent}>
-                        <span className={styles.resultTitle}>{r.query}</span>
-                        {r.isAi
-                          ? <span className={styles.resultPath}>AI Answer</span>
-                          : <BreadcrumbPath path={r.title || filepathToBreadcrumb(r.filepath)} className={styles.resultPath} />
-                        }
-                      </span>
+                    <div key={r.filepath} className={styles.recentItemRow}>
+                      <div
+                        id={`search-opt-${i}`}
+                        className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
+                        role="option"
+                        aria-selected={i === activeIndex}
+                        tabIndex={0}
+                        onMouseEnter={() => setActiveIndex(i)}
+                        onFocus={() => setActiveIndex(i)}
+                        onClick={() => r.isAi ? askAi(r.query) : navigate(r)}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            r.isAi ? askAi(r.query) : navigate(r);
+                          }
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <span className={styles.resultIconWrap} aria-hidden="true">
+                          {r.isAi ? (
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
+                            </svg>
+                          ) : (
+                            <FontAwesomeIcon icon={faClock} />
+                          )}
+                        </span>
+                        <span className={styles.resultContent}>
+                          <span className={styles.resultTitle}>{r.query}</span>
+                          {r.isAi
+                            ? <span className={styles.resultPath}>AI Answer</span>
+                            : <BreadcrumbPath path={r.title || filepathToBreadcrumb(r.filepath)} className={styles.resultPath} />
+                          }
+                        </span>
+                      </div>
                       <button
                         className={styles.recentRemove}
                         aria-label={`Remove "${r.query}" from recent searches`}
@@ -791,15 +766,24 @@ export default function SearchBar() {
                   )}
 
                   {/* ── Panel footer with keyboard hints ── */}
-                  {results.length > 0 && (
+                  {(results.length > 0 || showingRecents) && (
                     <div className={styles.panelFooter}>
-                      <span className={styles.footerHint}><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-                      <span className={styles.footerHint}><kbd>↵</kbd> select</span>
-                      {aiEnabled && <span className={styles.footerHint}><kbd>{shortcutLabel.includes('⌘') ? '⌘' : 'Ctrl'}</kbd><kbd>↵</kbd> ask AI</span>}
-                      <span className={styles.footerHint}><kbd>Esc</kbd> close</span>
+                      <span className={styles.footerHint} aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                      <span className={styles.footerHint} aria-hidden="true"><kbd>↵</kbd> select</span>
+                      {aiEnabled && <span className={styles.footerHint} aria-hidden="true"><kbd>{shortcutLabel.includes('⌘') ? '⌘' : 'Ctrl'}</kbd><kbd>↵</kbd> ask AI</span>}
+                      <span className={styles.footerHint} aria-hidden="true"><kbd>Esc</kbd> close</span>
                     </div>
                   )}
                 </>
+              )}
+
+              {/* ── Panel footer for recents view ── */}
+              {!aiActive && showingRecents && (
+                <div className={styles.panelFooter}>
+                  <span className={styles.footerHint} aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                  <span className={styles.footerHint} aria-hidden="true"><kbd>↵</kbd> select</span>
+                  <span className={styles.footerHint} aria-hidden="true"><kbd>Esc</kbd> close</span>
+                </div>
               )}
             </div>
           </div>

@@ -168,3 +168,28 @@
   border-color: rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.07);
 }
+
+@media (max-width: 640px) {
+  /* Esc is a keyboard shortcut — hide on touch */
+  .escBadge {
+    display: none;
+  }
+
+  /* Taller input on mobile gives the clear button room */
+  .input {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 3rem;
+  }
+
+  /* Clear button fits the taller input */
+  .clear {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* '/' shortcut is keyboard-only — hide on touch */
+  .shortcut {
+    display: none;
+  }
+}

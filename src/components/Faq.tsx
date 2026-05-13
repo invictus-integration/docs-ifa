@@ -2,10 +2,12 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronRight, faCircleQuestion, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronRight, faCircleQuestion, faMagnifyingGlass, faXmark, faFileCircleXmark, faChevronLeft, faFileLines } from "@fortawesome/free-solid-svg-icons";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import highlightStyles from "./highlight.module.css";
 import inputStyles from "./tableSearchInput.module.css";
 import rowStyles from "./resultRow.module.css";
+import { streamAiResponse } from "./streamAiResponse";
 
 export type FaqEntry = {
   question: string;
@@ -64,21 +66,77 @@ const usePrefersReducedMotion = () => {
   return reduced;
 };
 
-export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; maxHeight?: string }) {
+export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; maxHeight?: string }) {
+  const { siteConfig } = useDocusaurusContext();
+  const aiEnabled = !!(siteConfig.customFields?.aiEnabled);
   const reducedMotion = usePrefersReducedMotion();
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [search, setSearch] = useState("");
   const normalizedSearch = search.toLowerCase();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const noTransition: React.CSSProperties = reducedMotion ? { transition: "none" } : {};
 
+  // AI state
+  const [aiActive, setAiActive] = useState(false);
+  const [aiAnswer, setAiAnswer] = useState("");
+  const [aiCitations, setAiCitations] = useState<any[]>([]);
+  const [aiError, setAiError] = useState("");
+  const [isStreaming, setIsStreaming] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
+  const [isMac, setIsMac] = useState(false);
+  useEffect(() => {
+    if (typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform)) {
+      setIsMac(true);
+    }
+  }, []);
+
+  function askAi() {
+    if (!search.trim() || !aiEnabled) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setAiActive(true);
+    setAiAnswer("");
+    setAiCitations([]);
+    setAiError("");
+    setIsStreaming(true);
+    streamAiResponse({
+      question: search,
+      signal: controller.signal,
+      onChunk: (chunk: string) => setAiAnswer((prev) => prev + chunk),
+      onCitations: (citations: any[]) => setAiCitations(citations),
+      onDone: () => setIsStreaming(false),
+      onError: (err: any) => {
+        if (err?.name !== "AbortError" && err?.message !== "BodyStreamBuffer was aborted") {
+          setAiError(err.message ?? "Something went wrong.");
+        }
+        setIsStreaming(false);
+      },
+    });
+  }
+
+  function dismissAi() {
+    abortRef.current?.abort();
+    setAiActive(false);
+  }
+
   useEffect(() => {
     searchInputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (!search) dismissAi();
+    setActiveIndex(-1);
+  }, [search]);
+
+  useEffect(() => {
+    if (activeIndex >= 0) itemRefs.current[activeIndex]?.focus();
+  }, [activeIndex]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -205,6 +263,20 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Escape") { setSearch(""); return; }
+            if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && aiEnabled && search.trim()) {
+              askAi(); return;
+            }
+            if (e.key === "ArrowDown" && filtered.length > 0) {
+              e.preventDefault();
+              setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
+              return;
+            }
+            if (e.key === "ArrowUp" && activeIndex >= 0) {
+              e.preventDefault();
+              setActiveIndex(i => i <= 0 ? -1 : i - 1);
+              if (activeIndex === 0) searchInputRef.current?.focus();
+              return;
+            }
             if (e.key === "Enter" && filtered.length === 0 && search) {
               window.open(newDiscussionUrl(search), "_blank", "noopener,noreferrer");
             }
@@ -212,6 +284,9 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
           className={inputStyles.input}
           aria-label="Search FAQ questions and answers"
           aria-describedby="faq-search-description"
+          aria-controls="faq-results-list"
+          aria-expanded={!aiActive && filtered.length > 0}
+          aria-autocomplete="list"
         />
         {search ? (
           <span className={inputStyles.rightSlot}>
@@ -236,67 +311,139 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       </div>
 
       {/* Tag filter buttons */}
-      <div style={tagWrapperStyle} role="group" aria-label="Filter by tag">
-        {allTags
-          .map((tag) => {
-            const isActive = activeTags.includes(tag);
-            const isHovered = hoveredTag === tag;
+      {!aiActive && <div className={rowStyles.tagWrapper} role="group" aria-label="Filter by tag">
+        {allTags.map((tag) => {
+          const isActive = activeTags.includes(tag);
+          return (
+            <button
+              key={tag}
+              data-cy={tag}
+              onClick={() => toggleTag(tag)}
+              aria-pressed={isActive}
+              className={`${rowStyles.tagButton} ${isActive ? rowStyles.tagButtonActive : ""}`}
+            >
+              {tag}
+            </button>
+          );
+        })}
+      </div>}
 
-            const style: React.CSSProperties = {
-              ...tagButtonStyle,
-              ...noTransition,
-              ...(isActive ? tagButtonActiveStyle : {}),
-              ...(isHovered
-                ? {
-                  backgroundColor: isActive
-                    ? "var(--ifm-color-primary-darkest)"
-                    : "var(--ifm-color-emphasis-300)",
-                }
-                : {}),
-            };
+      {/* AI answer panel */}
+      {aiActive && (
+        <div
+          role="region"
+          aria-label="AI Answer"
+          aria-live="polite"
+          aria-busy={isStreaming}
+          className={rowStyles.aiPanel}
+        >
+          <div className={rowStyles.aiHeader}>
+            <button className={rowStyles.aiBack} onClick={dismissAi} aria-label="Back to results">
+              <FontAwesomeIcon icon={faChevronLeft} aria-hidden="true" />
+              Back to results
+            </button>
+            <span className={rowStyles.aiLabel}>
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
+              </svg>
+              AI Answer
+              {isStreaming && <span className={rowStyles.streamingDot} aria-hidden="true" />}
+            </span>
+          </div>
 
-            return (
-              <button
-                key={tag}
-                data-cy={tag}
-                onClick={() => toggleTag(tag)}
-                aria-pressed={isActive}
-                onMouseEnter={() => setHoveredTag(tag)}
-                onMouseLeave={() => setHoveredTag(null)}
-                style={style}
-              >
-                {tag}
-              </button>
-            );
-          })}
-      </div>
+          <p className={rowStyles.aiQuestion}>&ldquo;{search}&rdquo;</p>
+
+          {aiError
+            ? <p className={rowStyles.aiError}>{aiError}</p>
+            : aiAnswer
+              ? (
+                <>
+                  <div className={rowStyles.aiAnswer}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {aiAnswer.replace(/\[doc\d+\]/g, '')}
+                    </ReactMarkdown>
+                  </div>
+                  {aiCitations.length > 0 && (
+                    <div className={rowStyles.aiSources}>
+                      <p className={rowStyles.aiSourcesLabel}>Related pages</p>
+                      <ul className={rowStyles.aiSourcesList}>
+                        {aiCitations.map((c: any, i: number) => {
+                          const segments = c.filepath
+                            ?.replace(/\.mdx?$/, '')
+                            .split('/')
+                            .map((s: string) => s.replace(/^\d+_/, '').replace(/-/g, ' '))
+                            .filter((s: string) => s && s !== 'index')
+                            .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1));
+                          const breadcrumb = segments?.join(' › ');
+                          const title = c.title || segments?.[segments.length - 1] || c.filepath;
+                          const url = `/${c.filepath?.replace(/\.mdx?$/, '').split('/').map((s: string) => s.replace(/^\d+_/, '')).filter(Boolean).join('/')}`;
+                          return (
+                            <li key={i}>
+                              <a href={url} className={rowStyles.aiSourceLink} target="_blank" rel="noopener noreferrer">
+                                <span className={rowStyles.aiSourceIconWrap} aria-hidden="true">
+                                  <FontAwesomeIcon icon={faFileLines} />
+                                </span>
+                                <span className={rowStyles.aiSourceContent}>
+                                  <span className={rowStyles.aiSourceTitle}>{title}</span>
+                                  {breadcrumb && <span className={rowStyles.aiSourcePath}>{breadcrumb}</span>}
+                                </span>
+                                <FontAwesomeIcon icon={faChevronRight} className={rowStyles.aiSourceChevron} aria-hidden="true" />
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                  {!isStreaming && (
+                    <p className={rowStyles.aiDisclaimer}>
+                      AI answers may be inaccurate — always verify against the documentation.
+                    </p>
+                  )}
+                </>
+              )
+              : <p className={rowStyles.aiPlaceholder}>Thinking…</p>
+          }
+        </div>
+      )}
 
       {/* Results count */}
-      <div data-cy="search-results-summary" style={resultCountStyle} aria-live="polite" aria-atomic="true">
-        Showing {filtered.length} question
-        {filtered.length !== 1 ? "s" : ""}
-      </div>
+      {!aiActive && filtered.length > 0 && (
+        <div data-cy="search-results-summary" style={resultCountStyle} aria-live="polite" aria-atomic="true">
+          Showing {filtered.length} question{filtered.length !== 1 ? "s" : ""}
+        </div>
+      )}
 
       {/* FAQ list / empty state */}
-      <div style={{ ...faqListWrapperStyle, maxHeight }}>
+      {!aiActive && <div>
         {filtered.length > 0 ? (
-          <div data-cy="faq-list" className={rowStyles.rowList}>
+          <>
+            <div id="faq-results-list" data-cy="faq-list" role="list" className={rowStyles.rowList} style={{ ...faqListWrapperStyle, maxHeight: `min(${maxHeight}, 50dvh)` }}>
             {filtered.map((item, index) => {
               const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
+              const isActive = activeIndex === index;
 
               return (
-                <React.Fragment key={index}>
+                <div key={index} role="listitem">
                   <button
                     data-cy="faq-item"
-                    className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""}`}
+                    ref={el => { itemRefs.current[index] = el; }}
+                    className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""} ${isActive ? rowStyles.rowFocused : ""}`}
                     style={noTransition}
                     onClick={() => toggleOpen(index)}
                     aria-expanded={isOpen}
                     aria-label={item.question}
+                    aria-setsize={filtered.length}
+                    aria-posinset={index + 1}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
                     onFocus={() => setFocusedIndex(index)}
                     onBlur={() => setFocusedIndex(null)}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowDown") { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, filtered.length - 1)); }
+                      else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIndex(i => { if (i <= 0) { searchInputRef.current?.focus(); return -1; } return i - 1; }); }
+                      else if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && aiEnabled && search.trim()) { e.preventDefault(); askAi(); }
+                    }}
                   >
                     {/* Left icon wrap */}
                     <span className={rowStyles.iconWrap} aria-hidden={true}>
@@ -345,23 +492,58 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
                       </ReactMarkdown>
                     </div>
                   )}
-                </React.Fragment>
+                </div>
               );
             })}
           </div>
+          <div className={rowStyles.faqFooter}>
+            <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+            <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↵</kbd> open</span>
+            <span className={rowStyles.footerHint} aria-hidden="true"><kbd>Esc</kbd> clear</span>
+            {aiEnabled && search.trim() && (
+              <button className={rowStyles.footerAskAi} onClick={askAi} aria-label={`Ask AI: ${search}`}>
+                <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
+                </svg>
+                Ask AI <kbd>{isMac ? "⌘" : "Ctrl"}</kbd><kbd>↵</kbd>
+              </button>
+            )}
+          </div>
+        </>
         ) : (
-          search && (
-            <div style={emptyStateStyle} role="status">
-              <p style={emptyStateTitleStyle}>No results found for <strong>"{search}"</strong>.</p>
-              <p style={emptyStateSubtitleStyle}>
-                Can't find what you're looking for? Press{" "}
-                <kbd style={kbdStyle}>Enter</kbd>{" "}
-                to open a new support ticket on GitHub with this question.
-              </p>
+          search && !aiActive && (
+            <div className={rowStyles.empty} role="status">
+              <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
+              <div className={rowStyles.emptyText}>
+                <span className={rowStyles.emptyTitle}>
+                  No questions match <strong>"{search}"</strong>
+                </span>
+                <span className={rowStyles.emptyHint}>
+                  Can't find what you're looking for?
+                </span>
+                <div className={rowStyles.emptyActions}>
+                  {aiEnabled && (
+                    <button className={rowStyles.emptyActionButton} onClick={askAi}>
+                      <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
+                      </svg>
+                      Ask AI <kbd>{isMac ? "⌘" : "Ctrl"}↵</kbd>
+                    </button>
+                  )}
+                  <a
+                    href={newDiscussionUrl(search)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={rowStyles.emptyActionLink}
+                  >
+                    Open a GitHub discussion <kbd>Enter</kbd>
+                  </a>
+                </div>
+              </div>
             </div>
           )
         )}
-      </div>
+      </div>}
     </div>
   );
 }
@@ -369,24 +551,6 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
 /* ================= STYLES ================= */
 
 const containerStyle: React.CSSProperties = { marginTop: "1rem" };
-
-const tagWrapperStyle: React.CSSProperties = { marginBottom: "1rem" };
-
-const tagButtonStyle: React.CSSProperties = {
-  margin: "0.25rem",
-  padding: "4px 8px",
-  borderRadius: "6px",
-  border: "1px solid var(--ifm-form-border-color)",
-  cursor: "pointer",
-  fontSize: "0.85rem",
-  transition: "all 0.15s ease",
-};
-
-const tagButtonActiveStyle: React.CSSProperties = {
-  border: "2px solid var(--ifm-color-primary)",
-  backgroundColor: "var(--ifm-color-primary)",
-  color: "white",
-};
 
 const resultCountStyle: React.CSSProperties = {
   marginBottom: "0.5rem",
@@ -415,29 +579,3 @@ const srOnlyStyle: React.CSSProperties = {
 const GITHUB_REPO = "https://github.com/invictus-integration/docs-ifa";
 const newDiscussionUrl = (title: string) =>
   `${GITHUB_REPO}/discussions/new?category=q-a&title=${encodeURIComponent(title)}`;
-
-const emptyStateStyle: React.CSSProperties = {
-  padding: "1.5rem",
-  textAlign: "center",
-  color: "var(--ifm-font-color-base)",
-};
-
-const emptyStateTitleStyle: React.CSSProperties = {
-  fontSize: "1rem",
-  marginBottom: "0.5rem",
-};
-
-const emptyStateSubtitleStyle: React.CSSProperties = {
-  fontSize: "0.9rem",
-  opacity: 0.75,
-  margin: 0,
-};
-
-const kbdStyle: React.CSSProperties = {
-  display: "inline-block",
-  padding: "1px 6px",
-  fontSize: "0.8rem",
-  border: "1px solid var(--ifm-color-emphasis-400)",
-  borderRadius: "4px",
-  backgroundColor: "var(--ifm-color-emphasis-200)",
-};

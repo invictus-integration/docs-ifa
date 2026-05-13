@@ -805,6 +805,17 @@
   padding: 8px 0;
 }
 
+.recentItemRow {
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+}
+
+.recentItemRow .result {
+  flex: 1;
+  min-width: 0;
+}
+
 .recentHeader {
   display: flex;
   align-items: center;
@@ -825,13 +836,15 @@
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--ifm-color-secondary-dark);
+  color: var(--ifm-link-color, var(--ifm-color-primary));
   padding: 0;
-  transition: color 0.1s;
+  text-decoration: none;
+  transition: color 0.1s, text-decoration-color 0.1s;
 }
 
 .recentClearAll:hover {
-  color: var(--ifm-color-primary);
+  color: var(--ifm-link-hover-color, var(--ifm-color-primary-dark));
+  text-decoration: underline;
 }
 
 .recentRemove {
@@ -855,8 +868,8 @@
   color: rgba(255, 255, 255, 0.45);
 }
 
-.result:hover .recentRemove,
-.result.active .recentRemove {
+.recentItemRow:hover .recentRemove,
+.recentItemRow:has(.result.active) .recentRemove {
   opacity: 1;
 }
 
@@ -1061,6 +1074,17 @@
   font-size: 0.875rem;
   color: var(--ifm-color-danger, #e53e3e);
   margin: 0;
+}
+
+.aiDisclaimer {
+  margin: 10px 0 0;
+  font-size: 0.75rem !important;
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+}
+
+:global([data-theme='dark']) .aiDisclaimer {
+  color: rgba(255, 255, 255, 0.35);
 }
 
 /* ─────────────────────────────────────────────
