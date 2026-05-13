@@ -1,9 +1,12 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faChevronRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faChevronRight, faChevronDown, faGripLines, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useHistory } from "@docusaurus/router";
+import highlightStyles from "./highlight.module.css";
+import inputStyles from "./tableSearchInput.module.css";
+import rowStyles from "./resultRow.module.css";
 
 export type Parameter = {
   name: string;
@@ -84,6 +87,19 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     const params = new URLSearchParams(location.search);
     return params.get("q") ?? "";
   });
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -165,7 +181,7 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
 
     return parts.map((part, i) =>
       part.toLowerCase() === search.toLowerCase() ? (
-        <mark key={i} style={highlightStyle}>{part}</mark>
+        <mark key={i} className={highlightStyles.mark}>{part}</mark>
       ) : (
         part
       )
@@ -174,67 +190,54 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
 
   const renderRow = (p: Parameter, depth = 0) => {
     const isExpanded = expandedRows.has(p.name);
+    const hasChildren = (p.properties?.length ?? 0) > 0;
 
     return (
       <React.Fragment key={`${p.name}-${depth}`}>
         <tr
           tabIndex={0}
-          style={{ ...getRowStyle(depth, p.properties?.length) }}
-          onClick={() => p.properties?.length && toggleRow(p.name)}
+          className={`${rowStyles.tableRow} ${isExpanded ? rowStyles.rowActive : ""}`}
+          style={{ cursor: hasChildren ? "pointer" : "default" }}
+          onClick={() => hasChildren && toggleRow(p.name)}
           onKeyDown={(e) => {
-            if (p.properties?.length && (e.key === "Enter" || e.key === " ")) {
+            if (hasChildren && (e.key === "Enter" || e.key === " ")) {
               e.preventDefault();
               toggleRow(p.name);
             }
           }}
-          aria-expanded={p.properties?.length ? isExpanded : undefined}
-          aria-label={p.properties?.length ? `${p.name} expandable` : p.name}
+          aria-expanded={hasChildren ? isExpanded : undefined}
+          aria-label={hasChildren ? `${p.name} expandable` : p.name}
           onFocus={(e) => (e.currentTarget.style.outline = focusOutlineStyle.outline)}
           onBlur={(e) => (e.currentTarget.style.outline = "none")}
         >
-          <td style={{ ...tdStyle, paddingLeft: `${0.5 + depth * 2}rem` }}>
-            <div style={nameContainerStyle}>
-              <div style={nameRowStyle}>
-                {p.properties?.length && (
-                  <FontAwesomeIcon
-                    icon={isExpanded ? faChevronDown : faChevronRight}
-                    style={arrowIconStyle}
-                  />
-                )}
-                <code id={p.name} style={codeStyle}>
-                  {highlightText(p.name, search)}
-                </code>
-              </div>
-
-              {(p.required || p.default !== undefined || p.newSince) && (
-                <div style={badgesContainerStyle}>
-                  {p.required && (
-                    <span style={requiredBadgeStyle}>required</span>
-                  )}
-                  {p.default !== undefined && (
-                    <span style={defaultBadgeStyle}>
-                      default: <code>{p.default.toString()}</code>
-                    </span>
-                  )}
-                  {p.newSince && (
-                    <span style={sinceBadgeStyle}>
-                      new since {p.newSince}
-                    </span>
-                  )}
-                </div>
-              )}
-
-              {p.deprecatedSince && (
-                <div style={badgesContainerStyle}>
-                  <span style={deprecatedBadgeStyle}>
-                    deprecated since: {p.deprecatedSince}
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* Icon column — chevron for models, grip lines for direct params */}
+          <td className={rowStyles.iconCell}>
+            <span className={rowStyles.iconWrap} aria-hidden={true}>
+              <FontAwesomeIcon icon={hasChildren ? (isExpanded ? faChevronDown : faChevronRight) : faGripLines} />
+            </span>
           </td>
 
-          <td style={tdStyle}>
+          {/* Name + badges column */}
+          <td className={rowStyles.nameCell} style={{ paddingLeft: `${depth * 1.5}rem` }}>
+            <div className={rowStyles.rowTitle}>
+              <code id={p.name} style={codeStyle}>
+                {highlightText(p.name, search)}
+              </code>
+            </div>
+            {(p.required || p.default !== undefined || p.newSince || p.deprecatedSince) && (
+              <div className={rowStyles.badgeRow}>
+                {p.required && <span style={requiredBadgeStyle}>required</span>}
+                {p.default !== undefined && (
+                  <span style={defaultBadgeStyle}>default: <code>{p.default.toString()}</code></span>
+                )}
+                {p.newSince && <span style={sinceBadgeStyle}>new since {p.newSince}</span>}
+                {p.deprecatedSince && <span style={deprecatedBadgeStyle}>deprecated since: {p.deprecatedSince}</span>}
+              </div>
+            )}
+          </td>
+
+          {/* Description column */}
+          <td className={rowStyles.descCell}>
             {p.description && (
               <ReactMarkdown
                 children={p.description}
@@ -247,12 +250,6 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
               />
             )}
           </td>
-
-          <td style={tdStyle}>
-            {p.tags?.map((tag) => (
-              <span key={tag} style={tagBadgeStyle}>{tag}</span>
-            ))}
-          </td>
         </tr>
 
         {isExpanded && p.properties?.map((sub) => renderRow(sub, depth + 1))}
@@ -262,8 +259,8 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
 
   return (
     <div style={containerStyle}>
-      <div style={searchWrapperStyle}>
-        <span style={searchIconStyle}>
+      <div className={inputStyles.wrapper}>
+        <span className={inputStyles.icon}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </span>
         <input
@@ -271,20 +268,31 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
           type="text"
           placeholder="Search Bicep parameters by name..."
           value={search}
+          ref={searchInputRef}
           onChange={(e) => setSearch(e.target.value)}
-          style={searchInputStyle}
+          onKeyDown={(e) => { if (e.key === "Escape") { setSearch(""); searchInputRef.current?.blur(); } }}
+          className={inputStyles.input}
           aria-label="Search parameters by name"
-          onFocus={(e) => (e.currentTarget.style.boxShadow = focusBoxShadowStyle)}
-          onBlur={(e) => (e.currentTarget.style.boxShadow = defaultBoxShadowStyle)}
         />
-        {search && (
-          <button
-            onClick={() => setSearch("")}
-            style={clearButtonStyle}
-            aria-label="Clear search input"
-          >
-            &times;
-          </button>
+        {search ? (
+          <span className={inputStyles.rightSlot}>
+            <button
+              onClick={() => setSearch("")}
+              className={inputStyles.clear}
+              aria-label="Clear search input"
+            >
+              <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => { setSearch(""); searchInputRef.current?.blur(); }}
+              className={inputStyles.escBadge}
+              aria-label="Clear and dismiss"
+            >
+              <kbd>Esc</kbd>
+            </button>
+          </span>
+        ) : (
+          <span className={inputStyles.shortcut}>Press <kbd>/</kbd> to filter</span>
         )}
       </div>
 
@@ -327,39 +335,23 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
         Showing {filtered.length} parameter{filtered.length !== 1 ? "s" : ""}
       </div>
 
-      <div style={{ ...tableWrapperStyle, maxHeight }}>
-        <table data-cy="search-results" style={{ width: "100%", tableLayout: "fixed", borderCollapse: "separate" }}>
-          <thead>
-            <tr>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Description</th>
-              <th style={thStyle}>Tags</th>
-            </tr>
-          </thead>
-          <tbody>{filtered.map((p) => renderRow(p))}</tbody>
+      <div
+        data-cy="search-results"
+        className={rowStyles.tableWrapper}
+        style={{ maxHeight, overflowY: "auto" }}
+      >
+        <table className={rowStyles.table}>
+          <tbody>
+            {filtered.map((p) => renderRow(p))}
+          </tbody>
         </table>
       </div>
     </div>
   );
 }
 
-const getRowStyle = (depth: number, hasChildren?: boolean) => ({
-  cursor: hasChildren ? "pointer" : "default",
-  outline: "none",
-  backgroundColor: depth > 0 ? "var(--ifm-color-emphasis-200)" : "inherit",
-  borderLeft: depth > 0 ? "4px solid var(--ifm-color-primary)" : undefined,
-  transition: "background-color 0.2s ease",
-});
-
 const containerStyle: React.CSSProperties = { marginTop: "1rem" };
-const searchWrapperStyle: React.CSSProperties = { marginBottom: "1rem", position: "relative" };
 const tagWrapperStyle: React.CSSProperties = { marginBottom: "1rem" };
-const tableWrapperStyle: React.CSSProperties = {
-  overflowY: "auto",
-  border: `1px solid var(--ifm-form-border-color)`,
-  borderRadius: "6px",
-  overflow: "auto"
-};
 const resultCountStyle: React.CSSProperties = {
   marginBottom: "0.5rem",
   fontSize: "0.9rem",
@@ -367,64 +359,7 @@ const resultCountStyle: React.CSSProperties = {
   color: "var(--ifm-font-color-base)",
 };
 
-const searchInputStyle: React.CSSProperties = {
-  padding: "0.5rem 2.5rem 0.5rem 2.2rem",
-  width: "100%",
-  borderRadius: "0.5rem",
-  border: `2px solid var(--ifm-color-primary)`,
-  background: "var(--ifm-navbar-search-input-background-color)",
-  color: "var(--ifm-color-gray-900)",
-  fontSize: "1rem",
-  outline: "none",
-  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-  transition: "all 0.2s ease",
-};
-
-const searchIconStyle: React.CSSProperties = {
-  position: "absolute",
-  left: "0.75rem",
-  top: "50%",
-  transform: "translateY(-50%)",
-  color: "var(--ifm-color-primary)",
-  pointerEvents: "none",
-};
-
-const clearButtonStyle: React.CSSProperties = {
-  position: "absolute",
-  right: "0.75rem",
-  top: "50%",
-  transform: "translateY(-50%)",
-  background: "none",
-  border: "none",
-  cursor: "pointer",
-  fontSize: "1.5rem",
-  color: "var(--ifm-color-primary)",
-};
-
-const focusBoxShadowStyle = "0 0 0 3px var(--ifm-color-primary)";
-const defaultBoxShadowStyle = "0 2px 6px rgba(0,0,0,0.1)";
-const focusOutlineStyle = { outline: "2px solid var(--ifm-color-primary)" };
-
-const thStyle: React.CSSProperties = {
-  position: "sticky",
-  top: 0,
-  backgroundColor: "var(--ifm-background-color)",
-  zIndex: 5,
-  textAlign: "left",
-  borderBottom: "1px solid var(--ifm-form-border-color)",
-};
-
-const tdStyle: React.CSSProperties = {
-  padding: "0.5rem",
-  borderBottom: "1px solid var(--ifm-form-border-color)",
-  color: "var(--ifm-font-color-base)",
-};
-
-const nameContainerStyle: React.CSSProperties = { display: "flex", flexDirection: "column" };
-const nameRowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: "0.5rem" };
 const codeStyle: React.CSSProperties = { color: "var(--ifm-color-primary)", backgroundColor: "var(--ifm-background-color)" };
-const arrowIconStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
-const badgesContainerStyle: React.CSSProperties = { marginTop: "2px", display: "flex", gap: "4px", flexWrap: "wrap" };
 
 const requiredBadgeStyle: React.CSSProperties = {
   fontSize: "0.75rem",
@@ -481,9 +416,5 @@ const tagButtonActiveStyle: React.CSSProperties = {
 };
 
 const linkStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
+const focusOutlineStyle = { outline: "2px solid var(--ifm-color-primary)" };
 
-const highlightStyle: React.CSSProperties = {
-  backgroundColor: "var(--ifm-color-primary)",
-  color: "white",
-  cursor: "inherit",
-};

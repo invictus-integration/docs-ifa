@@ -1,0 +1,320 @@
+/* ── TABLE layout (ParameterTable) ── */
+
+.tableWrapper {
+  border: 1px solid var(--ifm-form-border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border-spacing: 0;
+}
+
+/* Reset any browser default cell borders */
+.table td {
+  border: none;
+}
+
+/* Suppress Docusaurus/Infima default striped and hover backgrounds */
+.table tr:nth-child(2n),
+.table tr:hover {
+  background: none;
+}
+
+/* Subtle custom striping to aid horizontal scanning across columns */
+.table .tableRow:nth-child(2n) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+:global([data-theme='dark']) .table .tableRow:nth-child(2n) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--ifm-color-secondary-lighter);
+  transition: background 0.1s;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+/* Background on the row itself */
+.tableRow:hover,
+.tableRow.rowActive {
+  background: var(--ifm-color-secondary-lightest) !important;
+}
+
+.tableRow:focus-visible {
+  outline: none;
+  background: var(--ifm-color-secondary-lightest) !important;
+}
+
+:global([data-theme='dark']) .tableRow:hover,
+:global([data-theme='dark']) .tableRow.rowActive {
+  background: rgba(42, 143, 156, 0.1) !important;
+}
+
+:global([data-theme='dark']) .tableRow:focus-visible {
+  background: rgba(42, 143, 156, 0.1) !important;
+}
+
+/* Left accent on the first cell — more reliable than box-shadow on <tr> */
+.tableRow td:first-child {
+  border-left: 3px solid transparent;
+  transition: border-left-color 0.1s;
+}
+
+.tableRow:hover td:first-child,
+.tableRow.rowActive td:first-child,
+.tableRow:focus-visible td:first-child {
+  border-left-color: var(--ifm-color-primary);
+}
+
+.tableRow:hover .iconWrap,
+.tableRow.rowActive .iconWrap {
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary);
+}
+
+:global([data-theme='dark']) .tableRow:hover .iconWrap,
+:global([data-theme='dark']) .tableRow.rowActive .iconWrap {
+  background: rgba(42, 143, 156, 0.2);
+  color: var(--ifm-color-primary);
+}
+
+.tableRow:hover .rowTitle,
+.tableRow.rowActive .rowTitle {
+  color: var(--ifm-color-primary);
+}
+
+.iconCell {
+  width: 52px;
+  padding: 20px 8px 20px 12px;
+  vertical-align: top;
+}
+
+.nameCell {
+  width: 35%;
+  padding: 20px 8px;
+  vertical-align: top;
+}
+
+.descCell {
+  padding: 20px 16px 20px 8px;
+  vertical-align: top;
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+}
+
+.descCell p {
+  margin: 0;
+}
+
+:global([data-theme='dark']) .descCell {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── LIST layout (shared / FAQ answer panel) ── */
+
+.rowList {
+  overflow: hidden;
+}
+
+/* Individual result row */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid var(--ifm-color-secondary-lighter);
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s, border-left-color 0.1s;
+}
+
+:global([data-theme='dark']) .row {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover,
+.rowActive {
+  background: var(--ifm-color-secondary-lightest);
+  border-left-color: var(--ifm-color-primary);
+}
+
+.row:focus-visible {
+  outline: none;
+  background: var(--ifm-color-secondary-lightest);
+  border-left-color: var(--ifm-color-primary);
+  box-shadow: inset 2px 0 0 var(--ifm-color-primary);
+}
+
+:global([data-theme='dark']) .row:hover,
+:global([data-theme='dark']) .rowActive {
+  background: rgba(42, 143, 156, 0.1);
+}
+
+:global([data-theme='dark']) .row:focus-visible {
+  background: rgba(42, 143, 156, 0.1);
+  box-shadow: inset 2px 0 0 var(--ifm-color-primary);
+}
+
+/* Icon wrap — rounded square on the left */
+.iconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--ifm-color-secondary-lighter);
+  color: var(--ifm-color-secondary-darkest);
+  transition: background 0.1s, color 0.1s;
+  margin-top: 2px;
+}
+
+.row:hover .iconWrap,
+.rowActive .iconWrap {
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary);
+}
+
+:global([data-theme='dark']) .iconWrap {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--ifm-color-secondary-dark);
+}
+
+:global([data-theme='dark']) .row:hover .iconWrap,
+:global([data-theme='dark']) .rowActive .iconWrap {
+  background: rgba(42, 143, 156, 0.2);
+  color: var(--ifm-color-primary);
+}
+
+/* Content area (fills flex space) */
+.rowContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Title line — question text or parameter name */
+.rowTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  line-height: 1.4;
+  transition: color 0.1s;
+}
+
+.row:hover .rowTitle,
+.rowActive .rowTitle {
+  color: var(--ifm-color-primary);
+}
+
+/* Muted description text shown inline below the title */
+.rowDescription {
+  font-size: 0.82rem;
+  color: var(--ifm-color-secondary-darkest);
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+:global([data-theme='dark']) .rowDescription {
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 1;
+}
+
+/* Row description should suppress extra margins from ReactMarkdown paragraphs */
+.rowDescription p {
+  margin: 0;
+}
+
+/* Badge row */
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.versionBadge {
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-family: var(--ifm-font-family-monospace);
+  color: var(--ifm-color-emphasis-700);
+  background-color: var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+:global([data-theme='dark']) .versionBadge {
+  color: rgba(255, 255, 255, 0.65);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Tags row — version + tag chips */
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Chevron on the far right */
+.chevron {
+  flex-shrink: 0;
+  color: var(--ifm-color-secondary-dark);
+  margin-top: 6px;
+  transition: color 0.1s;
+}
+
+.row:hover .chevron,
+.rowActive .chevron {
+  color: var(--ifm-color-primary);
+}
+
+:global([data-theme='dark']) .chevron {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:global([data-theme='dark']) .row:hover .chevron,
+:global([data-theme='dark']) .rowActive .chevron {
+  color: var(--ifm-color-primary);
+}
+
+/* Expanded answer panel */
+.answerPanel {
+  padding: 12px 16px 12px calc(16px + 3px + 12px + 32px + 12px);
+  border-bottom: 1px solid var(--ifm-color-secondary-lighter);
+  background: var(--ifm-background-surface-color);
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.answerPanel:last-child {
+  border-bottom: none;
+}
+
+/* Answer opened — accent on the left to pair with the trigger row */
+.answerPanelOpen {
+  border-left: 3px solid var(--ifm-color-primary);
+}

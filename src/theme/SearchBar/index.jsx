@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useHistory } from '@docusaurus/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faXmark, faChevronLeft, faChevronRight, faFileLines, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faXmark, faChevronLeft, faChevronRight, faFileLines, faClock, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.css';
 
 function filepathToUrl(filepath) {
@@ -47,20 +47,27 @@ function BreadcrumbPath({ path, className }) {
 
 function stripMarkdown(text) {
   return text
-    .replace(/```[\s\S]*?```/g, '')                  // fenced code blocks
-    .replace(/`([^`]+)`/g, '$1')                     // inline code
-    .replace(/!\[.*?\]\(.*?\)/g, '')                 // images
-    .replace(/\[([^\]]+)\]\([^)]*\)?/g, '$1')       // inline links, complete or truncated
-    .replace(/\[([^\]]+)\]\[[^\]]*\]?/g, '$1')       // reference-style links, complete or truncated
-    .replace(/^\[[^\]]+\]:\s*\S+.*$/gm, '')          // reference-style link definitions
-    .replace(/\[([^\]]*)\]/g, '$1')                  // any remaining bare [text] brackets
-    .replace(/^#{1,6}\s+/gm, '')                     // headings
-    .replace(/(\*\*|__)([^*_]+?)\1/g, '$2')          // bold
-    .replace(/(\*|_)([^*_]+?)\1/g, '$2')             // italic
-    .replace(/^[-*+]\s+/gm, '')                      // unordered list markers
-    .replace(/^\d+\.\s+/gm, '')                      // ordered list markers
-    .replace(/^>\s*/gm, '')                          // blockquotes
-    .replace(/^[-*_]{3,}$/gm, '')                    // horizontal rules
+    .replace(/^---[\s\S]*?^---\s*/m, '')                         // frontmatter
+    .replace(/^import\s.+$/gm, '')                               // MDX import statements
+    .replace(/^:::[a-zA-Z]*(?:\[.*?\])?\s*$/gm, '')             // admonition markers (:::info[title], :::)
+    .replace(/```[\s\S]*?```/g, '')                              // fenced code blocks
+    .replace(/`([^`]+)`/g, '$1')                                 // inline code
+    .replace(/!\[.*?\]\(.*?\)/g, '')                             // images
+    .replace(/\[([^\]]+)\]\([^)]*\)?/g, '$1')                   // inline links, complete or truncated
+    .replace(/\[([^\]]+)\]\[[^\]]*\]?/g, '$1')                  // reference-style links, complete or truncated
+    .replace(/^\[[^\]]+\]:\s*\S+.*$/gm, '')                     // reference-style link definitions
+    .replace(/\[([^\]]*)\]/g, '$1')                              // any remaining bare [text] brackets
+    .replace(/^\|(?:[\s:]*-+[\s:]*\|)+\s*$/gm, '')             // table separator rows (| --- | :---: |)
+    .replace(/^\|(.+)\|$/gm, (_, cells) =>                      // table content rows → space-separated cells
+      cells.split('|').map(c => c.trim()).filter(Boolean).join('  '))
+    .replace(/<[^>]+>/g, '')                                     // HTML/JSX tags
+    .replace(/^#{1,6}\s+/gm, '')                                 // headings
+    .replace(/(\*\*|__)([^*_]+?)\1/g, '$2')                     // bold
+    .replace(/(\*|_)([^*_]+?)\1/g, '$2')                        // italic
+    .replace(/^[-*+]\s+/gm, '')                                  // unordered list markers
+    .replace(/^\d+\.\s+/gm, '')                                  // ordered list markers
+    .replace(/^>\s*/gm, '')                                      // blockquotes
+    .replace(/^[-*_]{3,}$/gm, '')                                // horizontal rules
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -716,7 +723,7 @@ export default function SearchBar() {
                       </div>
                     ) : results.length === 0 && query ? (
                       <div className={styles.empty}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} aria-hidden="true" />
+                        <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
                         <span>No results for &ldquo;{query}&rdquo;</span>
                       </div>
                     ) : (() => {

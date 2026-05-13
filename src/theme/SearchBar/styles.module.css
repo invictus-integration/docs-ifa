@@ -78,6 +78,7 @@
   max-width: 680px;
   max-height: calc(100vh - 120px);
   background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base) !important;
   border: 1px solid var(--ifm-color-secondary-light);
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -114,11 +115,13 @@
   align-items: center;
   gap: 10px;
   padding: 14px 18px;
+  background: var(--ifm-navbar-search-input-background-color);
   border-bottom: 1px solid var(--ifm-color-secondary-lighter);
   flex-shrink: 0;
 }
 
 [data-theme='dark'] .inputWrapper {
+  background: rgba(255, 255, 255, 0.06);
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -240,28 +243,41 @@
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.55);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s;
 }
 
 .clearButton svg {
   display: block;
 }
 
+.clearButton path {
+  fill: rgba(0, 0, 0, 0.75) !important;
+  transition: fill 0.15s;
+}
+
 .clearButton:hover {
   background: rgba(0, 0, 0, 0.18);
-  color: rgba(0, 0, 0, 0.85);
+}
+
+.clearButton:hover path {
+  fill: rgba(0, 0, 0, 0.95) !important;
 }
 
 [data-theme='dark'] .clearButton {
   background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme='dark'] .clearButton path {
+  fill: rgba(255, 255, 255, 0.85) !important;
 }
 
 [data-theme='dark'] .clearButton:hover {
   background: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme='dark'] .clearButton:hover path {
+  fill: rgba(255, 255, 255, 1) !important;
 }
 
 /* ── Spinner ── */
@@ -685,6 +701,7 @@
   height: 16px;
   flex-shrink: 0;
   color: var(--ifm-color-primary);
+  fill: var(--ifm-color-primary) !important;
 }
 
 .askAiText {

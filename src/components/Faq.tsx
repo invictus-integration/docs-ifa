@@ -2,7 +2,10 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronRight, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronRight, faCircleQuestion, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import highlightStyles from "./highlight.module.css";
+import inputStyles from "./tableSearchInput.module.css";
+import rowStyles from "./resultRow.module.css";
 
 export type FaqEntry = {
   question: string;
@@ -28,7 +31,7 @@ const rehypeHighlightSearch = (search: string) => (tree: any) => {
               newChildren.push({
                 type: "element",
                 tagName: "mark",
-                properties: { style: "background-color:var(--ifm-color-primary);color:white" },
+                properties: { className: [highlightStyles.mark] },
                 children: [{ type: "text", value: part }],
               });
             } else {
@@ -75,6 +78,18 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
 
   useEffect(() => {
     searchInputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
   const toggleOpen = (index: number) => {
@@ -142,7 +157,7 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       <>
         {parts.map((part, i) =>
           part.toLowerCase() === normalizedSearch ? (
-            <mark key={i} style={highlightStyle}>{part}</mark>
+            <mark key={i} className={highlightStyles.mark}>{part}</mark>
           ) : (
             part
           )
@@ -177,8 +192,8 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       </span>
 
       {/* Search input */}
-      <div style={searchWrapperStyle}>
-        <span style={searchIconStyle} aria-hidden={true}>
+      <div className={inputStyles.wrapper}>
+        <span className={inputStyles.icon} aria-hidden={true}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </span>
         <input
@@ -194,20 +209,29 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
               window.open(newDiscussionUrl(search), "_blank", "noopener,noreferrer");
             }
           }}
-          style={{ ...searchInputStyle, ...noTransition }}
+          className={inputStyles.input}
           aria-label="Search FAQ questions and answers"
           aria-describedby="faq-search-description"
-          onFocus={(e) => (e.currentTarget.style.boxShadow = focusBoxShadowStyle)}
-          onBlur={(e) => (e.currentTarget.style.boxShadow = defaultBoxShadowStyle)}
         />
-        {search && (
-          <button
-            onClick={() => { setSearch(""); searchInputRef.current?.focus(); }}
-            style={clearButtonStyle}
-            aria-label="Clear search input"
-          >
-            &times;
-          </button>
+        {search ? (
+          <span className={inputStyles.rightSlot}>
+            <button
+              onClick={() => { setSearch(""); searchInputRef.current?.focus(); }}
+              className={inputStyles.clear}
+              aria-label="Clear search input"
+            >
+              <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => { setSearch(""); searchInputRef.current?.blur(); }}
+              className={inputStyles.escBadge}
+              aria-label="Clear and dismiss"
+            >
+              <kbd>Esc</kbd>
+            </button>
+          </span>
+        ) : (
+          <span className={inputStyles.shortcut}>Press <kbd>/</kbd> to filter</span>
         )}
       </div>
 
@@ -256,94 +280,72 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       {/* FAQ list / empty state */}
       <div style={{ ...faqListWrapperStyle, maxHeight }}>
         {filtered.length > 0 ? (
-          <div data-cy="faq-list" style={faqListStyle}>
+          <div data-cy="faq-list" className={rowStyles.rowList}>
             {filtered.map((item, index) => {
               const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
 
               return (
-                <div
-                  data-cy="faq-item"
-                  key={index}
-                  style={{
-                    ...faqItemStyle,
-                    ...noTransition,
-                    ...(isOpen ? faqItemOpenStyle : {}),
-                    ...((hoveredIndex === index || focusedIndex === index) && !isOpen ? faqItemHoverStyle : {}),
-                  }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
+                <React.Fragment key={index}>
                   <button
-                    style={{
-                      ...questionHeaderStyle,
-                      ...noTransition,
-                      ...(hoveredIndex === index && !isOpen ? questionHeaderHoverStyle : {}),
-                      ...(focusedIndex === index ? questionHeaderFocusStyle : {}),
-                    }}
+                    data-cy="faq-item"
+                    className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""}`}
+                    style={noTransition}
                     onClick={() => toggleOpen(index)}
                     aria-expanded={isOpen}
                     aria-label={item.question}
-                    onFocus={() => {
-                      setFocusedIndex(index);
-                    }}
-                    onBlur={() => {
-                      setFocusedIndex(null);
-                    }}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onFocus={() => setFocusedIndex(index)}
+                    onBlur={() => setFocusedIndex(null)}
                   >
-                    <div style={questionStyle}>
-                      <div style={questionRowStyle}>
-                        <FontAwesomeIcon
-                          icon={isOpen ? faChevronDown : faChevronRight}
-                          style={iconStyle}
-                          aria-hidden={true}
-                        />
-                        <span>{renderQuestion(item.question)}</span>
-                      </div>
+                    {/* Left icon wrap */}
+                    <span className={rowStyles.iconWrap} aria-hidden={true}>
+                      <FontAwesomeIcon icon={faCircleQuestion} />
+                    </span>
 
+                    {/* Middle: question + version */}
+                    <span className={rowStyles.rowContent}>
+                      <span className={rowStyles.rowTitle}>
+                        {renderQuestion(item.question)}
+                      </span>
                       {item.version && (
-                        <span style={versionStyle} aria-label={`Applies to version ${item.version}`}>
-                          {item.version}
+                        <span className={rowStyles.badgeRow}>
+                          <span className={rowStyles.versionBadge} aria-label={`Applies to version ${item.version}`}>
+                            {item.version}
+                          </span>
                         </span>
                       )}
-                    </div>
+                    </span>
 
-                    <div
-                      style={tagContainerStyle}
-                      aria-label={`Tags: ${item.tags?.join(", ")}`}
-                    >
-                      {item.tags?.map((tag) => (
-                        <span key={tag} style={tagBadgeStyle} aria-hidden={true}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    {/* Right: expand chevron */}
+                    <span className={rowStyles.chevron} aria-hidden={true}>
+                      <FontAwesomeIcon icon={isOpen ? faChevronDown : faChevronRight} />
+                    </span>
                   </button>
 
-                  <div>
-                    {isOpen && (
-                      <div
-                        data-cy="faq-answer"
-                        aria-label={`Answer: ${item.question}`}
-                        style={answerStyle}
+                  {isOpen && (
+                    <div
+                      data-cy="faq-answer"
+                      aria-label={`Answer: ${item.question}`}
+                      className={`${rowStyles.answerPanel} ${rowStyles.answerPanelOpen}`}
+                    >
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[[rehypeHighlightSearch, normalizedSearch]]}
+                        components={{
+                          a: ({ node, ...props }) => (
+                            <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+                              {props.children}
+                              <span style={srOnlyStyle}>(opens in new tab)</span>
+                            </a>
+                          ),
+                        }}
                       >
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          rehypePlugins={[[rehypeHighlightSearch, normalizedSearch]]}
-                          components={{
-                            a: ({ node, ...props }) => (
-                              <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle}>
-                                {props.children}
-                                <span style={srOnlyStyle}>(opens in new tab)</span>
-                              </a>
-                            ),
-                          }}
-                        >
-                          {item.answer}
-                        </ReactMarkdown>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                        {item.answer}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
@@ -367,45 +369,6 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
 /* ================= STYLES ================= */
 
 const containerStyle: React.CSSProperties = { marginTop: "1rem" };
-
-const searchWrapperStyle: React.CSSProperties = { marginBottom: "1rem", position: "relative" };
-
-const searchInputStyle: React.CSSProperties = {
-  padding: "0.5rem 2.5rem 0.5rem 2.2rem",
-  width: "100%",
-  borderRadius: "0.5rem",
-  border: "2px solid var(--ifm-color-primary)",
-  background: "var(--ifm-navbar-search-input-background-color)",
-  color: "var(--ifm-color-gray-900)",
-  fontSize: "1rem",
-  outline: "none",
-  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-  transition: "all 0.2s ease",
-};
-
-const searchIconStyle: React.CSSProperties = {
-  position: "absolute",
-  left: "0.75rem",
-  top: "50%",
-  transform: "translateY(-50%)",
-  color: "var(--ifm-color-primary)",
-  pointerEvents: "none",
-};
-
-const clearButtonStyle: React.CSSProperties = {
-  position: "absolute",
-  right: "0.75rem",
-  top: "50%",
-  transform: "translateY(-50%)",
-  background: "none",
-  border: "none",
-  cursor: "pointer",
-  fontSize: "1.5rem",
-  color: "var(--ifm-color-primary)",
-};
-
-const focusBoxShadowStyle = "0 0 0 3px var(--ifm-color-primary)";
-const defaultBoxShadowStyle = "0 2px 6px rgba(0,0,0,0.1)";
 
 const tagWrapperStyle: React.CSSProperties = { marginBottom: "1rem" };
 
@@ -433,110 +396,6 @@ const resultCountStyle: React.CSSProperties = {
 
 const faqListWrapperStyle: React.CSSProperties = {
   overflowY: "auto",
-  borderRadius: "8px",
-  padding: "0.75rem",
-};
-
-const faqListStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "1rem",
-};
-
-const faqItemStyle: React.CSSProperties = {
-  border: "1px solid var(--ifm-color-emphasis-300)",
-  borderRadius: "8px",
-  overflow: "hidden",
-  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-  backgroundColor: "var(--ifm-background-surface-color)",
-  cursor: "pointer",
-  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-};
-
-const faqItemOpenStyle: React.CSSProperties = {
-  borderColor: "var(--ifm-color-primary)",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
-};
-
-const faqItemHoverStyle: React.CSSProperties = {
-  borderColor: "var(--ifm-color-primary-light)",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-};
-
-const questionHeaderStyle: React.CSSProperties = {
-  width: "100%",
-  display: "block",
-  textAlign: "left",
-  padding: 0,
-  border: "none",
-  cursor: "pointer",
-  background: "var(--ifm-color-emphasis-200)",
-  transition: "background 0.15s ease",
-  outline: "2px solid transparent",
-  outlineOffset: "-2px",
-};
-
-const questionHeaderHoverStyle: React.CSSProperties = {
-  background: "var(--ifm-color-emphasis-300)",
-};
-
-const questionHeaderFocusStyle: React.CSSProperties = {
-  outline: "2px solid var(--ifm-color-primary)",
-  outlineOffset: "-2px",
-};
-
-const questionStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "1rem 1.25rem",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  fontWeight: 600,
-  fontSize: "1rem",
-  color: "var(--ifm-font-color-base)",
-};
-
-const questionRowStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "0.5rem",
-  flex: 1,
-  minWidth: 0,
-};
-
-const iconStyle: React.CSSProperties = {
-  color: "var(--ifm-color-primary)",
-};
-
-const versionStyle: React.CSSProperties = {
-  fontSize: "0.75rem",
-  opacity: 0.6,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  marginLeft: "0.75rem",
-};
-
-const answerStyle: React.CSSProperties = {
-  padding: "1rem 1.25rem 0.5rem 1.25rem",
-  lineHeight: 1.6,
-  borderTop: "1px solid var(--ifm-form-border-color)",
-};
-
-const tagContainerStyle: React.CSSProperties = {
-  padding: "0 1.25rem 0.75rem 1.25rem",
-};
-
-const tagBadgeStyle: React.CSSProperties = {
-  marginRight: "6px",
-  fontSize: "0.75rem",
-  backgroundColor: "var(--ifm-color-emphasis-200)",
-  padding: "2px 6px",
-  borderRadius: "4px",
-};
-
-const highlightStyle: React.CSSProperties = {
-  backgroundColor: "var(--ifm-color-primary)",
-  color: "white",
 };
 
 const linkStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
