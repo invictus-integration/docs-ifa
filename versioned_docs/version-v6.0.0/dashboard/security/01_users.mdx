@@ -51,21 +51,21 @@ Make sure that the group has a [role assigned](./03_roles.md), otherwise the Das
 To delete a user click on the delete icon next to the user in the user list.
 
 ![delete azure user](/images/delete-azure-user.PNG)
-    > 👀 You can distinguish linked Entra ID users as they do not have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
+    > 👀 You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
 
 </details>
 
 <details>
 <summary>**Edit an Entra ID user's role in the Dashboard** <OnlyAdminsBadge/></summary>
 
-Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The Dashboard determines the user role by the Entra ID group(s) where the user is a member of. [If the group(s) has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so will the user.
+Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The Dashboard determines the user role by the Entra ID groups where the user is a member of. [If the groups has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so will the user.
 
 </details>
 
 <details>
 <summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
 
-Before you can use the forgot password feature, you need to create an Microsoft Entra ID application registration and [set it up with the Mail.Send API permissions](../installation/01_give_ad_access.mdx). The OAuth 2.0 flow requires this to send emails securely.
+Before you can use the forgot password feature, you need to create an Microsoft Entra ID application registration and [set it up with the `Mail.Send` API permissions](../installation/01_give_ad_access.mdx). The OAuth 2.0 flow requires this to send emails securely.
 
 :::warning
 Please note that the permission granted allows any email address within the organization to be used as the sender.
@@ -145,7 +145,7 @@ For local users to allow them to run the 'Forgot password' procedure, configure 
 
 | Forgot password setting  | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Host`                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be "smtp.gmail.com". |
+| `Host`                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be `"smtp.gmail.com"`. |
 | `Port number`            | The port number for the email server from which the sender accounts originates, default is `587`.                                                                |
 | `Email key vault key`    | The Azure Key Vault secret name where you stored the sender email address (points to the Key Vault resource accompanied with the Invictus installation).         |
 | `Password key vault key` | The Azure Key Vault secret name where you stored the sender email password (points to the Key Vault resource accompanied with the Invictus installation).        |

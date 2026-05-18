@@ -21,7 +21,7 @@ The Invictus **Dashboard** provides a business user friendly UI for interacting 
   * <u>**Dashboard Gateway:**</u> serves as the backend API for the **Dashboard App**. It shows the stored flows (*Cosmos DB for MongoDB*) and triggers flow operations (*Azure Service Bus*).  
   * <u>**Flow Handler:**</u> based on the required flow action triggered by the business user (*Ignore*, *Resubmit*, *Resume*) in the **Dashboard App**, it interacts with the deployed Azure Logic Apps on the client environment (See [import flow traces via Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx) for more info).
 * <FlowTrace />
-  * <u>**[type] import job:**</u> the Invictus installation provides 'import jobs' which are interaction endpoints to push flow traces into the **Dashboard**. These come from external client resources (Azure Logic Apps, Azure Data Factory, Azure Event Hubs...). Once received, they push a canonical message into the system (*Azure Service Bus*).
+  * <u>**[type] import job:**</u> the Invictus installation provides 'import jobs' which are interaction endpoints to push flow traces into the **Dashboard**. These come from external client resources (Azure Logic Apps, Azure Data Factory, Azure Event Hubs). Once received, they push a canonical message into the system (*Azure Service Bus*).
   * <u>**Cache job:**</u> listens for new canonical messages (*Azure Service Bus*) and caches them as batches (*Azure Blob Storage*).
   * <u>**Merge job:**</u> listens for new/updated batches (*Azure Event Hubs*) and synchronizes the storage (*Cosmos DB for MongoDB*) with 'message content view' information (input/output of Azure Logic Apps, see [import flow traces via Azure Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx) for more info).
   * <u>**Store job:**</u> listens for new batches (*Azure Event Hubs*), loads referenced canonical message (*Azure Blob Storage*), and combines as flow trace models (*Cosmos DB for MongoDB*). These flow traces get available via the **Dashboard App** to the business user.
@@ -31,7 +31,7 @@ The Invictus **Dashboard** provides a business user friendly UI for interacting 
 ![Architecture diagram](/images/InvictusV2Diagram_Framework.png "Invictus Framework architecture diagram")
 <br/>
 
-Common integration patterns are not always built into tasks within the Azure Logic App workflow editor. The Invictus **Framework** provides these patterns as HTTP endpoints that client workflows can interact with.
+Common integration patterns aren't always built into tasks within the Azure Logic App workflow editor. The Invictus **Framework** provides these patterns as HTTP endpoints that client workflows can interact with.
 
 * [**PubSub:**](./framework/pubsubV2.mdx) uses Azure Service Bus as a message broker to publish/subscribe on messages across Azure Logic Apps. 
 * [**Time Sequencer:**](./framework/timesequencer.mdx) control the order in which Azure Logic App workflows can run based on a custom timestamp.
