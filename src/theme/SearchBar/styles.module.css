@@ -673,6 +673,35 @@
   color: var(--ifm-color-primary);
 }
 
+.askAiPromoIcon svg {
+  color: var(--ifm-color-primary) !important;
+  fill: currentColor;
+}
+
+.askAiPromoBtn:hover .askAiPromoIcon,
+.askAiPromoBtn.active .askAiPromoIcon {
+  background: var(--ifm-color-primary-lightest);
+}
+
+.askAiPromoBtn:hover .askAiPromoIcon svg,
+.askAiPromoBtn.active .askAiPromoIcon svg {
+  color: var(--ifm-color-primary) !important;
+}
+
+:global([data-theme='dark']) .askAiPromoIcon svg {
+  color: var(--ifm-color-primary) !important;
+}
+
+:global([data-theme='dark']) .askAiPromoBtn:hover .askAiPromoIcon,
+:global([data-theme='dark']) .askAiPromoBtn.active .askAiPromoIcon {
+  background: rgba(42, 143, 156, 0.2);
+}
+
+:global([data-theme='dark']) .askAiPromoBtn:hover .askAiPromoIcon svg,
+:global([data-theme='dark']) .askAiPromoBtn.active .askAiPromoIcon svg {
+  color: var(--ifm-color-primary) !important;
+}
+
 .askAiPromoText {
   flex: 1;
   display: flex;

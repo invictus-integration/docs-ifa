@@ -129,6 +129,10 @@ import { streamAiResponse } from '../../components/streamAiResponse';
 import { useUserType } from '../../components/UserTypeContext';
 
 /** Sort results so current-context docs float to the top within each category group. */
+function buildSearchQuery(query) {
+  return query.trim().split(/\s+/).map(w => `${w}~1`).join(' ');
+}
+
 function sortByUserType(results, userType) {
   const priority = (ut) => ut === userType ? 0 : (!ut || ut === 'both') ? 1 : 2;
   const groups = new Map();
@@ -222,9 +226,10 @@ export default function SearchBar() {
 
     const params = new URLSearchParams({
       ...baseParams,
-      // Lucene full syntax — ~1 gives 1-char edit-distance fuzzy matching for typo tolerance
+      // Field-boosted Lucene query: title matches rank 4×, sidebar_label 2×, content baseline.
+      // ~1 gives 1-char edit-distance fuzzy matching per term for typo tolerance.
       queryType: 'full',
-      search: debouncedQuery.trim().split(/\s+/).map(w => `${w}~1`).join(' '),
+      search: buildSearchQuery(debouncedQuery),
     });
 
     fetch(`${azureSearch.endpoint}/indexes/${azureSearch.index}/docs?${params}`, {
