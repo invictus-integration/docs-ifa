@@ -28,13 +28,13 @@ describe('Bicep parameter search', () => {
 
           cy.get('[data-cy=search-results] tbody tr').then(($rows) => {
             const directMatches = $rows.filter((_, row) =>
-              Cypress.$(row).find('td:first-child').text().toLowerCase().includes(term)
+              Cypress.$(row).find('td:nth-child(2)').text().toLowerCase().includes(term)
             );
 
             expect(directMatches.length).to.be.greaterThan(0);
 
             directMatches.each((_, row) => {
-              const $mark = Cypress.$(row).find('td:first-child mark');
+              const $mark = Cypress.$(row).find('td:nth-child(2) mark');
               expect($mark.length).to.be.greaterThan(0);
               expect($mark.text().toLowerCase()).to.contain(term);
             });
@@ -56,13 +56,13 @@ describe('Bicep parameter search', () => {
 
           cy.get('[data-cy=search-results] tbody tr')
             .should('have.length.greaterThan', 0)
-            .find('td:first-child code')
+            .find('td:nth-child(2) code')
             .should(($codes) => {
               const texts = $codes.toArray().map((el) => el.textContent.toLowerCase());
               expect(texts.some((t) => !t.includes(term))).to.be.true;
             });
 
-          cy.get('[data-cy=search-results] tbody tr td:first-child mark')
+          cy.get('[data-cy=search-results] tbody tr td:nth-child(2) mark')
             .should('exist')
             .each(($mark) => {
               expect($mark.text().toLowerCase()).to.contain(term);
@@ -87,7 +87,7 @@ describe('Bicep parameter search', () => {
 
         // Children (non-matching rows) are visible without any click because the
         // parent was auto-expanded when it self-matched the search term.
-        cy.get('[data-cy=search-results] tbody tr td:first-child code')
+        cy.get('[data-cy=search-results] tbody tr td:nth-child(2) code')
           .then(($codes) => {
             const texts = $codes.toArray().map((el) => el.textContent.toLowerCase());
             expect(
@@ -129,8 +129,8 @@ describe('Bicep parameter search', () => {
           cy.get('[data-cy=search-results] tbody tr')
             .each(($row) => {
               cy.wrap($row)
-                .find('td:last-child')
-                .should('contain', tag);
+                .should('have.attr', 'data-tags')
+                .and('include', tag);
             });
 
           cy.get(`[data-cy=${tag}]`).click();
@@ -138,8 +138,8 @@ describe('Bicep parameter search', () => {
           cy.get('[data-cy=search-results] tbody tr')
             .should('have.length.greaterThan', 0)
             .filter((_, row) => {
-              const text = Cypress.$(row).find('td:last-child').text();
-              return !text.includes(tag);
+              const rowTags = (Cypress.$(row).attr('data-tags') ?? '').split(',');
+              return !rowTags.includes(tag);
             })
             .should('have.length.greaterThan', 0);
 
@@ -171,7 +171,7 @@ describe('Bicep parameter search', () => {
           cy.visit(`${route}?step=deploy&tags=vnet`);
           cy.get('[data-cy=vnet]').should('have.attr', 'aria-pressed', 'true');
           cy.get('[data-cy=search-results] tbody tr').each(($row) => {
-            cy.wrap($row).find('td:last-child').should('contain', 'vnet');
+            cy.wrap($row).should('have.attr', 'data-tags').and('include', 'vnet');
           });
         });
 

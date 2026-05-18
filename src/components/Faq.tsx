@@ -424,9 +424,8 @@ export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; m
               const isActive = activeIndex === index;
 
               return (
-                <div key={index} role="listitem">
+                <div key={index} role="listitem" data-cy="faq-item" data-tags={item.tags?.join(',') ?? ''}>
                   <button
-                    data-cy="faq-item"
                     ref={el => { itemRefs.current[index] = el; }}
                     className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""} ${isActive ? rowStyles.rowFocused : ""}`}
                     style={noTransition}

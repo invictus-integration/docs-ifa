@@ -113,8 +113,8 @@ describe('FAQ search', () => {
     it('shows empty state for no matches', () => {
       cy.get('@searchInput').type('xyznonexistent');
       cy.get('[data-cy=faq-item]').should('not.exist');
-      cy.contains('No results found').should('be.visible');
-      cy.contains('Enter').should('be.visible');
+      cy.contains('No questions match').should('be.visible');
+      cy.contains('Open a GitHub discussion').should('be.visible');
     });
 
     it('updates the results count to match the filtered set', () => {
@@ -134,7 +134,7 @@ describe('FAQ search', () => {
         cy.get(`[data-cy=${tag}]`).click();
 
         cy.get('[data-cy=faq-item]').should('have.length.greaterThan', 0).each(($item) => {
-          cy.wrap($item).should('contain', tag);
+          cy.wrap($item).should('have.attr', 'data-tags').and('include', tag);
         });
       });
 
@@ -166,7 +166,7 @@ describe('FAQ search', () => {
 
       cy.get('[data-cy=faq-item]').should('have.length.greaterThan', 0);
       cy.get('[data-cy=faq-item]').each(($item) => {
-        cy.wrap($item).should('contain', 'pubsub');
+        cy.wrap($item).should('have.attr', 'data-tags').and('include', 'pubsub');
       });
     });
 

@@ -242,6 +242,7 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
           ref={el => { if (el) rowRefs.current.set(rowKey, el); else rowRefs.current.delete(rowKey); }}
           className={`${rowStyles.tableRow} ${isExpanded ? rowStyles.rowActive : ""} ${isFocused ? rowStyles.rowFocused : ""}`}
           style={{ cursor: hasChildren ? "pointer" : "default" }}
+          data-tags={p.tags?.join(',') ?? ''}
           aria-level={depth + 1}
           aria-setsize={setSize}
           aria-posinset={posInSet}
