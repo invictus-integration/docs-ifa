@@ -3,15 +3,10 @@ sidebar_label: View audits
 ---
 
 import { OnlyAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
+import Breadcrumb from '@site/src/components/Breadcrumb';
 
 # View audited actions <OnlyAdminsBadge/>
-<nav class="custom-breadcrumb">
-  <span class="breadcrumb-item no-padding">
-    ![logo](/img/favicon.ico)
-  </span>
-  <span>›</span>
-  <span class="breadcrumb-item active">Audits</span>
-</nav>
+<Breadcrumb paths={["Audits"]} />
 
 The audits page provides a list of mentionable actions happened throughout the system. Audits can be search specifically by their `Chain ID`, or by certain categories available in the `[Advanced Search]` pane: 
 

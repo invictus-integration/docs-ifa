@@ -15,7 +15,9 @@ pagination_next: null
 * ➡️ Update `-devOpsObjectId` parameter to **Enterprise Application** Object ID of the DevOps service connection when running the `Deploy.ps1` script.
 * ❌ Remove possible Azure Key Vault task retrieving access policies, now done automatically by passing `-keyVaultName <name>` to `Deploy.ps1` script.
 
+{/* vale Microsoft.HeadingAcronyms = NO */}
 ### Migrate SQL to Cosmos DB
+{/* vale Microsoft.HeadingAcronyms = YES */}
 Invictus v5 can migrate your current Dashboard structure stored in SQL to the new Cosmos DB storage system. Consider following parameters in the `Deploy.ps1` script:
 * ➕ Add `-PerformSqlDataMigration 1` parameter to activate the migration.
 * ➕ Add `-sqlToMigrateServerName <name>` parameter to target the SQL server to migrate (defaults to `invictus-{ResourcePrefix}-sqlsvr`).

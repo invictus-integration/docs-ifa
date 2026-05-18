@@ -18,7 +18,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <TechChanges>
     - **Framework upgrade to latest SDK:** all Framework components now run on the most recent version of their respective SDK.
     - **Transco property name consistency:** Transco V2 property names now follow the naming convention consistently.
-    - **Application Gateway support:** Invictus now supports placing an Application Gateway in front of the Dashboard. Two new BICEP parameters enable this — see the documentation for details.
+    - **Application Gateway support:** Invictus now supports placing an Application Gateway in front of the Dashboard. <a href="../dashboard/installation/?step=deploy&q=applicationgateway#bicep-template-parameters">Two new BICEP parameters enable this</a>.
   </TechChanges>
   <Fixes>
     - **Tables not created on installation:** Invictus now correctly creates all required tables during installation.
@@ -31,7 +31,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
 <ReleaseVersion version="6.2" date="February 2026">
   <Features>
-    - **Support for 'Cancelled' state:** the Dashboard now shows cancelled Logic App runs with a dedicated "Cancelled" state instead of "Succeeded", making them easier to identify and track.
+    - **Support for 'Cancelled' state:** the Dashboard now shows cancelled Logic App runs with a dedicated 'Cancelled' state instead of 'Succeeded', making them easier to identify and track.
     - **Azure Function App tracing:** the Dashboard now visualizes flow traces from Azure Function Apps, including startup logs and custom logging, as a full execution tree alongside Logic App traces. A new icon distinguishes Function App traces from Logic App traces in the UI.
     - **Improved property filters UI:** the property filters panel on the Flow Trace page now offers a more efficient and user-friendly experience.
     - **Resubmit / Resume toggle:** operators can now enable or disable the resubmit and resume buttons from the Advanced Settings section.
@@ -87,7 +87,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <TechChanges>
     - **Migration to Azure Container Apps:** both the Dashboard and the Framework components now run on Azure Container Apps. See the v6 Migration Guide for upgrade instructions.
     - **Cosmos DB authentication through Managed Identity:** Invictus now uses Managed Identity to retrieve a Cosmos DB access key at runtime, removing the need to store a connection string locally.
-    - **Removal of PubSub v1, Transco V1, and Matrix components:** v6 does not include the legacy V1 versions of PubSub, Transco, or Matrix. New installations do not remove these components automatically. Migrate to the containerized versions as soon as possible.
+    - **Removal of PubSub v1, Transco V1, and Matrix components:** v6 doesn't include the legacy V1 versions of PubSub, Transco, or Matrix. New installations don't remove these components automatically. Migrate to the containerized versions as soon as possible.
   </TechChanges>
   <Fixes>
     - **Flow column names respect configuration casing:** column names in the Dashboard now use the casing defined in the configuration instead of forcing everything to uppercase.
