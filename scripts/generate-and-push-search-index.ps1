@@ -12,8 +12,8 @@
 
 .EXAMPLE
     # Set credentials, then run:
-    $env:AZURE_SEARCH_ENDPOINT  = 'https://invictus-docs.search.windows.net'
-    $env:AZURE_SEARCH_INDEX     = 'v6-docs'
+    $env:AZURE_SEARCH_ENDPOINT  = 'https://<your-service>.search.windows.net'
+    $env:AZURE_SEARCH_INDEX     = '<your-index>'
     $env:AZURE_SEARCH_ADMIN_KEY = '<your-admin-key>'
     ./scripts/generate-and-push-search-index.ps1
 #>

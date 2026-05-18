@@ -10,7 +10,7 @@
  *
  * Required environment variables (copy from .env or set in shell):
  *   AZURE_SEARCH_ENDPOINT    e.g. https://my-service.search.windows.net
- *   AZURE_SEARCH_INDEX       e.g. v6-docs
+ *   AZURE_SEARCH_INDEX       e.g. <your-index>
  *   AZURE_SEARCH_ADMIN_KEY   Admin key (not query key)
  */
 

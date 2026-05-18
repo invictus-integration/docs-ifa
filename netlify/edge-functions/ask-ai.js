@@ -9,8 +9,8 @@
  *   AZURE_OPENAI_ENDPOINT      e.g. https://my-resource.openai.azure.com
  *   AZURE_OPENAI_DEPLOYMENT    e.g. gpt-4o
  *   AZURE_OPENAI_API_KEY
- *   AZURE_SEARCH_ENDPOINT      e.g. https://invictus-docs.search.windows.net
- *   AZURE_SEARCH_INDEX         e.g. v6-docs
+ *   AZURE_SEARCH_ENDPOINT      e.g. https://<your-service>.search.windows.net
+ *   AZURE_SEARCH_INDEX         e.g. <your-index>
  *   AZURE_SEARCH_ADMIN_KEY
  */
 export default async function handler(request) {
