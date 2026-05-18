@@ -763,6 +763,24 @@
     ]
   },
   {
+    "name": "aiServicesSubnets",
+    "description": "A list of subnet names to form the network rules for the Azure AI Foundry resource, useful for VNET deployments.",
+    "newSince": "v6.3",
+    "tags": [
+      "networking",
+      "vnet"
+    ]
+  },
+  {
+     "name": "aiResourcesLocation",
+    "description": "Location where the Framework deploys the Azure AI Foundray services.",
+    "default": "swedencentral",
+    "newSince": "v6.3",
+    "tags": [
+        "comp:exception-handler"
+      ]
+  },
+  {
     "name": "containerAppEnvironmentSubnets",
     "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
     "deprecatedSince": "v6.4, will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and the optionally `privateEndpointNames.cae` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connect to the Azure Container App environment.",
