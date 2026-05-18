@@ -1373,52 +1373,67 @@
         ]
       },
       {
-        "name": "privateEndpointNames",
-        "description": "The names of the optional [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
+        "name": "privateEndpoints",
+        "description": "The properties related to the [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
         "properties": [
           {
-            "name": "acr",
-            "description": "The name of the Azure Private Endpoint for the Azure Container Registry resource."
+            "name": "subnetName",
+            "description": "The name of the subnet to form the Azure Private Endpoint resources."
           },
           {
-            "name": "cae",
-            "description": "The name of the Azure Private Endpoint for the Azure Container App environment resource."
+            "name": "resourceGroupName",
+            "description": "The name of the Azure resource group where the Azure Private Endpoint resources deploy to.",
+            "default": "resourceGroup().name"
           },
           {
-            "name": "blob",
-            "description": "The name of the Azure Private Endpoint for the Azure Storage Account blob resource."
-          },
-          {
-            "name": "file",
-            "description": "The name of the Azure Private Endpoint for the Azure Storage Account file share resource."
-          },
-          {
-            "name": "table",
-            "description": "The name of the Azure Private Endpoint for the Azure Storage Account table resource."
-          },
-          {
-            "name": "queue",
-            "description": "The name of the Azure Private Endpoint for the Azure Storage Account queue resource."
-          },
-          {
-            "name": "mongo",
-            "description": "The name of the Azure Private Endpoint for the Azure Cosmos DB for MongoDB resource."
-          },
-          {
-            "name": "eventHub",
-            "description": "The name of the Azure Private Endpoint for the Azure Event Hubs resource."
-          },
-          {
-            "name": "serviceBus",
-            "description": "The name of the Azure Private Endpoint for the Azure Service Bus resource."
-          },
-          {
-            "name": "keyVault",
-            "description": "The name of the Azure Private Endpoint for the Azure Key Vault resource."
-          },
-          {
-            "name": "cognitiveServices",
-            "description": "The name of the Azure Private Endpoint for the Azure Cognitive Services resource."
+            "name": "names",
+            "description": "The names of the optional [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
+            "properties": [
+              {
+                "name": "acr",
+                "description": "The name of the Azure Private Endpoint for the Azure Container Registry resource."
+              },
+              {
+                "name": "cae",
+                "description": "The name of the Azure Private Endpoint for the Azure Container App environment resource."
+              },
+              {
+                "name": "blob",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account blob resource."
+              },
+              {
+                "name": "file",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account file share resource."
+              },
+              {
+                "name": "table",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account table resource."
+              },
+              {
+                "name": "queue",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account queue resource."
+              },
+              {
+                "name": "mongo",
+                "description": "The name of the Azure Private Endpoint for the Azure Cosmos DB for MongoDB resource."
+              },
+              {
+                "name": "eventHub",
+                "description": "The name of the Azure Private Endpoint for the Azure Event Hubs resource."
+              },
+              {
+                "name": "serviceBus",
+                "description": "The name of the Azure Private Endpoint for the Azure Service Bus resource."
+              },
+              {
+                "name": "keyVault",
+                "description": "The name of the Azure Private Endpoint for the Azure Key Vault resource."
+              },
+              {
+                "name": "cognitiveServices",
+                "description": "The name of the Azure Private Endpoint for the Azure Cognitive Services resource."
+              }
+            ]
           }
         ]
       }
