@@ -60,9 +60,9 @@ const config = {
 
   customFields: {
     azureSearch: {
-      endpoint: 'https://invictus-docs.search.windows.net',
-      index: 'v6-docs',
-      apiKey: process.env.AZURE_SEARCH_API_KEY ?? '',
+      endpoint: process.env.AZURE_SEARCH_ENDPOINT,
+      index: process.env.AZURE_SEARCH_INDEX,
+      apiKey: process.env.AZURE_SEARCH_API_KEY,
       // adminKey is intentionally absent — it lives only in Netlify env vars,
       // used server-side by the /api/ask-ai edge function.
     },
