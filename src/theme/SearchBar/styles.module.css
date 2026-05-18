@@ -541,8 +541,8 @@
 }
 
 .audienceBadge_technical {
-  background: rgba(115, 77, 196, 0.1);
-  color: #734dc4;
+  background: rgba(1, 69, 80, 0.1);
+  color: #014550;
 }
 
 .audienceBadge_business {
@@ -551,8 +551,8 @@
 }
 
 :global([data-theme='dark']) .audienceBadge_technical {
-  background: rgba(115, 77, 196, 0.2);
-  color: #b39de8;
+  background: rgba(42, 143, 156, 0.2);
+  color: #2a8f9c;
 }
 
 :global([data-theme='dark']) .audienceBadge_business {
