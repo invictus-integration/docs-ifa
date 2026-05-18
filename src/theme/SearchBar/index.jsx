@@ -6,6 +6,7 @@ import { useHistory } from '@docusaurus/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faXmark, faChevronLeft, faChevronRight, faFileLines, faClock, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.css';
+import highlightStyles from '../../components/highlight.module.css';
 
 function filepathToUrl(filepath) {
   const parts = filepath
@@ -68,8 +69,10 @@ function stripMarkdown(text) {
     .replace(/^\d+\.\s+/gm, '')                                  // ordered list markers
     .replace(/^>\s*/gm, '')                                      // blockquotes
     .replace(/^[-*_]{3,}$/gm, '')                                // horizontal rules
-    .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/\s+/g, ' ');
+  // Note: intentionally no .trim() here — callers that process per-segment
+  // (e.g. getSnippet splitting on <mark> tags) must preserve leading/trailing
+  // spaces so highlighted words don't collide with surrounding text.
 }
 
 function toPascalCase(str) {  return str
@@ -123,6 +126,32 @@ function useRecentSearches() {
 }
 
 import { streamAiResponse } from '../../components/streamAiResponse';
+import { useUserType } from '../../components/UserTypeContext';
+
+/** Sort results so current-context docs float to the top within each category group. */
+function sortByUserType(results, userType) {
+  const priority = (ut) => ut === userType ? 0 : (!ut || ut === 'both') ? 1 : 2;
+  const groups = new Map();
+  for (const r of results) {
+    const cat = r.category ?? '';
+    if (!groups.has(cat)) groups.set(cat, []);
+    groups.get(cat).push(r);
+  }
+  return [...groups.values()].flatMap(g =>
+    [...g].sort((a, b) => priority(a.user_type) - priority(b.user_type))
+  );
+}
+
+/** Badge shown only when a result targets the *other* audience. */
+function AudienceBadge({ resultUserType, currentUserType }) {
+  const other = currentUserType === 'business' ? 'technical' : 'business';
+  if (resultUserType !== other) return null;
+  return (
+    <span className={`${styles.audienceBadge} ${styles[`audienceBadge_${resultUserType}`]}`} aria-label={`${resultUserType} documentation`}>
+      {resultUserType === 'business' ? 'Business' : 'Technical'}
+    </span>
+  );
+}
 
 
 export default function SearchBar() {
@@ -131,6 +160,7 @@ export default function SearchBar() {
   const aiEnabled = !!(siteConfig.customFields.aiEnabled);
   const history = useHistory();
   const recentSearches = useRecentSearches();
+  const { userType } = useUserType();
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -183,42 +213,27 @@ export default function SearchBar() {
     const baseParams = {
       'api-version': '2024-07-01',
       searchFields: 'title,content',
-      select: 'id,title,filepath,category,content,sidebar_label',
+      select: 'id,title,filepath,category,content,sidebar_label,user_type',
       highlight: 'content',
       highlightPreTag: '<mark>',
       highlightPostTag: '</mark>',
       top: '8',
     };
 
-    // Try semantic search first (handles typos + intent); fall back to simple fuzzy on error.
-    const doSearch = (query, semantic) => {
-      const params = new URLSearchParams({
-        ...baseParams,
-        search: semantic ? query : query.trim().split(/\s+/).map(w => `${w}~`).join(' '),
-        ...(semantic ? {
-          queryType: 'semantic',
-          semanticConfiguration: 'default',
-          speller: 'lexicon',
-          queryLanguage: 'en-us',
-        } : {
-          queryType: 'simple',
-        }),
-      });
+    const params = new URLSearchParams({
+      ...baseParams,
+      // Lucene full syntax — ~1 gives 1-char edit-distance fuzzy matching for typo tolerance
+      queryType: 'full',
+      search: debouncedQuery.trim().split(/\s+/).map(w => `${w}~1`).join(' '),
+    });
 
-      return fetch(`${azureSearch.endpoint}/indexes/${azureSearch.index}/docs?${params}`, {
-        headers: { 'api-key': azureSearch.apiKey },
-        signal: controller.signal,
-      }).then(res => {
-        if (!res.ok) return res.json().then(e => { throw Object.assign(e, { status: res.status }); });
+    fetch(`${azureSearch.endpoint}/indexes/${azureSearch.index}/docs?${params}`, {
+      headers: { 'api-key': azureSearch.apiKey },
+      signal: controller.signal,
+    })
+      .then(res => {
+        if (!res.ok) return res.json().then(e => { throw e; });
         return res.json();
-      });
-    };
-
-    doSearch(debouncedQuery, true)
-      .catch(err => {
-        // Semantic search unavailable (index not configured or service tier) — fall back to fuzzy
-        if (err?.status === 400 || err?.status === 404) return doSearch(debouncedQuery, false);
-        throw err;
       })
       .then(data => { setResults(data.value ?? []); setActiveIndex(-1); })
       .catch(err => { if (err?.name !== 'AbortError') console.error('[Azure Search]', err); })
@@ -313,7 +328,12 @@ export default function SearchBar() {
   function getSnippet(result) {
     // Prefer Azure Search highlights — already contain <mark> tags around matches
     const highlights = result['@search.highlights']?.content;
-    if (highlights?.length) return stripMarkdown(highlights[0]);
+    if (highlights?.length) {
+      // Split on <mark> tags so stripMarkdown only runs on text segments
+      const parts = highlights[0].split(/(<\/?mark>)/gi);
+      const html = parts.map(part => /^<\/?mark>$/i.test(part) ? part : stripMarkdown(part)).join('');
+      return html.trim().replace(/<mark>/gi, `<mark class="${highlightStyles.mark}">`);
+    }
 
     // Fallback: extract from raw content
     const content = result.content;
@@ -323,11 +343,11 @@ export default function SearchBar() {
     const start = Math.max(0, idx === -1 ? 0 : idx - 40);
     const end   = Math.min(content.length, start + 150);
     const raw   = (start > 0 ? '…' : '') + content.slice(start, end).replace(/\s+/g, ' ').trim() + (end < content.length ? '…' : '');
-    const stripped = stripMarkdown(raw);
+    const stripped = stripMarkdown(raw).trim();
     if (idx === -1) return stripped;
     return stripped.replace(
       new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),
-      '<mark>$1</mark>',
+      `<mark class="${highlightStyles.mark}">$1</mark>`,
     );
   }
 
@@ -337,6 +357,15 @@ export default function SearchBar() {
     return q.endsWith('?')
       || /^(how|what|why|when|where|who|which|can|does|do|is|are|will|should|could|would)\b/.test(q)
       || q.split(/\s+/).length >= 5;
+  })();
+
+  // True when results exist but none contain the exact query term — indicates fuzzy-only matches
+  const isApproximateMatch = results.length > 0 && (() => {
+    const q = debouncedQuery.trim().toLowerCase();
+    if (!q) return false;
+    return !results.some(r =>
+      r.title?.toLowerCase().includes(q) || r.content?.toLowerCase().includes(q)
+    );
   })();
   const totalItems = showingRecents
     ? recentSearches.recents.length
@@ -608,14 +637,13 @@ export default function SearchBar() {
                     </button>
                   </div>
                   {recentSearches.recents.map((r, i) => (
-                    <div key={r.filepath} className={styles.recentItemRow}>
+                    <div key={r.filepath} className={styles.recentItemRow} onMouseEnter={() => setActiveIndex(i)}>
                       <div
                         id={`search-opt-${i}`}
                         className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
                         role="option"
                         aria-selected={i === activeIndex}
                         tabIndex={0}
-                        onMouseEnter={() => setActiveIndex(i)}
                         onFocus={() => setActiveIndex(i)}
                         onClick={() => r.isAi ? askAi(r.query) : navigate(r)}
                         onKeyDown={e => {
@@ -683,6 +711,11 @@ export default function SearchBar() {
 
                   {/* ── Search results ── */}
                   <div className={styles.resultsList}>
+                    {isApproximateMatch && (
+                      <div className={styles.approximateHint}>
+                        Showing approximate matches for &ldquo;{debouncedQuery}&rdquo;
+                      </div>
+                    )}
                     {isSearching ? (
                       <div className={styles.skeletonList} aria-hidden="true">
                         {[88, 72, 95, 65].map((w, i) => (
@@ -703,7 +736,7 @@ export default function SearchBar() {
                       </div>
                     ) : (() => {
                       let lastCategory = null;
-                      return results.map((result, i) => {
+                      return sortByUserType(results, userType).map((result, i) => {
                         const showHeader = result.category && result.category !== lastCategory;
                         lastCategory = result.category;
                         const breadcrumb = filepathToBreadcrumb(result.filepath, result.sidebar_label, result.title);
@@ -727,7 +760,10 @@ export default function SearchBar() {
                                 <FontAwesomeIcon icon={faFileLines} />
                               </span>
                               <span className={styles.resultContent}>
-                                <span className={styles.resultTitle}>{result.title}</span>
+                               <span className={styles.resultTitle}>
+                                 {result.title}
+                                 <AudienceBadge resultUserType={result.user_type} currentUserType={userType} />
+                               </span>
                                 {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
                                 {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
                               </span>

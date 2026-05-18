@@ -15,7 +15,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "start-server-and-test start http://localhost:3000 cy:run",
-    "index:push": "node scripts/push-search-index.js"
+    "index:push": "pwsh scripts/generate-and-push-search-index.ps1"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.0",
