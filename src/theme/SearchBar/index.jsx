@@ -429,12 +429,12 @@ export default function SearchBar() {
         ref={triggerRef}
         className={styles.triggerButton}
         onClick={() => setIsOpen(true)}
-        aria-label={`Search documentation, press ${shortcutLabel} to open`}
+        aria-label={`Search or ask AI, press ${shortcutLabel} to open`}
         aria-keyshortcuts={shortcutLabel.includes('⌘') ? 'Meta+k' : 'Control+k'}
         aria-haspopup="dialog"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} aria-hidden="true" />
-        <span className={styles.triggerText}>Search docs…</span>
+        <span className={styles.triggerText}>Search or ask…</span>
         <span className={styles.shortcutBadge} aria-hidden="true">
           {shortcutLabel.includes('⌘')
             ? <kbd>⌘K</kbd>
@@ -470,8 +470,8 @@ export default function SearchBar() {
                 ref={inputRef}
                 type="text"
                 className={styles.input}
-                placeholder="Search docs…"
-                aria-label="Search documentation"
+                placeholder="Search or ask…"
+                aria-label="Search or ask AI"
                 role="combobox"
                 aria-expanded={isOpen}
                 aria-controls={listboxId}

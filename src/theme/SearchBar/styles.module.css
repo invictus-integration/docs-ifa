@@ -459,8 +459,8 @@
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  background: var(--ifm-color-secondary-lighter);
-  color: var(--ifm-color-secondary-darkest);
+  background: rgba(1, 69, 80, 0.08);
+  color: #014550 !important;
   transition: background 0.1s, color 0.1s;
 }
 
@@ -472,7 +472,7 @@
 
 [data-theme='dark'] .resultIconWrap {
   background: rgba(255, 255, 255, 0.07);
-  color: var(--ifm-color-secondary-dark);
+  color: var(--ifm-color-secondary-dark) !important;
 }
 
 [data-theme='dark'] .result:hover .resultIconWrap,
