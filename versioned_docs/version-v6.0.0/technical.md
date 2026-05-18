@@ -11,15 +11,23 @@ slug: technical
 ![Invictus logo](/img/invictus.index.light.png#light-mode-only)
 ___
 
+{/* vale Microsoft.Contractions = NO */}
+{/* vale Microsoft.HeadingPunctuation = NO */}
 ## What is Invictus for Azure?
+{/* vale Microsoft.Contractions = YES */}
+{/* vale Microsoft.HeadingPunctuation = YES */}
+
 **Invictus for Azure** is a smart business monitoring system designed by [Codit](https://codit.eu) to better control and overview your integrations. Commonly used with Azure Logic App workflows, but the system also supports a wide range of other integration types.
 
 Invictus consists of two parts:
 * An on-premises **Dashboard** that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations.
 * A set of **Framework** components that supports commonly used integration patterns in Azure Logic App workflows.
 
+{/* vale Microsoft.HeadingPunctuation = NO */}
 ## How to use Invictus for Azure?
-The [architecture diagram](./architecture-diagram.md) gives a general overview of what an **Invictus for Azure** installation entails.
+{/* vale Microsoft.HeadingPunctuation = YES */}
+
+The [architecture diagram](./architecture-diagram.mdx) gives a general overview of what an **Invictus for Azure** installation entails.
 
 To install **Invictus for Azure**, these installation guides will walk you through the process:
 * [Install Invictus Dashboard](./dashboard/installation/index.mdx)

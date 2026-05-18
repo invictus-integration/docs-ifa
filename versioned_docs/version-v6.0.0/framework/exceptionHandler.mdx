@@ -103,11 +103,9 @@ The function will respond with a list of errors for the failed actions, for exam
 
 :bulb: The ExceptionHandler function makes use of the [RegexTranslator](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/regextranslation.md) component to translate the original error from the Logic App.
 
-:flashlight: To show what we mean by translating the error to a human readable text let's take the following example.
+A solution has an Azure Logic App that used to return the generic `An action failed. No dependent actions succeeded` error. By using the Exception Handler, you can improve this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
 
-A solution has an Azure Logic App that used to return the generic `An action failed. No dependent actions succeeded` error. By using the Exception Handler, we can improve this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
-
-A business user doesn't understand what this means. By using the translation functionality of the Exception Handler function we can translate this error to something like `Application is not reachable` which the business user can understand.
+A business user doesn't understand what this means. By using the translation functionality of the Exception Handler function you can translate this error to something like `Application is not reachable` which the business user can understand.
 
 Set these translations in the `RegexTranslator` table in your Invictus storage account. Add the translations in the table as follows:
 
@@ -150,7 +148,7 @@ Set these translations in the `RegexTranslator` table in your Invictus storage a
 </TabItem>
 </Tabs>
 
-By using the translation functionality we will get back the following response:
+By using the translation functionality you will get back the following response:
 
 ``` json
 {
@@ -169,11 +167,11 @@ By using the translation functionality we will get back the following response:
 <details>
 <summary>**Ignore Azure Logic App errors**</summary>
 
-By using the translation functionality we can also ignore errors. This can be useful for scenario's where Logic Apps generates an irrelevant error to the business while the flow ran successfully. 
+By using the translation functionality you can also ignore errors. This can be useful for scenario's where Logic Apps generates an irrelevant error to the business while the flow ran successfully. 
 
-An example: a solution with an Azure Logic App picks up a file from a network location. After publishing of the file, it will delete the file. In some situations this delete action will fail because another instance of the Logic App already removed this file. This error can be safely ignored since the message processing already happened.
+An example: a solution with an Azure Logic App picks up a file from a network location. After publishing of the file, it will delete the file. In some situations this delete action will fail because another instance of the Logic App already removed this file. You can ignore this error since the message processing already happened.
 
-To achieve this we can configure the translation as follows:
+To achieve this you can configure the translation as follows:
 
 | PartitionKey                         | RowKey | MatchPattern                 | OutputPattern |
 | ------------------------------------ | ------ | ---------------------------- | ------------- |
@@ -191,8 +189,10 @@ This will result in the following response:
 ```
 </details>
 
-## How to implement in your Azure Logic Apps?
-A good way to implement the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. All the other Logic Apps can call this common Logic App. This centralizes your exception handling functionality.
+{/* vale Microsoft.HeadingPunctuation = NO */}
+## How to use in your Azure Logic Apps?
+{/* vale Microsoft.HeadingPunctuation = YES */}
+A good way to use the Exception Handler is to create a common exception handler Logic App that will call the Exception Handler component and return the response. All the other Logic Apps can call this common Logic App. This centralizes your exception handling functionality.
 
 :::tip
 use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.
@@ -205,7 +205,7 @@ use a webhook to call the common exception handler Logic App so that if anything
 
 ![logic-app](/images/exceptionhandler-logic-app.png)
 
-Take a look at the code for the `Scope Exception Handling` below. Pay attention to the `Terminate` action as this uses the information from the Exception Handler component and is nicely shown in the Invictus for Azure dashboard.
+Take a look at the code for the `Scope Exception Handling` below. Pay attention to the `Terminate` action as this uses the information from the Exception Handler component and shows it in the Dashboard.
 
 ![dashboard](/images/exceptionhandler-logic-app-dashboard.png)
 

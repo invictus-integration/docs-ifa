@@ -57,14 +57,15 @@ Invictus includes functionality which allows all its resources to run within an 
   - `privatelink.vaultcore.azure.net`
   - `privatelink.{regionName}.azurecontainerapps.io`
     
+{/* vale Microsoft.Terms = NO */}
 - To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
+{/* vale Microsoft.Terms = YES */}
     - PowerShell
     - Azure PowerShell
     - Bicep CLI
 
 ### Required role assignment
-If the Invictus resources and the VNET are on different resource groups, then the Invictus resource group will need to be assigned the role of `Network Contributor` onto the VNET resource group.
-
+If the Invictus resources and the VNET are on different resource groups, then you need to assign the role of `Network Contributor` to the Invictus resource group onto the VNET resource group.
 </details>
 
 </TabItem>
@@ -75,16 +76,18 @@ If the Invictus resources and the VNET are on different resource groups, then th
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Framework.
 
 ## Add variables to variable group <SharedNote/>
-Secrets are required for authentication. These should be provided to you by **Codit Software**. Create a variable group for them:
+Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
-* **{'{prefix}'}.Invictus.Installation**
+* `**{'{prefix}'}.Invictus.Installation**`
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software (if you're also deploying the Dashboard)
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
   * `Infra.Environment.ACRPassword`: value provided by Codit Software
 
+{/* vale Microsoft.HeadingAcronyms = NO */}
 ## YAML Pipeline
+{/* vale Microsoft.HeadingAcronyms = YES */}
 Next step is to add YAML pipelines to build the Invictus for Azure Framework. Change the following example file according to your needs, for example change the trigger path:
 ``` yaml
   paths:
@@ -168,6 +171,29 @@ Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-
 ## Use `Deploy.ps1` script for deployment
 The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and is the central point of contact for deploying Invictus products.
 
+<details>
+<summary>**Least-privileged Azure role assignments for the deploying identity**</summary>
+
+The identity running the Bicep deployment (the service principal used by your Azure DevOps service connection) needs the following least-privileged roles assigned on the target resource group or subscription:
+
+| Role | Why It's Needed |
+| ---- | --------------- |
+| [`Container Apps Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-apps-contributor) | Create/update Container Apps environments, apps, authentication configurations and job definitions. |
+| [`Azure Event Hubs Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/analytics#azure-event-hubs-data-owner) | Create/update Event Hubs namespaces, hubs and network rule sets. |
+| [`Container Registry Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-contributor-and-data-access-configuration-administrator) | Create/update Azure Container Registry instances, locks and network settings. |
+| [`DocumentDB Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/databases#documentdb-account-contributor) | Create/update Cosmos DB accounts, MongoDB databases and collections. |
+| [`Managed Identity Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/identity#managed-identity-contributor) | Create/update user-assigned managed identities for Container Apps and functions. |
+| [`Key Vault Administrator`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/security#key-vault-administrator) | Create/update Key Vaults, access policies and network ACLs. |
+| [`Log Analytics Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#log-analytics-contributor) | Create/update Log Analytics workspaces and list workspace keys. |
+| [`Monitoring Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-contributor) | Create/update Application Insights components and associated locks. |
+| [`Network Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking#network-contributor) | Create/update private endpoints, VNET subnets and private DNS zone groups. |
+| [`Reader`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/general#reader) | Read existing Private DNS zones when linking DNS zone groups for private endpoints. |
+| [`Service Bus Data Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/integration#azure-service-bus-data-owner) | Create/update Service Bus namespaces, queues and network rule sets. |
+| [`Storage Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage#storage-account-contributor) | Create/update storage accounts, file shares, blob and table services. |
+| [`User Access Administrator`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#user-access-administrator) | Create role assignments (`Microsoft.Authorization/roleAssignments`) and resource locks. |
+
+</details>
+
 ### Mandatory Parameters
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
@@ -176,21 +202,24 @@ The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sourc
 
 | Argument name       | Description                                                                                                   |
 | ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `arcName`           | The name of the Azure Container Registry name to deploy the container images to. (Make sure to override also the `containerRegistryName` BICEP parameter if you want a custom name.) |
 | `arcPath`           | The Azure Container App registry base path to form the source image location of the container images.         |
 | `arcUsername`       | The username credential to authenticate the Docker CLI.                                                       |
 | `arcPassword`       | The password credential to authenticate into the Docker CLI.                                                  |
 | `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.  |
 | `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                           |
-| `variableGroupName` | DevOps variable group to write the Bicep outputs to (i.e. `Invictus_CosmosDb_DbName`)                         |
+| `variableGroupName` | DevOps variable group to write the Bicep outputs to (ex. `Invictus_CosmosDb_DbName`).                         |
 | `useBeta`           | Indicates the environment of the Azure Container App registry where the deployment gets its container images. |
 
 ### Optional Parameters    
+{/* vale Microsoft.Terms = NO */}
 | Argument name                  | Default value   | Description                                                                                                                                |
 | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `artifactsPath`                | `$PSScriptRoot` | Path on the Azure DevOps agent that stores the downloaded Invictus artifacts ([publish and download build artifacts])                      |
 | `resourceGroupLocation`        | 'West Europe'   | In case no resource group is available with the name `resourceGroupName`, the deployment uses this location to create such resource group. |
 | `additionalTemplateParameters` | `[]`            | Custom named parameters for the Bicep template you wish to override. More on this below.                                                   |
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.                      |
+{/* Microsoft.Terms = YES */}
 
 <details>
 <summary>**Full YAML task example**</summary>
