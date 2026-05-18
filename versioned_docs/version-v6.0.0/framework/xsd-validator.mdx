@@ -12,7 +12,9 @@ When processing XML files in Logic App workflows, XSD validation is a necessary 
 The Invictus Framework provides a **XSD Validator** component that allows you to validate XML files within your Logic App workflow by storing the XSD schemas in an Azure Blob Storage container. The interaction with the component happens via a HTTP endpoint; circumventing the need of an expensive **Azure Integration Account**.
 :::
 
+{/* vale Microsoft.HeadingAcronyms = NO */}
 ## XSD validate user XML
+{/* vale Microsoft.HeadingAcronyms = YES */}
 The **XSD Validator** has a single endpoint available: `/api/ValidateXmlAgainstXsd`. Given an user XML and referenced XSD schema (stored in Azure Blob Storage), the endpoint response with the result of the validation, possibly with violation failures.
 
 | JSON property | Required | Description                                                       |
@@ -48,7 +50,9 @@ The **XSD Validator** has a single endpoint available: `/api/ValidateXmlAgainstX
 ```
 </details>
 
+{/* vale Microsoft.HeadingAcronyms = NO */}
 ## Stored XSD schemas
+{/* vale Microsoft.HeadingAcronyms = YES */}
 Upload referenced XSD schema files to the Azure Blob Storage container `xsdvalidatorstore` (available upon installation), within the Invictus Azure Storage Account that's part of the installation.
 
 ## Related Bicep template parameters

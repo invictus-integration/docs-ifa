@@ -110,7 +110,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
   </Task>
 
   <Task title="Add Azure Logic App workflow results">
-    > 🛡️ You need to set some role assignments for this feature to function properly. Please see [Access Control Rights](../../installation/03_give_la_access.md) for more info.
+    > 🛡️ You need to set some role assignments for this feature to function. Please see [Access Control Rights](../../installation/03_give_la_access.md) for more info.
 
     The message content view allows the user to track the outputs and inputs of an action. The links are the friendly names set in the tracked properties of the "tracked" action. The links will point to their respectively input/output content. These are visible per Azure Logic App in the workflow events table. 
 
@@ -150,7 +150,7 @@ The resubmit functionality will always trigger an "Azure Resubmit" for the first
 
 ![resubmit](/images/dashboard/FlowHandler/fh-resubmit1.jpg)
 
-If we had to take the above image as an example. If the user resubmit this flow via the Dashboard, "LogicAppChain-A" resubmits on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
+Take the above image as an example. If the user resubmit this flow via the Dashboard, "LogicAppChain-A" resubmits on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
 
 ![resubmit](/images/dashboard/FlowHandler/fh-resubmit2.jpg)
 
@@ -245,7 +245,7 @@ ___
 <details>
 <summary>Scenario One: resubmit first in the chain</summary>
 
-In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first one in the chain, which you can identify by the null `x-iv-parent-workflow-run-id`, this scenario will act as a **Resubmit**. As soon as we receive the events for 4, 5 and 6 we will link 4 with 1 through the `OriginWorkFlowRunId` which the `LogicAppRuntime` supplies and ignore all descendants of 1.
+In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first one in the chain, which you can identify by the null `x-iv-parent-workflow-run-id`, this scenario will act as a **Resubmit**. As soon as Invictus receives the events for 4, 5 and 6, it will link 4 with 1 through the `OriginWorkFlowRunId` which the `LogicAppRuntime` supplies and ignore all descendants of 1.
 
 ![scenario 1](/images/import-scenario1.png)
 
@@ -255,7 +255,7 @@ In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first 
 <summary>Scenario Two: resume further down the chain</summary>
 
 {/* vale proselint.Diacritical = NO */}
-In this scenario, the resubmitted logic app Is number 3. Since this isn't the first Azure Logic App in the Chain, this acts as a **Resume**. As soon as we receive the events for number 4 we can immediately link it to number 1 since it will still have the same x-iv-parent-workflow-run-id. Through the OriginWorkFlowRunId of 333 Azure Logic App 4 is then treated as a resubmit of 3. Resume operations only ignore the resubmitted Azure Logic Apps and its descendants, not the whole chain.
+In this scenario, the resubmitted logic app Is number 3. Since this isn't the first Azure Logic App in the Chain, this acts as a **Resume**. As soon as Invictus receives the events for number 4, it can immediately link it to number 1 since it will still have the same `x-iv-parent-workflow-run-id`. Through the `OriginWorkFlowRunId` of 333 Azure Logic App 4 is then treated as a resubmit of 3. Resume operations only ignore the resubmitted Azure Logic Apps and its descendants, not the whole chain.
 {/* vale proselint.Diacritical = YES */}
 
 ![scenario 2](/images/import-scenario2.png)

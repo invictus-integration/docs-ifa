@@ -76,6 +76,50 @@ describe('Bicep parameter search', () => {
 
       });
 
+      it('auto-expands a parent parameter when its own name matches the search, and allows clicking to collapse and re-expand', () => {
+
+        // 'Scaling' matches parent-level parameters (e.g. timeSequencerScaling) but
+        // not their children (e.g. cpuResources). The parent must be auto-expanded so
+        // children are visible immediately, and the user must still be able to toggle.
+        cy.get('@searchInput').clear().type('Scaling');
+
+        cy.get('[data-cy=search-results] tbody tr').should('have.length.greaterThan', 0);
+
+        // Children (non-matching rows) are visible without any click because the
+        // parent was auto-expanded when it self-matched the search term.
+        cy.get('[data-cy=search-results] tbody tr td:first-child code')
+          .then(($codes) => {
+            const texts = $codes.toArray().map((el) => el.textContent.toLowerCase());
+            expect(
+              texts.some((t) => !t.includes('scaling')),
+              'child rows should be visible immediately after parent matches search'
+            ).to.be.true;
+          });
+
+        // Record the total row count before collapsing.
+        cy.get('[data-cy=search-results] tbody tr').then(($rows) => {
+          const totalBefore = $rows.length;
+
+          // Click the first matched (auto-expanded) row to collapse it — its children
+          // disappear so the row count must drop.
+          cy.get('[data-cy=search-results] tbody tr').first().click();
+
+          cy.get('[data-cy=search-results] tbody tr')
+            .should('have.length.lessThan', totalBefore);
+
+          // Click again to re-expand — row count must return to the original total.
+          cy.get('[data-cy=search-results] tbody tr').first().click();
+
+          cy.get('[data-cy=search-results] tbody tr')
+            .should('have.length', totalBefore);
+        });
+
+        cy.get('@searchInput').clear();
+
+        cy.get('[data-cy=search-results] tbody tr').should('have.length.greaterThan', 0);
+
+      });
+
       tags.forEach((tag) => {
 
         it(`filters table rows for tag "${tag}"`, () => {
