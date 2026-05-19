@@ -25,6 +25,8 @@ export default function UserTypeSwitcher() {
           role="tab"
           aria-selected={userType === tab.key}
           className={styles.tab}
+          data-cy-toggle={tab.key}
+          data-cy-toggle-active={String(userType === tab.key)}
           onClick={() => handleSelect(tab)}
           onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSelect(tab); }}
         >
