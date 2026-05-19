@@ -30,6 +30,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path $PSScriptRoot -Parent
 $VersionsFile = Join-Path $Root 'versions.json'
 $OutputFile = Join-Path $Root 'knowledge.json'
+$StaticSearchFile = Join-Path $Root 'static' 'search-index.json'
 
 # ---------------------------------------------------------------------------
 # Load .env (values already in environment take precedence)
@@ -390,6 +391,10 @@ foreach ($version in $versions) {
 $output = [ordered]@{ value = $allDocs.ToArray() }
 $output | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputFile -Encoding utf8
 Write-Host "`n📝 $($allDocs.Count) total documents written → knowledge.json"
+
+# Keep the static fallback in sync — served as /search-index.json for offline search.
+$output | ConvertTo-Json -Depth 5 | Set-Content -Path $StaticSearchFile -Encoding utf8
+Write-Host "📝 Static fallback written → static/search-index.json"
 
 Invoke-EnsureIndex
 Invoke-UploadDocuments -Docs $allDocs.ToArray()

@@ -126,6 +126,7 @@ function useRecentSearches() {
 }
 
 import { streamAiResponse } from '../../components/streamAiResponse';
+import { localSearch } from '../../components/localSearch';
 import { useUserType } from '../../components/UserTypeContext';
 
 /** Sort results so current-context docs float to the top within each category group. */
@@ -181,6 +182,8 @@ export default function SearchBar() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [aiError, setAiError] = useState('');
 
+  const [isLocalFallback, setIsLocalFallback] = useState(false);
+
   // Platform-aware shortcut label (SSR-safe)
   const [shortcutLabel, setShortcutLabel] = useState('Ctrl K');
   useEffect(() => {
@@ -212,6 +215,7 @@ export default function SearchBar() {
 
     const controller = new AbortController();
     setIsSearching(true);
+    setIsLocalFallback(false);
     setAiActive(false);
 
     const baseParams = {
@@ -241,7 +245,15 @@ export default function SearchBar() {
         return res.json();
       })
       .then(data => { setResults(data.value ?? []); setActiveIndex(-1); })
-      .catch(err => { if (err?.name !== 'AbortError') console.error('[Azure Search]', err); })
+      .catch(err => {
+        if (err?.name === 'AbortError') return;
+        console.warn('[Azure Search] falling back to local search:', err);
+        localSearch(debouncedQuery).then(localResults => {
+          setResults(localResults);
+          setIsLocalFallback(true);
+          setActiveIndex(-1);
+        });
+      })
       .finally(() => setIsSearching(false));
 
     return () => controller.abort();
@@ -716,6 +728,11 @@ export default function SearchBar() {
 
                   {/* ── Search results ── */}
                   <div className={styles.resultsList}>
+                    {isLocalFallback && (
+                      <div className={styles.localFallbackHint}>
+                        Search service unavailable · showing local results
+                      </div>
+                    )}
                     {isApproximateMatch && (
                       <div className={styles.approximateHint}>
                         Showing approximate matches for &ldquo;{debouncedQuery}&rdquo;

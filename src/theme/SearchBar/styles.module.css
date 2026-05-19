@@ -410,6 +410,13 @@
   border-bottom: 1px solid var(--ifm-color-secondary-lighter);
 }
 
+.localFallbackHint {
+  padding: 6px 20px;
+  font-size: 0.75rem;
+  color: var(--ifm-color-warning-dark);
+  border-bottom: 1px solid var(--ifm-color-secondary-lighter);
+}
+
 /* ── Individual result ── */
 .result {
   display: flex;
