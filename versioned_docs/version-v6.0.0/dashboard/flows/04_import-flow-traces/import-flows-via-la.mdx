@@ -1,13 +1,13 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { Walkthrough, Task } from '@site/src/components/Walkthrough';
+import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 import { OnlyFolderAdminsBadge, OnlyOperatorsBadge } from '@site/src/components/OnlyAdminsBadge'
 
 # Import flow traces via Azure Logic App workflows
 Invictus is fully supported to import flows from Azure Logic Apps. It allows to keep track of the **execution tree** of the ran workflows, plus with **tracked properties** you can trace specific data for your needs besides the general **diagnostic settings**.
 
 <Walkthrough>
-  <Task title="Enable workflow diagnostics">
+  <Collapsible title="Enable workflow diagnostics">
     For the Invictus Dashboard to know if messages went through your Logic App workflow correctly or not, you need to configure diagnostic settings on all Logic Apps that you want to include. These settings should stream their diagnostic traces to the Invictus EventHubs resource:
 
     * `EventHubsNamespace`: `invictus-{env}-we-sft-evnm`
@@ -68,9 +68,9 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     }
     ```
     </details>
-  </Task>
+  </Collapsible>
 
-  <Task title="Map Dashboard flows to Azure Logic App workflow runs">
+  <Collapsible title="Map Dashboard flows to Azure Logic App workflow runs">
   <OnlyFolderAdminsBadge/>
     
     Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../01_add.mdx):
@@ -79,9 +79,9 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     * Service (if present)
     * Action (if present)
     * Version (if present)
-  </Task>
+  </Collapsible>
 
-  <Task title="Link child workflow to parent Azure Logic App workflow">
+  <Collapsible title="Link child workflow to parent Azure Logic App workflow">
     When expanding the flows in the Dashboard you should be able to see what workflows executed sequentially to process the message.
 
     ![execution tree](/images/v2_events1.png)
@@ -101,15 +101,15 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     :::warning
     The **ClientTrackingId** is the identifier used to link transactional messages together, this ID is by default generated for every run in Azure Logic Apps, but can also be manually set by the developer. Since async flows might change their ClientTrackingId due to routing, the ClientTrackingId will need to be reset in the Azure Logic App as soon as possible.
     :::
-  </Task>
+  </Collapsible>
 
-  <Task id="tracked-properties-of-workflows" title="Add tracked properties to Azure Logic App workflows">
+  <Collapsible id="tracked-properties-of-workflows" title="Add tracked properties to Azure Logic App workflows">
     The flow trace importing displays the special properties `Milestone` and `EventText` by default, if present. If the `EventText` re-appears in many workflows, the flow trace importing combines all data as a single value, separated by a comma.
 
     ![execution tree](/images/v2_events2.png)
-  </Task>
+  </Collapsible>
 
-  <Task title="Add Azure Logic App workflow results">
+  <Collapsible title="Add Azure Logic App workflow results">
     > 🛡️ You need to set some role assignments for this feature to function. Please see [Access Control Rights](../../installation/03_give_la_access.md) for more info.
 
     The message content view allows the user to track the outputs and inputs of an action. The links are the friendly names set in the tracked properties of the "tracked" action. The links will point to their respectively input/output content. These are visible per Azure Logic App in the workflow events table. 
@@ -134,7 +134,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     ![execution tree](/images/v2_events5.png)
 
     For any additional details or insights, the user can also navigate directly to the Azure Portal.
-  </Task>
+  </Collapsible>
 </Walkthrough>
 
 ## Workflow operations via Dashboard <OnlyOperatorsBadge/>

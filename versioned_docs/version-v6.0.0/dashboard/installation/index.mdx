@@ -7,7 +7,7 @@ pagination_next: null
 import React from 'react';
 
 import { SharedNote } from '@site/src/components/SharedNoteBadge';
-import { Walkthrough, WalkthroughStep } from '@site/src/components/Walkthrough';
+import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/dashboard.v6.bicep.parameters.json";
@@ -15,7 +15,7 @@ import parameters from "@site/src/data/dashboard.v6.bicep.parameters.json";
 # Installing Invictus Dashboard
 
 <Walkthrough>
-<WalkthroughStep title="Prerequisites">
+<Step title="Prerequisites">
 
 :::info[obtain access <SharedNote/>]
 To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
@@ -66,8 +66,8 @@ If the Invictus resources and the VNET are on different resource groups, then yo
 
 </details>
 
-</WalkthroughStep>
-<WalkthroughStep title="Download">
+</Step>
+<Step title="Download">
 
 Include the Dashboard in your release package to deploy the Invictus Dashboard together with your customer solution.
 
@@ -158,8 +158,8 @@ stages:
 ```
 </details>
 
-</WalkthroughStep>
-<WalkthroughStep title="Deploy">
+</Step>
+<Step title="Deploy">
 
 ## Create variable group <SharedNote/>
 Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
@@ -358,8 +358,8 @@ stages:
 ## Bicep Template Parameters
 <ParameterTable parameters={parameters} />
 
-</WalkthroughStep>
-<WalkthroughStep title="First-time sign-in">
+</Step>
+<Step title="First-time sign-in">
 
 The Invictus installation generates an administrator account for your initial login to the Dashboard.
 
@@ -387,6 +387,6 @@ Further customer-specific setups related to authentication and authorization:
 * [Give access to your Microsoft Entra ID](./01_give_ad_access.mdx)
 * [Give access to your Logic Apps](./03_give_la_access.md)
 
-</WalkthroughStep>
+</Step>
 </Walkthrough>
 

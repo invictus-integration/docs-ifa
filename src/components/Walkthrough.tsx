@@ -5,7 +5,7 @@ type WalkthroughProps = { children: ReactNode; label?: string };
 type StepProps = { title: string; children: ReactNode; number?: number; headingLevel?: 2 | 3 | 4 };
 type TaskProps = { title: string; children: ReactNode; number?: number; id?: string };
 
-/** Ordered list wrapper for WalkthroughStep and Task components. Injects step numbers. */
+/** Ordered list wrapper for Step and Collapsible components. Injects step numbers. */
 export function Walkthrough({ children, label = 'Steps' }: WalkthroughProps) {
   return (
     <ol className={styles.walkthrough} aria-label={label}>
@@ -17,7 +17,7 @@ export function Walkthrough({ children, label = 'Steps' }: WalkthroughProps) {
 }
 
 /** Full-size always-expanded step. Use in installation guides. */
-export function WalkthroughStep({ title, children, number, headingLevel = 2 }: StepProps) {
+export function Step({ title, children, number, headingLevel = 2 }: StepProps) {
   const titleId = `walkthrough-step-${number}-title`;
   const HeadingTag = `h${headingLevel}` as React.ElementType;
   return (
@@ -36,7 +36,7 @@ export function WalkthroughStep({ title, children, number, headingLevel = 2 }: S
 }
 
 /** Compact collapsible step. Use in feature walkthroughs. */
-export function Task({ title, children, number, id }: TaskProps) {
+export function Collapsible({ title, children, number, id }: TaskProps) {
   const [open, setOpen] = useState(false);
   const contentId = `walkthrough-task-${number}-content`;
 

@@ -11,12 +11,12 @@ import { SharedNote } from '@site/src/components/SharedNoteBadge';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 
-import { Walkthrough, WalkthroughStep } from '@site/src/components/Walkthrough';
+import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 
 # Installing Invictus Framework
 
 <Walkthrough>
-<WalkthroughStep title="Prerequisites">
+<Step title="Prerequisites">
 
 :::info[obtain access <SharedNote/>]
 To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and Azure Container Registry password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
@@ -66,9 +66,9 @@ Invictus includes functionality which allows all its resources to run within an 
 If the Invictus resources and the VNET are on different resource groups, then you need to assign the role of `Network Contributor` to the Invictus resource group onto the VNET resource group.
 </details>
 
-</WalkthroughStep>
+</Step>
 
-<WalkthroughStep title="Download">
+<Step title="Download">
 
 ## Save installation script to your repository <SharedNote/>
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Framework.
@@ -155,9 +155,9 @@ stages:
 ```
 </details>
 
-</WalkthroughStep>
+</Step>
 
-<WalkthroughStep title="Deploy">
+<Step title="Deploy">
 
 ## Create variable group <SharedNote/>
 Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
@@ -338,6 +338,6 @@ stages:
 ## Bicep Template Parameters
 <ParameterTable parameters={parameters} />
 
-</WalkthroughStep>
+</Step>
 </Walkthrough>
 
