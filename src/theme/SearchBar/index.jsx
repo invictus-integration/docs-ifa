@@ -729,7 +729,7 @@ export default function SearchBar() {
                   {/* ── Search results ── */}
                   <div className={styles.resultsList}>
                     {isLocalFallback && (
-                      <div className={styles.localFallbackHint}>
+                      <div className={styles.localFallbackHint} data-cy="local-fallback-hint">
                         Search service unavailable · showing local results
                       </div>
                     )}

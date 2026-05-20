@@ -1,27 +1,25 @@
 /**
  * Local search fallback — used when Azure Search is unavailable.
  *
- * Lazily fetches /search-index.json (a static copy of the knowledge base)
- * on first use and caches it in memory. Scores documents by simple
- * case-insensitive substring matching, weighted by field importance.
+ * Lazily imports the search index as a webpack chunk (dynamic import) on first
+ * use and caches it in memory. Bundled via webpack rather than served as a raw
+ * static file, so it is not directly navigatable as a public URL.
+ *
+ * Scores documents by case-insensitive substring matching, weighted by field.
  */
 
 const TOP_N = 8;
 
-/** Module-level cache so the index is only fetched once per page session. */
+/** Module-level cache so the chunk is only loaded once per page session. */
 let indexCache = null;
 let indexPromise = null;
 
 async function loadIndex() {
   if (indexCache) return indexCache;
   if (!indexPromise) {
-    indexPromise = fetch('/search-index.json')
-      .then(r => {
-        if (!r.ok) throw new Error(`Failed to load local search index (${r.status})`);
-        return r.json();
-      })
-      .then(data => {
-        indexCache = data.value ?? [];
+    indexPromise = import('../data/search-index.json')
+      .then(mod => {
+        indexCache = (mod.default ?? mod).value ?? [];
         return indexCache;
       })
       .catch(err => {

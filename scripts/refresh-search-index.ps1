@@ -20,7 +20,11 @@
 #>
 
 [CmdletBinding()]
-param()
+param(
+    # Regenerate knowledge.json and static/search-index.json without touching
+    # Azure AI Search. Safe to use in local development — no credentials needed.
+    [switch]$LocalOnly
+)
 
 $ErrorActionPreference = 'Stop'
 
@@ -30,7 +34,7 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path $PSScriptRoot -Parent
 $VersionsFile = Join-Path $Root 'versions.json'
 $OutputFile = Join-Path $Root 'knowledge.json'
-$StaticSearchFile = Join-Path $Root 'static' 'search-index.json'
+$StaticSearchFile = Join-Path $Root 'src' 'data' 'search-index.json'
 
 # ---------------------------------------------------------------------------
 # Load .env (values already in environment take precedence)
@@ -57,10 +61,11 @@ $AdminKey = $env:AZURE_SEARCH_ADMIN_KEY
 $ApiVer = '2024-05-01-preview'
 $BatchSize = 500
 
-if (-not $Endpoint -or -not $Index -or -not $AdminKey) {
+if (-not $LocalOnly -and (-not $Endpoint -or -not $Index -or -not $AdminKey)) {
     Write-Error (
         "Missing required environment variables.`n" +
-        "Set AZURE_SEARCH_ENDPOINT, AZURE_SEARCH_INDEX, AZURE_SEARCH_ADMIN_KEY"
+        "Set AZURE_SEARCH_ENDPOINT, AZURE_SEARCH_INDEX, AZURE_SEARCH_ADMIN_KEY`n" +
+        "Or run with -LocalOnly to regenerate the static index without touching Azure."
     )
     exit 1
 }
@@ -377,8 +382,12 @@ if (-not $versions -or $versions.Count -eq 0) {
 }
 
 Write-Host "Azure AI Search — generate & push"
-Write-Host "  Endpoint : $Endpoint"
-Write-Host "  Index    : $Index"
+if ($LocalOnly) {
+    Write-Host "  Mode     : local-only (Azure will not be touched)"
+} else {
+    Write-Host "  Endpoint : $Endpoint"
+    Write-Host "  Index    : $Index"
+}
 Write-Host "  Versions : $($versions -join ', ')"
 
 $allDocs = [System.Collections.Generic.List[object]]::new()
@@ -394,7 +403,12 @@ Write-Host "`n📝 $($allDocs.Count) total documents written → knowledge.json"
 
 # Keep the static fallback in sync — served as /search-index.json for offline search.
 $output | ConvertTo-Json -Depth 5 | Set-Content -Path $StaticSearchFile -Encoding utf8
-Write-Host "📝 Static fallback written → static/search-index.json"
+Write-Host "📝 Static fallback written → src/data/search-index.json"
+
+if ($LocalOnly) {
+    Write-Host "`n✅ Done. Static index regenerated locally — Azure was not modified."
+    exit 0
+}
 
 Invoke-EnsureIndex
 Invoke-UploadDocuments -Docs $allDocs.ToArray()
