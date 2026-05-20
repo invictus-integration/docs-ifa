@@ -48,7 +48,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   </TechChanges>
   <Fixes>
     - **Full flow path not shown:** the Dashboard now always shows the full folder path when opening a flow nested inside folders.
-    - **PubSub V2: `x-ms-workflow-run-id` not overwritten:** PubSub V2 now correctly overwrites the `x-ms-workflow-run-id` property.
+    - **PubSub messages not overwritten:** PubSub now correctly overwrites the `x-ms-workflow-run-id` property.
     - **ACR private endpoint unreachable:** Invictus no longer creates the Azure Container Registry with public access disabled before a private endpoint is available.
     - **SequenceController fixes:** two bugs resolved in the SequenceController Framework component:
       - A scaling issue that produced a high number of timeout errors for `WaitForExecution`.
@@ -60,7 +60,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
 <ReleaseVersion version="6.1" date="January 2026">
   <Features>
-    - **Transco V2 supports `strip-space`:** Transco V2 now supports the `strip-space` option, which removes empty nodes from an XML input before processing.
+    - **Transco supports `strip-space`:** Transco now supports the `strip-space` option, which removes empty nodes from an XML input before processing.
   </Features>
   <TechChanges>
     - **Azure Key Vault URL in BICEP:** BICEP templates now use the URL output by the Key Vault resource itself, replacing hard-coded values.
@@ -87,7 +87,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <TechChanges>
     - **Migration to Azure Container Apps:** both the Dashboard and the Framework components now run on Azure Container Apps. See the v6 Migration Guide for upgrade instructions.
     - **Cosmos DB authentication through Managed Identity:** Invictus now uses Managed Identity to retrieve a Cosmos DB access key at runtime, removing the need to store a connection string locally.
-    - **Removal of PubSub v1, Transco V1, and Matrix components:** v6 doesn't include the legacy V1 versions of PubSub, Transco, or Matrix. New installations don't remove these components automatically. Migrate to the containerized versions as soon as possible.
+    - **Removal of older PubSub API, Transco API, and Matrix API:** v6 doesn't include the legacy API versions of PubSub, Transco, or Matrix. New installations don't remove these components automatically. Migrate to the containerized versions as soon as possible.
   </TechChanges>
   <Fixes>
     - **Flow column names respect configuration casing:** column names in the Dashboard now use the casing defined in the configuration instead of forcing everything to uppercase.
