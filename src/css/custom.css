@@ -77,7 +77,6 @@ html[data-theme='dark'] {
   /* Dark background and greenish-blue primary */
   --ifm-background-color: var(--ifm-color-gray-900);
   --ifm-navbar-background-color: #014550;
-  /* --ifm-navbar-link-hover-color: var(--ifm-color-primary-light); */
   --ifm-color-primary: #2a8f9c;
   /* brighter variant for contrast */
   --ifm-link-color: #36b1c5;
