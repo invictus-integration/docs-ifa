@@ -2,7 +2,7 @@
 sidebar_label: Give access to your Microsoft Entra ID
 ---
 
-import { Walkthrough, Task } from '@site/src/components/Walkthrough';
+import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 import { OnlyAdminsBadge } from '@site/src/components/OnlyAdminsBadge';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 
@@ -10,7 +10,7 @@ import Breadcrumb from '@site/src/components/Breadcrumb';
 To use your Microsoft Entra ID groups as a way of authentication and flow authorization, you need to follow these steps.
 
 <Walkthrough>
-  <Task title="Register an Application for Invictus">
+  <Collapsible title="Register an Application for Invictus">
     <em>[🔗 Microsoft Docs: Register an application](https://learn.microsoft.com/Entra/identity-platform/quickstart-register-app?tabs=certificate%2Cexpose-a-web-api)</em>
 
     * Choose the <u>multi-tenant</u> account type option to let Invictus use the app registration.
@@ -22,17 +22,17 @@ To use your Microsoft Entra ID groups as a way of authentication and flow author
     * Linked Enterprise Application:
       * Assign <u>Owners</u> ([more info](https://learn.microsoft.com/entra/identity/enterprise-apps/assign-app-owners?pivots=portal))
       * Grant <u>Admin consent</u> ([more info](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal))
-  </Task>
+  </Collapsible>
 
-  <Task title="Expose an API with scoped permissions">
+  <Collapsible title="Expose an API with scoped permissions">
     <em>[ 🔗Microsoft Docs: Expose an API](https://learn.microsoft.com/Entra/identity-platform/quickstart-configure-app-expose-web-apis#add-a-scope)</em>
 
     * Use the default <u>Application ID URI</u> (copy it).
     * Add a scope with <u>Admin and users</u> consent.
     * Use this name for the scope: `access_as_user`
-  </Task>
+  </Collapsible>
 
-  <Task title="Add API permissions">
+  <Collapsible title="Add API permissions">
     <em>[🔗 Microsoft Docs: Configure API Permissions](https://learn.microsoft.com/Entra/identity-platform/quickstart-configure-app-access-web-apis)</em>
     * **Microsoft Graph**
       * ```Directory.Read.All```: **Delegated**
@@ -45,14 +45,14 @@ To use your Microsoft Entra ID groups as a way of authentication and flow author
     * **My APIs**
 {/* vale Microsoft.FirstPerson = YES */}
       * The `access_as_user` scope you created earlier: **Delegated**
-  </Task>
+  </Collapsible>
 
-  <Task title="Pass App Registration values to Invictus deployment">
+  <Collapsible title="Pass App Registration values to Invictus deployment">
     * `azureActiveDirectoryClientId` → from **App Registration > Overview**
     * `azureActiveDirectoryTenantId` → from **App Registration > Overview**
     * `azureActiveDirectoryClientSecret` → the one you copied earlier
     * `azureActiveDirectoryAudience` → the default <u>Application ID URI</u>
-  </Task>
+  </Collapsible>
 
 </Walkthrough>
 
