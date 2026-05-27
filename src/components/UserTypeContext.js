@@ -3,6 +3,10 @@ import { useLocation, useHistory } from '@docusaurus/router';
 import { usePluginData } from '@docusaurus/useGlobalData';
 import versions from '../../versions.json';
 
+const STORAGE_KEY = 'invictus-user-type';
+const BUSINESS_ROOT = '/';
+const TECHNICAL_ROOT = '/technical';
+
 function flattenItems(items) {
   const result = [];
   function recurse(arr) {
@@ -19,57 +23,79 @@ function flattenItems(items) {
   return result;
 }
 
+function readStoredUserType() {
+  try { return localStorage.getItem(STORAGE_KEY) || 'business'; } catch { return 'business'; }
+}
+
+function writeStoredUserType(type) {
+  try { localStorage.setItem(STORAGE_KEY, type); } catch { }
+}
+
+function detectUserTypeFromPath(path, businessIds, technicalIds) {
+  if (businessIds.some(id => path.includes(id))) return 'business';
+  if (technicalIds.some(id => path.includes(id.replace('/index', '')))) return 'technical';
+  return null;
+}
+
+function isRootPage(pathname) {
+  return pathname === BUSINESS_ROOT || pathname === '';
+}
+
 const UserTypeContext = createContext();
 
 export function UserTypeProvider({ children }) {
   const history = useHistory();
-  const [sidebar, setSidebar] = useState(null);
   const location = useLocation();
   const pluginData = usePluginData('docusaurus-plugin-content-docs');
 
   const currentVersion = pluginData?.versions?.find(v => v.isLast) || versions[0];
   const versionPath = currentVersion?.name || 'current';
 
-  useEffect(() => {
-    const loadSidebar = async () => {
-      try {
-        const module = await import(`../../versioned_sidebars/version-${versionPath}-sidebars.json`);
-        setSidebar(module.default || module);
-      } catch (error) {
-        console.error('Failed to load sidebar:', error);
-      }
-    };
-    loadSidebar();
-  }, [versionPath]);
+  const [sidebar, setSidebar] = useState(null);
+  const [userType, setUserTypeState] = useState(readStoredUserType);
 
   const businessIds = sidebar ? flattenItems(sidebar.business_users || []) : [];
   const technicalIds = sidebar ? flattenItems(sidebar.technical_users || []) : [];
 
-  const [userType, setUserType] = useState('business');
+  function setUserType(type) {
+    writeStoredUserType(type);
+    setUserTypeState(type);
+  }
+
+  useEffect(() => {
+    import(`../../versioned_sidebars/version-${versionPath}-sidebars.json`)
+      .then(module => setSidebar(module.default || module))
+      .catch(err => console.error('Failed to load sidebar:', err));
+  }, [versionPath]);
+
   useEffect(() => {
     if (!sidebar) return;
     const path = location.pathname.replace(/^\/|\/$/g, '');
-    if (businessIds.some(id => path.includes(id))) setUserType('business');
-    else if (technicalIds.some(id => path.includes(id.replace('/index', '')))) setUserType('technical');
-  }, [location.pathname, sidebar, businessIds, technicalIds]);
+    const detected = detectUserTypeFromPath(path, businessIds, technicalIds);
+    if (detected) setUserType(detected);
+  }, [location.pathname, sidebar]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    if (isRootPage(location.pathname) && userType === 'technical') {
+      history.replace(TECHNICAL_ROOT);
+    }
+  }, [location.pathname, userType]);
+
+  useEffect(() => {
+    function onKeyDown(e) {
       const tag = e.target.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
+      if (!e.altKey || e.key.toLowerCase() !== 'u') return;
 
-      if (e.altKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-        const newType = userType === 'business' ? 'technical' : 'business';
-        setUserType(newType);
-        if (newType === 'business') history.push('/');
-        else history.push('/technical');
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+      e.preventDefault();
+      const newType = userType === 'business' ? 'technical' : 'business';
+      setUserType(newType);
+      history.push(newType === 'business' ? BUSINESS_ROOT : TECHNICAL_ROOT);
+    }
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [userType, history]);
-
 
   return (
     <UserTypeContext.Provider value={{ userType, setUserType }}>
