@@ -57,6 +57,7 @@ describe('Business/Technical user toggle', () => {
 
     describe(deviceName, () => {
       beforeEach(() => {
+        cy.clearLocalStorage();
         cy.viewport(width, height);
         cy.visit('/');
         cy.openSidebar(deviceName, Audience.BUSINESS);
@@ -79,6 +80,19 @@ describe('Business/Technical user toggle', () => {
         cy.getToggle(Audience.TECHNICAL).click();
         cy.getToggle(Audience.BUSINESS).click();
         cy.assertToggleState(deviceName, Audience.BUSINESS);
+      });
+
+      it('persists selected audience in localStorage', () => {
+        cy.getToggle(Audience.TECHNICAL).click();
+        cy.getAllLocalStorage().then((storage) => {
+          const siteStorage = storage['http://localhost:3000'] || storage[Object.keys(storage)[0]];
+          expect(siteStorage?.['invictus-user-type']).to.equal('technical');
+        });
+        cy.getToggle(Audience.BUSINESS).click();
+        cy.getAllLocalStorage().then((storage) => {
+          const siteStorage = storage['http://localhost:3000'] || storage[Object.keys(storage)[0]];
+          expect(siteStorage?.['invictus-user-type']).to.equal('business');
+        });
       });
 
       it('is keyboard accessible', () => {
@@ -116,6 +130,7 @@ describe('Business/Technical user toggle', () => {
   describe('Mobile-only behavior', () => {
 
     beforeEach(() => {
+      cy.clearLocalStorage();
       cy.viewport(375, 667);
       cy.visit('/');
     });
