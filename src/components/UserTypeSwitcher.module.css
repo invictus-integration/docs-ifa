@@ -1,0 +1,70 @@
+.switcher {
+  display: flex;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  margin-bottom: 4px;
+}
+
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 4px 8px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ifm-color-secondary-darkest);
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  /* Overlap the switcher's own bottom border so the active underline sits flush */
+  margin-bottom: -1px;
+}
+
+.tab:hover {
+  color: var(--ifm-color-primary);
+}
+
+.tab[aria-selected='true'] {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: -2px;
+  border-radius: 2px;
+}
+
+/* ── Dark mode ── */
+:global([data-theme='dark']) .tab {
+  color: var(--ifm-color-secondary-light);
+}
+
+:global([data-theme='dark']) .tab:hover,
+:global([data-theme='dark']) .tab[aria-selected='true'] {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* ── Mobile hamburger sidebar (always dark) ── */
+:global(.navbar-sidebar) .switcher {
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(.navbar-sidebar) .tab {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+:global(.navbar-sidebar) .tab:hover,
+:global(.navbar-sidebar) .tab[aria-selected='true'] {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+:global(.navbar-sidebar) .tab:focus-visible {
+  outline-color: rgba(255, 255, 255, 0.7);
+}

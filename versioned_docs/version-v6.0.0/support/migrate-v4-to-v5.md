@@ -63,7 +63,7 @@ If you have role assignments conflicts during deployment, remove all role assign
 :::
 
 ### Framework component migrations
-Some Framework components need special attention when upgrading to v5.
+Some Framework components requires close attention when upgrading to v5.
 
 <details id="migrate-pubsub">
 <summary><h4 style={{ margin: 0 }}>Migrate PubSub to v5</h4></summary>
