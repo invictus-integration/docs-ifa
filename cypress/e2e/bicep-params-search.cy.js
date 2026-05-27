@@ -11,8 +11,7 @@ describe('Bicep parameter search', () => {
 
       beforeEach(() => {
         cy.visit(route);
-        cy.contains('li', 'Deploy').click();
-        cy.get('[data-cy=search-input]').as('searchInput');
+        cy.get('[data-cy=search-input]').scrollIntoView().as('searchInput');
         cy.get('[data-cy=search-results] tbody tr')
           .should('have.length.greaterThan', 0);
       });

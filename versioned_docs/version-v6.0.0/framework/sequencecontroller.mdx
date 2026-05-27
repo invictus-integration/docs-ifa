@@ -42,7 +42,7 @@ First step for the Logic App workflow to run in sequence, is to take a number in
 You can circumvent this step in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#-wait-for-sequence).
 :::
 
-The most simple request body only contains the name of the sequence. This correlates all related workflows. Assuming this is the first workflow, it will receive number 1 in the response body; the second workflow will receive number 2, and so forth.
+The most minimal request body only contains the name of the sequence. This correlates all related workflows. Assuming this is the first workflow, it will receive number 1 in the response body; the second workflow will receive number 2, and so forth.
 
 ```json
 // POST /api/GetSequenceNumber

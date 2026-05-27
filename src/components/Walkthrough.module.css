@@ -1,0 +1,235 @@
+/* ─── Shared wrapper ──────────────────────────────────────────────────────── */
+
+.walkthrough {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Step: full-size, always-expanded (installation guides) ───── */
+
+.walkthroughStepItem {
+  position: relative;
+  padding-bottom: 64px;
+}
+
+.walkthroughStepItem:last-child {
+  padding-bottom: 0;
+}
+
+.walkthroughStepItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 44px;
+  left: 18px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--ifm-color-primary-light),
+    var(--ifm-color-emphasis-200)
+  );
+  pointer-events: none;
+}
+
+/* Circle + title on one row; content flows full-width below.
+   This keeps the step body aligned with the page h1 at every breakpoint
+   without needing a negative margin that would bleed under the sidebar. */
+.walkthroughStep {
+  display: flex;
+  flex-direction: column;
+}
+
+.walkthroughStepHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.walkthroughStepCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--ifm-color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px var(--ifm-background-color),
+              0 0 0 6px rgba(1, 69, 80, 0.3);
+  z-index: 1;
+}
+
+.walkthroughStepTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--ifm-color-primary);
+  line-height: 1.3;
+}
+
+.walkthroughStepContent {
+  padding-left: 48px; /* aligns with title text; keeps the connector line in the gutter */
+  line-height: 1.7;
+  user-select: text;
+}
+
+:global([data-theme='dark']) .walkthroughStepCircle {
+  box-shadow: 0 0 0 4px var(--ifm-background-color),
+              0 0 0 6px rgba(42, 143, 156, 0.4);
+}
+
+:global([data-theme='dark']) .walkthroughStepTitle {
+  color: var(--ifm-color-primary-light);
+}
+
+/* ─── Task: compact, collapsible (feature walkthroughs) ───────────────────── */
+
+.walkthroughTaskItem {
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.walkthroughTaskItem:last-child {
+  padding-bottom: 0;
+}
+
+.walkthroughTaskItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 13px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--ifm-color-primary-light),
+    var(--ifm-color-emphasis-200)
+  );
+  pointer-events: none;
+}
+
+.walkthroughTaskCircle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--ifm-color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--ifm-background-color),
+              0 0 0 5px rgba(1, 69, 80, 0.25);
+  z-index: 1;
+  transition: box-shadow 0.15s ease;
+}
+
+.walkthroughTaskHeader {
+  /* button reset */
+  appearance: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  /* layout */
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 0 12px;
+  padding: 6px 10px 6px 0;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ifm-color-primary-darkest);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px 6px 0 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.walkthroughTaskHeader:hover {
+  background: rgba(1, 69, 80, 0.06);
+  color: var(--ifm-color-primary);
+}
+
+.walkthroughTaskHeader:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.walkthroughTaskOpen .walkthroughTaskHeader {
+  background: rgba(1, 69, 80, 0.08);
+  color: var(--ifm-color-primary);
+}
+
+.walkthroughTaskTitle {
+  /* h3 reset */
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+  color: inherit;
+}
+
+.walkthroughTaskChevron {
+  flex-shrink: 0;
+  color: var(--ifm-color-primary);
+  transition: transform 0.2s ease;
+}
+
+.walkthroughTaskOpen .walkthroughTaskChevron {
+  transform: rotate(180deg);
+}
+
+.walkthroughTaskContent {
+  padding: 12px 0 20px 52px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  user-select: text;
+}
+
+:global([data-theme='dark']) .walkthroughTaskCircle {
+  box-shadow: 0 0 0 3px var(--ifm-background-color),
+              0 0 0 5px rgba(42, 143, 156, 0.35);
+}
+
+:global([data-theme='dark']) .walkthroughTaskHeader {
+  color: var(--ifm-color-primary-lightest);
+  border-bottom-color: var(--ifm-color-emphasis-300);
+}
+
+:global([data-theme='dark']) .walkthroughTaskHeader:focus-visible {
+  outline-color: var(--ifm-color-primary-light);
+}
+
+:global([data-theme='dark']) .walkthroughTaskHeader:hover,
+:global([data-theme='dark']) .walkthroughTaskOpen .walkthroughTaskHeader {
+  background: rgba(42, 143, 156, 0.12);
+  color: var(--ifm-color-primary-light);
+}
+
+:global([data-theme='dark']) .walkthroughTaskContent {
+  color: #cbd5e1;
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .walkthroughTaskHeader,
+  .walkthroughTaskCircle,
+  .walkthroughTaskChevron {
+    transition: none;
+  }
+}
