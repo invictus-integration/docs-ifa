@@ -49,7 +49,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <Fixes>
     - **Full flow path not shown:** the Dashboard now always shows the full folder path when opening a flow nested inside folders.
     - **PubSub messages not overwritten:** PubSub now correctly overwrites the `x-ms-workflow-run-id` property.
-    - **ACR private endpoint unreachable:** Invictus no longer creates the Azure Container Registry with public access disabled before a private endpoint is available.
+    - **ACR private endpoint unreachable:** Invictus no longer creates the Azure Container Registry without public access before a private endpoint is available.
     - **SequenceController fixes:** two bugs resolved in the SequenceController Framework component:
       - A scaling issue that produced a high number of timeout errors for `WaitForExecution`.
       - The component keeping state indefinitely under certain conditions.
@@ -80,7 +80,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 <ReleaseVersion version="6.0" date="November 2025">
   <Features>
     - **Auditing flow and folder changes:** the Audit screen now tracks group synchronization, folder creation and deletion, and flow creation and deletion.
-    - **Logic Apps Standard workflow names include site name:** the *Workflow name* column in the Dashboard now includes the site name for Logic Apps Standard, making it easy to tell apart workflows with the same name across different sites.
+    - **Logic Apps Standard workflow names include site name:** the *Workflow name* column in the Dashboard now includes the site name for Logic Apps Standard, making it clear to distinguish workflows with the same name across different sites.
     - **Transco: retrieve a single field:** Transco can now return a value from a single column even when a query returns many results. Set the `columnName` property in the configuration to enable this.
     - **Managed Identity for Framework components:** all Framework components now authenticate using Managed Identity. See the documentation for implementation details.
   </Features>
