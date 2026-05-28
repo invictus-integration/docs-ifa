@@ -77,7 +77,7 @@
   width: 100%;
   max-width: 680px;
   max-height: calc(100vh - 120px);
-  background: var(--ifm-background-surface-color);
+  background: var(--ifm-background-surface-color) !important;
   color: var(--ifm-font-color-base) !important;
   border: 1px solid var(--ifm-color-secondary-light);
   border-radius: 8px;
@@ -101,12 +101,20 @@
 
 [data-theme='dark'] .modal {
   border-color: rgba(255, 255, 255, 0.1);
+  background: var(--ifm-color-gray-800) !important;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 @keyframes modalIn {
-  from { opacity: 0; transform: translateY(-10px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ── Modal input row ── */
@@ -292,7 +300,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Results panel (scrollable area below input) ── */
@@ -312,8 +322,13 @@
 
 /* ── Skeleton loading state ── */
 @keyframes shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
 }
 
 .skeletonList {
@@ -332,13 +347,13 @@
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.06) 75%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.06) 75%);
   background-size: 400px 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
 :global([data-theme='dark']) .skeletonIcon {
-  background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.06) 75%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.06) 75%);
   background-size: 400px 100%;
 }
 
@@ -355,7 +370,7 @@
 .skeletonPath {
   height: 10px;
   border-radius: 4px;
-  background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.06) 75%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.06) 75%);
   background-size: 400px 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
@@ -363,13 +378,22 @@
 :global([data-theme='dark']) .skeletonTitle,
 :global([data-theme='dark']) .skeletonSnippet,
 :global([data-theme='dark']) .skeletonPath {
-  background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.06) 75%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.06) 75%);
   background-size: 400px 100%;
 }
 
-.skeletonTitle  { height: 12px; }
-.skeletonSnippet { animation-delay: 0.1s; }
-.skeletonPath   { height: 9px; animation-delay: 0.2s; }
+.skeletonTitle {
+  height: 12px;
+}
+
+.skeletonSnippet {
+  animation-delay: 0.1s;
+}
+
+.skeletonPath {
+  height: 9px;
+  animation-delay: 0.2s;
+}
 
 /* ── Empty state ── */
 .empty {
@@ -1056,8 +1080,17 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.75); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
 }
 
 .aiQuestion {
@@ -1075,23 +1108,43 @@
   word-break: break-word;
 }
 
-.aiAnswer p { margin: 0 0 0.6em; font-size: inherit; }
-.aiAnswer p:last-child { margin-bottom: 0; }
-.aiAnswer strong { font-weight: 600; }
-.aiAnswer em { font-style: italic; }
+.aiAnswer p {
+  margin: 0 0 0.6em;
+  font-size: inherit;
+}
+
+.aiAnswer p:last-child {
+  margin-bottom: 0;
+}
+
+.aiAnswer strong {
+  font-weight: 600;
+}
+
+.aiAnswer em {
+  font-style: italic;
+}
+
 .aiAnswer code {
   font-size: 0.82em;
   background: var(--ifm-color-secondary-lighter);
   border-radius: 3px;
   padding: 1px 5px;
 }
+
 .aiAnswer ul,
 .aiAnswer ol {
   padding-left: 1.25em;
   margin: 0.4em 0 0.6em;
 }
-.aiAnswer li { margin-bottom: 0.2em; }
-.aiAnswer h1, .aiAnswer h2, .aiAnswer h3 {
+
+.aiAnswer li {
+  margin-bottom: 0.2em;
+}
+
+.aiAnswer h1,
+.aiAnswer h2,
+.aiAnswer h3 {
   font-size: 0.95rem;
   font-weight: 600;
   margin: 0.8em 0 0.3em;
@@ -1191,6 +1244,7 @@
    Mobile — bottom sheet pattern (< 640px)
    ───────────────────────────────────────────── */
 @media (max-width: 640px) {
+
   /* Trigger: icon only — hide text and shortcut badge */
   .triggerText,
   .shortcutBadge {
@@ -1260,6 +1314,11 @@
 }
 
 @keyframes sheetIn {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
