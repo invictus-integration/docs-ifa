@@ -29,7 +29,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
       </TabItem>
       <TabItem value="standard" label="Standard">
       :::warning
-      Make sure that the `Function Application Logs` diagnostic events is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise the app will send far to much events to the Event Hubs.
+      Make sure that the `Function Application Logs` diagnostic events is **✅ checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **❌ unchecked**. Otherwise the app will send far to much events to the Event Hubs with additional cost.
       :::
 
       ![Diagnostic settings for Standard](/images/dashboard/flowtrace/diagnostic-settings-la-standard.png)
