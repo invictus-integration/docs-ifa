@@ -99,7 +99,7 @@
   },
     {
     "question": "How can I fix issues with the Message Content text being shown with hidden control characters, newlines etc.?",
-    "answer": "Convert your text into binary at the logic app level. E.g. binary(triggerBody()) or base64ToBinary(triggerBody()['content']). This will give you formatted plain text.",
+    "answer": "Convert your text into binary at the Logic App level. E.g. `binary(triggerBody())` or `base64ToBinary(triggerBody()['content'])`. This will give you formatted plain text.",
     "version": ">= v6.0",
     "tags": [
       "dashboard"
