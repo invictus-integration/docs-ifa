@@ -335,6 +335,5 @@ ASALocalRun/
 
 # Vale styles
 .github/styles/
-
 # Local Netlify folder
 .netlify
