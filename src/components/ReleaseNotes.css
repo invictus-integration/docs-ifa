@@ -15,22 +15,45 @@
   line-height: 1.6;
 }
 
-/* Section summary pills (shown when version is collapsed) */
-.rn-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #fff;
-  border: none;
+.rn-admonition-feature code,
+.rn-admonition-technical code,
+.rn-admonition-fix code {
+  background-color: #f6f7f8;
 }
 
-.rn-pill.alert--tip     { background: var(--ifm-color-success); }
-.rn-pill.alert--info    { background: var(--ifm-color-info); }
-.rn-pill.alert--warning { background: var(--ifm-color-warning); }
+html[data-theme='dark'] .rn-admonition-feature code {
+  background-color: #1a202c;
+}
+
+.rn-admonition-feature {
+  color: #171923;
+  background-color: var(--ifm-background-color);
+  border-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .rn-admonition-feature {
+  color: #e3e3e3;
+}
+
+.rn-admonition-technical {
+  color: #171923;
+  background-color: var(--ifm-background-color);
+  border-color: var(--ifm-color-secondary);
+}
+
+html[data-theme='dark'] .rn-admonition-technical {
+  color: #e3e3e3;
+}
+
+.rn-admonition-fix {
+  color: #171923;
+  background-color: var(--ifm-background-color);
+  border-color: var(--ifm-color-danger);
+}
+
+html[data-theme='dark'] .rn-admonition-fix {
+  color: #e3e3e3;
+}
 
 /* Hover state for collapsed version blocks — covers the full block area */
 .rn-version-block--collapsed {

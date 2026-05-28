@@ -262,7 +262,7 @@ const triggerStyle: React.CSSProperties = {
   height: '2.25rem',
   padding: '0 0.75rem',
 
-  border: `3px solid var(--ifm-color-emphasis-200)`,
+  border: `3px solid var(--ifm-color-emphasis-300)`,
   borderRadius: '0.5rem',
 
   background: 'transparent',
@@ -282,7 +282,6 @@ const triggerStyle: React.CSSProperties = {
 
 const triggerFocusStyle: React.CSSProperties = {
   background: 'var(--ifm-hover-overlay)',
-  color: 'var(--ifm-navbar-link-hover-color)',
 };
 
 const listStyle: React.CSSProperties = {
@@ -348,14 +347,6 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
     if (forceExpanded) setExpanded(true);
   }, [forceExpanded]);
 
-  const sections = React.Children.toArray(children).filter(React.isValidElement);
-  const sectionLabels = sections.map((s: React.ReactElement<any>) => {
-    if (s.type === Features) return { label: 'Features', admonition: 'tip' };
-    if (s.type === TechChanges) return { label: 'Technical', admonition: 'info' };
-    if (s.type === Fixes) return { label: 'Fixes', admonition: 'warning' };
-    return null;
-  }).filter(Boolean);
-
   const isCollapsible = !isLatest && !forceExpanded;
 
   return (
@@ -384,13 +375,7 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
             {isLatest && <span className="rn-latest-badge">Latest</span>}
             <span style={dateStyle}>{date}</span>
           </h2>
-          {!expanded && (
-            <div style={sectionPillsStyle}>
-              {sectionLabels.map(({ label, admonition }) => (
-                <span key={label} className={`rn-pill alert--${admonition}`}>{label}</span>
-              ))}
-            </div>
-          )}
+
         </div>
         {isCollapsible && (
           <FontAwesomeIcon
@@ -407,15 +392,15 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
 // ── Section types ────────────────────────────────────────────────
 
 export function Features({ children }: SectionProps) {
-  return <Admonition type="tip" icon={<FontAwesomeIcon icon={faStar} />} title="Features">{children}</Admonition>;
+  return <Admonition type="tip" className="rn-admonition-feature" icon={<FontAwesomeIcon icon={faStar} />} title="Features">{children}</Admonition>;
 }
 
 export function TechChanges({ children }: SectionProps) {
-  return <Admonition type="info" icon={<FontAwesomeIcon icon={faGear} />} title="Technical">{children}</Admonition>;
+  return <Admonition type="info" className="rn-admonition-technical" icon={<FontAwesomeIcon icon={faGear} />} title="Technical">{children}</Admonition>;
 }
 
 export function Fixes({ children }: SectionProps) {
-  return <Admonition type="warning" icon={<FontAwesomeIcon icon={faBug} />} title="Fixes">{children}</Admonition>;
+  return <Admonition type="warning" className="rn-admonition-fix" icon={<FontAwesomeIcon icon={faBug} />} title="Fixes">{children}</Admonition>;
 }
 
 // ── Styles ───────────────────────────────────────────────────────
@@ -482,12 +467,6 @@ const dateStyle: React.CSSProperties = {
   fontWeight: 400,
   fontFamily: 'var(--ifm-font-family-base)',
   color: 'var(--ifm-color-emphasis-600)',
-};
-
-const sectionPillsStyle: React.CSSProperties = {
-  display: 'flex',
-  gap: '0.35rem',
-  flexWrap: 'wrap',
 };
 
 const sectionsStyle: React.CSSProperties = {
