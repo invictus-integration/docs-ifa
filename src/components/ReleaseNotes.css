@@ -55,6 +55,14 @@ html[data-theme='dark'] .rn-admonition-fix {
   color: #e3e3e3;
 }
 
+.rn-dropdown {
+  background-color: var(--ifm-dropdown-background-color) !important;
+}
+
+html[data-theme='dark'] .rn-dropdown {
+  background-color: var(--ifm-color-gray-800) !important;
+}
+
 /* Hover state for collapsed version blocks — covers the full block area */
 .rn-version-block--collapsed {
   transition: background 0.15s;

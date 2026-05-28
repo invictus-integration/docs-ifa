@@ -196,7 +196,7 @@ function SeriesDropdown({
       </button>
 
       {open && (
-        <ul role="listbox" style={listStyle}>
+        <ul role="listbox" style={listStyle} className="rn-dropdown">
           {options.map(option => {
             const isActive =
               option.value === value;
@@ -299,8 +299,8 @@ const listStyle: React.CSSProperties = {
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '0.75rem',
 
-  background:
-    'var(--ifm-dropdown-background-color)',
+  // background:
+  //   'var(--ifm-dropdown-background-color)',
 
   boxShadow:
     '0 8px 24px rgba(0, 0, 0, 0.12)',
