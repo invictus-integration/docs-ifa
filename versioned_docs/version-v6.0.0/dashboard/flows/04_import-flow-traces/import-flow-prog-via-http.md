@@ -128,7 +128,7 @@ If an event represents an error, it can provide context information in the form 
 ```
 
 ### Azure link on events
-Add a link and resource ID if you can track back an event to Azure. These details will populate the Dashboard for a click-through experience.
+Add a link and resource ID if you can track back an event to Azure. These details populates the Dashboard for a click-through experience.
 
 ```json
 // event
