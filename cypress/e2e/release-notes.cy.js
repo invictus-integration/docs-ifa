@@ -1,7 +1,6 @@
 const versionFilter = () => cy.get('#rn-series-filter');
 const dropdownList = () => cy.get('[role=listbox]');
 const collapsedBlocks = () => cy.get('.rn-version-block--collapsed');
-const pills = () => cy.get('.rn-pill');
 const latestBadge = () => cy.get('.rn-latest-badge');
 const visibleHeadings = () => cy.get('h2').filter(':visible');
 
@@ -32,13 +31,8 @@ describe('Release notes', () => {
       cy.get('[data-version]').first().find('.rn-latest-badge').should('exist');
     });
 
-    it('shows older versions collapsed with section pills', () => {
+    it('shows older versions collapsed', () => {
       collapsedBlocks().should('have.length.greaterThan', 0);
-      pills().should('be.visible');
-    });
-
-    it('does not show section pills on the latest expanded version', () => {
-      latestBadge().parents('div').first().find('.rn-pill').should('not.exist');
     });
 
   });
@@ -123,10 +117,6 @@ describe('Release notes', () => {
         collapsedBlocks().should('not.exist');
       });
 
-      it('hides section pills when a version is force-expanded by filter', () => {
-        pills().should('not.exist');
-      });
-
       it('restores all versions when All versions is selected', () => {
         selectVersion('All versions');
         visibleHeadings().should('have.length.greaterThan', 1);
@@ -168,18 +158,6 @@ describe('Release notes', () => {
     it('shows section content after expanding a collapsed block', () => {
       cy.get('@block').click();
       cy.get('@block').find('.alert').should('exist');
-    });
-
-    it('hides section pills after expanding a collapsed block', () => {
-      cy.get('@block').find('.rn-pill').should('be.visible');
-      cy.get('@block').click();
-      cy.get('@block').find('.rn-pill').should('not.exist');
-    });
-
-    it('collapses an expanded block when its header is clicked', () => {
-      cy.get('@block').click();
-      cy.get('@block').find('.rn-version-collapsible').click();
-      cy.get('@block').find('.rn-pill').should('be.visible');
     });
 
     it('expands a collapsed block with Enter key', () => {

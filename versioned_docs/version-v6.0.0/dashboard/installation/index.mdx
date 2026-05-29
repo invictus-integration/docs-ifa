@@ -194,6 +194,10 @@ The identity running the Bicep deployment (the service principal used by your Az
 
 </details>
 
+:::warning[heavy load deployment]
+Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">BICEP scaling parameters</a> on Azure Container Apps and Cosmos DB for heavy load scenarios that require many diagnostic trace imports. 
+:::
+
 ### Mandatory Parameters
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
