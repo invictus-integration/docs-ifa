@@ -29,7 +29,7 @@ Invictus consists of two parts:
 
 The [architecture diagram](./architecture-diagram.mdx) gives a general overview of what an **Invictus for Azure** installation entails.
 
-To install **Invictus for Azure**, these installation guides will walk you through the process:
+To install **Invictus for Azure**, follow these installation guides:
 * [Install Invictus Dashboard](./dashboard/installation/index.mdx)
 * [Install Invictus Framework](./framework/installation/index.mdx)
 
