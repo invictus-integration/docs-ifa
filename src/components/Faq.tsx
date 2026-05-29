@@ -448,7 +448,7 @@ const faqItemStyle: React.CSSProperties = {
   borderRadius: "8px",
   overflow: "hidden",
   transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-  backgroundColor: "var(--ifm-background-surface-color)",
+  backgroundColor: "var(--ifm-background-color)",
   cursor: "pointer",
   boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
 };
