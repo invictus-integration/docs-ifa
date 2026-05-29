@@ -4,7 +4,7 @@ import PraiseAdmonition from './Type/praise';
 
 const AdmonitionTypes = {
   ...DefaultAdmonitionTypes,
-  'praise': PraiseAdmonition,
+  'praise': PraiseAdmonition
 };
 
 export default AdmonitionTypes;

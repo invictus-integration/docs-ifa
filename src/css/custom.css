@@ -83,6 +83,7 @@ html[data-theme='dark'] {
   --ifm-link-hover-color: #4fcadf;
   --ifm-toc-border-color: black;
   --ifm-breadcrumb-color-active: var(--ifm-link-color);
+  --ifm-dropdown-background-color: var(--ifm-color-gray-800);
 }
 
 html[data-theme='dark'] .footer--dark {
