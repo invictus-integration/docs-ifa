@@ -14,8 +14,11 @@ The Invictus Framework provides a **XSD Validator** component that allows you to
 :::
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
+{/* vale Google.Headings = NO */}
 ## XSD validate user XML
 {/* vale Microsoft.HeadingAcronyms = YES */}
+{/* vale Google.Headings = YES */}
+
 The **XSD Validator** has a single endpoint available: `/api/ValidateXmlAgainstXsd`. Given an user XML and referenced XSD schema (stored in Azure Blob Storage), the endpoint response with the result of the validation, possibly with violation failures.
 
 | JSON property | Required | Description                                                       |
@@ -52,9 +55,13 @@ The **XSD Validator** has a single endpoint available: `/api/ValidateXmlAgainstX
 </details>
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
+{/* vale Google.Headings = NO */}
 ## Stored XSD schemas
 {/* vale Microsoft.HeadingAcronyms = YES */}
+{/* vale Google.Headings = YES */}
 Upload referenced XSD schema files to the Azure Blob Storage container `xsdvalidatorstore` (available upon installation), within the Invictus Azure Storage Account that's part of the installation.
 
+{/* vale Google.Headings = NO */}
 ## Related Bicep template parameters
+{/* vale Google.Headings = YES */}
 <ParameterTable parameters={parameters} fixedTags={[`comp:xsd-validator`]} />
