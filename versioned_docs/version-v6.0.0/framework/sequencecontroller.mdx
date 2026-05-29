@@ -30,7 +30,8 @@ The **Sequence Controller** component is available as a HTTP endpoint in your Lo
 
 ![Pseudo Logic App workflow with Sequence Controller](/images/framework/pseudo-logic-app-w-sequence-controller.png)
 
-The component processes workflows in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 gets triggered before workflow 2, the second workflow will wait for the first workflow.
+The component processes workflows in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order.
+If workflow 1 gets triggered before workflow 2, the second workflow waits for the first workflow.
 
 ![Pseudo Logic App workflow runs with Sequence Controller](/images/framework/pseudo-logic-app-workflow-runs-w-sequence-controller.png)
 
@@ -42,7 +43,8 @@ First step for the Logic App workflow to run in sequence, is to take a number in
 You can circumvent this step in some advanced scenarios where you keep track of the order numbers and pass it yourself during the [Wait for sequence](#-wait-for-sequence).
 :::
 
-The most minimal request body only contains the name of the sequence. This correlates all related workflows. Assuming this is the first workflow, it will receive number 1 in the response body; the second workflow will receive number 2, and so forth.
+The most minimal request body only contains the name of the sequence. 
+This correlates all related workflows. Assuming this is the first workflow, it receives number 1 in the response body; the second workflow receives number 2, and so forth.
 
 ```json
 // POST /api/GetSequenceNumber
@@ -51,7 +53,9 @@ The most minimal request body only contains the name of the sequence. This corre
 }
 ```
 
-You require the counter in the response body for the next step: [Wait for sequence](#-wait-for-sequence)
+{/* vale Google.Colons = NO */}
+You require the counter in the response body for the next step: [Wait for sequence](#-wait-for-sequence).
+{/* vale Google.Colons = YES */}
 
 :::tip[start later]
 If you want to start the sequence at a later point, you can also pass the `sequenceStart` with your own start number. Only make sure that you pass this along future calls.
@@ -83,7 +87,8 @@ Send this request in this HTTP callback task:
 
 ## ☑️ Complete sequence
 
-The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This will allow the next workflow to proceed. You require the counter collected from the previous [Get sequence number](#️-get-sequence-number) step.
+The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This allows the next workflow to proceed. 
+You require the counter collected from the previous [Get sequence number](#️-get-sequence-number) step.
 
 Add a HTTP task with this request to complete the in-sequence work of the workflow:
 ```json
