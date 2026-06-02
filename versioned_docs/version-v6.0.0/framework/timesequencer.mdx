@@ -20,7 +20,8 @@ At the time of writing, there is no built-in way in Azure Logic Apps to 'control
 
 ![Pseudo Azure Logic App setup with Time Sequencer component](/images/framework/pseudo-logic-app-w-time-sequencer.png)
 
-Workflows will process in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. If workflow 1 uses a custom timestamp that happened 'earlier' than the one used in workflow 2, the second workflow will wait for the first workflow.
+Workflows process in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. 
+If workflow 1 uses a custom timestamp that happened 'earlier' than the one used in workflow 2, the second workflow waits for the first workflow.
 
 ![Pseudo Azure Logic App workflow runs with Time Sequencer component](/images/framework/pseudo-logic-app-workflow-runs-w-time-sequencer.png)
 

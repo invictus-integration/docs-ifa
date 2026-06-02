@@ -30,7 +30,7 @@ The `/api/XmlToJson` endpoint transforms a provided BASE 64-encoded XML contents
 | Request property | Required | Description                                                                               |
 | ---------------- | :------: | ----------------------------------------------------------------------------------------- |
 | `Content`        |   yes    | The BASE 64-encoded XML contents.                                                         |
-| `ConfigName`     |   yes    | The file name of the XSLT transformation, stored in Azure Blob Storage.                   |
+| `ConfigName`     |   yes    | The filename of the XSLT transformation, stored in Azure Blob Storage.                   |
 | `Context`        |    no    | The dictionary providing context to the conversion, gets copied 1:1 to the response.      |
 | `XPath`          |    no    | The XPath expression that selects a specific XML node before the XSLT transformation.     |
 | `JPath`          |    no    | The JPath expression that selects a specific JSON property after the XSLT transformation. |
@@ -74,7 +74,7 @@ The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON content
 | Request property | Required | Description                                                                                |
 | ---------------- | :------: | ------------------------------------------------------------------------------------------ |
 | `Content`        |   yes    | The BASE 64-encoded JSON contents.                                                         |
-| `ConfigName`     |   yes    | The file name of the XSLT transformation, stored in Azure Blob Storage.                    |
+| `ConfigName`     |   yes    | The filename of the XSLT transformation, stored in Azure Blob Storage.                    |
 | `Context`        |    no    | The dictionary providing context to the conversion, gets copied 1:1 to the response.       |
 | `JPath`          |    no    | The XPath expression that selects a specific JSON property before the XSLT transformation. |
 | `XPath`          |    no    | The JPath expression that selects a specific XML node after the XSLT transformation.       |
@@ -115,5 +115,7 @@ The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON content
 
 ___
 
+{/* vale Google.Headings = NO */}
 ## Related Bicep template parameters
+{/* vale Google.Headings = YES */}
 <ParameterTable parameters={parameters} fixedTags={[`comp:xml-json-converter`]} />

@@ -12,11 +12,11 @@ At the time of writing, there is no built-in Logic App functionality available t
 :::
 
 ## Regex translate user content
-The **Regex Translation** component has a single endpoint available: `/api/RegexTranslation`. Given an user content and matched stored (Azure Table Storage, default: `RegexTranslator` table) regex translation, the endpoint responds with the translated content.
+The **Regex Translation** component has a single endpoint available: `/api/RegexTranslation`. Given an user content and matched stored (Azure Table Storage, default: `RegexTranslator` table) regular expression translation, the endpoint responds with the translated content.
 
 | JSON property | Required | Description                                                                                                                                                                                           |
 | ------------- | :------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Content`     |   yes    | User content that should translated.                                                                                                                                                                  |
+| `Content`     |   yes    | User content to translate.                                                                                                                                                                  |
 | `MatchKey`    |   yes    | Set of 'keys' that translates to [Azure Table Storage partition keys](https://learn.microsoft.com/en-us/rest/api/storageservices/designing-a-scalable-partitioning-strategy-for-azure-table-storage). |
 
 <details>
@@ -54,8 +54,8 @@ The **Regex Translation** component has a single endpoint available: `/api/Regex
 
 </details>
 
-## Stored regex translations
-Store available Regex translations in the Azure Table Storage table called `RegexTranslator` (Invictus creates this table automatically). Each stored entity should have following custom properties:
+## Stored regular expression translations
+Store available regular expression translations in the Azure Table Storage table called `RegexTranslator` (Invictus creates this table automatically). Each stored entity should have following custom properties:
 
 [named groups]: https://learn.microsoft.com/en-us/dotnet/standard/base-types/grouping-constructs-in-regular-expressions#named-matched-subexpressions
 

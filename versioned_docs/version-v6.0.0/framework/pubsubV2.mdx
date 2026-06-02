@@ -32,7 +32,7 @@ The `/api/Publish` endpoint allows users to send a single message to the configu
 
 | JSON property | Required (default) | Translates to `ServiceBusMessage` | Description                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------- | :----------------: | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Content`     |        yes         | [`Body`]                          | Raw binary content for the message. If exceeds certain size (default `20 000 bytes`), then the component applies the claim-check pattern: The message gets send with an empty body, and the content gets saved in Azure Blob Storage. The *Subscribe* action automatically loads the content based on specific application properties from either the message itself or from Blob Storage. |
+| `Content`     |        yes         | [`Body`]                          | Raw binary content for the message. If exceeds certain size (default `20 000 bytes`), then the component applies the claim-check pattern. The message gets sent with an empty body, and the content gets saved in Azure Blob Storage. The *Subscribe* action automatically loads the content based on specific properties from either the message itself or from Blob Storage. |
 | `Context`     |        yes         | [`ApplicationProperties`]         | User-provided properties, appended with the HTTP request headers `x-ms-client-tracking-id` and `x-ms-workflow-run-id` if present                                                                                                                                                                                                                                                           |
 | `MessageId`   |   no (new GUID)    | [`MessageId`]                     | Optional message ID for duplicate detection purposes.                                                                                                                                                                                                                                                                                                                                      |
 
@@ -54,7 +54,7 @@ The `/api/Publish` endpoint allows users to send a single message to the configu
 ```
 </details>
 
-The endpoint will respond with `202 Accepted`, if the message got published successfully.
+The endpoint responds with `202 Accepted`, if the message gets published successfully.
 
 ## ⬅️ Subscribe for messages
 The `/api/Subscribe` endpoint allows users to periodically ask for any available published messages on the configured Azure Service Bus topic (default: `pubsubv2router`).

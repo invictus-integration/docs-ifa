@@ -81,7 +81,7 @@ You can populate the parameters of the SQL query from 3 sources:
  - Request context
  - Fixed value
 
-The component will insert the SQL query result at the specified `destination` XPath or JPath. For `XPaths` ending at an attribute (ex: `/persons/person/@name`), it inserts the value in that attribute. Otherwise, it insert the value in the inner text of the XML node.
+The component inserts the SQL query result at the specified `destination` XPath or JPath. For `XPaths` ending at an attribute (ex: `/persons/person/@name`), it inserts the value in that attribute. Otherwise, it insert the value in the inner text of the XML node.
 
 * The `scopePath` option sets the affected nodes to apply the command.
 * Always provide a connection to the SQL database (via a connection string in plain text or in an Azure Key Vault secret).
