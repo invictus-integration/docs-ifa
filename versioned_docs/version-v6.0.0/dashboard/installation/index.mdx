@@ -21,13 +21,14 @@ import parameters from "@site/src/data/dashboard.v6.bicep.parameters.json";
 To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
 :::
 :::warning[Container revisions]
-We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
+We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment.
+[We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
 :::
 
 <details>
 <summary>**Include VNET support <SharedNote/>**</summary>
 
-Invictus includes functionality which allows all its resources to run within an Azure Virtual Network (VNET).
+Invictus includes network infrastructure which allows all its resources to run within an Azure Virtual Network (VNET).
 
 ### Required deployment
 - An Azure Virtual Network
@@ -55,7 +56,7 @@ Invictus includes functionality which allows all its resources to run within an 
   - `privatelink.{regionName}.azurecontainerapps.io`
     
 {/* vale Microsoft.Terms = NO */}
-- To be able to deploy the app code from an Azure DevOps pipeline you will need a self hosted agent running on the same VNET with the following software installed:
+- To be able to deploy the app code from an Azure DevOps pipeline you require a self hosted agent running on the same VNET with the following software installed:
 {/* vale Microsoft.Terms = YES */}
     - PowerShell
     - Azure PowerShell
@@ -72,7 +73,7 @@ If the Invictus resources and the VNET are on different resource groups, then yo
 Include the Dashboard in your release package to deploy the Invictus Dashboard together with your customer solution.
 
 ## Save installation script to your repository <SharedNote/>
-The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script will pull the latest Invictus resources needed to deploy the Dashboard.
+The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pulls the latest Invictus resources needed to deploy the Dashboard.
 
 ## Add variables to variable group <SharedNote/>
 Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
@@ -162,7 +163,8 @@ stages:
 <Step title="Deploy">
 
 ## Create variable group <SharedNote/>
-Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
+Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. 
+The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
 :::warning[permit build service access to variable groups]
 Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml) has **Administrator** access to these variable groups (<u>Pipelines</u> > <u>Library</u> > <u>Security</u>)
@@ -180,7 +182,7 @@ The identity running the Bicep deployment (the service principal used by your Az
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | [`Container Apps Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-apps-contributor)                                                     | Create/update Container Apps environments, apps, authentication configurations and job definitions. |
 | [`Azure Event Hubs Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/analytics#azure-event-hubs-data-owner)                                                         | Create/update Event Hubs namespaces, hubs and network rule sets.                                    |
-| [`Container Registry Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-contributor-and-data-access-configuration-administrator) | Create/update Azure Container Registry instances, locks and network settings.                       |
+| [`Container Registry Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/containers#container-registry-contributor-and-data-access-configuration-administrator) | Create/update Azure Container Registry instances, locks, and network settings.                       |
 | [`DocumentDB Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/databases#documentdb-account-contributor)                                              | Create/update Cosmos DB accounts, MongoDB databases and collections.                                |
 | [`Managed Identity Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/identity#managed-identity-contributor)                                                   | Create/update user-assigned managed identities for Container Apps and functions.                    |
 | [`Key Vault Administrator`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/security#key-vault-administrator)                                                             | Create/update Key Vaults, access policies and network ACLs.                                         |
@@ -189,7 +191,7 @@ The identity running the Bicep deployment (the service principal used by your Az
 | [`Network Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/networking#network-contributor)                                                                   | Create/update private endpoints, VNET subnets and private DNS zone groups.                          |
 | [`Reader`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/general#reader)                                                                                                | Read existing Private DNS zones when linking DNS zone groups for private endpoints.                 |
 | [`Service Bus Data Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/integration#azure-service-bus-data-owner)                                                      | Create/update Service Bus namespaces, queues and network rule sets.                                 |
-| [`Storage Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage#storage-account-contributor)                                                      | Create/update storage accounts, file shares, blob and table services.                               |
+| [`Storage Account Contributor`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage#storage-account-contributor)                                                      | Create/update storage accounts, file shares, blob, and table services.                               |
 | [`User Access Administrator`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#user-access-administrator)                                                       | Create role assignments (`Microsoft.Authorization/roleAssignments`) and resource locks.             |
 
 </details>
@@ -201,10 +203,10 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">BICEP
 ### Mandatory Parameters
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
-[Azure CLI task]: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-cli-v2?view=azure-pipelines
 [Microsoft Entra ID setup]: ./01_give_ad_access.mdx
 [Container authentication]: https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad
 
+{/* vale Google.WordList = NO */}
 | Argument name                      | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `arcName`                          | The name of the Azure Container Registry name to deploy the container images to. (Make sure to override also the `containerRegistryName` BICEP parameter if you want a custom name.) |
@@ -217,12 +219,14 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">BICEP
 | `azureActiveDirectoryTenantId`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
 | `azureActiveDirectoryClientSecret` | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
 | `azureActiveDirectoryAudience`     | See [Microsoft Entra ID Setup] if enabled.                                                                                                                                                                                                                                                                                                                                                                      |
-| `performSqlDataMigration`          | If value is 1 the data migration process will run, migrating SQL data to Cosmos DB. If the value is `0`, the installation skips this process. See the [migration guide](../../support/migrate-v4-to-v5.md) for more details. Once the installation performed the data migration and you verified the outcome, set this value to `0` so the installation skips the migration process for all future deployments. |
+| `performSqlDataMigration`          | If value is 1 the data migration process runs during installation, migrating SQL data to Cosmos DB. If the value is `0`, the installation skips this process. See the [migration guide](../../support/migrate-v4-to-v5.md) for more details. Once the installation performed the data migration and you verified the outcome, set this value to `0` so the installation skips the migration process for all future deployments. |
 | `flowDataTTLInDays`                | Amount of days flow traces can live in the database <br/> See [import flow traces](../flows/04_import-flow-traces/index.md).                                                                                                                                                                                                                                                                                    |
 | `isProvisionedCosmos`              | If the value is 1, the installation deploys a Cosmos DB with provisioned throughput. Otherwise, a serverless Cosmos DB. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).                                                                                                                                                            |
 | `identityProviderApplicationId`    | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                                 |
 | `identityProviderClientSecret`     | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                                 |
 | `useBeta`                          | Indicates the environment of the Azure Container App registry where the deployment gets its container images.                                                                                                                                                                                                                                                                                                   |
+
+{/* vale Google.WordList = YES */}
 
 ### Optional Parameters
 
@@ -381,11 +385,11 @@ Follow the steps below to sign in to the Dashboard:
 
    ![Dashboard login page](/images/dashboard/AdminAccount/adminAccount-4.jpg)
 
-3. After successfully logging in, the Dashboard will prompt you to reset your password to one of your choice.
+3. After successfully signing in, the Dashboard prompts you to reset your password to one of your choice.
 
    ![Dashboard reset password](/images/dashboard/AdminAccount/adminAccount-5.png)
 
-4. 🎉 Congratulations! You have logged into the Invictus Dashboard for the first time.
+4. You have now signed in to the Invictus Dashboard for the first time.
 
 Further customer-specific setups related to authentication and authorization:
 * [Give access to your Microsoft Entra ID](./01_give_ad_access.mdx)
