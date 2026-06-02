@@ -1,5 +1,6 @@
 const lightCodeTheme = require('./src/prism/light');
 const darkCodeTheme = require('./src/prism/dark');
+require('dotenv').config();
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -55,37 +56,24 @@ const config = {
     ],
   ],
 
-  themes: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-      {
-        // `hashed` is recommended as long-term-cache of index file is possible.
-        hashed: true,
-        docsRouteBasePath: '/',
-        language: ["en", "zh"],
-        highlightSearchTermsOnTargetPage: true,
-        explicitSearchResultPath: true,
+  themes: [],
 
-        // For Docs using Chinese, it is recommended to set:
-        // language: ["en", "zh"],
-
-        // Customize the keyboard shortcut to focus search bar (default is "mod+k"):
-        // searchBarShortcutKeymap: "s", // Use 'S' key
-        // searchBarShortcutKeymap: "ctrl+shift+f", // Use Ctrl+Shift+F
-
-        // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
-        // forceIgnoreNoIndex: true,
-
-        // Enable Ask AI integration:
-        // askAi: {
-        //   project: "your-project-name",
-        //   apiUrl: "https://your-api-url.com/api/stream",
-        //   hotkey: "cmd+I", // Optional: keyboard shortcut to trigger Ask AI
-        // },
-      }
-    ],
-  ],
+  customFields: {
+    azureSearch: {
+      endpoint: process.env.AZURE_SEARCH_ENDPOINT,
+      index: process.env.AZURE_SEARCH_INDEX,
+      apiKey: process.env.AZURE_SEARCH_API_KEY,
+      // adminKey is intentionally absent — it lives only in Netlify env vars,
+      // used server-side by the /api/ask-ai edge function.
+    },
+    // Signals to the UI that AI search is available without exposing any key.
+    // True at build time only when the OpenAI env vars are present.
+    aiEnabled: !!(
+      process.env.AZURE_OPENAI_API_KEY &&
+      process.env.AZURE_OPENAI_ENDPOINT &&
+      process.env.AZURE_OPENAI_DEPLOYMENT
+    ),
+  },
 
   themeConfig: {
     image: 'img/invictus.jpg',
