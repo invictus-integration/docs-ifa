@@ -15,7 +15,7 @@ Invictus v6 no longer supports the PubSub v1, Transco v1 and Matrix v1 component
 * [Migrate Matrix to Transco](./migrate-v4-to-v5.md#migrate-transco)
 :::
 
-## Preparing Environment
+## Preparing environment
 <details>
 <summary><h3 style={{ margin:0 }}>Create a new Azure DevOps variable libraries for Invictus for Azure v6</h3></summary>
 
@@ -28,14 +28,14 @@ If you have a library with the name `invictus.{environment}`, create a new one w
 </details>
 
 <details>
-<summary><h3 style={{ margin:0 }}>Create an application registration in Microsoft Entra ID</h3></summary>
+<summary><h3 style={{ margin:0 }}>Create an app registration in Microsoft Entra ID</h3></summary>
 
-Go to Microsoft Entra ID and [create a new application registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) for the Invictus API's. [Authentication with the Invictus API's](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad) happens via this application.
+Go to Microsoft Entra ID and [create a new app registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) for the Invictus API's. [Authentication with the Invictus API's](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad) happens via this app.
 
-Also, create a new client secret for this application (you will need it later).
+Also, create a new client secret for this app registration (required for later use).
 </details>
 
-## Deploying New Version
+## Deploying new version
 [<h3 style={{ margin:0 }}>⬇️ Download latest version of `Invictus-GetSources.ps1`</h3>](../scripts/Invictus-GetSources.ps1)
 
 Pipeline/Bicep parameters changes. Please follow the installation guides to see the current supported parameters:
@@ -49,7 +49,7 @@ Pipeline/Bicep parameters changes. Please follow the installation guides to see 
   * [Multiple Revision mode](https://learn.microsoft.com/en-us/azure/container-apps/revisions): older revisions could clutter the environment. Consider using our [revisions clean-up script](../scripts/Invictus-RemoveOldRevisions.ps1). 
 :::
 
-## After Deployment
+## After deployment
 * [🛡️ Give Invictus access to the client's Azure Logic Apps](../dashboard/installation/03_give_la_access.md)
 * [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri). Signing in via Microsoft Entra ID requires the new Dashboard Gateway URL.
 
@@ -59,7 +59,9 @@ If you're running a version below v6, ensure your [Azure Service Bus connection 
 :::
 
 <details>
+{/* vale Google.Headings = NO */}
 <summary><h3 style={{ margin: 0 }}>Update your Azure Logic Apps parameters files</h3></summary>
+{/* vale Google.Headings = YES */}
 
 ```diff
 "invictus": {
@@ -115,8 +117,10 @@ If you're running a version below v6, ensure your [Azure Service Bus connection 
 <details>
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
+{/* vale Google.Headings = NO */}
 <summary><h3 style={{ margin:0 }}>Update your Azure Logic Apps Invictus API authentication</h3></summary>
 {/* vale Microsoft.HeadingAcronyms = YES */}
+{/* vale Google.Headings = YES */}
 
 The Invictus API's now requires an access token in the HTTP `Authorization` header instead of a function key. Add this on the HTTP action in your Logic App:
 ``` json
@@ -127,7 +131,9 @@ The Invictus API's now requires an access token in the HTTP `Authorization` head
 }
 ```
 
+{/* vale Google.WordList = NO */}
 This example uses a user assigned managed identity. It uses the application ID from the newly created app registration as the audience.
+{/* vale Google.WordList = YES */}
 
 :::warning[don't forget]
 Include the application ID in the `customApplicationIds` Bicep parameter. 
@@ -176,7 +182,7 @@ The v6 installation results in lingering `Unknown` role assignments. You can del
 </details>
 
 
-## Common Migration Issues
+## Common migration issues
 :::danger[pipeline error: `Operating system not supported`]
 You should use a linux agent in your release pipeline, for example `vmImage: 'ubuntu-latest'`
 :::  

@@ -12,8 +12,7 @@ import Breadcrumb from '@site/src/components/Breadcrumb';
 # Manage Users in the Dashboard
 <Breadcrumb paths={["Users"]} />
 
-
-The Invictus Dashboard allows you to access the application with many user accounts. These can be **local** users, managed by Invictus itself; or **Entra ID** users, managed by your Azure tenant.
+The Invictus Dashboard allows you to access with many user accounts. These can be **local** users, managed by Invictus itself; or **Entra ID** users, managed by your Azure tenant.
 
 :::praise[recommended]
 Use **Entra ID** users over local users for security reasons.
@@ -43,7 +42,7 @@ Make sure that the group has a [role assigned](./03_roles.md), otherwise the Das
 <details>
 <summary>**Delete an Entra ID user from the Dashboard** <OnlyAdminsBadge/></summary>
 
-To delete a user click on the delete icon next to the user in the user list.
+Click the delete icon to delete a user in the user list.
 
 ![delete azure user](/images/delete-azure-user.PNG)
     > 👀 You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
@@ -53,14 +52,15 @@ To delete a user click on the delete icon next to the user in the user list.
 <details>
 <summary>**Edit an Entra ID user's role in the Dashboard** <OnlyAdminsBadge/></summary>
 
-Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The Dashboard determines the user role by the Entra ID groups where the user is a member of. [If the groups has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so will the user.
+Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The Dashboard determines the user role by the Entra ID groups where the user is a member of. 
+[If the groups has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so has the user.
 
 </details>
 
 <details>
 <summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
 
-Before you can use the forgot password feature, you need to create an Microsoft Entra ID application registration and [set it up with the `Mail.Send` API permissions](../installation/01_give_ad_access.mdx). The OAuth 2.0 flow requires this to send emails securely.
+Before you can use the forgot password feature, you need to create an Microsoft Entra ID app registration and [set it up with the `Mail.Send` API permissions](../installation/01_give_ad_access.mdx). The OAuth 2.0 flow requires this to send emails securely.
 
 :::warning
 Please note that the permission granted allows any email address within the organization to be used as the sender.
@@ -68,7 +68,7 @@ Please note that the permission granted allows any email address within the orga
 
 <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} />
 
-![Global settings page as system admin](/images/dashboard/settings-page-as-admin.png)
+![Global settings page as system administrator](/images/dashboard/settings-page-as-admin.png)
 
 </details>
 

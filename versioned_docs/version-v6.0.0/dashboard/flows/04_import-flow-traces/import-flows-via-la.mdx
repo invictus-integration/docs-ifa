@@ -19,7 +19,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     <Tabs groupId="la">
       <TabItem value="consumption" label="Consumption">
         :::warning
-        Make sure that the `Workflow runtime` diagnostic events is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise the app will send far to much events to the Event Hubs.
+        Make sure that the `Workflow runtime` diagnostic events is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise the app sends far too many events to the Event Hubs.
         :::
 
         ![Diagnostic settings for Consumption](/images/dashboard/flowtrace/diagnostic-settings-la-consumption.png)
@@ -29,7 +29,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
       </TabItem>
       <TabItem value="standard" label="Standard">
       :::warning
-      Make sure that the `Function Application Logs` diagnostic events is **✅ checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **❌ unchecked**. Otherwise the app will send far to much events to the Event Hubs with additional cost.
+      Make sure that the `Function Application Logs` diagnostic events is **✅ checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **❌ unchecked**. Otherwise the app sends far too many events to the Event Hubs with additional cost.
       :::
 
       ![Diagnostic settings for Standard](/images/dashboard/flowtrace/diagnostic-settings-la-standard.png)
@@ -88,7 +88,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
 
     To link one workflow with another the `x-iv-parent-workflow-run-id` [tracked property](#tracked-properties-of-workflows) needs to be set when designing the Logic App.
 
-    The value for the property needs to be the `WorkFlowRunId` that you wish to link the Azure Logic App to. The below logic app is using the following tracked property to promote the `WorkFlowRunId` of **LogicAppChain-A** as a tracked property in **LogicAppChain-B**.
+    The value for the property needs to be the `WorkFlowRunId` that you wish to link the Azure Logic App to. The below Logic App is using the following tracked property to promote the `WorkFlowRunId` of **LogicAppChain-A** as a tracked property in **LogicAppChain-B**.
 
     | Key                           | Value                                                      |
     | ----------------------------- | ---------------------------------------------------------- |
@@ -96,10 +96,10 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
 
     ![execution tree](/images/import-executiontree.png)
 
-    In the example above sets the `x-iv-parent-workflow-run-id` in **LogicAppChain-B**, linking it with **LogicAppChain-A**. **LogicAppChain-C** wasn't linked to **B** or **A** thus isn't considered part of the chain.
+    In the preceding example, the **LogicAppChain-B** sets the `x-iv-parent-workflow-run-id`, linking it with **LogicAppChain-A**. **LogicAppChain-C** wasn't linked to **B** or **A** thus isn't considered part of the chain.
 
     :::warning
-    The **ClientTrackingId** is the identifier used to link transactional messages together, this ID is by default generated for every run in Azure Logic Apps, but can also be manually set by the developer. Since async flows might change their ClientTrackingId due to routing, the ClientTrackingId will need to be reset in the Azure Logic App as soon as possible.
+    The **ClientTrackingId** is the identifier used to link transactional messages together, this ID is by default generated for every run in Azure Logic Apps, but can also be manually set by the developer. Since async flows might change their `ClientTrackingId` due to routing, the `ClientTrackingId` will need to be reset in the Azure Logic App as soon as possible.
     :::
   </Collapsible>
 
@@ -119,9 +119,9 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     | Property Name                             | Sample Value       | Description                                                                                                                                  |
     | ----------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
     | `x-iv-messagecontent-input-name`          | `ActionInput`      | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word |
-    | `x-iv-messagecontent-input-content-type`  | `application/json` | This should have the same content type as the data type when opening the input link for an action                                            |
+    | `x-iv-messagecontent-input-content-type`  | `application/json` | This should have the same media type as the data type when opening the input link for an action                                            |
     | `x-iv-messagecontent-output-name`         | `ActionOutput`     | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word |
-    | `x-iv-messagecontent-output-content-type` | `application/json` | This should have the same content type as the data type when opening the input link for an action                                            |
+    | `x-iv-messagecontent-output-content-type` | `application/json` | This should have the same media type as the data type when opening the input link for an action                                            |
 
     :::warning
     The inputs and outputs content views can be set up independently or together. The only requirement is that if the `-name` is present then the `-content-type` has to be also present for the desired output.
@@ -129,7 +129,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
 
     **Errors on Azure Logic App level**
 
-    If the corresponding logic app has resulted in an error, the error information can be seen in the within the "Logic App Details" modal.
+    If the corresponding Logic App has resulted in an error, the error information can be seen in the within the "Logic App Details" modal.
 
     ![execution tree](/images/v2_events5.png)
 
@@ -146,11 +146,11 @@ Flows linked to Azure Logic Apps workflows can be resubmitted and resumed via th
 <Tabs groupId="flow-operations">
 <TabItem value="default-resubmit" label="Resubmit">
 
-The resubmit functionality will always trigger an "Azure Resubmit" for the first Azure Logic App in the chain. Resubmit will trigger the execution of any corresponding flow, even completed ones. During resubmit, the first Logic App in the chain (execution tree) resubmits on Azure thus retriggering the whole flow.
+The resubmit behavior always triggers an "Azure Resubmit" for the first Azure Logic App in the chain. Resubmit triggers the execution of any corresponding flow, even completed ones. During resubmit, the first Logic App in the chain (execution tree) resubmits on Azure thus retriggering the whole workflow.
 
 ![resubmit](/images/dashboard/FlowHandler/fh-resubmit1.jpg)
 
-Take the above image as an example. If the user resubmit this flow via the Dashboard, "LogicAppChain-A" resubmits on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
+Take the preceding image as an example. If the user resubmit this flow via the Dashboard, "LogicAppChain-A" resubmits on Azure. The below image is the outcome after "LogicAppChain-A" is re-executed through the resubmit.
 
 ![resubmit](/images/dashboard/FlowHandler/fh-resubmit2.jpg)
 
@@ -158,7 +158,7 @@ Take the above image as an example. If the user resubmit this flow via the Dashb
 <TabItem value="default-resume" label="Resume">
 
 {/* vale proselint.Diacritical = NO */}
-The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume doesn't start from the first logic app within its flow, as with the resubmit, but instead executes only the failed logic apps.
+The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume doesn't start from the first Logic App within its flow, as with the resubmit, but instead executes only the failed Logic Apps.
 {/* vale proselint.Diacritical = YES */}
 
 > ☝️ The only exception is that if a Parent Logic App of a failed Logic App has also failed. Then only the Parent executes.
@@ -168,19 +168,19 @@ The resume function executes an "Azure Resubmit" for each failed function in the
 
 Users can choose to ignore a message, normally this could be the case when a message is in failed status. The user can select one or many messages and choose to "Ignore" them.
 
-When a user sets a message to ignore, its status will change and show as follows
+When a user sets a message to ignore, its status changes and shows as follows:
 
 ![handling buttons](/images/v2_handling3.png)
 
 </TabItem>
 <TabItem value="custom" label="Custom">
 
-You can resume/resubmit flows via a custom interaction HTTP endpoint instead of the default Azure management URL. This will resume/resubmit the Azure Logic App workflow mapped to the flow (via **DSAV** and **Workflow name** properties).
+You can resume/resubmit flows via a custom interaction HTTP endpoint instead of the default Azure management URL. This resumes/resubmits the Azure Logic App workflow mapped to the flow (via **DSAV** and **Workflow name** properties).
 
 ### Configure flow for custom resume/resubmit
-Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The `(▷)` button will test the URL to see if it's reachable.
+Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The `(▷)` button tests whether the Dashboard can reach the URL.
 
-A message will pop-up to show if the test was successful.
+A message pops up to show if the test was successful.
 
 ![Advanced settings test URL success](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
 
@@ -193,7 +193,7 @@ Once configured, navigate to the [search flow traces](../02_search.mdx) page by 
 
 ![Clicking resubmit on a flow run](/images/v2_flowpage_clicking_resubmit.png)
 
-The Dashboard will sent a HTTP `POST` request to the configured custom resubmit URL, with a body containing information about the flow run.
+The Dashboard sends a HTTP `POST` request to the configured custom resubmit URL, with a body containing information about the workflow run.
 
 <details>
 <summary>**Full JSON request body example**</summary>
@@ -245,7 +245,7 @@ ___
 <details>
 <summary>Scenario One: resubmit first in the chain</summary>
 
-In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first one in the chain, which you can identify by the null `x-iv-parent-workflow-run-id`, this scenario will act as a **Resubmit**. As soon as Invictus receives the events for 4, 5 and 6, it will link 4 with 1 through the `OriginWorkFlowRunId` which the `LogicAppRuntime` supplies and ignore all descendants of 1.
+In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first one in the chain, which you can identify by the null `x-iv-parent-workflow-run-id`, this scenario acts as a **Resubmit**. As soon as Invictus receives the events for 4, 5 and 6, it links 4 with 1 through the `OriginWorkFlowRunId` which the `LogicAppRuntime` supplies and ignores all descendants of 1.
 
 ![scenario 1](/images/import-scenario1.png)
 
@@ -255,7 +255,7 @@ In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first 
 <summary>Scenario Two: resume further down the chain</summary>
 
 {/* vale proselint.Diacritical = NO */}
-In this scenario, the resubmitted logic app Is number 3. Since this isn't the first Azure Logic App in the Chain, this acts as a **Resume**. As soon as Invictus receives the events for number 4, it can immediately link it to number 1 since it will still have the same `x-iv-parent-workflow-run-id`. Through the `OriginWorkFlowRunId` of 333 Azure Logic App 4 is then treated as a resubmit of 3. Resume operations only ignore the resubmitted Azure Logic Apps and its descendants, not the whole chain.
+In this scenario, the resubmitted Logic App is number 3. Since this isn't the first Azure Logic App in the chain, this acts as a **Resume**. As soon as Invictus receives the events for number 4, it can immediately link it to number 1 since it still has the same `x-iv-parent-workflow-run-id`. Through the `OriginWorkFlowRunId` of 333 Azure Logic App 4 is then treated as a resubmit of 3. Resume operations only ignore the resubmitted Azure Logic Apps and its descendants, not the whole chain.
 {/* vale proselint.Diacritical = YES */}
 
 ![scenario 2](/images/import-scenario2.png)
@@ -265,7 +265,7 @@ In this scenario, the resubmitted logic app Is number 3. Since this isn't the fi
 <details>
 <summary>Scenario Three: resubmit further down the chain</summary>
 
-This scenario looks like scenario two. In this case the developer decided to resubmit Azure Logic App 3. You can only achieve this through the Azure Portal as the Invictus Dashboard will only resubmit failed Azure Logic Apps.
+This scenario looks like scenario two. In this case the developer decided to resubmit Azure Logic App 3. You can only achieve this through the Azure Portal as the Invictus Dashboard only resubmits failed Azure Logic Apps.
 
 ![scenario 3](/images/import-scenario3.png)
 

@@ -34,7 +34,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Support for 'Cancelled' state:** the Dashboard now shows cancelled Logic App runs with a dedicated 'Cancelled' state instead of 'Succeeded', making them easier to identify and track.
     - **Azure Function App tracing:** the Dashboard now visualizes flow traces from Azure Function Apps, including startup logs and custom logging, as a full execution tree alongside Logic App traces. A new icon distinguishes Function App traces from Logic App traces in the UI.
     - **Improved property filters UI:** the property filters panel on the Flow Trace page now offers a more efficient and user-friendly experience.
-    - **Resubmit / Resume toggle:** operators can now enable or disable the resubmit and resume buttons from the Advanced Settings section.
+    - **Resubmit / Resume toggle:** operators can now turn on/off the resubmit and resume buttons from the Advanced Settings section.
   </Features>
   <TechChanges>
     - **[Breaking] VNET parameter renames:** these BICEP parameters have new names. Update existing deployments accordingly:
@@ -42,7 +42,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
       - `disableStorageAccountPublicNetworkAccess` → `enableStorageAccountPublicNetworkAccess`
       - `vnetResourceGroupName` → `virtualNetworkResourceGroupName`
     - **Standard Service Bus SKU with VNET integration:** Invictus no longer requires a Premium Service Bus SKU when using VNET integration. Teams can now configure a Standard SKU, reducing costs for non-production environments like DEV and TEST.
-    - **Resource locks are now optional:** a new `useResourceLocks` BICEP parameter lets teams disable resource locks during installation. See the documentation for details.
+    - **Resource locks are now optional:** a new `useResourceLocks` BICEP parameter lets teams {/* vale Google.WordList = NO */}disable{/* vale Google.WordList = YES */} resource locks during installation. See the documentation for details.
     - **Post-deployment script to clean up container revisions:** a post-deployment script now cleans up older Container App revisions. See the "Migrating to v6" topic in the documentation.
     - **Private endpoint naming change:** private endpoint names now use the `pep-` prefix instead of `conn-`.
   </TechChanges>
@@ -72,7 +72,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Logic App run error not always visible:** the Logic App details page now consistently shows the actual error for a failed run.
     - **Missing Scaling Rules parameters:** all Scaling Rules are now available as BICEP parameters.
     - **Login issues for users in many groups:** users belonging to a large number of Microsoft Entra ID groups can now log in to the Dashboard without errors.
-    - **RegExTranslation with Managed Identity:** the RegExTranslation component now works correctly with Managed Identity.
+    - **RegexTranslation with Managed Identity:** the RegexTranslation component now works correctly with Managed Identity.
     - **PubSub messages getting stuck:** PubSub no longer lets messages get stuck in the queue.
   </Fixes>
 </ReleaseVersion>
@@ -91,11 +91,11 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   </TechChanges>
   <Fixes>
     - **Flow column names respect configuration casing:** column names in the Dashboard now use the casing defined in the configuration instead of forcing everything to uppercase.
-    - **Quick search is now case-insensitive:** the quick search above the flow details now matches regardless of case.
+    - **Flow search is now case-insensitive:** when searching for flows in the Dashboard, the search term is now case-insensitive.
     - **ExceptionHandler fixes:**
       - `nextLink` parsing now works correctly.
       - `siteName` is now optional in requests for Consumption Logic Apps.
-      - The regex for non-alphanumeric characters now handles edge cases correctly.
+      - The regular expression for non-alphanumeric characters now handles edge cases correctly.
       - The handler now also checks input and output links of repetition results.
       - `Gateway Timeout` failures from Azure API Management are now handled correctly.
   </Fixes>
