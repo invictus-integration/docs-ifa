@@ -1,0 +1,16 @@
+.mark {
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 2px;
+}
+
+:global([data-theme='dark']) .mark {
+  color: var(--ifm-link-color);
+  text-decoration-color: var(--ifm-link-color);
+  background: rgba(54, 177, 197, 0.12);
+  border-radius: 2px;
+  padding: 0 2px;
+}
