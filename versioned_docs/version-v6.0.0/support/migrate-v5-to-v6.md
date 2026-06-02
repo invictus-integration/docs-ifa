@@ -32,7 +32,7 @@ If you have a library with the name `invictus.{environment}`, create a new one w
 
 Go to Microsoft Entra ID and [create a new app registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) for the Invictus API's. [Authentication with the Invictus API's](https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad) happens via this app.
 
-Also, create a new client secret for this app (required for later use).
+Also, create a new client secret for this app registration (required for later use).
 </details>
 
 ## Deploying new version
