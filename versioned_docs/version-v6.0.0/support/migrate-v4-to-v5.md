@@ -16,8 +16,10 @@ pagination_next: null
 * ❌ Remove possible Azure Key Vault task retrieving access policies, now done automatically by passing `-keyVaultName <name>` to `Deploy.ps1` script.
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
+{/* vale Google.Headings = NO */}
 ### Migrate SQL to Cosmos DB
 {/* vale Microsoft.HeadingAcronyms = YES */}
+{/* vale Google.Headings = YES */}
 Invictus v5 can migrate your current Dashboard structure stored in SQL to the new Cosmos DB storage system. Consider following parameters in the `Deploy.ps1` script:
 * ➕ Add `-PerformSqlDataMigration 1` parameter to activate the migration.
 * ➕ Add `-sqlToMigrateServerName <name>` parameter to target the SQL server to migrate (defaults to `invictus-{ResourcePrefix}-sqlsvr`).
@@ -32,7 +34,10 @@ The deployment will validate the result data in Azure Cosmos DB against the orig
 Once satisfied with the migrated data, change the `-PerformSqlDataMigration 1` script parameter to `0`. This skips the migration process from future deployments.
 :::
 
+{/* vale Google.Headings = NO */}
 ### New Dashboard endpoint
+{/* vale Google.Headings = YES */}
+
 The deployment creates a new Dashboard Azure App Service with the `-v2` prefix (ex: `invictus-dev-invictusdashboard-v2`). This means a new endpoint. If you want to keep the original URL endpoint:
 * ❌ Delete the old Dashboard App Service (without the prefix) from the resource group.
 * ➕ Add `-invictusDashboardWebAppName <name>` parameter to the `Deploy.ps1` script to control the App Service's name.
@@ -66,9 +71,11 @@ If you have role assignments conflicts during deployment, remove all role assign
 Some Framework components requires close attention when upgrading to v5.
 
 <details id="migrate-pubsub">
+{/* vale Google.Headings = NO */}
 <summary><h4 style={{ margin: 0 }}>Migrate PubSub to v5</h4></summary>
+{/* vale Google.Headings = YES */}
 
-Migrating to v5 includes changes in the authentication, endpoint and removal the metadata links.
+Migrating to v5 includes changes in the authentication, endpoint, and removal the metadata links.
 
 > 👉 *The `/api/Subscribe` endpoint also needs to use a `POST` instead of a `GET` HTTP method.*
 
@@ -235,7 +242,7 @@ Use the [migration tool from Codit's Integration Practice](https://github.com/Co
 <details id="migrate-matrix">
 <summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
 
-The new Transco now embeds the Matrix functionality, only authentication and endpoints requires changing.
+The new Transco now includes the Matrix capabilities, only authentication and endpoints requires changing.
 
 ```diff
 "Extract_Message_Context": {
