@@ -24,22 +24,27 @@ export default function Breadcrumb({ paths, items, activeLast = true }: Breadcru
   const segments: React.ReactNode[] = paths ?? items ?? [];
 
   return (
-    <nav className={styles.nav} aria-label="UI navigation path">
+    <nav className={styles.nav} aria-label="Breadcrumb">
       <span className={styles.logo}>
         <img src="/img/favicon.ico" alt="" />
       </span>
-      {segments.map((segment, i) => {
-        const isLast = i === segments.length - 1;
-        const isActive = activeLast && isLast;
-        return (
-          <React.Fragment key={i}>
-            <Chevron />
-            <span className={`${styles.item}${isActive ? ` ${styles.active}` : ''}`}>
-              {segment}
-            </span>
-          </React.Fragment>
-        );
-      })}
+      <ol className={styles.list}>
+        {segments.map((segment, i) => {
+          const isLast = i === segments.length - 1;
+          const isActive = activeLast && isLast;
+          return (
+            <li key={i} className={styles.listItem}>
+              {i > 0 && <Chevron />}
+              <span
+                className={`${styles.item}${isActive ? ` ${styles.active}` : ''}`}
+                {...(isActive ? { 'aria-current': 'page' } : {})}
+              >
+                {segment}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
     </nav>
   );
 }
