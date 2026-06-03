@@ -28,6 +28,17 @@
   object-fit: contain;
 }
 
+.list {
+  display: contents;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem {
+  display: contents;
+}
+
 .separator {
   display: flex;
   align-items: center;
