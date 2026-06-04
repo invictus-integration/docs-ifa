@@ -23,6 +23,9 @@ importers:
       '@easyops-cn/docusaurus-search-local':
         specifier: ^0.55.1
         version: 0.55.1(@docusaurus/faster@3.10.0(@docusaurus/types@3.10.0(@swc/core@1.15.24)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)))(@docusaurus/theme-common@3.10.0(@docusaurus/plugin-content-docs@3.10.0(@docusaurus/faster@3.10.0(@docusaurus/types@3.10.0(@swc/core@1.15.24)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)))(@mdx-js/react@3.1.1(@types/react@19.2.14)(react@19.2.5))(@rspack/core@1.7.11)(@swc/core@1.15.24)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@5.8.3))(@swc/core@1.15.24)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@mdx-js/react@3.1.1(@types/react@19.2.14)(react@19.2.5))(@rspack/core@1.7.11)(@swc/core@1.15.24)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@5.8.3)
+      '@fortawesome/free-regular-svg-icons':
+        specifier: ^6.7.2
+        version: 6.7.2
       '@fortawesome/free-solid-svg-icons':
         specifier: ^6.7.2
         version: 6.7.2
@@ -1281,6 +1284,10 @@ packages:
 
   '@fortawesome/fontawesome-svg-core@6.7.2':
     resolution: {integrity: sha512-yxtOBWDrdi5DD5o1pmVdq3WMCvnobT0LU6R8RyyVXPvFRd2o79/0NCuQoCjNTeZz9EzA9xS3JxNWfv54RIHFEA==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/free-regular-svg-icons@6.7.2':
+    resolution: {integrity: sha512-7Z/ur0gvCMW8G93dXIQOkQqHo2M5HLhYrRVC0//fakJXxcF1VmMPsxnG6Ee8qEylA8b8Q3peQXWMNZ62lYF28g==}
     engines: {node: '>=6'}
 
   '@fortawesome/free-solid-svg-icons@6.7.2':
@@ -8168,6 +8175,10 @@ snapshots:
   '@fortawesome/fontawesome-common-types@6.7.2': {}
 
   '@fortawesome/fontawesome-svg-core@6.7.2':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.7.2
+
+  '@fortawesome/free-regular-svg-icons@6.7.2':
     dependencies:
       '@fortawesome/fontawesome-common-types': 6.7.2
 
