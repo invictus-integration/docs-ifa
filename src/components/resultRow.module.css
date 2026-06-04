@@ -289,7 +289,7 @@
 
 .badgeRequired   { background-color: #b10006; }
 .badgeDeprecated { background-color: #b55d00; }
-.badgeSince      { background-color: #008800; }
+.badgeSince      { background-color: #059669; }
 .badgeDefault    { background-color: var(--ifm-color-emphasis-200); color: var(--ifm-font-color-base); }
 
 .versionBadge {
