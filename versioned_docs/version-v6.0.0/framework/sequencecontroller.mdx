@@ -5,18 +5,21 @@ title: Sequence Controller
 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
+import Admonition from '@theme/Admonition';
+import {faCircleDown, faHourglassHalf, faCheckDouble, faEarthEurope, faLink, faBoltLightning, faRotate} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 # Run Logic App workflows in sequence by indexing with the <u>Sequence Controller</u>
 
 :::note[motivation]
 Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially (for example, by setting the concurrency on a Logic App to `1`) can be a solution, at the cost of a big performance impact.
 
-🌍 **A customer story from the trenches** <br/>
+<FontAwesomeIcon icon={faEarthEurope} /> **A customer story from the trenches** <br/>
 *A downstream application can't handle calls at the same time for the same order ID, by using the **Sequence Controller** we guarantee a single call per order ID (by using the order ID in the `sequenceName`) and we don't have the use the concurrency option for the Logic App which would dramatically slow down the processing for all messages.*
 
 The Invictus Framework provides a **Sequence Controller** component that allows you to process Logic App workflow runs in a specified order. Even parallel triggered workflows won't overblown the external dependency with messages.
 
-🔗 See also the [Message Sequence](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageSequence.html) integration pattern.
+<FontAwesomeIcon icon={faLink} /> See also the [Message Sequence](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageSequence.html) integration pattern.
 :::
 
 ## Available endpoints
@@ -26,7 +29,9 @@ The **Sequence Controller** component is available as a HTTP endpoint in your Lo
 * [`/api/WaitForSequence`](#-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
 * [`/api/ConfirmExecutionCompleted`](#️-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
 
-> ⚡ There also exists a [`/api/ResetSequence`](#-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
+<Admonition type="praise" icon={<FontAwesomeIcon icon={faBoltLightning} />} title="Advanced usage: reset sequence">
+There also exists a [`/api/ResetSequence`](#-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
+</Admonition>
 
 ![Pseudo Logic App workflow with Sequence Controller](/images/framework/pseudo-logic-app-w-sequence-controller.png)
 
@@ -35,7 +40,7 @@ If workflow 1 gets triggered before workflow 2, the second workflow waits for th
 
 ![Pseudo Logic App workflow runs with Sequence Controller](/images/framework/pseudo-logic-app-workflow-runs-w-sequence-controller.png)
 
-## ⬅️ Get sequence number
+## <FontAwesomeIcon icon={faCircleDown} /> Get sequence number
 
 First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
 
@@ -68,7 +73,7 @@ If you want to start the sequence at a later point, you can also pass the `seque
 ```
 :::
 
-## ⌛ Wait for sequence
+## <FontAwesomeIcon icon={faHourglassHalf} /> Wait for sequence
 
 The next step for the Logic App workflow to run in sequence, is to wait its turn. You require the counter collected from the previous [Get sequence number](#️-get-sequence-number) step.
 
@@ -85,7 +90,7 @@ Send this request in this HTTP callback task:
 }
 ```
 
-## ☑️ Complete sequence
+## <FontAwesomeIcon icon={faCheckDouble} /> Complete sequence
 
 The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This allows the next workflow to proceed. 
 You require the counter collected from the previous [Get sequence number](#️-get-sequence-number) step.
@@ -99,7 +104,7 @@ Add a HTTP task with this request to complete the in-sequence work of the workfl
 }
 ```
 
-## 🔄 Reset sequence
+## <FontAwesomeIcon icon={faRotate} /> Reset sequence
 
 The deployed **Sequence Controller** allows admins to reset stored sequences. This could be useful if you want to reuse certain sequence names or for cleaning references.
 

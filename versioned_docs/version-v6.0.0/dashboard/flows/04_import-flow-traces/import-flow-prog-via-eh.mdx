@@ -1,3 +1,9 @@
+---
+sidebar_label: Import via Event Hubs
+---
+
+import {OnlyFolderAdminsBadge} from '@site/src/components/OnlyAdminsBadge'
+
 # Import flow traces programmatically via Azure Event Hubs
 Invictus allows developers to programmatically import flow traces via an Event Hub. You can locate this resource by the following:
 
@@ -55,7 +61,7 @@ The minimal `event` values are the following:
 A `Started` event is always required to create at least a single event in Invictus' backend storage. A `Completed`/`Failed` event then indicates the end of a given operation.
 :::
 
-## Map Dashboard flows to Event Hub receive events
+## Map Dashboard flows to Event Hub receive events <OnlyFolderAdminsBadge />
 Make sure that any of the `event` mappings match the values in the [flow created via the Dashboard](../01_add.mdx)
 
 ```json

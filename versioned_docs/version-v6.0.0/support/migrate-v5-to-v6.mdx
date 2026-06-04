@@ -4,15 +4,18 @@ pagination_prev: null
 pagination_next: null
 ---
 
+import {faDownload, faShield, faShuffle} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 # Migrate from v5.x to Invictus v6
 :::warning[change of endpoints]
 Invictus v6 uses containerized API instead of Web API or Azure Functions. This means that the endpoints for the Dashboard and the Framework components changes.
 :::
 :::danger[removal of v1 Framework components]
 Invictus v6 no longer supports the PubSub v1, Transco v1 and Matrix v1 components.
-* [Migrate PubSub](./migrate-v4-to-v5.md#migrate-pubsub)
-* [Migrate Transco](./migrate-v4-to-v5.md#migrate-transco)
-* [Migrate Matrix to Transco](./migrate-v4-to-v5.md#migrate-transco)
+* [Migrate PubSub](./migrate-v4-to-v5.mdx#migrate-pubsub)
+* [Migrate Transco](./migrate-v4-to-v5.mdx#migrate-transco)
+* [Migrate Matrix to Transco](./migrate-v4-to-v5.mdx#migrate-transco)
 :::
 
 ## Preparing environment
@@ -35,8 +38,8 @@ Go to Microsoft Entra ID and [create a new app registration](https://learn.micro
 Also, create a new client secret for this app registration (required for later use).
 </details>
 
-## Deploying new version
-[<h3 style={{ margin:0 }}>⬇️ Download latest version of `Invictus-GetSources.ps1`</h3>](../scripts/Invictus-GetSources.ps1)
+## Deploying New Version
+[<h3 style={{ margin:0 }}><FontAwesomeIcon icon={faDownload} /> Download latest version of `Invictus-GetSources.ps1`</h3>](../scripts/Invictus-GetSources.ps1)
 
 Pipeline/Bicep parameters changes. Please follow the installation guides to see the current supported parameters:
 * [Dashboard installation guide](../dashboard/installation/index.mdx)
@@ -49,9 +52,9 @@ Pipeline/Bicep parameters changes. Please follow the installation guides to see 
   * [Multiple Revision mode](https://learn.microsoft.com/en-us/azure/container-apps/revisions): older revisions could clutter the environment. Consider using our [revisions clean-up script](../scripts/Invictus-RemoveOldRevisions.ps1). 
 :::
 
-## After deployment
-* [🛡️ Give Invictus access to the client's Azure Logic Apps](../dashboard/installation/03_give_la_access.md)
-* [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri). Signing in via Microsoft Entra ID requires the new Dashboard Gateway URL.
+## After Deployment
+* [<FontAwesomeIcon icon={faShield} /> Give Invictus access to the client's Azure Logic Apps](../dashboard/installation/03_give_la_access.md)
+* [<FontAwesomeIcon icon={faShuffle} /> Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri). Signing in via Microsoft Entra ID requires the new Dashboard Gateway URL.
 
 :::danger[Import before September 2026]
 If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10). This affects the following running apps/components:
