@@ -1,0 +1,18 @@
+.admonition {
+  --ifm-alert-background-color: #fff1f2;
+  --ifm-alert-background-color-highlight: #ffe4e6;
+  --ifm-alert-foreground-color: #881337;
+  --ifm-alert-border-color: #f43f5e;
+}
+
+html[data-theme='dark'] .admonition {
+  --ifm-alert-background-color: #2d0a12;
+  --ifm-alert-background-color-highlight: #3f1020;
+  --ifm-alert-foreground-color: #fda4af;
+  --ifm-alert-border-color: #e11d48;
+}
+
+.admonition svg {
+  height: 1.2em;
+  vertical-align: 0;
+}
