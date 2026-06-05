@@ -44,15 +44,6 @@ $StaticSearchFile = Join-Path $Root 'src' 'data' 'search-index.json'
 # ---------------------------------------------------------------------------
 $DataSources = @(
     @{
-        File         = 'faq.v6.json'
-        Version      = 'v6.0.0'
-        Type         = 'faq'
-        # Filepath relative to versioned_docs/version-<ver>/ — drives URL resolution and user_type lookup.
-        DocFilepath  = 'support/faq.mdx'
-        Category     = 'support'
-        SidebarLabel = 'FAQ'
-    }
-    @{
         File         = 'framework.v6.bicep.parameters.json'
         Version      = 'v6.0.0'
         Type         = 'parameters'
@@ -67,22 +58,6 @@ $DataSources = @(
         DocFilepath  = 'dashboard/installation/index.mdx'
         Category     = 'dashboard'
         SidebarLabel = 'Bicep parameter'
-    }
-    @{
-        File         = 'glossary.v6.json'
-        Version      = 'v6.0.0'
-        Type         = 'glossary'
-        DocFilepath  = 'support/glossary-technical.mdx'
-        Category     = 'support'
-        SidebarLabel = 'Glossary'
-    }
-    @{
-        File         = 'glossary.v6.json'
-        Version      = 'v6.0.0'
-        Type         = 'glossary'
-        DocFilepath  = 'support/glossary-business.mdx'
-        Category     = 'support'
-        SidebarLabel = 'Glossary'
     }
 )
 
