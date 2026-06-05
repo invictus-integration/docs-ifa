@@ -349,27 +349,6 @@ function Invoke-GenerateDataJsonKnowledge {
         $count    = 0
 
         switch ($source.Type) {
-            'faq' {
-                foreach ($item in $items) {
-                    # Build a stable, readable ID from the question text (capped at 60 chars).
-                    $slug = ($item.question -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
-                    if ($slug.Length -gt 60) { $slug = $slug.Substring(0, 60).TrimEnd('-') }
-                    $docs.Add([ordered]@{
-                        id            = "data-$fileSlug-$slug"
-                        title         = $item.question
-                        content       = if ($item.answer)      { $item.answer }      else { '' }
-                        filepath      = $source.DocFilepath
-                        category      = $source.Category
-                        sidebar_label = $source.SidebarLabel
-                        version       = $source.Version
-                        user_type     = $userType
-                        # Deep-link: pre-fills the FAQ component search so the matching item is
-                        # filtered and opened automatically when the user navigates to the result.
-                        anchor        = '?q=' + [System.Uri]::EscapeDataString($item.question)
-                    })
-                    $count++
-                }
-            }
             'parameters' {
                 foreach ($item in $items) {
                     $slug = ($item.name -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
@@ -385,32 +364,6 @@ function Invoke-GenerateDataJsonKnowledge {
                         # Deep-link: pre-fills the ParameterTable search so the row is visible,
                         # and scrolls the page to the parameters section.
                         anchor        = '?q=' + [System.Uri]::EscapeDataString($item.name) + '#bicep-template-parameters'
-                    })
-                    $count++
-                }
-            }
-            'glossary' {
-                # The glossary JSON contains entries for multiple userTypes.
-                # Each source entry targets one specific page (technical or business),
-                # so we filter terms whose userType matches the page's sidebar-derived userType.
-                $pageSlug = ($source.DocFilepath -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
-                foreach ($item in $items) {
-                    if ($item.userType -ne $userType) { continue }
-                    $slug = ($item.term -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
-                    # Include aliases in the searchable content so they surface in queries too.
-                    $aliasText = if ($item.aliases) { ' ' + ($item.aliases -join ' ') } else { '' }
-                    $docs.Add([ordered]@{
-                        id            = "data-$fileSlug-$pageSlug-$slug"
-                        title         = $item.term
-                        content       = (Get-SearchContent -Body ($item.definition + $aliasText))
-                        filepath      = $source.DocFilepath
-                        category      = $source.Category
-                        sidebar_label = $source.SidebarLabel
-                        version       = $source.Version
-                        user_type     = $userType
-                        # Deep-link: pre-fills the Glossary component search so the term is
-                        # highlighted and scrolled into view when the user lands on the page.
-                        anchor        = '?q=' + [System.Uri]::EscapeDataString($item.term)
                     })
                     $count++
                 }
