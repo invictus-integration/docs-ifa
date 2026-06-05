@@ -20,13 +20,13 @@ Invictus provides a solution called the **PubSub**, that allows Azure Service Bu
 :::
 
 ## Available endpoints
-* [`/api/Publish`](#️publish-single-message): by sending a HTTP request with a custom content, it places a message on an Azure Service Bus topic.
-* [`/api/Subscribe`](#️subscribe-for-messages): by sending a HTTP request with a specified Azure Service Bus topic subscription name, it response available messages.
-* [`/api/Acknowledge`](#️acknowledge-message): by sending a HTTP request with a specified message sequence number, it settles the Azure Service Bus message.
+* <a href="#-publish-single-message">`/api/Publish`</a>: by sending a HTTP request with a custom content, it places a message on an Azure Service Bus topic.
+* <a href="#-subscribe-for-messages">`/api/Subscribe`</a>: by sending a HTTP request with a specified Azure Service Bus topic subscription name, it response available messages.
+* <a href="#-acknowledge-message">`/api/Acknowledge`</a>: by sending a HTTP request with a specified message sequence number, it settles the Azure Service Bus message.
 
 ![PubSub pseudo Logic App diagram](/images/framework/pseudo-logic-app-w-pubsub.png)
 
-<h2 id="publish-single-message"><FontAwesomeIcon icon={faPaperPlane} /> Publish single message</h2>
+## <FontAwesomeIcon icon={faPaperPlane} /> Publish single message
 The `/api/Publish` endpoint allows users to send a single message to the configured Azure Service Bus topic (default: `pubsubv2router`) where subscribers are listening to.
 
 [`Body`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.body?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-body
@@ -59,7 +59,7 @@ The `/api/Publish` endpoint allows users to send a single message to the configu
 
 The endpoint responds with `202 Accepted`, if the message gets published successfully.
 
-<h2 id="subscribe-for-messages"><FontAwesomeIcon icon={faEnvelope} /> Subscribe for messages</h2>
+## <FontAwesomeIcon icon={faEnvelope} /> Subscribe for messages
 The `/api/Subscribe` endpoint allows users to periodically ask for any available published messages on the configured Azure Service Bus topic (default: `pubsubv2router`).
 
 [`SubscriptionName`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.createsubscriptionoptions.subscriptionname?view=azure-dotnet#azure-messaging-servicebus-administration-createsubscriptionoptions-subscriptionname
@@ -127,8 +127,8 @@ One can also use the HTTP request query parameters instead of the request body t
 Because messages can be 'acknowledged' separately from the receive location by 'subscription', the message is internally [deferred](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-deferral). This is due to restrictions in the Azure SDK which impose that the same receiver must both receive and settle message. Deferring a message doesn't have this limitation.
 :::
 
-<h2 id="acknowledge-message"><FontAwesomeIcon icon={faCheckDouble} /> Acknowledge message</h2>
-The `/api/Acknowledge` endpoint allows users to 'settle' a received message via the [`/api/Subscribe` endpoint](#️-subscribe-for-messages). This requires the **sequence number** of the message.
+## <FontAwesomeIcon icon={faCheckDouble} /> Acknowledge message
+The `/api/Acknowledge` endpoint allows users to 'settle' a received message via the <a href="#-subscribe-for-messages">`/api/Subscribe`</a> endpoint. This requires the **sequence number** of the message.
 
 [`CreateReceiver`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusclient.createreceiver?view=azure-dotnet#azure-messaging-servicebus-servicebusclient-createreceiver(system-string-system-string)
 [Message settlement]: https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement
@@ -137,8 +137,8 @@ The `/api/Acknowledge` endpoint allows users to 'settle' a received message via 
 
 | JSON Property             | Required (default) | Translates to Service Bus  | Description                                                                                                                                                                                      |
 | ------------------------- | :----------------: | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Subscription`            |        yes         | [`CreateReceiver`]         | Name of Azure Service Bus topic subscription to receive the deferred message on (See **internal workaround** on [`/api/Subscribe`](#️-subscribe-for-messages))                                    |
-| `SequenceNumber`          |        yes         | [`ReceiveDeferredMessage`] | Unique number assigned by Service Bus, received by the [`/api/Subscribe`](#️-subscribe-for-messages) response.                                                                                    |
+| `Subscription`            |        yes         | [`CreateReceiver`]         | Name of Azure Service Bus topic subscription to receive the deferred message on (See **internal workaround** on <a href="#-subscribe-for-messages">`/api/Subscribe`</a>))                                    |
+| `SequenceNumber`          |        yes         | [`ReceiveDeferredMessage`] | Unique number assigned by Service Bus, received by the <a href="#-subscribe-for-messages">`/api/Subscribe`</a> response.                                                                                                                        |      
 | `AcknowledgementType`     |  no (`Complete`)   | [Message settlement]       | Type of acknowledge action to take on the message: <ul><li>`Complete`</li><li>`Abandon`</li><li>`Defer`</li><li>`DeadLetter`</li></ul>                                                           |
 | `IgnoreNotFoundException` |    no (`false`)    | [`MessageNotFound`]        | `true` means that `MessageNotFound` Service Bus failures during lookup of the message by its `SequenceNumber` will result in `202 Accepted`; `false` means a `400 BadRequest` will be responded. |
 
