@@ -69,11 +69,11 @@
             "id": "dashboard/flows/import-flow-traces/index"
           },
           "items": [
+            "dashboard/flows/import-flow-traces/import-flows-via-la",
             "dashboard/flows/import-flow-traces/import flow-via-fa",
-            "dashboard/flows/import-flow-traces/import-flow-prog-via-eh",
-            "dashboard/flows/import-flow-traces/import-flow-prog-via-http",
             "dashboard/flows/import-flow-traces/import-flow-via-df",
-            "dashboard/flows/import-flow-traces/import-flows-via-la"
+            "dashboard/flows/import-flow-traces/import-flow-prog-via-eh",
+            "dashboard/flows/import-flow-traces/import-flow-prog-via-http"
           ]
         }
       ]
