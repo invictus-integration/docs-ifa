@@ -25,12 +25,12 @@ The Invictus Framework provides a **Sequence Controller** component that allows 
 ## Available endpoints
 The **Sequence Controller** component is available as a HTTP endpoint in your Logic App workflow. To include sequence processing to your workflow, add these three HTTP interaction tasks:
 
-* [`/api/GetSequenceNumber`](#️-get-sequence-number): allows the workflow to determine what current position it has in the sequence;
-* [`/api/WaitForSequence`](#-wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
-* [`/api/ConfirmExecutionCompleted`](#️-complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
+* [`/api/GetSequenceNumber`](#️get-sequence-number): allows the workflow to determine what current position it has in the sequence;
+* [`/api/WaitForSequence`](#wait-for-sequence): allows the workflow to wait its turn, doing the actual work in a **Control** task;
+* [`/api/ConfirmExecutionCompleted`](#️complete-sequence): allows the workflow to signal that the next workflow in the sequence is up.
 
 <Admonition type="praise" icon={<FontAwesomeIcon icon={faBoltLightning} />} title="Advanced usage: reset sequence">
-There also exists a [`/api/ResetSequence`](#-reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
+There also exists a [`/api/ResetSequence`](#reset-sequence) action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
 </Admonition>
 
 ![Pseudo Logic App workflow with Sequence Controller](/images/framework/pseudo-logic-app-w-sequence-controller.png)
@@ -40,7 +40,7 @@ If workflow 1 gets triggered before workflow 2, the second workflow waits for th
 
 ![Pseudo Logic App workflow runs with Sequence Controller](/images/framework/pseudo-logic-app-workflow-runs-w-sequence-controller.png)
 
-## <FontAwesomeIcon icon={faCircleDown} /> Get sequence number
+<h2 id="get-sequence-number"><FontAwesomeIcon icon={faCircleDown} /> Get sequence number</h2>
 
 First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
 
@@ -73,7 +73,7 @@ If you want to start the sequence at a later point, you can also pass the `seque
 ```
 :::
 
-## <FontAwesomeIcon icon={faHourglassHalf} /> Wait for sequence
+<h2 id="wait-for-sequence"><FontAwesomeIcon icon={faHourglassHalf} /> Wait for sequence</h2>
 
 The next step for the Logic App workflow to run in sequence, is to wait its turn. You require the counter collected from the previous [Get sequence number](#️-get-sequence-number) step.
 
@@ -90,10 +90,10 @@ Send this request in this HTTP callback task:
 }
 ```
 
-## <FontAwesomeIcon icon={faCheckDouble} /> Complete sequence
+<h2 id="complete-sequence"><FontAwesomeIcon icon={faCheckDouble} /> Complete sequence</h2>
 
 The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This allows the next workflow to proceed. 
-You require the counter collected from the previous [Get sequence number](#️-get-sequence-number) step.
+You require the counter collected from the previous [Get sequence number](#️get-sequence-number) step.
 
 Add a HTTP task with this request to complete the in-sequence work of the workflow:
 ```json
@@ -104,7 +104,7 @@ Add a HTTP task with this request to complete the in-sequence work of the workfl
 }
 ```
 
-## <FontAwesomeIcon icon={faRotate} /> Reset sequence
+<h2 id="reset-sequence"><FontAwesomeIcon icon={faRotate} /> Reset sequence</h2>
 
 The deployed **Sequence Controller** allows admins to reset stored sequences. This could be useful if you want to reuse certain sequence names or for cleaning references.
 
