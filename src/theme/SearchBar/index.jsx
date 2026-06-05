@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useHistory } from '@docusaurus/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faXmark, faChevronLeft, faChevronRight, faFileLines, faClock, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faXmark, faChevronLeft, faChevronRight, faFileLines, faClock, faFileCircleXmark, faBook, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.css';
 import highlightStyles from '../../components/highlight.module.css';
 
@@ -75,7 +75,8 @@ function stripMarkdown(text) {
   // spaces so highlighted words don't collide with surrounding text.
 }
 
-function toPascalCase(str) {  return str
+function toPascalCase(str) {
+  return str
     .replace(/[-_]+/g, ' ')
     .replace(/\w+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
 }
@@ -127,6 +128,7 @@ function useRecentSearches() {
 
 import { streamAiResponse } from '../../components/streamAiResponse';
 import { localSearch } from '../../components/localSearch';
+import { searchKnowledge, stripMarkdownSimple } from '../../components/localSearchKnowledge';
 import { useUserType } from '../../components/UserTypeContext';
 
 /** Sort results so current-context docs float to the top within each category group. */
@@ -183,6 +185,8 @@ export default function SearchBar() {
   const [aiError, setAiError] = useState('');
 
   const [isLocalFallback, setIsLocalFallback] = useState(false);
+  const [termResults, setTermResults] = useState([]);
+  const [faqResults, setFaqResults] = useState([]);
 
   // Platform-aware shortcut label (SSR-safe)
   const [shortcutLabel, setShortcutLabel] = useState('Ctrl K');
@@ -204,6 +208,8 @@ export default function SearchBar() {
   useEffect(() => {
     if (!debouncedQuery.trim()) {
       setResults([]);
+      setTermResults([]);
+      setFaqResults([]);
       if (!skipSearchResetRef.current) setAiActive(false);
       return;
     }
@@ -218,10 +224,16 @@ export default function SearchBar() {
     setIsLocalFallback(false);
     setAiActive(false);
 
+    // Always run local knowledge search — instant, no network dependency.
+    searchKnowledge(debouncedQuery, userType).then(({ termResults: tr, faqResults: fr }) => {
+      setTermResults(tr);
+      setFaqResults(fr);
+    });
+
     const baseParams = {
       'api-version': '2024-07-01',
       searchFields: 'title,content',
-      select: 'id,title,filepath,category,content,sidebar_label,user_type',
+      select: 'id,title,filepath,anchor,category,content,sidebar_label,user_type',
       highlight: 'content',
       highlightPreTag: '<mark>',
       highlightPostTag: '</mark>',
@@ -291,7 +303,7 @@ export default function SearchBar() {
       ).filter(el => !el.disabled);
       if (!focusable.length) return;
       const first = focusable[0];
-      const last  = focusable[focusable.length - 1];
+      const last = focusable[focusable.length - 1];
       if (e.shiftKey) {
         if (document.activeElement === first) { e.preventDefault(); last.focus(); }
       } else {
@@ -337,7 +349,20 @@ export default function SearchBar() {
 
   function navigate(result) {
     recentSearches.add({ query, title: result.title, filepath: result.filepath });
-    history.push(filepathToUrl(result.filepath));
+    // Knowledge results store their original URL directly to avoid filepath-to-URL conversion
+    const dest = result.url ?? (filepathToUrl(result.filepath) + (result.anchor ?? ''));
+    history.push(dest);
+    setQuery('');
+    setIsOpen(false);
+  }
+
+  function navigateKnowledge(url, entryTitle) {
+    if (query && entryTitle) {
+      const urlPath = url.split('?')[0].split('#')[0].replace(/^\//, '');
+      const syntheticFilepath = `${urlPath}.mdx#${encodeURIComponent(entryTitle)}`;
+      recentSearches.add({ query, title: entryTitle, filepath: syntheticFilepath, url });
+    }
+    history.push(url);
     setQuery('');
     setIsOpen(false);
   }
@@ -358,8 +383,8 @@ export default function SearchBar() {
     const q = debouncedQuery.toLowerCase().trim();
     const idx = content.toLowerCase().indexOf(q);
     const start = Math.max(0, idx === -1 ? 0 : idx - 40);
-    const end   = Math.min(content.length, start + 150);
-    const raw   = (start > 0 ? '…' : '') + content.slice(start, end).replace(/\s+/g, ' ').trim() + (end < content.length ? '…' : '');
+    const end = Math.min(content.length, start + 150);
+    const raw = (start > 0 ? '…' : '') + content.slice(start, end).replace(/\s+/g, ' ').trim() + (end < content.length ? '…' : '');
     const stripped = stripMarkdown(raw).trim();
     if (idx === -1) return stripped;
     return stripped.replace(
@@ -384,10 +409,19 @@ export default function SearchBar() {
       r.title?.toLowerCase().includes(q) || r.content?.toLowerCase().includes(q)
     );
   })();
+
+  const hasKnowledgeResults = !!query && !aiActive && (termResults.length > 0 || faqResults.length > 0);
+
+  // Flat ordered list of all navigable items: page results → Ask AI → terms → FAQ.
+  // Used to drive arrow-key navigation across both columns.
+  const pageItemCount  = results.length;
+  const askAiIndex     = pageItemCount; // virtual index for Ask AI row
+  const termStartIndex = pageItemCount + (aiEnabled && query ? 1 : 0);
+  const faqStartIndex  = termStartIndex + termResults.length;
+
   const totalItems = showingRecents
     ? recentSearches.recents.length
-    : results.length + (aiEnabled && query ? 1 : 0);
-  const askAiIndex = results.length; // virtual index for the Ask AI row (only valid when !showingRecents)
+    : pageItemCount + (aiEnabled && query ? 1 : 0) + (hasKnowledgeResults ? termResults.length + faqResults.length : 0);
 
   // Derive the active descendant ID for aria-activedescendant
   const activeDescendantId = activeIndex >= 0 ? `search-opt-${activeIndex}` : undefined;
@@ -453,6 +487,12 @@ export default function SearchBar() {
           }
         } else if (activeIndex === askAiIndex && aiEnabled && query) {
           askAi();
+        } else if (hasKnowledgeResults && activeIndex >= termStartIndex && activeIndex < faqStartIndex) {
+          const t = termResults[activeIndex - termStartIndex];
+          if (t) navigateKnowledge(`/support/help-center-${userType}?q=${encodeURIComponent(t.term)}`, t.term);
+        } else if (hasKnowledgeResults && activeIndex >= faqStartIndex) {
+          const f = faqResults[activeIndex - faqStartIndex];
+          if (f) navigateKnowledge(`/support/help-center-${userType}?q=${encodeURIComponent(f.question)}#faq`, f.question);
         } else if (activeIndex >= 0 && results[activeIndex]) {
           navigate(results[activeIndex]);
         }
@@ -475,6 +515,7 @@ export default function SearchBar() {
         ref={triggerRef}
         className={styles.triggerButton}
         onClick={() => setIsOpen(true)}
+        data-cy="search-trigger"
         aria-label={`Search or ask AI, press ${shortcutLabel} to open`}
         aria-keyshortcuts={shortcutLabel.includes('⌘') ? 'Meta+k' : 'Control+k'}
         aria-haspopup="dialog"
@@ -497,7 +538,7 @@ export default function SearchBar() {
           role="presentation"
         >
           <div
-            className={styles.modal}
+            className={`${styles.modal}${hasKnowledgeResults ? ` ${styles.wideModal}` : ''}`}
             role="dialog"
             aria-modal="true"
             aria-label="Search documentation"
@@ -517,6 +558,7 @@ export default function SearchBar() {
                 type="text"
                 className={styles.input}
                 placeholder="Search or ask…"
+                data-cy="search-modal-input"
                 aria-label="Search or ask AI"
                 role="combobox"
                 aria-expanded={isOpen}
@@ -554,12 +596,15 @@ export default function SearchBar() {
               </button>
             </div>
 
-            {/* Results / AI / Recents area */}
+            {/* Results / AI / Recents area.
+                ARIA: when two-column mode is active the outer panel becomes a region so it
+                can legally contain non-option children. The listbox id moves inside to the
+                page-results column so aria-controls on the combobox still points correctly. */}
             <div
               ref={panelRef}
-              id={listboxId}
+              id={hasKnowledgeResults ? undefined : listboxId}
               className={styles.panel}
-              role={aiActive ? 'region' : 'listbox'}
+              role={aiActive ? 'region' : hasKnowledgeResults ? 'region' : 'listbox'}
               aria-label={aiActive ? 'AI Answer' : 'Search results'}
               aria-live={aiActive ? 'polite' : undefined}
               aria-busy={aiActive ? isStreaming : isSearching}
@@ -726,76 +771,247 @@ export default function SearchBar() {
                     </div>
                   )}
 
-                  {/* ── Search results ── */}
-                  <div className={styles.resultsList}>
-                    {isLocalFallback && (
-                      <div className={styles.localFallbackHint} data-cy="local-fallback-hint">
-                        Search service unavailable · showing local results
-                      </div>
-                    )}
-                    {isApproximateMatch && (
-                      <div className={styles.approximateHint}>
-                        Showing approximate matches for &ldquo;{debouncedQuery}&rdquo;
-                      </div>
-                    )}
-                    {isSearching ? (
-                      <div className={styles.skeletonList} aria-hidden="true">
-                        {[88, 72, 95, 65].map((w, i) => (
-                          <div key={i} className={styles.skeletonItem}>
-                            <div className={styles.skeletonIcon} />
-                            <div className={styles.skeletonContent}>
-                              <div className={styles.skeletonTitle} style={{ width: `${w}%` }} />
-                              <div className={styles.skeletonSnippet} style={{ width: `${Math.max(w - 15, 50)}%` }} />
-                              <div className={styles.skeletonPath} style={{ width: '30%' }} />
-                            </div>
+                  {/* ── Search results — single column or two-column layout ── */}
+                  {hasKnowledgeResults ? (
+                    <div className={styles.twoColBody}>
+                      {/* Left: page results — owns the listbox in two-column mode */}
+                      <div
+                        id={listboxId}
+                        role="listbox"
+                        aria-label="Page results"
+                        className={styles.pageCol}
+                      >
+                        <div className={styles.knowledgeSectionHeader} role="presentation" aria-hidden="true">
+                          <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
+                          Pages
+                        </div>
+                        {isLocalFallback && (
+                          <div className={styles.localFallbackHint} data-cy="local-fallback-hint">
+                            Search service unavailable · showing local results
                           </div>
-                        ))}
-                      </div>
-                    ) : results.length === 0 && query ? (
-                      <div className={styles.empty}>
-                        <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
-                        <span>No results for &ldquo;{query}&rdquo;</span>
-                      </div>
-                    ) : (() => {
-                      let lastCategory = null;
-                      return sortByUserType(results, userType).map((result, i) => {
-                        const showHeader = result.category && result.category !== lastCategory;
-                        lastCategory = result.category;
-                        const breadcrumb = filepathToBreadcrumb(result.filepath, result.sidebar_label, result.title);
-                        return (
-                          <React.Fragment key={result.id}>
-                            {showHeader && (
-                              <div className={styles.groupHeader} role="presentation" aria-label={result.category}>
-                                {toPascalCase(result.category)}
+                        )}
+                        {isApproximateMatch && (
+                          <div className={styles.approximateHint}>
+                            Showing approximate matches for &ldquo;{debouncedQuery}&rdquo;
+                          </div>
+                        )}
+                        {isSearching ? (
+                          <div className={styles.skeletonList} aria-hidden="true">
+                            {[88, 72, 95, 65].map((w, i) => (
+                              <div key={i} className={styles.skeletonItem}>
+                                <div className={styles.skeletonIcon} />
+                                <div className={styles.skeletonContent}>
+                                  <div className={styles.skeletonTitle} style={{ width: `${w}%` }} />
+                                  <div className={styles.skeletonSnippet} style={{ width: `${Math.max(w - 15, 50)}%` }} />
+                                  <div className={styles.skeletonPath} style={{ width: '30%' }} />
+                                </div>
                               </div>
-                            )}
+                            ))}
+                          </div>
+                        ) : results.length === 0 && query ? (
+                          <div className={styles.empty}>
+                            <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
+                            <span>No page results for &ldquo;{query}&rdquo;</span>
+                          </div>
+                        ) : (() => {
+                          let lastCategory = null;
+                          return sortByUserType(results, userType).map((result, i) => {
+                            const showHeader = result.category && result.category !== lastCategory;
+                            lastCategory = result.category;
+                            const breadcrumb = filepathToBreadcrumb(result.filepath, result.sidebar_label, result.title);
+                            return (
+                              <React.Fragment key={result.id}>
+                                {showHeader && (
+                                  <div className={styles.groupHeader} role="presentation" aria-label={result.category}>
+                                    {toPascalCase(result.category)}
+                                  </div>
+                                )}
+                                <button
+                                  id={`search-opt-${i}`}
+                                  role="option"
+                                  aria-selected={i === activeIndex}
+                                  aria-label={`${result.title}${breadcrumb ? `, ${breadcrumb}` : ''}`}
+                                  className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
+                                  data-cy="search-result"
+                                  onMouseEnter={() => setActiveIndex(i)}
+                                  onClick={() => navigate(result)}
+                                >
+                                  <span className={styles.resultIconWrap} aria-hidden="true">
+                                    <FontAwesomeIcon icon={faFileLines} />
+                                  </span>
+                                  <span className={styles.resultContent}>
+                                    <span className={styles.resultTitle}>
+                                      {result.title}
+                                      <AudienceBadge resultUserType={result.user_type} currentUserType={userType} />
+                                    </span>
+                                    {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
+                                    {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
+                                  </span>
+                                  <FontAwesomeIcon icon={faChevronRight} className={styles.resultChevron} aria-hidden="true" />
+                                </button>
+                              </React.Fragment>
+                            );
+                          });
+                        })()}
+                      </div>
+
+                      {/* Right: terms + FAQ */}
+                      <div
+                        role="region"
+                        aria-label="Glossary terms and FAQ"
+                        className={styles.knowledgeCol}
+                      >
+
+                        {termResults.length > 0 && (
+                          <div className={styles.knowledgeSection}>
+                            <div className={styles.knowledgeSectionHeader}>
+                              <FontAwesomeIcon icon={faBook} aria-hidden="true" />
+                              Terms
+                            </div>
+                        {termResults.map((t, ki) => {
+                              const itemIdx = termStartIndex + ki;
+                              return (
+                              <button
+                                key={`${t.term}-${t.userType}`}
+                                id={`search-opt-${itemIdx}`}
+                                role="option"
+                                aria-selected={activeIndex === itemIdx}
+                                className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
+                                data-cy="knowledge-term-result"
+                                onMouseEnter={() => setActiveIndex(itemIdx)}
+                                onClick={() => navigateKnowledge(`/support/help-center-${t.userType}?q=${encodeURIComponent(t.term)}`, t.term)}
+                              >
+                                <span className={styles.knowledgeItemTitle}>
+                                  <span>{t.term}</span>
+                                  <AudienceBadge resultUserType={t.userType} currentUserType={userType} />
+                                </span>
+                                <span className={styles.knowledgeItemSnippet}>
+                                  {stripMarkdownSimple(t.definition).slice(0, 90)}{t.definition.length > 90 ? '…' : ''}
+                                </span>
+                              </button>
+                              );
+                            })}
                             <button
-                              id={`search-opt-${i}`}
-                              role="option"
-                              aria-selected={i === activeIndex}
-                              aria-label={`${result.title}${breadcrumb ? `, ${breadcrumb}` : ''}`}
-                              className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
-                              onMouseEnter={() => setActiveIndex(i)}
-                              onClick={() => navigate(result)}
+                              className={styles.knowledgeSeeAll}
+                              onClick={() => navigateKnowledge(`/support/help-center-${userType}`, null)}
                             >
-                              <span className={styles.resultIconWrap} aria-hidden="true">
-                                <FontAwesomeIcon icon={faFileLines} />
-                              </span>
-                              <span className={styles.resultContent}>
-                               <span className={styles.resultTitle}>
-                                 {result.title}
-                                 <AudienceBadge resultUserType={result.user_type} currentUserType={userType} />
-                               </span>
-                                {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
-                                {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
-                              </span>
-                              <FontAwesomeIcon icon={faChevronRight} className={styles.resultChevron} aria-hidden="true" />
+                              View all terms →
                             </button>
-                          </React.Fragment>
-                        );
-                      });
-                    })()}
-                  </div>
+                          </div>
+                        )}
+
+                        {faqResults.length > 0 && (
+                          <div className={styles.knowledgeSection}>
+                            <div className={styles.knowledgeSectionHeader}>
+                              <FontAwesomeIcon icon={faCircleQuestion} aria-hidden="true" />
+                              FAQ
+                            </div>
+                            {faqResults.map((f, ki) => {
+                              const itemIdx = faqStartIndex + ki;
+                              return (
+                              <button
+                                key={ki}
+                                id={`search-opt-${itemIdx}`}
+                                role="option"
+                                aria-selected={activeIndex === itemIdx}
+                                className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
+                                data-cy="knowledge-faq-result"
+                                onMouseEnter={() => setActiveIndex(itemIdx)}
+                                onClick={() => navigateKnowledge(`/support/help-center-${f.userType}?q=${encodeURIComponent(f.question)}#faq`, f.question)}
+                              >
+                                <span className={styles.knowledgeItemTitle}>
+                                  <span>{f.question}</span>
+                                  <AudienceBadge resultUserType={f.userType} currentUserType={userType} />
+                                </span>
+                                <span className={styles.knowledgeItemSnippet}>
+                                  {stripMarkdownSimple(f.answer).slice(0, 90)}{f.answer.length > 90 ? '…' : ''}
+                                </span>
+                              </button>
+                              );
+                            })}
+                            <button
+                              className={styles.knowledgeSeeAll}
+                              onClick={() => navigateKnowledge(`/support/help-center-${userType}#faq`, null)}
+                            >
+                              View all FAQ →
+                            </button>
+                          </div>
+                        )}
+
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={styles.resultsList}>
+                      {isLocalFallback && (
+                        <div className={styles.localFallbackHint} data-cy="local-fallback-hint">
+                          Search service unavailable · showing local results
+                        </div>
+                      )}
+                      {isApproximateMatch && (
+                        <div className={styles.approximateHint}>
+                          Showing approximate matches for &ldquo;{debouncedQuery}&rdquo;
+                        </div>
+                      )}
+                      {isSearching ? (
+                        <div className={styles.skeletonList} aria-hidden="true">
+                          {[88, 72, 95, 65].map((w, i) => (
+                            <div key={i} className={styles.skeletonItem}>
+                              <div className={styles.skeletonIcon} />
+                              <div className={styles.skeletonContent}>
+                                <div className={styles.skeletonTitle} style={{ width: `${w}%` }} />
+                                <div className={styles.skeletonSnippet} style={{ width: `${Math.max(w - 15, 50)}%` }} />
+                                <div className={styles.skeletonPath} style={{ width: '30%' }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : results.length === 0 && query ? (
+                        <div className={styles.empty}>
+                          <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
+                          <span>No results for &ldquo;{query}&rdquo;</span>
+                        </div>
+                      ) : (() => {
+                        let lastCategory = null;
+                        return sortByUserType(results, userType).map((result, i) => {
+                          const showHeader = result.category && result.category !== lastCategory;
+                          lastCategory = result.category;
+                          const breadcrumb = filepathToBreadcrumb(result.filepath, result.sidebar_label, result.title);
+                          return (
+                            <React.Fragment key={result.id}>
+                              {showHeader && (
+                                <div className={styles.groupHeader} role="presentation" aria-label={result.category}>
+                                  {toPascalCase(result.category)}
+                                </div>
+                              )}
+                              <button
+                                id={`search-opt-${i}`}
+                                role="option"
+                                aria-selected={i === activeIndex}
+                                aria-label={`${result.title}${breadcrumb ? `, ${breadcrumb}` : ''}`}
+                                className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
+                                data-cy="search-result"
+                                onMouseEnter={() => setActiveIndex(i)}
+                                onClick={() => navigate(result)}
+                              >
+                                <span className={styles.resultIconWrap} aria-hidden="true">
+                                  <FontAwesomeIcon icon={faFileLines} />
+                                </span>
+                                <span className={styles.resultContent}>
+                                  <span className={styles.resultTitle}>
+                                    {result.title}
+                                    <AudienceBadge resultUserType={result.user_type} currentUserType={userType} />
+                                  </span>
+                                  {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
+                                  {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
+                                </span>
+                                <FontAwesomeIcon icon={faChevronRight} className={styles.resultChevron} aria-hidden="true" />
+                              </button>
+                            </React.Fragment>
+                          );
+                        });
+                      })()}
+                    </div>
+                  )}
 
                   {/* ── Ask AI row — shown at bottom for keyword (non-question) queries ── */}
                   {aiEnabled && query && !aiAtTop && (
@@ -849,4 +1065,4 @@ export default function SearchBar() {
       )}
     </>
   );
-}
+}

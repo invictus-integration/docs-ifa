@@ -37,6 +37,56 @@ $OutputFile = Join-Path $Root 'knowledge.json'
 $StaticSearchFile = Join-Path $Root 'src' 'data' 'search-index.json'
 
 # ---------------------------------------------------------------------------
+# Data sources: src/data JSON files whose content should also be indexed.
+# Each entry maps a data file to the versioned doc page that renders it, so
+# search results can deep-link back to the right page with a pre-filled query.
+# Add a new entry here whenever a new data JSON file needs to be searchable.
+# ---------------------------------------------------------------------------
+$DataSources = @(
+    @{
+        File         = 'faq.v6.json'
+        Version      = 'v6.0.0'
+        Type         = 'faq'
+        # Filepath relative to versioned_docs/version-<ver>/ — drives URL resolution and user_type lookup.
+        DocFilepath  = 'support/faq.mdx'
+        Category     = 'support'
+        SidebarLabel = 'FAQ'
+    }
+    @{
+        File         = 'framework.v6.bicep.parameters.json'
+        Version      = 'v6.0.0'
+        Type         = 'parameters'
+        DocFilepath  = 'framework/installation/index.mdx'
+        Category     = 'framework'
+        SidebarLabel = 'Bicep parameter'
+    }
+    @{
+        File         = 'dashboard.v6.bicep.parameters.json'
+        Version      = 'v6.0.0'
+        Type         = 'parameters'
+        DocFilepath  = 'dashboard/installation/index.mdx'
+        Category     = 'dashboard'
+        SidebarLabel = 'Bicep parameter'
+    }
+    @{
+        File         = 'glossary.v6.json'
+        Version      = 'v6.0.0'
+        Type         = 'glossary'
+        DocFilepath  = 'support/glossary-technical.mdx'
+        Category     = 'support'
+        SidebarLabel = 'Glossary'
+    }
+    @{
+        File         = 'glossary.v6.json'
+        Version      = 'v6.0.0'
+        Type         = 'glossary'
+        DocFilepath  = 'support/glossary-business.mdx'
+        Category     = 'support'
+        SidebarLabel = 'Glossary'
+    }
+)
+
+# ---------------------------------------------------------------------------
 # Load .env (values already in environment take precedence)
 # ---------------------------------------------------------------------------
 $envFile = Join-Path $Root '.env'
@@ -84,6 +134,7 @@ $IndexSchema = [ordered]@{
         [ordered]@{ name = 'sidebar_label'; type = 'Edm.String'; key = $false; searchable = $true; filterable = $false }
         [ordered]@{ name = 'version'; type = 'Edm.String'; key = $false; searchable = $false; filterable = $true; facetable = $true }
         [ordered]@{ name = 'user_type'; type = 'Edm.String'; key = $false; searchable = $false; filterable = $true; facetable = $true }
+        [ordered]@{ name = 'anchor'; type = 'Edm.String'; key = $false; searchable = $false; filterable = $false; retrievable = $true }
     )
 }
 
@@ -193,6 +244,22 @@ function Get-Category {
 }
 
 # ---------------------------------------------------------------------------
+# Sidebar sets helper — loads and returns the business/technical ID sets for a
+# given version. Used by both Invoke-GenerateKnowledge and
+# Invoke-GenerateDataJsonKnowledge so user_type resolution is consistent.
+# ---------------------------------------------------------------------------
+function Get-VersionSidebarSets {
+    param([string]$Version)
+    $sidebarFile = Join-Path $Root 'versioned_sidebars' "version-$Version-sidebars.json"
+    $sidebar = Get-Content $sidebarFile -Raw | ConvertFrom-Json
+    $businessIds  = [System.Collections.Generic.HashSet[string]]::new()
+    $technicalIds = [System.Collections.Generic.HashSet[string]]::new()
+    Add-SidebarIds -Items $sidebar.business_users  -Ids $businessIds
+    Add-SidebarIds -Items $sidebar.technical_users -Ids $technicalIds
+    return @{ Business = $businessIds; Technical = $technicalIds }
+}
+
+# ---------------------------------------------------------------------------
 # Step 1: Generate knowledge JSON
 # ---------------------------------------------------------------------------
 function Invoke-GenerateKnowledge {
@@ -253,6 +320,132 @@ function Invoke-GenerateKnowledge {
     Write-Host "   📊 user_type distribution:"
     $dist | ForEach-Object { Write-Host "      $($_.type): $($_.Count)" }
 
+    return , $docs.ToArray()
+}
+
+# ---------------------------------------------------------------------------
+# Step 1b: Generate knowledge from src/data JSON files
+# ---------------------------------------------------------------------------
+function Invoke-GenerateDataJsonKnowledge {
+    param(
+        [object[]]$Sources,
+        [string[]]$Versions
+    )
+
+    $dataDir = Join-Path $Root 'src' 'data'
+    $docs    = [System.Collections.Generic.List[object]]::new()
+
+    # Pre-load sidebar sets per version — reuses the same logic as Invoke-GenerateKnowledge
+    # so user_type resolution is consistent across md/mdx and data JSON documents.
+    $sidebarCache = @{}
+    foreach ($ver in ($Sources | Select-Object -ExpandProperty Version -Unique)) {
+        if ($Versions -contains $ver) {
+            $sidebarCache[$ver] = Get-VersionSidebarSets -Version $ver
+        }
+    }
+
+    Write-Host "`n📋 Generating knowledge from src/data JSON files..."
+
+    foreach ($source in $Sources) {
+        # Skip sources whose version is not in the active versions list.
+        if ($Versions -notcontains $source.Version) {
+            Write-Host "   ⏭  Skipping $($source.File) — version $($source.Version) not in versions.json"
+            continue
+        }
+
+        $filePath = Join-Path $dataDir $source.File
+        if (-not (Test-Path $filePath)) {
+            Write-Warning "   ⚠️  Data file not found: $($source.File) — skipping"
+            continue
+        }
+
+        # Resolve user_type from sidebar (same logic as for md/mdx documents).
+        $sidebarId = Get-SidebarId -Filepath $source.DocFilepath
+        $sets      = $sidebarCache[$source.Version]
+        $inB       = $sets -and $sets.Business.Contains($sidebarId)
+        $inT       = $sets -and $sets.Technical.Contains($sidebarId)
+        $userType  = if ($inB -and $inT) { 'both' }
+                     elseif ($inB)        { 'business' }
+                     elseif ($inT)        { 'technical' }
+                     else                 { $null }
+
+        $items    = Get-Content $filePath -Raw -Encoding utf8 | ConvertFrom-Json
+        $fileSlug = ($source.File -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
+        $count    = 0
+
+        switch ($source.Type) {
+            'faq' {
+                foreach ($item in $items) {
+                    # Build a stable, readable ID from the question text (capped at 60 chars).
+                    $slug = ($item.question -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
+                    if ($slug.Length -gt 60) { $slug = $slug.Substring(0, 60).TrimEnd('-') }
+                    $docs.Add([ordered]@{
+                        id            = "data-$fileSlug-$slug"
+                        title         = $item.question
+                        content       = if ($item.answer)      { $item.answer }      else { '' }
+                        filepath      = $source.DocFilepath
+                        category      = $source.Category
+                        sidebar_label = $source.SidebarLabel
+                        version       = $source.Version
+                        user_type     = $userType
+                        # Deep-link: pre-fills the FAQ component search so the matching item is
+                        # filtered and opened automatically when the user navigates to the result.
+                        anchor        = '?q=' + [System.Uri]::EscapeDataString($item.question)
+                    })
+                    $count++
+                }
+            }
+            'parameters' {
+                foreach ($item in $items) {
+                    $slug = ($item.name -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
+                    $docs.Add([ordered]@{
+                        id            = "data-$fileSlug-$slug"
+                        title         = $item.name
+                        content       = if ($item.description) { $item.description } else { '' }
+                        filepath      = $source.DocFilepath
+                        category      = $source.Category
+                        sidebar_label = $source.SidebarLabel
+                        version       = $source.Version
+                        user_type     = $userType
+                        # Deep-link: pre-fills the ParameterTable search so the row is visible,
+                        # and scrolls the page to the parameters section.
+                        anchor        = '?q=' + [System.Uri]::EscapeDataString($item.name) + '#bicep-template-parameters'
+                    })
+                    $count++
+                }
+            }
+            'glossary' {
+                # The glossary JSON contains entries for multiple userTypes.
+                # Each source entry targets one specific page (technical or business),
+                # so we filter terms whose userType matches the page's sidebar-derived userType.
+                $pageSlug = ($source.DocFilepath -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
+                foreach ($item in $items) {
+                    if ($item.userType -ne $userType) { continue }
+                    $slug = ($item.term -replace '[^a-zA-Z0-9]+', '-').ToLower().TrimEnd('-')
+                    # Include aliases in the searchable content so they surface in queries too.
+                    $aliasText = if ($item.aliases) { ' ' + ($item.aliases -join ' ') } else { '' }
+                    $docs.Add([ordered]@{
+                        id            = "data-$fileSlug-$pageSlug-$slug"
+                        title         = $item.term
+                        content       = (Get-SearchContent -Body ($item.definition + $aliasText))
+                        filepath      = $source.DocFilepath
+                        category      = $source.Category
+                        sidebar_label = $source.SidebarLabel
+                        version       = $source.Version
+                        user_type     = $userType
+                        # Deep-link: pre-fills the Glossary component search so the term is
+                        # highlighted and scrolled into view when the user lands on the page.
+                        anchor        = '?q=' + [System.Uri]::EscapeDataString($item.term)
+                    })
+                    $count++
+                }
+            }
+        }
+
+        Write-Host "   ✅ $count documents from $($source.File) (user_type: $($userType ?? 'none'))"
+    }
+
+    Write-Host "   📊 Total data-JSON documents: $($docs.Count)"
     return , $docs.ToArray()
 }
 
@@ -396,6 +589,9 @@ foreach ($version in $versions) {
     $versionDocs = [object[]](Invoke-GenerateKnowledge -Version $version)
     $allDocs.AddRange($versionDocs)
 }
+
+$dataDocs = [object[]](Invoke-GenerateDataJsonKnowledge -Sources $DataSources -Versions $versions)
+if ($dataDocs.Count -gt 0) { $allDocs.AddRange($dataDocs) }
 
 $output = [ordered]@{ value = $allDocs.ToArray() }
 $output | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputFile -Encoding utf8
