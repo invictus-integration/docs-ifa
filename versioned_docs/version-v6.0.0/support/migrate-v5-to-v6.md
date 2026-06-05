@@ -54,7 +54,7 @@ Pipeline/Bicep parameters changes. Please follow the installation guides to see 
 * [🔀 Update redirect URLs of the app registration](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri). Signing in via Microsoft Entra ID requires the new Dashboard Gateway URL.
 
 :::danger[Import before September 2026]
-If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10). This affects the following running apps/components:
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=Amqp;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10). This affects the following running apps/components:
 * PubSub
 :::
 
