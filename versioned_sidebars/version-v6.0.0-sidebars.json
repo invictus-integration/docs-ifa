@@ -29,7 +29,14 @@
         "dashboard/settings"
       ]
     },
-    "support/release-notes"
+    {
+      "type": "category",
+      "label": "Support",
+      "items": [
+        "support/release-notes",
+        "support/help-center-business"
+      ]
+    }
   ],
   "technical_users": [
     "technical",
@@ -97,7 +104,7 @@
       "items": [
         "support/migrate-v4-to-v5",
         "support/migrate-v5-to-v6",
-        "support/faq"
+        "support/help-center-technical"
       ]
     }
   ]

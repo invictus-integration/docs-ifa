@@ -1,0 +1,26 @@
+---
+sidebar_label: Help center
+hide_table_of_contents: true
+pagination_prev: null
+pagination_next: null
+---
+
+import Glossary from "@site/src/components/Glossary";
+import glossary from "@site/src/data/glossary.v6.json";
+import Faq from '@site/src/components/Faq';
+import faqData from '@site/src/data/faq.v6.json';
+
+# Help center for business users
+
+Browse terms and frequently asked questions below, or use the global search (`Ctrl+K`) to find something specific.
+
+<Glossary terms={glossary} userType="business" showSearch={false} unconstrained={true} />
+
+<span id="faq" aria-hidden="true"></span>
+
+## Frequently asked questions
+
+Got questions? You may find the answer here. If not, feel free to [create a support ticket](https://github.com/invictus-integration/docs-ifa/discussions/new?category=q-a).
+
+<Faq data={faqData} showSearch={false} unconstrained={true} />
+

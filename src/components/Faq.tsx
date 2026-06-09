@@ -2,12 +2,11 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronRight, faCircleQuestion, faMagnifyingGlass, faXmark, faFileCircleXmark, faChevronLeft, faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronRight, faCircleQuestion, faFileCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { useLocation, useHistory } from "@docusaurus/router";
 import highlightStyles from "./highlight.module.css";
-import inputStyles from "./tableSearchInput.module.css";
 import rowStyles from "./resultRow.module.css";
-import { streamAiResponse } from "./streamAiResponse";
 
 export type FaqEntry = {
   question: string;
@@ -66,71 +65,49 @@ const usePrefersReducedMotion = () => {
   return reduced;
 };
 
-export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; maxHeight?: string }) {
+export default function Faq({
+  data,
+  maxHeight = "300px",
+  showSearch = true,
+  unconstrained = false,
+}: {
+  data: FaqEntry[];
+  maxHeight?: string;
+  /** Hide the search input — URL ?q= param still applies the filter. Default: true. */
+  showSearch?: boolean;
+  /** Remove the max-height scroll cap — for full-page layouts. Default: false. */
+  unconstrained?: boolean;
+}) {
   const { siteConfig } = useDocusaurusContext();
-  const aiEnabled = !!(siteConfig.customFields?.aiEnabled);
   const reducedMotion = usePrefersReducedMotion();
+  const location = useLocation();
+  const history = useHistory();
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("q") ?? "";
+  });
   const normalizedSearch = search.toLowerCase();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const noTransition: React.CSSProperties = reducedMotion ? { transition: "none" } : {};
 
-  // AI state
-  const [aiActive, setAiActive] = useState(false);
-  const [aiAnswer, setAiAnswer] = useState("");
-  const [aiCitations, setAiCitations] = useState<any[]>([]);
-  const [aiError, setAiError] = useState("");
-  const [isStreaming, setIsStreaming] = useState(false);
-  const abortRef = useRef<AbortController | null>(null);
-  const [isMac, setIsMac] = useState(false);
+  // Sync search state when the URL changes without a full remount (SPA navigation).
   useEffect(() => {
-    if (typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform)) {
-      setIsMac(true);
-    }
-  }, []);
+    const q = new URLSearchParams(location.search).get("q") ?? "";
+    setSearch(prev => prev !== q ? q : prev);
+  }, [location.search]);
 
-  function askAi() {
-    if (!search.trim() || !aiEnabled) return;
-    abortRef.current?.abort();
-    const controller = new AbortController();
-    abortRef.current = controller;
-    setAiActive(true);
-    setAiAnswer("");
-    setAiCitations([]);
-    setAiError("");
-    setIsStreaming(true);
-    streamAiResponse({
-      question: search,
-      signal: controller.signal,
-      onChunk: (chunk: string) => setAiAnswer((prev) => prev + chunk),
-      onCitations: (citations: any[]) => setAiCitations(citations),
-      onDone: () => setIsStreaming(false),
-      onError: (err: any) => {
-        if (err?.name !== "AbortError" && err?.message !== "BodyStreamBuffer was aborted") {
-          setAiError(err.message ?? "Something went wrong.");
-        }
-        setIsStreaming(false);
-      },
-    });
-  }
-
-  function dismissAi() {
-    abortRef.current?.abort();
-    setAiActive(false);
-  }
-
+  // Only auto-focus the search when it exists in the layout
   useEffect(() => {
-    searchInputRef.current?.focus();
+    if (showSearch) searchInputRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    if (!search) dismissAi();
     setActiveIndex(-1);
   }, [search]);
 
@@ -206,6 +183,17 @@ export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; m
     setOpenIndex(null);
   }, [search]);
 
+  // When arriving with a pre-filled ?q= (e.g. from global search), automatically open
+  // the first matching item. Tracks the last opened query so it re-fires on new searches.
+  const lastAutoOpenedQuery = useRef("");
+  useEffect(() => {
+    if (search && search !== lastAutoOpenedQuery.current && filtered.length > 0) {
+      lastAutoOpenedQuery.current = search;
+      setOpenIndex(0);
+    }
+    if (!search) lastAutoOpenedQuery.current = "";
+  }, [filtered, search]);
+
   const highlightText = (text: string) => {
     if (!normalizedSearch) return <>{text}</>;
     const escaped = normalizedSearch.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -249,69 +237,8 @@ export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; m
         </a>.
       </span>
 
-      {/* Search input */}
-      <div className={inputStyles.wrapper}>
-        <span className={inputStyles.icon} aria-hidden={true}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </span>
-        <input
-          data-cy="search-input"
-          type="text"
-          placeholder="Search questions and answers..."
-          value={search}
-          ref={searchInputRef}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") { setSearch(""); return; }
-            if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && aiEnabled && search.trim()) {
-              askAi(); return;
-            }
-            if (e.key === "ArrowDown" && filtered.length > 0) {
-              e.preventDefault();
-              setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
-              return;
-            }
-            if (e.key === "ArrowUp" && activeIndex >= 0) {
-              e.preventDefault();
-              setActiveIndex(i => i <= 0 ? -1 : i - 1);
-              if (activeIndex === 0) searchInputRef.current?.focus();
-              return;
-            }
-            if (e.key === "Enter" && filtered.length === 0 && search) {
-              window.open(newDiscussionUrl(search), "_blank", "noopener,noreferrer");
-            }
-          }}
-          className={inputStyles.input}
-          aria-label="Search FAQ questions and answers"
-          aria-describedby="faq-search-description"
-          aria-controls="faq-results-list"
-          aria-expanded={!aiActive && filtered.length > 0}
-          aria-autocomplete="list"
-        />
-        {search ? (
-          <span className={inputStyles.rightSlot}>
-            <button
-              onClick={() => { setSearch(""); searchInputRef.current?.focus(); }}
-              className={inputStyles.clear}
-              aria-label="Clear search input"
-            >
-              <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
-            </button>
-            <button
-              onClick={() => { setSearch(""); searchInputRef.current?.blur(); }}
-              className={inputStyles.escBadge}
-              aria-label="Clear and dismiss"
-            >
-              <kbd>Esc</kbd>
-            </button>
-          </span>
-        ) : (
-          <span className={inputStyles.shortcut}>Press <kbd>/</kbd> to filter</span>
-        )}
-      </div>
-
       {/* Tag filter buttons */}
-      {!aiActive && <div className={rowStyles.tagWrapper} role="group" aria-label="Filter by tag">
+      {<div className={rowStyles.tagWrapper} role="group" aria-label="Filter by tag">
         {allTags.map((tag) => {
           const isActive = activeTags.includes(tag);
           return (
@@ -328,189 +255,94 @@ export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; m
         })}
       </div>}
 
-      {/* AI answer panel */}
-      {aiActive && (
-        <div
-          role="region"
-          aria-label="AI Answer"
-          aria-live="polite"
-          aria-busy={isStreaming}
-          className={rowStyles.aiPanel}
-        >
-          <div className={rowStyles.aiHeader}>
-            <button className={rowStyles.aiBack} onClick={dismissAi} aria-label="Back to results">
-              <FontAwesomeIcon icon={faChevronLeft} aria-hidden="true" />
-              Back to results
-            </button>
-            <span className={rowStyles.aiLabel}>
-              <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
-              </svg>
-              AI Answer
-              {isStreaming && <span className={rowStyles.streamingDot} aria-hidden="true" />}
-            </span>
-          </div>
-
-          <p className={rowStyles.aiQuestion}>&ldquo;{search}&rdquo;</p>
-
-          {aiError
-            ? <p className={rowStyles.aiError}>{aiError}</p>
-            : aiAnswer
-              ? (
-                <>
-                  <div className={rowStyles.aiAnswer}>
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {aiAnswer.replace(/\[doc\d+\]/g, '')}
-                    </ReactMarkdown>
-                  </div>
-                  {aiCitations.length > 0 && (
-                    <div className={rowStyles.aiSources}>
-                      <p className={rowStyles.aiSourcesLabel}>Related pages</p>
-                      <ul className={rowStyles.aiSourcesList}>
-                        {aiCitations.map((c: any, i: number) => {
-                          const segments = c.filepath
-                            ?.replace(/\.mdx?$/, '')
-                            .split('/')
-                            .map((s: string) => s.replace(/^\d+_/, '').replace(/-/g, ' '))
-                            .filter((s: string) => s && s !== 'index')
-                            .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1));
-                          const breadcrumb = segments?.join(' › ');
-                          const title = c.title || segments?.[segments.length - 1] || c.filepath;
-                          const url = `/${c.filepath?.replace(/\.mdx?$/, '').split('/').map((s: string) => s.replace(/^\d+_/, '')).filter(Boolean).join('/')}`;
-                          return (
-                            <li key={i}>
-                              <a href={url} className={rowStyles.aiSourceLink} target="_blank" rel="noopener noreferrer">
-                                <span className={rowStyles.aiSourceIconWrap} aria-hidden="true">
-                                  <FontAwesomeIcon icon={faFileLines} />
-                                </span>
-                                <span className={rowStyles.aiSourceContent}>
-                                  <span className={rowStyles.aiSourceTitle}>{title}</span>
-                                  {breadcrumb && <span className={rowStyles.aiSourcePath}>{breadcrumb}</span>}
-                                </span>
-                                <FontAwesomeIcon icon={faChevronRight} className={rowStyles.aiSourceChevron} aria-hidden="true" />
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
-                  {!isStreaming && (
-                    <p className={rowStyles.aiDisclaimer}>
-                      AI answers may be inaccurate — always verify against the documentation.
-                    </p>
-                  )}
-                </>
-              )
-              : <p className={rowStyles.aiPlaceholder}>Thinking…</p>
-          }
-        </div>
-      )}
-
-      {/* Results count */}
-      {!aiActive && filtered.length > 0 && (
-        <div data-cy="search-results-summary" style={resultCountStyle} aria-live="polite" aria-atomic="true">
-          Showing {filtered.length} question{filtered.length !== 1 ? "s" : ""}
-        </div>
-      )}
-
       {/* FAQ list / empty state */}
-      {!aiActive && <div>
+      {<div id="faq">
         {filtered.length > 0 ? (
           <>
-            <div id="faq-results-list" data-cy="faq-list" role="list" className={rowStyles.rowList} style={{ ...faqListWrapperStyle, maxHeight: `min(${maxHeight}, 50dvh)` }}>
-            {filtered.map((item, index) => {
-              const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
-              const isActive = activeIndex === index;
+            <div id="faq-results-list" data-cy="faq-list" role="list" className={rowStyles.rowList} style={unconstrained ? faqListWrapperStyle : { ...faqListWrapperStyle, maxHeight: `min(${maxHeight}, 50dvh)` }}>
+              {filtered.map((item, index) => {
+                const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
+                const isActive = activeIndex === index;
 
-              return (
-                <div key={index} role="listitem" data-cy="faq-item" data-tags={item.tags?.join(',') ?? ''}>
-                  <button
-                    ref={el => { itemRefs.current[index] = el; }}
-                    className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""} ${isActive ? rowStyles.rowFocused : ""}`}
-                    style={noTransition}
-                    onClick={() => toggleOpen(index)}
-                    aria-expanded={isOpen}
-                    aria-label={item.question}
-                    aria-setsize={filtered.length}
-                    aria-posinset={index + 1}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    onFocus={() => setFocusedIndex(index)}
-                    onBlur={() => setFocusedIndex(null)}
-                    onKeyDown={(e) => {
-                      if (e.key === "ArrowDown") { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, filtered.length - 1)); }
-                      else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIndex(i => { if (i <= 0) { searchInputRef.current?.focus(); return -1; } return i - 1; }); }
-                      else if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && aiEnabled && search.trim()) { e.preventDefault(); askAi(); }
-                    }}
-                  >
-                    {/* Left icon wrap */}
-                    <span className={rowStyles.iconWrap} aria-hidden={true}>
-                      <FontAwesomeIcon icon={faCircleQuestion} />
-                    </span>
-
-                    {/* Middle: question + version */}
-                    <span className={rowStyles.rowContent}>
-                      <span className={rowStyles.rowTitle}>
-                        {renderQuestion(item.question)}
-                      </span>
-                      {item.version && (
-                        <span className={rowStyles.badgeRow}>
-                          <span className={rowStyles.versionBadge} aria-label={`Applies to version ${item.version}`}>
-                            {item.version}
-                          </span>
-                        </span>
-                      )}
-                    </span>
-
-                    {/* Right: expand chevron */}
-                    <span className={rowStyles.chevron} aria-hidden={true}>
-                      <FontAwesomeIcon icon={isOpen ? faChevronDown : faChevronRight} />
-                    </span>
-                  </button>
-
-                  {isOpen && (
-                    <div
-                      data-cy="faq-answer"
-                      aria-label={`Answer: ${item.question}`}
-                      className={`${rowStyles.answerPanel} ${rowStyles.answerPanelOpen}`}
+                return (
+                  <div key={index} role="listitem" data-cy="faq-item" data-tags={item.tags?.join(',') ?? ''}>
+                    <button
+                      ref={el => { itemRefs.current[index] = el; }}
+                      className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""} ${isActive ? rowStyles.rowFocused : ""}`}
+                      style={noTransition}
+                      onClick={() => toggleOpen(index)}
+                      aria-expanded={isOpen}
+                      aria-label={item.question}
+                      aria-setsize={filtered.length}
+                      aria-posinset={index + 1}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      onFocus={() => setFocusedIndex(index)}
+                      onBlur={() => setFocusedIndex(null)}
+                      onKeyDown={(e) => {
+                        if (e.key === "ArrowDown") { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, filtered.length - 1)); }
+                        else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIndex(i => { if (i <= 0) { searchInputRef.current?.focus(); return -1; } return i - 1; }); }
+                      }}
                     >
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[[rehypeHighlightSearch, normalizedSearch]]}
-                        components={{
-                          a: ({ node, ...props }) => (
-                            <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle}>
-                              {props.children}
-                              <span style={srOnlyStyle}>(opens in new tab)</span>
-                            </a>
-                          ),
-                        }}
+                      {/* Left icon wrap */}
+                      <span className={rowStyles.iconWrap} aria-hidden={true}>
+                        <FontAwesomeIcon icon={faCircleQuestion} />
+                      </span>
+
+                      {/* Middle: question + version */}
+                      <span className={rowStyles.rowContent}>
+                        <span className={rowStyles.rowTitle}>
+                          {renderQuestion(item.question)}
+                        </span>
+                        {item.version && (
+                          <span className={rowStyles.badgeRow}>
+                            <span className={rowStyles.versionBadge} aria-label={`Applies to version ${item.version}`}>
+                              {item.version}
+                            </span>
+                          </span>
+                        )}
+                      </span>
+
+                      {/* Right: expand chevron */}
+                      <span className={rowStyles.chevron} aria-hidden={true}>
+                        <FontAwesomeIcon icon={isOpen ? faChevronDown : faChevronRight} />
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div
+                        data-cy="faq-answer"
+                        aria-label={`Answer: ${item.question}`}
+                        className={`${rowStyles.answerPanel} ${rowStyles.answerPanelOpen}`}
                       >
-                        {item.answer}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <div className={rowStyles.faqFooter}>
-            <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-            <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↵</kbd> open</span>
-            <span className={rowStyles.footerHint} aria-hidden="true"><kbd>Esc</kbd> clear</span>
-            {aiEnabled && search.trim() && (
-              <button className={rowStyles.footerAskAi} onClick={askAi} aria-label={`Ask AI: ${search}`}>
-                <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
-                </svg>
-                Ask AI <kbd>{isMac ? "⌘" : "Ctrl"}</kbd><kbd>↵</kbd>
-              </button>
-            )}
-          </div>
-        </>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          rehypePlugins={[[rehypeHighlightSearch, normalizedSearch]]}
+                          components={{
+                            a: ({ node, ...props }) => (
+                              <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+                                {props.children}
+                                <span style={srOnlyStyle}>(opens in new tab)</span>
+                              </a>
+                            ),
+                          }}
+                        >
+                          {item.answer}
+                        </ReactMarkdown>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <div className={rowStyles.faqFooter}>
+              <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+              <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↵</kbd> open</span>
+              <span className={rowStyles.footerHint} aria-hidden="true"><kbd>Esc</kbd> clear</span>
+            </div>
+          </>
         ) : (
-          search && !aiActive && (
+          search && (
             <div className={rowStyles.empty} role="status">
               <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
               <div className={rowStyles.emptyText}>
@@ -521,21 +353,16 @@ export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; m
                   Can't find what you're looking for?
                 </span>
                 <div className={rowStyles.emptyActions}>
-                  {aiEnabled && (
-                    <button className={rowStyles.emptyActionButton} onClick={askAi}>
-                      <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
-                      </svg>
-                      Ask AI <kbd>{isMac ? "⌘" : "Ctrl"}↵</kbd>
-                    </button>
-                  )}
                   <a
                     href={newDiscussionUrl(search)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={rowStyles.emptyActionLink}
                   >
-                    Open a GitHub discussion <kbd>Enter</kbd>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true" width="16" height="16" fill="currentColor">
+                      <path d="M237.9 461.4C237.9 463.4 235.6 465 232.7 465C229.4 465.3 227.1 463.7 227.1 461.4C227.1 459.4 229.4 457.8 232.3 457.8C235.3 457.5 237.9 459.1 237.9 461.4zM206.8 456.9C206.1 458.9 208.1 461.2 211.1 461.8C213.7 462.8 216.7 461.8 217.3 459.8C217.9 457.8 216 455.5 213 454.6C210.4 453.9 207.5 454.9 206.8 456.9zM251 455.2C248.1 455.9 246.1 457.8 246.4 460.1C246.7 462.1 249.3 463.4 252.3 462.7C255.2 462 257.2 460.1 256.9 458.1C256.6 456.2 253.9 454.9 251 455.2zM316.8 72C178.1 72 72 177.3 72 316C72 426.9 141.8 521.8 241.5 555.2C254.3 557.5 258.8 549.6 258.8 543.1C258.8 536.9 258.5 502.7 258.5 481.7C258.5 481.7 188.5 496.7 173.8 451.9C173.8 451.9 162.4 422.8 146 415.3C146 415.3 123.1 399.6 147.6 399.9C147.6 399.9 172.5 401.9 186.2 425.7C208.1 464.3 244.8 453.2 259.1 446.6C261.4 430.6 267.9 419.5 275.1 412.9C219.2 406.7 162.8 398.6 162.8 302.4C162.8 274.9 170.4 261.1 186.4 243.5C183.8 237 175.3 210.2 189 175.6C209.9 169.1 258 202.6 258 202.6C278 197 299.5 194.1 320.8 194.1C342.1 194.1 363.6 197 383.6 202.6C383.6 202.6 431.7 169 452.6 175.6C466.3 210.3 457.8 237 455.2 243.5C471.2 261.2 481 275 481 302.4C481 398.9 422.1 406.6 366.2 412.9C375.4 420.8 383.2 435.8 383.2 459.3C383.2 493 382.9 534.7 382.9 542.9C382.9 549.4 387.5 557.3 400.2 555C500.2 521.8 568 426.9 568 316C568 177.3 455.5 72 316.8 72zM169.2 416.9C167.9 417.9 168.2 420.2 169.9 422.1C171.5 423.7 173.8 424.4 175.1 423.1C176.4 422.1 176.1 419.8 174.4 417.9C172.8 416.3 170.5 415.6 169.2 416.9zM158.4 408.8C157.7 410.1 158.7 411.7 160.7 412.7C162.3 413.7 164.3 413.4 165 412C165.7 410.7 164.7 409.1 162.7 408.1C160.7 407.5 159.1 407.8 158.4 408.8zM190.8 444.4C189.2 445.7 189.8 448.7 192.1 450.6C194.4 452.9 197.3 453.2 198.6 451.6C199.9 450.3 199.3 447.3 197.3 445.4C195.1 443.1 192.1 442.8 190.8 444.4zM179.4 429.7C177.8 430.7 177.8 433.3 179.4 435.6C181 437.9 183.7 438.9 185 437.9C186.6 436.6 186.6 434 185 431.7C183.6 429.4 181 428.4 179.4 429.7z" />
+                    </svg>
+                    Open a GitHub discussion
                   </a>
                 </div>
               </div>
@@ -551,14 +378,9 @@ export default function Faq({ data, maxHeight = "300px" }: { data: FaqEntry[]; m
 
 const containerStyle: React.CSSProperties = { marginTop: "1rem" };
 
-const resultCountStyle: React.CSSProperties = {
-  marginBottom: "0.5rem",
-  fontSize: "0.9rem",
-  opacity: 0.7,
-};
-
 const faqListWrapperStyle: React.CSSProperties = {
   overflowY: "auto",
+  maxHeight: "300px",
 };
 
 const linkStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
