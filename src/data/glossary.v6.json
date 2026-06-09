@@ -6,7 +6,7 @@
   },
   {
     "term": "Flow",
-    "definition": "A named message chain — a logical grouping of related **flow traces** sharing a common integration origin. [Flows are organized in *folders*](/dashboard/flows#organizing-flows-in-folders) and defined by a name, optional mappings, and business properties.",
+    "definition": "A named message chain — a logical grouping of related **flow traces** sharing a common origin. [Flows are organized in *folders*](/dashboard/flows#organizing-flows-in-folders) and defined by a name, optional mappings, and business properties.",
     "userType": "technical"
   },
   {
