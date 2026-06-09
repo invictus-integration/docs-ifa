@@ -94,7 +94,7 @@
   },
   {
     "term": "Execution tree",
-    "definition": "The hierarchical view of parent and child Azure Logic App workflow runs linked within a single **flow trace**. Invictus builds this tree from the `x-iv-parent-workflow-run-id` **tracked property** set by developers when chaining workflows.\n\nThe execution tree is visible in the Dashboard flow detail view and shows the full processing chain for a message.",
+    "definition": "The hierarchical view of parent and child runs linked within a single **flow trace**. Invictus builds this tree from the `x-iv-parent-workflow-run-id` **tracked property** set by developers when chaining workflows.\n\nThe execution tree is visible in the Dashboard flow detail view and shows the full processing chain for a message.",
     "userType": "technical"
   },
   {
