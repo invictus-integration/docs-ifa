@@ -114,7 +114,7 @@
   },
   {
     "term": "Transco",
-    "definition": "An **Invictus Framework** component (originating from a BizTalk pattern) that enriches integration messages during processing. It can:\n\n- **Promote** values from an SQL database into the workflow context, using the message content or context to build the query.\n- **Transform** XML content using an XSLT stylesheet stored in Azure Blob Storage.",
+    "definition": "An **Invictus Framework** component (originating from a BizTalk pattern) that enriches messages during processing. It can:\n\n- **Promote** values from an SQL database into the message or context, using the message content or context to build the query.\n- **Transform** XML content using an XSLT stylesheet stored in Azure Blob Storage.",
     "userType": "technical"
   },
   {
