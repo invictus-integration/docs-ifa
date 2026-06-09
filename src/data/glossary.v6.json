@@ -24,7 +24,7 @@
     "aliases": [
       "import job"
     ],
-    "definition": "The process of ingesting **flow trace** data into the Dashboard — automatically via Logic Apps or Function Apps, or manually. Once imported, messages become visible and searchable in the flow monitoring view.",
+    "definition": "The process of ingesting **flow trace** data into the Dashboard — automatically via Logic Apps or Function Apps, or manually. Once imported, messages become visible and searchable in the Dashboard",
     "userType": "technical"
   },
   {
