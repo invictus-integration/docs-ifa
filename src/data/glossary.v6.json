@@ -40,7 +40,7 @@
     "aliases": [
       "Dashboard"
     ],
-    "definition": "An on-premise solution that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations. [Learn more on how to install the Invictus Dashboard](/dashboard/installation).",
+    "definition": "A solution that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations. [Learn more on how to install the Invictus Dashboard](/dashboard/installation).",
     "userType": "business"
   },
   {
