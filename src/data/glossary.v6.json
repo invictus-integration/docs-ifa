@@ -55,7 +55,7 @@
   },
   {
     "term": "Flow status",
-    "definition": "The state of a **flow trace** as shown in the Dashboard. There are four possible states:\n\n- **Active** — the message is currently being processed.\n- **Completed** — the message finished successfully.\n- **Error** — the message was suspended, dehydrated, or terminated with a failure.\n- **Ignored** — an operator manually dismissed the message (typically after reviewing a failure).",
+    "definition": "The state of a **flow trace** as shown in the Dashboard. There are four possible states:\n\n- **Active** — the message is currently being processed.\n- **Completed** — the message finished successfully.\n- **Error** — the message was suspended, dehydrated, or terminated with a failure.\n- **Ignored** — an operator manually dismissed the message (typically after reviewing a failure).\n- **Cancelled** — an operator manually cancelled the run and halted the message processing.",
     "userType": "business"
   },
   {
