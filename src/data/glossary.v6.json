@@ -32,7 +32,7 @@
     "aliases": [
       "Framework"
     ],
-    "definition": "A set of components that supports commonly used integration patterns in Azure Logic App workflows. [Learn more on how to install the Invictus Framework](/framework/installation).",
+    "definition": "A set of components that supports commonly used integration patterns in Azure. [Learn more on how to install the Invictus Framework](/framework/installation).",
     "userType": "business"
   },
   {
