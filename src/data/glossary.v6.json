@@ -32,7 +32,7 @@
     "aliases": [
       "Framework"
     ],
-    "definition": "A set of components that supports commonly used integration patterns in Azure. [Learn more on how to install the Invictus Framework](/framework/installation).",
+    "definition": "A set of components that supports commonly used integration patterns in Azure.",
     "userType": "business"
   },
   {
@@ -40,7 +40,7 @@
     "aliases": [
       "Dashboard"
     ],
-    "definition": "A solution that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations. [Learn more on how to install the Invictus Dashboard](/dashboard/installation).",
+    "definition": "A solution that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations.",
     "userType": "business"
   },
   {
