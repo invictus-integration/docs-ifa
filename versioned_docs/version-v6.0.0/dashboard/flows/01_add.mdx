@@ -8,6 +8,8 @@ import TabItem from '@theme/TabItem';
 import { OnlyFolderAdminsBadge, NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
 import { Flows, FlowTraces, FlowTraceImporting } from '@site/src/components/TermHighlight';
 import Breadcrumb from '@site/src/components/Breadcrumb';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCirclePlus} from '@fortawesome/free-regular-svg-icons';
 
 # Add new flows <OnlyFolderAdminsBadge/>
 Users can create [folders](./index.mdx#organizing-flows-in-folders) via the Dashboard to organize their <Flows/>.
@@ -29,10 +31,10 @@ Users can create [folders](./index.mdx#organizing-flows-in-folders) via the Dash
 <Breadcrumb paths={[`Your Flows`, `Click ••• of folder`, `Edit Folder Permissions`]} />
 
 You can allow both active Microsoft Entra ID groups and local users to access the flows in the folder. 
-Based on the [chosen role](../security/03_roles.md), the user receives their allowed permissions on the flow. 
+Based on the [chosen role](../security/03_roles.mdx), the user receives their allowed permissions on the flow. 
 
-:::info
-Users with the `[System admin]` role can access all flows in every folder available.
+:::info[Admins can access all flows]
+Users with the *System admin* role can access all flows in every folder available.
 :::
 </details>
 

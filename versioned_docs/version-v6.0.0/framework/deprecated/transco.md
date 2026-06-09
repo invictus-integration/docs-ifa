@@ -11,7 +11,7 @@ sidebar_class_name: hidden
 > 
 > For the supported version, please see [Transco V2](../transcoV2.mdx)
 >
-> For the migration guide from v1 to v2 see [here](../../support/migrate-v4-to-v5.md#migrate-transco)
+> For the migration guide from v1 to v2 see [here](../../support/migrate-v4-to-v5.mdx#migrate-transco)
 
 ## Introduction
 

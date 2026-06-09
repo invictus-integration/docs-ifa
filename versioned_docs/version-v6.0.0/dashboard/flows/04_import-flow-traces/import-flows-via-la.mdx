@@ -1,7 +1,15 @@
+---
+sidebar_label: Import via Logic Apps
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 import { OnlyFolderAdminsBadge, OnlyOperatorsBadge } from '@site/src/components/OnlyAdminsBadge'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faLink, faSquareCheck, faShield, faAt} from '@fortawesome/free-solid-svg-icons';
+import {faSquare, faCirclePlay} from '@fortawesome/free-regular-svg-icons';
+import Admonition from '@theme/Admonition';
 
 # Import flow traces via Azure Logic App workflows
 Invictus is fully supported to import flows from Azure Logic Apps. It allows to keep track of the **execution tree** of the ran workflows, plus with **tracked properties** you can trace specific data for your needs besides the general **diagnostic settings**.
@@ -19,22 +27,22 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     <Tabs groupId="la">
       <TabItem value="consumption" label="Consumption">
         :::warning
-        Make sure that the `Workflow runtime` diagnostic events is **✅ checked**, but the `AllMetrics` is **❌ unchecked**. Otherwise the app sends far too many events to the Event Hubs.
+        Make sure that the `Workflow runtime` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs.
         :::
 
         ![Diagnostic settings for Consumption](/images/dashboard/flowtrace/diagnostic-settings-la-consumption.png)
 
-        > 🔗 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
+        > <FontAwesomeIcon icon={faLink} /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
 
       </TabItem>
       <TabItem value="standard" label="Standard">
       :::warning
-      Make sure that the `Function Application Logs` diagnostic events is **✅ checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **❌ unchecked**. Otherwise the app sends far too many events to the Event Hubs with additional cost.
+      Make sure that the `Function Application Logs` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs with additional cost.
       :::
 
       ![Diagnostic settings for Standard](/images/dashboard/flowtrace/diagnostic-settings-la-standard.png)
     
-      > 🔗 See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=standard) on how this can be configured manually.
+      > <FontAwesomeIcon icon={faLink} /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=standard) on how this can be configured manually.
     
       </TabItem>
     </Tabs>
@@ -70,8 +78,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     </details>
   </Collapsible>
 
-  <Collapsible title="Map Dashboard flows to Azure Logic App workflow runs">
-  <OnlyFolderAdminsBadge/>
+  <Collapsible title={ <> Map Dashboard flows to Azure Logic App workflow runs <OnlyFolderAdminsBadge /></> }>
     
     Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../01_add.mdx):
     * WorkflowName (if present)
@@ -110,7 +117,9 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
   </Collapsible>
 
   <Collapsible title="Add Azure Logic App workflow results">
-    > 🛡️ You need to set some role assignments for this feature to function. Please see [Access Control Rights](../../installation/03_give_la_access.md) for more info.
+    <Admonition type="info" icon={<FontAwesomeIcon icon={faShield} />} title="Security and access rights">
+    You need to set some role assignments for this feature to function. Please see [Access Control Rights](../../installation/03_give_la_access.md) for more info.
+    </Admonition>
 
     The message content view allows the user to track the outputs and inputs of an action. The links are the friendly names set in the tracked properties of the "tracked" action. The links will point to their respectively input/output content. These are visible per Azure Logic App in the workflow events table. 
 
@@ -161,7 +170,7 @@ Take the preceding image as an example. If the user resubmit this flow via the D
 The resume function executes an "Azure Resubmit" for each failed function in the chain. Resume only works on messages with the status **Failed**. Also, the resume doesn't start from the first Logic App within its flow, as with the resubmit, but instead executes only the failed Logic Apps.
 {/* vale proselint.Diacritical = YES */}
 
-> ☝️ The only exception is that if a Parent Logic App of a failed Logic App has also failed. Then only the Parent executes.
+**The only exception** is that if a Parent Logic App of a failed Logic App has also failed. Then only the Parent executes.
 
 </TabItem>
 <TabItem value="ignore" label="Ignore">
@@ -178,13 +187,13 @@ When a user sets a message to ignore, its status changes and shows as follows:
 You can resume/resubmit flows via a custom interaction HTTP endpoint instead of the default Azure management URL. This resumes/resubmits the Azure Logic App workflow mapped to the flow (via **DSAV** and **Workflow name** properties).
 
 ### Configure flow for custom resume/resubmit
-Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The `(▷)` button tests whether the Dashboard can reach the URL.
+Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The <FontAwesomeIcon icon={faCirclePlay} /> button tests whether the Dashboard can reach the URL.
 
 A message pops up to show if the test was successful.
 
 ![Advanced settings test URL success](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
 
-You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, click the `(@)` button to open the HTTP headers dialog box where you can add custom HTTP headers.
+You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, click the <FontAwesomeIcon icon={faAt} /> button to open the HTTP headers dialog box where you can add custom HTTP headers.
 
 ![Advanced settings headers dialog inputted header](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header.png)
 

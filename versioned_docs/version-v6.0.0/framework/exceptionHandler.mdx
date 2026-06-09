@@ -7,6 +7,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
+import {faLightbulb} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 # Explain Logic App workflows failures with the <u>Exception Handler</u>
 
@@ -102,7 +104,9 @@ The function responds with a list of errors for the failed actions, for example:
 
 ## Stored Azure Logic App exceptions translations
 
-:bulb: The ExceptionHandler function makes use of the [RegexTranslator](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/regextranslation.md) component to translate the original error from the Logic App.
+:::note
+The ExceptionHandler function makes use of the [RegexTranslator](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/regextranslation.md) component to translate the original error from the Logic App.
+:::
 
 A solution has an Azure Logic App that used to return the generic `An action failed. No dependent actions succeeded` error. By using the Exception Handler, you can improve this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
 
