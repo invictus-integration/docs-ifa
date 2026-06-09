@@ -6,7 +6,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { OnlyAdminsBadge, NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faLock, faSlidersH} from '@fortawesome/free-solid-svg-icons'
+import {faLock, faSlidersH,faUser,faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import Breadcrumb from '@site/src/components/Breadcrumb';
 
 # Manage Users in the Dashboard
@@ -23,7 +23,7 @@ Use **Entra ID** users over local users for security reasons.
 <Tabs groupId="user-type" queryString>
 <TabItem value="entra-id" label="Entra ID" default>
 
-> 👤 Requires membership of a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
+> <FontAwesomeIcon icon={faUser} /> Requires membership of a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
 You can configure the Invictus Dashboard to [use existing users in Microsoft Entra ID groups](../installation/01_give_ad_access.mdx). This removes the need to work with local Dashboard users.
 
@@ -33,7 +33,7 @@ You can configure the Invictus Dashboard to [use existing users in Microsoft Ent
 Microsoft Entra ID users can sign in automatically into the Invictus Dashboard if that user is part of a [synced group into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
 :::warning[requires role]
-Make sure that the group has a [role assigned](./03_roles.md), otherwise the Dashboard will be unusable for the user.
+Make sure that the group has a [role assigned](./03_roles.mdx), otherwise the Dashboard will be unusable for the user.
 :::
 
 ![Entra ID user sign in](/images/dashboard/AdminAccount/adminAccount-4.jpg)
@@ -45,7 +45,7 @@ Make sure that the group has a [role assigned](./03_roles.md), otherwise the Das
 Click the delete icon to delete a user in the user list.
 
 ![delete azure user](/images/delete-azure-user.PNG)
-    > 👀 You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
+    > <FontAwesomeIcon icon={faMagnifyingGlass} /> You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
 
 </details>
 
@@ -80,7 +80,7 @@ Local users are entirely managed by the Invictus Dashboard. You can assign perso
 <details>
 <summary>**Add a local user to the Dashboard** <OnlyAdminsBadge/></summary>
 
-Local users can have a [role assigned](./03_roles.md).
+Local users can have a [role assigned](./03_roles.mdx).
 
 <Breadcrumb paths={[`Users`, `Add a new user`]} />
 
@@ -98,7 +98,7 @@ You can distinguish local users as they have a personal role assigned.
 <details>
 <summary>**Edit a local user's role in the Dashboard** <OnlyAdminsBadge/></summary>
 
-Local users can have a [role assigned](./03_roles.md).
+Local users can have a [role assigned](./03_roles.mdx).
 
 ![edit local user](/images/edit-local-user.PNG)
 

@@ -7,6 +7,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faArrowRight} from '@fortawesome/free-solid-svg-icons';
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
 # Convert between XML/JSON in Logic Apps workflows with the <u>XML-JSON Converter</u>
@@ -23,7 +25,7 @@ Invictus provides a **XML/JSON Converter** component which converts XML/JSON con
 * `/api/JsonToXml`: transforms incoming request with JSON contents to a response with the XML result. 
 
 <Tabs groupId="xml-json-conversions">
-<TabItem value="xml-json" label="XML ➡️ JSON">
+<TabItem value="xml-json" label="XML-JSON">
 
 The `/api/XmlToJson` endpoint transforms a provided BASE 64-encoded XML contents to a BASE 64-encoded JSON result. A XSLT transformation (stored in the Azure Blob Storage container called `xmltojsonconfigstore`) gets run beforehand to map the request in the right structure. This stored transformation gets referenced in the request. 
 
@@ -65,9 +67,11 @@ The `/api/XmlToJson` endpoint transforms a provided BASE 64-encoded XML contents
 }
 ```
 </details>
+
 </TabItem>
 
-<TabItem value="json-xml" label="JSON ➡️ XML">
+
+<TabItem value="json-xml" label="JSON-XML">
 
 The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON contents to a BASE 64-encoded XML result. A XSLT transformation (stored in the Azure Blob Storage container called `xmltojsonconfigstore`) gets run beforehand to map the request in the right structure. This stored transformation gets referenced in the request. 
 
