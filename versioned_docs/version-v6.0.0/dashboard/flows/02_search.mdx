@@ -10,13 +10,13 @@ import TabItem from '@theme/TabItem';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { Flow, FlowTraces } from "@site/src/components/TermHighlight";
 import { NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
-import { faAngleDown, faICursor, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faICursor, faMagnifyingGlass, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import { faCircle, faCircleDot, faCalendar, faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CheckBoxInput, DateInput, DropDownInput, TextInput, TableHeaderStyle, NoListStyle } from '@site/src/components/InputControls';
 
 # Search for messages in a flow
-<Breadcrumb paths={[`Your Flows`, `Click on a flow`]} />
+<Breadcrumb paths={[`Your Flows`, <><FontAwesomeIcon icon={faArrowPointer} /> Click on a flow</>]} />
 
 The Dashboard allows you to search for messages that went through a <Flow />. This helps with defect localization or verification of client integrations.
 With the <DropDownInput label="Select Flows" /> dropdown you can select one or more flows to search for related messages.  
