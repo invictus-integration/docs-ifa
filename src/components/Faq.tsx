@@ -2,7 +2,11 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronRight, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronRight, faCircleQuestion, faFileCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { useLocation, useHistory } from "@docusaurus/router";
+import highlightStyles from "./highlight.module.css";
+import rowStyles from "./resultRow.module.css";
 
 export type FaqEntry = {
   question: string;
@@ -28,7 +32,7 @@ const rehypeHighlightSearch = (search: string) => (tree: any) => {
               newChildren.push({
                 type: "element",
                 tagName: "mark",
-                properties: { style: "background-color:var(--ifm-color-primary);color:white" },
+                properties: { className: [highlightStyles.mark] },
                 children: [{ type: "text", value: part }],
               });
             } else {
@@ -61,20 +65,66 @@ const usePrefersReducedMotion = () => {
   return reduced;
 };
 
-export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; maxHeight?: string }) {
+export default function Faq({
+  data,
+  maxHeight = "300px",
+  showSearch = true,
+  unconstrained = false,
+}: {
+  data: FaqEntry[];
+  maxHeight?: string;
+  /** Hide the search input — URL ?q= param still applies the filter. Default: true. */
+  showSearch?: boolean;
+  /** Remove the max-height scroll cap — for full-page layouts. Default: false. */
+  unconstrained?: boolean;
+}) {
+  const { siteConfig } = useDocusaurusContext();
   const reducedMotion = usePrefersReducedMotion();
+  const location = useLocation();
+  const history = useHistory();
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [search, setSearch] = useState<string>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("q") ?? "";
+  });
   const normalizedSearch = search.toLowerCase();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const noTransition: React.CSSProperties = reducedMotion ? { transition: "none" } : {};
 
+  // Sync search state when the URL changes without a full remount (SPA navigation).
   useEffect(() => {
-    searchInputRef.current?.focus();
+    const q = new URLSearchParams(location.search).get("q") ?? "";
+    setSearch(prev => prev !== q ? q : prev);
+  }, [location.search]);
+
+  // Only auto-focus the search when it exists in the layout
+  useEffect(() => {
+    if (showSearch) searchInputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [search]);
+
+  useEffect(() => {
+    if (activeIndex >= 0) itemRefs.current[activeIndex]?.focus();
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
   const toggleOpen = (index: number) => {
@@ -133,6 +183,17 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
     setOpenIndex(null);
   }, [search]);
 
+  // When arriving with a pre-filled ?q= (e.g. from global search), automatically open
+  // the first matching item. Tracks the last opened query so it re-fires on new searches.
+  const lastAutoOpenedQuery = useRef("");
+  useEffect(() => {
+    if (search && search !== lastAutoOpenedQuery.current && filtered.length > 0) {
+      lastAutoOpenedQuery.current = search;
+      setOpenIndex(0);
+    }
+    if (!search) lastAutoOpenedQuery.current = "";
+  }, [filtered, search]);
+
   const highlightText = (text: string) => {
     if (!normalizedSearch) return <>{text}</>;
     const escaped = normalizedSearch.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -142,7 +203,7 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
       <>
         {parts.map((part, i) =>
           part.toLowerCase() === normalizedSearch ? (
-            <mark key={i} style={highlightStyle}>{part}</mark>
+            <mark key={i} className={highlightStyles.mark}>{part}</mark>
           ) : (
             part
           )
@@ -176,155 +237,83 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
         </a>.
       </span>
 
-      {/* Search input */}
-      <div style={searchWrapperStyle}>
-        <span style={searchIconStyle} aria-hidden={true}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </span>
-        <input
-          data-cy="search-input"
-          type="text"
-          placeholder="Search questions and answers..."
-          value={search}
-          ref={searchInputRef}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") { setSearch(""); return; }
-            if (e.key === "Enter" && filtered.length === 0 && search) {
-              window.open(newDiscussionUrl(search), "_blank", "noopener,noreferrer");
-            }
-          }}
-          style={{ ...searchInputStyle, ...noTransition }}
-          aria-label="Search FAQ questions and answers"
-          aria-describedby="faq-search-description"
-          onFocus={(e) => (e.currentTarget.style.boxShadow = focusBoxShadowStyle)}
-          onBlur={(e) => (e.currentTarget.style.boxShadow = defaultBoxShadowStyle)}
-        />
-        {search && (
-          <button
-            onClick={() => { setSearch(""); searchInputRef.current?.focus(); }}
-            style={clearButtonStyle}
-            aria-label="Clear search input"
-          >
-            &times;
-          </button>
-        )}
-      </div>
-
       {/* Tag filter buttons */}
-      <div style={tagWrapperStyle} role="group" aria-label="Filter by tag">
-        {allTags
-          .map((tag) => {
-            const isActive = activeTags.includes(tag);
-            const isHovered = hoveredTag === tag;
-
-            const style: React.CSSProperties = {
-              ...tagButtonStyle,
-              ...noTransition,
-              ...(isActive ? tagButtonActiveStyle : {}),
-              ...(isHovered
-                ? {
-                  backgroundColor: isActive
-                    ? "var(--ifm-color-primary-darkest)"
-                    : "var(--ifm-color-emphasis-300)",
-                }
-                : {}),
-            };
-
-            return (
-              <button
-                key={tag}
-                data-cy={tag}
-                onClick={() => toggleTag(tag)}
-                aria-pressed={isActive}
-                onMouseEnter={() => setHoveredTag(tag)}
-                onMouseLeave={() => setHoveredTag(null)}
-                style={style}
-              >
-                {tag}
-              </button>
-            );
-          })}
-      </div>
-
-      {/* Results count */}
-      <div data-cy="search-results-summary" style={resultCountStyle} aria-live="polite" aria-atomic="true">
-        Showing {filtered.length} question
-        {filtered.length !== 1 ? "s" : ""}
-      </div>
+      {<div className={rowStyles.tagWrapper} role="group" aria-label="Filter by tag">
+        {allTags.map((tag) => {
+          const isActive = activeTags.includes(tag);
+          return (
+            <button
+              key={tag}
+              data-cy={tag}
+              onClick={() => toggleTag(tag)}
+              aria-pressed={isActive}
+              className={`${rowStyles.tagButton} ${isActive ? rowStyles.tagButtonActive : ""}`}
+            >
+              {tag}
+            </button>
+          );
+        })}
+      </div>}
 
       {/* FAQ list / empty state */}
-      <div style={{ ...faqListWrapperStyle, maxHeight }}>
+      {<div id="faq">
         {filtered.length > 0 ? (
-          <div data-cy="faq-list" style={faqListStyle}>
-            {filtered.map((item, index) => {
-              const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
+          <>
+            <div id="faq-results-list" data-cy="faq-list" role="list" className={rowStyles.rowList} style={unconstrained ? faqListWrapperStyle : { ...faqListWrapperStyle, maxHeight: `min(${maxHeight}, 50dvh)` }}>
+              {filtered.map((item, index) => {
+                const isOpen = openIndex === index || answerOnlyMatchIndexes.has(index);
+                const isActive = activeIndex === index;
 
-              return (
-                <div
-                  data-cy="faq-item"
-                  key={index}
-                  style={{
-                    ...faqItemStyle,
-                    ...noTransition,
-                    ...(isOpen ? faqItemOpenStyle : {}),
-                    ...((hoveredIndex === index || focusedIndex === index) && !isOpen ? faqItemHoverStyle : {}),
-                  }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  <button
-                    style={{
-                      ...questionHeaderStyle,
-                      ...noTransition,
-                      ...(hoveredIndex === index && !isOpen ? questionHeaderHoverStyle : {}),
-                      ...(focusedIndex === index ? questionHeaderFocusStyle : {}),
-                    }}
-                    onClick={() => toggleOpen(index)}
-                    aria-expanded={isOpen}
-                    aria-label={item.question}
-                    onFocus={() => {
-                      setFocusedIndex(index);
-                    }}
-                    onBlur={() => {
-                      setFocusedIndex(null);
-                    }}
-                  >
-                    <div style={questionStyle}>
-                      <div style={questionRowStyle}>
-                        <FontAwesomeIcon
-                          icon={isOpen ? faChevronDown : faChevronRight}
-                          style={iconStyle}
-                          aria-hidden={true}
-                        />
-                        <span>{renderQuestion(item.question)}</span>
-                      </div>
-
-                      {item.version && (
-                        <span style={versionStyle} aria-label={`Applies to version ${item.version}`}>
-                          {item.version}
-                        </span>
-                      )}
-                    </div>
-
-                    <div
-                      style={tagContainerStyle}
-                      aria-label={`Tags: ${item.tags?.join(", ")}`}
+                return (
+                  <div key={index} role="listitem" data-cy="faq-item" data-tags={item.tags?.join(',') ?? ''}>
+                    <button
+                      ref={el => { itemRefs.current[index] = el; }}
+                      className={`${rowStyles.row} ${isOpen ? rowStyles.rowActive : ""} ${isActive ? rowStyles.rowFocused : ""}`}
+                      style={noTransition}
+                      onClick={() => toggleOpen(index)}
+                      aria-expanded={isOpen}
+                      aria-label={item.question}
+                      aria-setsize={filtered.length}
+                      aria-posinset={index + 1}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      onFocus={() => setFocusedIndex(index)}
+                      onBlur={() => setFocusedIndex(null)}
+                      onKeyDown={(e) => {
+                        if (e.key === "ArrowDown") { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, filtered.length - 1)); }
+                        else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIndex(i => { if (i <= 0) { searchInputRef.current?.focus(); return -1; } return i - 1; }); }
+                      }}
                     >
-                      {item.tags?.map((tag) => (
-                        <span key={tag} style={tagBadgeStyle} aria-hidden={true}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </button>
+                      {/* Left icon wrap */}
+                      <span className={rowStyles.iconWrap} aria-hidden={true}>
+                        <FontAwesomeIcon icon={faCircleQuestion} />
+                      </span>
 
-                  <div>
+                      {/* Middle: question + version */}
+                      <span className={rowStyles.rowContent}>
+                        <span className={rowStyles.rowTitle}>
+                          {renderQuestion(item.question)}
+                        </span>
+                        {item.version && (
+                          <span className={rowStyles.badgeRow}>
+                            <span className={rowStyles.versionBadge} aria-label={`Applies to version ${item.version}`}>
+                              {item.version}
+                            </span>
+                          </span>
+                        )}
+                      </span>
+
+                      {/* Right: expand chevron */}
+                      <span className={rowStyles.chevron} aria-hidden={true}>
+                        <FontAwesomeIcon icon={isOpen ? faChevronDown : faChevronRight} />
+                      </span>
+                    </button>
+
                     {isOpen && (
                       <div
                         data-cy="faq-answer"
                         aria-label={`Answer: ${item.question}`}
-                        style={answerStyle}
+                        className={`${rowStyles.answerPanel} ${rowStyles.answerPanelOpen}`}
                       >
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
@@ -343,23 +332,44 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
                       </div>
                     )}
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+            <div className={rowStyles.faqFooter}>
+              <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+              <span className={rowStyles.footerHint} aria-hidden="true"><kbd>↵</kbd> open</span>
+              <span className={rowStyles.footerHint} aria-hidden="true"><kbd>Esc</kbd> clear</span>
+            </div>
+          </>
         ) : (
           search && (
-            <div style={emptyStateStyle} role="status">
-              <p style={emptyStateTitleStyle}>No results found for <strong>"{search}"</strong>.</p>
-              <p style={emptyStateSubtitleStyle}>
-                Can't find what you're looking for? Press{" "}
-                <kbd style={kbdStyle}>Enter</kbd>{" "}
-                to open a new support ticket on GitHub with this question.
-              </p>
+            <div className={rowStyles.empty} role="status">
+              <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
+              <div className={rowStyles.emptyText}>
+                <span className={rowStyles.emptyTitle}>
+                  No questions match <strong>"{search}"</strong>
+                </span>
+                <span className={rowStyles.emptyHint}>
+                  Can't find what you're looking for?
+                </span>
+                <div className={rowStyles.emptyActions}>
+                  <a
+                    href={newDiscussionUrl(search)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={rowStyles.emptyActionLink}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true" width="16" height="16" fill="currentColor">
+                      <path d="M237.9 461.4C237.9 463.4 235.6 465 232.7 465C229.4 465.3 227.1 463.7 227.1 461.4C227.1 459.4 229.4 457.8 232.3 457.8C235.3 457.5 237.9 459.1 237.9 461.4zM206.8 456.9C206.1 458.9 208.1 461.2 211.1 461.8C213.7 462.8 216.7 461.8 217.3 459.8C217.9 457.8 216 455.5 213 454.6C210.4 453.9 207.5 454.9 206.8 456.9zM251 455.2C248.1 455.9 246.1 457.8 246.4 460.1C246.7 462.1 249.3 463.4 252.3 462.7C255.2 462 257.2 460.1 256.9 458.1C256.6 456.2 253.9 454.9 251 455.2zM316.8 72C178.1 72 72 177.3 72 316C72 426.9 141.8 521.8 241.5 555.2C254.3 557.5 258.8 549.6 258.8 543.1C258.8 536.9 258.5 502.7 258.5 481.7C258.5 481.7 188.5 496.7 173.8 451.9C173.8 451.9 162.4 422.8 146 415.3C146 415.3 123.1 399.6 147.6 399.9C147.6 399.9 172.5 401.9 186.2 425.7C208.1 464.3 244.8 453.2 259.1 446.6C261.4 430.6 267.9 419.5 275.1 412.9C219.2 406.7 162.8 398.6 162.8 302.4C162.8 274.9 170.4 261.1 186.4 243.5C183.8 237 175.3 210.2 189 175.6C209.9 169.1 258 202.6 258 202.6C278 197 299.5 194.1 320.8 194.1C342.1 194.1 363.6 197 383.6 202.6C383.6 202.6 431.7 169 452.6 175.6C466.3 210.3 457.8 237 455.2 243.5C471.2 261.2 481 275 481 302.4C481 398.9 422.1 406.6 366.2 412.9C375.4 420.8 383.2 435.8 383.2 459.3C383.2 493 382.9 534.7 382.9 542.9C382.9 549.4 387.5 557.3 400.2 555C500.2 521.8 568 426.9 568 316C568 177.3 455.5 72 316.8 72zM169.2 416.9C167.9 417.9 168.2 420.2 169.9 422.1C171.5 423.7 173.8 424.4 175.1 423.1C176.4 422.1 176.1 419.8 174.4 417.9C172.8 416.3 170.5 415.6 169.2 416.9zM158.4 408.8C157.7 410.1 158.7 411.7 160.7 412.7C162.3 413.7 164.3 413.4 165 412C165.7 410.7 164.7 409.1 162.7 408.1C160.7 407.5 159.1 407.8 158.4 408.8zM190.8 444.4C189.2 445.7 189.8 448.7 192.1 450.6C194.4 452.9 197.3 453.2 198.6 451.6C199.9 450.3 199.3 447.3 197.3 445.4C195.1 443.1 192.1 442.8 190.8 444.4zM179.4 429.7C177.8 430.7 177.8 433.3 179.4 435.6C181 437.9 183.7 438.9 185 437.9C186.6 436.6 186.6 434 185 431.7C183.6 429.4 181 428.4 179.4 429.7z" />
+                    </svg>
+                    Open a GitHub discussion
+                  </a>
+                </div>
+              </div>
             </div>
           )
         )}
-      </div>
+      </div>}
     </div>
   );
 }
@@ -368,175 +378,9 @@ export default function Faq({ data, maxHeight = "600px" }: { data: FaqEntry[]; m
 
 const containerStyle: React.CSSProperties = { marginTop: "1rem" };
 
-const searchWrapperStyle: React.CSSProperties = { marginBottom: "1rem", position: "relative" };
-
-const searchInputStyle: React.CSSProperties = {
-  padding: "0.5rem 2.5rem 0.5rem 2.2rem",
-  width: "100%",
-  borderRadius: "0.5rem",
-  border: "2px solid var(--ifm-color-primary)",
-  background: "var(--ifm-navbar-search-input-background-color)",
-  color: "var(--ifm-color-gray-900)",
-  fontSize: "1rem",
-  outline: "none",
-  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-  transition: "all 0.2s ease",
-};
-
-const searchIconStyle: React.CSSProperties = {
-  position: "absolute",
-  left: "0.75rem",
-  top: "50%",
-  transform: "translateY(-50%)",
-  color: "var(--ifm-color-primary)",
-  pointerEvents: "none",
-};
-
-const clearButtonStyle: React.CSSProperties = {
-  position: "absolute",
-  right: "0.75rem",
-  top: "50%",
-  transform: "translateY(-50%)",
-  background: "none",
-  border: "none",
-  cursor: "pointer",
-  fontSize: "1.5rem",
-  color: "var(--ifm-color-primary)",
-};
-
-const focusBoxShadowStyle = "0 0 0 3px var(--ifm-color-primary)";
-const defaultBoxShadowStyle = "0 2px 6px rgba(0,0,0,0.1)";
-
-const tagWrapperStyle: React.CSSProperties = { marginBottom: "1rem" };
-
-const tagButtonStyle: React.CSSProperties = {
-  margin: "0.25rem",
-  padding: "4px 8px",
-  borderRadius: "6px",
-  border: "1px solid var(--ifm-form-border-color)",
-  cursor: "pointer",
-  fontSize: "0.85rem",
-  transition: "all 0.15s ease",
-};
-
-const tagButtonActiveStyle: React.CSSProperties = {
-  border: "2px solid var(--ifm-color-primary)",
-  backgroundColor: "var(--ifm-color-primary)",
-  color: "white",
-};
-
-const resultCountStyle: React.CSSProperties = {
-  marginBottom: "0.5rem",
-  fontSize: "0.9rem",
-  opacity: 0.7,
-};
-
 const faqListWrapperStyle: React.CSSProperties = {
   overflowY: "auto",
-  borderRadius: "8px",
-  padding: "0.75rem",
-};
-
-const faqListStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "1rem",
-};
-
-const faqItemStyle: React.CSSProperties = {
-  border: "1px solid var(--ifm-color-emphasis-300)",
-  borderRadius: "8px",
-  overflow: "hidden",
-  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-  backgroundColor: "var(--ifm-background-surface-color)",
-  cursor: "pointer",
-  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-};
-
-const faqItemOpenStyle: React.CSSProperties = {
-  borderColor: "var(--ifm-color-primary)",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
-};
-
-const faqItemHoverStyle: React.CSSProperties = {
-  borderColor: "var(--ifm-color-primary-light)",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-};
-
-const questionHeaderStyle: React.CSSProperties = {
-  width: "100%",
-  display: "block",
-  textAlign: "left",
-  padding: 0,
-  border: "none",
-  cursor: "pointer",
-  background: "var(--ifm-color-emphasis-200)",
-  transition: "background 0.15s ease",
-  outline: "2px solid transparent",
-  outlineOffset: "-2px",
-};
-
-const questionHeaderHoverStyle: React.CSSProperties = {
-  background: "var(--ifm-color-emphasis-300)",
-};
-
-const questionHeaderFocusStyle: React.CSSProperties = {
-  outline: "2px solid var(--ifm-color-primary)",
-  outlineOffset: "-2px",
-};
-
-const questionStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "1rem 1.25rem",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  fontWeight: 600,
-  fontSize: "1rem",
-  color: "var(--ifm-font-color-base)",
-};
-
-const questionRowStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "0.5rem",
-  flex: 1,
-  minWidth: 0,
-};
-
-const iconStyle: React.CSSProperties = {
-  color: "var(--ifm-color-primary)",
-};
-
-const versionStyle: React.CSSProperties = {
-  fontSize: "0.75rem",
-  opacity: 0.6,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  marginLeft: "0.75rem",
-};
-
-const answerStyle: React.CSSProperties = {
-  padding: "1rem 1.25rem 0.5rem 1.25rem",
-  lineHeight: 1.6,
-  borderTop: "1px solid var(--ifm-form-border-color)",
-};
-
-const tagContainerStyle: React.CSSProperties = {
-  padding: "0 1.25rem 0.75rem 1.25rem",
-};
-
-const tagBadgeStyle: React.CSSProperties = {
-  marginRight: "6px",
-  fontSize: "0.75rem",
-  backgroundColor: "var(--ifm-color-emphasis-200)",
-  padding: "2px 6px",
-  borderRadius: "4px",
-};
-
-const highlightStyle: React.CSSProperties = {
-  backgroundColor: "var(--ifm-color-primary)",
-  color: "white",
+  maxHeight: "300px",
 };
 
 const linkStyle: React.CSSProperties = { color: "var(--ifm-color-primary)" };
@@ -556,29 +400,3 @@ const srOnlyStyle: React.CSSProperties = {
 const GITHUB_REPO = "https://github.com/invictus-integration/docs-ifa";
 const newDiscussionUrl = (title: string) =>
   `${GITHUB_REPO}/discussions/new?category=q-a&title=${encodeURIComponent(title)}`;
-
-const emptyStateStyle: React.CSSProperties = {
-  padding: "1.5rem",
-  textAlign: "center",
-  color: "var(--ifm-font-color-base)",
-};
-
-const emptyStateTitleStyle: React.CSSProperties = {
-  fontSize: "1rem",
-  marginBottom: "0.5rem",
-};
-
-const emptyStateSubtitleStyle: React.CSSProperties = {
-  fontSize: "0.9rem",
-  opacity: 0.75,
-  margin: 0,
-};
-
-const kbdStyle: React.CSSProperties = {
-  display: "inline-block",
-  padding: "1px 6px",
-  fontSize: "0.8rem",
-  border: "1px solid var(--ifm-color-emphasis-400)",
-  borderRadius: "4px",
-  backgroundColor: "var(--ifm-color-emphasis-200)",
-};

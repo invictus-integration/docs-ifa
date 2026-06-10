@@ -8,6 +8,8 @@ import TabItem from '@theme/TabItem';
 import { OnlyFolderAdminsBadge, NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
 import { Flows, FlowTraces, FlowTraceImporting } from '@site/src/components/TermHighlight';
 import Breadcrumb from '@site/src/components/Breadcrumb';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCirclePlus} from '@fortawesome/free-regular-svg-icons';
 
 # Add new flows <OnlyFolderAdminsBadge/>
 Users can create [folders](./index.mdx#organizing-flows-in-folders) via the Dashboard to organize their <Flows/>.
@@ -28,10 +30,11 @@ Users can create [folders](./index.mdx#organizing-flows-in-folders) via the Dash
 
 <Breadcrumb paths={[`Your Flows`, `Click ••• of folder`, `Edit Folder Permissions`]} />
 
-You can allow both active Microsoft Entra ID groups and local users to access the flows in the folder. Based on the [chosen role](../security/03_roles.md), the user will receive their allowed permissions on the flow. 
+You can allow both active Microsoft Entra ID groups and local users to access the flows in the folder. 
+Based on the [chosen role](../security/03_roles.mdx), the user receives their allowed permissions on the flow. 
 
-:::info
-Users with the `[System admin]` role can access all flows in every folder available.
+:::info[Admins can access all flows]
+Users with the *System admin* role can access all flows in every folder available.
 :::
 </details>
 
@@ -56,7 +59,7 @@ The Invictus Dashboard [requires additional role assignments](../installation/03
     <tr>
       <td><strong>Alert name</strong></td>
       <td>yes</td>
-      <td>The name for the alert rule, must be unique per flow. (Name will automatically have the flow name added as a prefix to it.)</td>
+      <td>The name for the alert rule, must be unique per flow. (Name automatically has the flow name added as a prefix to it.)</td>
     </tr>
     <tr>
       <td><strong>Description</strong></td>
@@ -92,7 +95,7 @@ The Invictus Dashboard [requires additional role assignments](../installation/03
       <td><strong>Query</strong></td>
       <td>yes</td>
       <td>
-        <details><summary><em>Invictus Activity Check</em></summary>Monitors flow activity via Azure logs (<code>InvictusImportJobFlowActivityAlert</code> custom events). Invictus logs one activity per active flow every hour. If an alert running every 60 minutes finds no logs in the last 60 minutes (threshold &lt; 0), Invictus flags the flow as inactive and triggers an alert. Note: Logging is per flow (not per message) and may exceed one entry per hour due to scaling or multi-threading. To increase logging frequency, reduce <code>FlowActivityIntervalInMinutes</code> during deployment (<a href="../installation/index.mdx?step=deploy">link</a>).</details>
+        <details><summary><em>Invictus Activity Check</em></summary>Monitors flow activity via Azure logs (<code>InvictusImportJobFlowActivityAlert</code> custom events). Invictus logs one activity per active flow every hour. If an alert running every 60 minutes finds no logs in the last 60 minutes (threshold &lt; 0), Invictus flags the flow as inactive and triggers an alert. Note: logging is per flow (not per message) and may exceed one entry per hour due to scaling or multi-threading. To increase logging frequency, reduce <code>FlowActivityIntervalInMinutes</code> during deployment (<a href="../installation/index.mdx?step=deploy">link</a>).</details>
         <details><summary><em>Invictus Error Check</em></summary>Monitors flow activity via Azure logs (<code>InvictusImportJobFlowErrorAlert</code>). Invictus logs an entry for each flow that triggers an error. If an alert running every 10 minutes finds more than 0 logs in the last 10 minutes (threshold &gt; 0), Invictus flags the flow as failed and triggers an alert.</details>
         <details><summary><em>Azure Resource Count</em></summary>Use custom Azure alert syntax, see the official <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview">Microsoft documentation</a> to learn more about alerting.</details>
       </td>

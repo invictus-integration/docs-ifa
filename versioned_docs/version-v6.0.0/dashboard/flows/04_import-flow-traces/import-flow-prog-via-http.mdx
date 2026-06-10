@@ -1,3 +1,9 @@
+---
+sidebar_label: Import via HTTP
+---
+
+import {OnlyFolderAdminsBadge} from '@site/src/components/OnlyAdminsBadge'
+
 # Import flow traces programmatically via HTTP
 Invictus allows developers to programmatically import flow traces via a HTTP endpoint. You can locate this resource by the following name format:
 
@@ -54,7 +60,7 @@ The minimal `event` values are the following:
 A `Started` event is always required to create at least a single event in Invictus' backend storage. A `Completed`/`Failed` event then indicates the end of a given operation.
 :::
 
-## Map Dashboard flows to HTTP receive events
+## Map Dashboard flows to HTTP receive events <OnlyFolderAdminsBadge />
 Make sure that any of the `event` mappings match the values in the [flow created via the Dashboard](../01_add.mdx)
 
 ```json
@@ -128,7 +134,7 @@ If an event represents an error, it can provide context information in the form 
 ```
 
 ### Azure link on events
-Add a link and resource ID if you can track back an event to Azure. These details will populate the Dashboard for a click-through experience.
+Add a link and resource ID if you can track back an event to Azure. These details populates the Dashboard for a click-through experience.
 
 ```json
 // event

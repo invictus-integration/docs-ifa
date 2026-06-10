@@ -7,6 +7,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faArrowRight} from '@fortawesome/free-solid-svg-icons';
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
 # Convert between XML/JSON in Logic Apps workflows with the <u>XML-JSON Converter</u>
@@ -23,14 +25,14 @@ Invictus provides a **XML/JSON Converter** component which converts XML/JSON con
 * `/api/JsonToXml`: transforms incoming request with JSON contents to a response with the XML result. 
 
 <Tabs groupId="xml-json-conversions">
-<TabItem value="xml-json" label="XML ➡️ JSON">
+<TabItem value="xml-json" label="XML-JSON">
 
 The `/api/XmlToJson` endpoint transforms a provided BASE 64-encoded XML contents to a BASE 64-encoded JSON result. A XSLT transformation (stored in the Azure Blob Storage container called `xmltojsonconfigstore`) gets run beforehand to map the request in the right structure. This stored transformation gets referenced in the request. 
 
 | Request property | Required | Description                                                                               |
 | ---------------- | :------: | ----------------------------------------------------------------------------------------- |
 | `Content`        |   yes    | The BASE 64-encoded XML contents.                                                         |
-| `ConfigName`     |   yes    | The file name of the XSLT transformation, stored in Azure Blob Storage.                   |
+| `ConfigName`     |   yes    | The filename of the XSLT transformation, stored in Azure Blob Storage.                   |
 | `Context`        |    no    | The dictionary providing context to the conversion, gets copied 1:1 to the response.      |
 | `XPath`          |    no    | The XPath expression that selects a specific XML node before the XSLT transformation.     |
 | `JPath`          |    no    | The JPath expression that selects a specific JSON property after the XSLT transformation. |
@@ -65,16 +67,18 @@ The `/api/XmlToJson` endpoint transforms a provided BASE 64-encoded XML contents
 }
 ```
 </details>
+
 </TabItem>
 
-<TabItem value="json-xml" label="JSON ➡️ XML">
+
+<TabItem value="json-xml" label="JSON-XML">
 
 The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON contents to a BASE 64-encoded XML result. A XSLT transformation (stored in the Azure Blob Storage container called `xmltojsonconfigstore`) gets run beforehand to map the request in the right structure. This stored transformation gets referenced in the request. 
 
 | Request property | Required | Description                                                                                |
 | ---------------- | :------: | ------------------------------------------------------------------------------------------ |
 | `Content`        |   yes    | The BASE 64-encoded JSON contents.                                                         |
-| `ConfigName`     |   yes    | The file name of the XSLT transformation, stored in Azure Blob Storage.                    |
+| `ConfigName`     |   yes    | The filename of the XSLT transformation, stored in Azure Blob Storage.                    |
 | `Context`        |    no    | The dictionary providing context to the conversion, gets copied 1:1 to the response.       |
 | `JPath`          |    no    | The XPath expression that selects a specific JSON property before the XSLT transformation. |
 | `XPath`          |    no    | The JPath expression that selects a specific XML node after the XSLT transformation.       |
@@ -115,5 +119,7 @@ The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON content
 
 ___
 
+{/* vale Google.Headings = NO */}
 ## Related Bicep template parameters
+{/* vale Google.Headings = YES */}
 <ParameterTable parameters={parameters} fixedTags={[`comp:xml-json-converter`]} />

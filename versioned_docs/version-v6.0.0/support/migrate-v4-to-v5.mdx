@@ -4,26 +4,43 @@ pagination_prev: null
 pagination_next: null
 ---
 
+import {faTrashCan,faPen,faCirclePlus,faFlag} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+export function RemoveIcon() {
+    return <FontAwesomeIcon icon={faTrashCan} color="#f43f5e" />
+}
+
+export function EditIcon() {
+    return <FontAwesomeIcon icon={faPen} color="#00a2ff" />
+}
+
+export function AddIcon() {
+    return <FontAwesomeIcon icon={faCirclePlus} color="#059669" />
+}
+
 # Migrate from v4.x to Invictus v5
 
 ## Preparing environment
-* ➖ Remove existing role assignments to Azure Functions. The Bicep deployments now assigns these (normally only *Monitoring Contributor* on the Flow Handler).
+* <RemoveIcon /> Remove existing role assignments to Azure Functions. The Bicep deployments now assigns these (normally only *Monitoring Contributor* on the Flow Handler).
 
 ## Deploying new version
-* ➡️ Update to `-StorageContainerName dashboard-v2` in the `Invictus-GetSources.ps1` script.
-* ➡️ Use `azurePowerShellVersion: LatestVersion` and `pwsh: false` when running the `Deploy.ps1` script.
-* ➡️ Update `-devOpsObjectId` parameter to **Enterprise Application** Object ID of the DevOps service connection when running the `Deploy.ps1` script.
-* ❌ Remove possible Azure Key Vault task retrieving access policies, now done automatically by passing `-keyVaultName <name>` to `Deploy.ps1` script.
+* <EditIcon /> Update to `-StorageContainerName dashboard-v2` in the `Invictus-GetSources.ps1` script.
+* <EditIcon /> Use `azurePowerShellVersion: LatestVersion` and `pwsh: false` when running the `Deploy.ps1` script.
+* <EditIcon /> Update `-devOpsObjectId` parameter to **Enterprise Application** Object ID of the DevOps service connection when running the `Deploy.ps1` script.
+* <RemoveIcon /> Remove possible Azure Key Vault task retrieving access policies, now done automatically by passing `-keyVaultName <name>` to `Deploy.ps1` script.
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
+{/* vale Google.Headings = NO */}
 ### Migrate SQL to Cosmos DB
 {/* vale Microsoft.HeadingAcronyms = YES */}
+{/* vale Google.Headings = YES */}
 Invictus v5 can migrate your current Dashboard structure stored in SQL to the new Cosmos DB storage system. Consider following parameters in the `Deploy.ps1` script:
-* ➕ Add `-PerformSqlDataMigration 1` parameter to activate the migration.
-* ➕ Add `-sqlToMigrateServerName <name>` parameter to target the SQL server to migrate (defaults to `invictus-{ResourcePrefix}-sqlsvr`).
-* ➕ Add `-sqlToMigrateDBName <name>` parameter to target the SQL database to migrate (defaults to `coditcip`).
-* ➕ Add `-sqlToMigrateUserName <name>` parameter for the SQL credentials (defaults to `InvictusFrameworkAdmin`).
-* ➕ Add `invictussqlserverpassword` as an Azure Key Vault secret in the accompanied vault.
+* <AddIcon /> Add `-PerformSqlDataMigration 1` parameter to activate the migration.
+* <AddIcon /> Add `-sqlToMigrateServerName <name>` parameter to target the SQL server to migrate (defaults to `invictus-{ResourcePrefix}-sqlsvr`).
+* <AddIcon /> Add `-sqlToMigrateDBName <name>` parameter to target the SQL database to migrate (defaults to `coditcip`).
+* <AddIcon /> Add `-sqlToMigrateUserName <name>` parameter for the SQL credentials (defaults to `InvictusFrameworkAdmin`).
+* <AddIcon /> Add `invictussqlserverpassword` as an Azure Key Vault secret in the accompanied vault.
 
 When complete, you can sign in to the new Invictus Dashboard with the same credentials as before.
 
@@ -32,22 +49,25 @@ The deployment will validate the result data in Azure Cosmos DB against the orig
 Once satisfied with the migrated data, change the `-PerformSqlDataMigration 1` script parameter to `0`. This skips the migration process from future deployments.
 :::
 
+{/* vale Google.Headings = NO */}
 ### New Dashboard endpoint
+{/* vale Google.Headings = YES */}
+
 The deployment creates a new Dashboard Azure App Service with the `-v2` prefix (ex: `invictus-dev-invictusdashboard-v2`). This means a new endpoint. If you want to keep the original URL endpoint:
-* ❌ Delete the old Dashboard App Service (without the prefix) from the resource group.
-* ➕ Add `-invictusDashboardWebAppName <name>` parameter to the `Deploy.ps1` script to control the App Service's name.
+* <RemoveIcon /> Delete the old Dashboard App Service (without the prefix) from the resource group.
+* <AddIcon /> Add `-invictusDashboardWebAppName <name>` parameter to the `Deploy.ps1` script to control the App Service's name.
 
 :::warning[Losing historic data]
 By doing this you will lose access to the old Dashboard and the ability to view and query its historic data.
 :::
 
 ## After deployment
-* ➕ Same as the Flow Handler, the Dashboard Gateway App Service now needs [Logic App Contribute access](../dashboard/installation/03_give_la_access.md).
-* ➕ (if applicable) Update your app registration with the new [Microsoft Entra ID setup guide](../dashboard/installation/01_give_ad_access.mdx).
-* ➡️ Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
+* <AddIcon /> Same as the Flow Handler, the Dashboard Gateway App Service now needs [Logic App Contribute access](../dashboard/installation/03_give_la_access.md).
+* <AddIcon /> (if applicable) Update your app registration with the new [Microsoft Entra ID setup guide](../dashboard/installation/01_give_ad_access.mdx).
+* <EditIcon /> Use updated [`Invictus-ConfigureDashboard.ps1`](https://github.com/Codit/integration-practice/blob/main/src/invictus/scripts/Invictus-ConfigureDashboard-v2.ps1) script to deploy flows and other Dashboard runtime configurations.
 
 :::danger[Import before September 2026]
-If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=AMQP;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).This affects the following running apps/components:
+If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=Amqp;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).This affects the following running apps/components:
 * PubSub
 :::
 
@@ -66,11 +86,13 @@ If you have role assignments conflicts during deployment, remove all role assign
 Some Framework components requires close attention when upgrading to v5.
 
 <details id="migrate-pubsub">
+{/* vale Google.Headings = NO */}
 <summary><h4 style={{ margin: 0 }}>Migrate PubSub to v5</h4></summary>
+{/* vale Google.Headings = YES */}
 
-Migrating to v5 includes changes in the authentication, endpoint and removal the metadata links.
+Migrating to v5 includes changes in the authentication, endpoint, and removal the metadata links.
 
-> 👉 *The `/api/Subscribe` endpoint also needs to use a `POST` instead of a `GET` HTTP method.*
+> <FontAwesomeIcon icon={faFlag} /> *The `/api/Subscribe` endpoint also needs to use a `POST` instead of a `GET` HTTP method.*
 
 <details>
 <summary>**Publish message example**</summary>
@@ -235,7 +257,7 @@ Use the [migration tool from Codit's Integration Practice](https://github.com/Co
 <details id="migrate-matrix">
 <summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
 
-The new Transco now embeds the Matrix functionality, only authentication and endpoints requires changing.
+The new Transco now includes the Matrix capabilities, only authentication and endpoints requires changing.
 
 ```diff
 "Extract_Message_Context": {

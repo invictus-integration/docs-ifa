@@ -29,7 +29,7 @@ export function NewSinceBadge({ version }) {
   return Badge({
     title: `New since ${version}`,
     tooltip: `Feature included since **Invictus ${version}**.`,
-    backgroundColor: '#008800',
+    backgroundColor: '#059669',
     color: 'white',
   });
 }
