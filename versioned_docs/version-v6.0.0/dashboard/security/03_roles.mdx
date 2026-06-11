@@ -1,60 +1,117 @@
 ---
 sidebar_label: Access to flows
+title: Access to flows
 ---
 
-import {faCircle} from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react';
+import {faCircleCheck, faCircleXmark, faCircle, faUser, faNewspaper, faCirclePlay, faEyeSlash, faTrashCan, faCirclePause } from '@fortawesome/free-regular-svg-icons';
+import { faPeopleGroup, faSliders, faArrowRotateLeft, faPlus, faPenToSquare, faMagnifyingGlass, faUserGroup, faUserShield, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faMicrosoft} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export function DisallowIcon() {
-    return <FontAwesomeIcon icon={faCircle} color="#f43f5e" />
+export function DisallowIcon(props) {
+    return <FontAwesomeIcon icon={faCircleXmark} color="#dc2626" aria-label="Not allowed" {...props} />
 }
 
-export function AllowIcon() {
-    return <FontAwesomeIcon icon={faCircle} color="#059669" />
+export function AllowIcon(props) {
+    return <FontAwesomeIcon icon={faCircleCheck} color="#047857" aria-label="Allowed" {...props} />
 }
 
-export function PartialAllowIcon() {
-    return <FontAwesomeIcon icon={faCircle} color="#b55d00" />
+export function UsersTab() {
+    return Tab({ icon: faUser, label: "Users" });
+}
+
+export function GroupsTab() {
+    return Tab({ icon: faPeopleGroup, label: "Groups" });
+}
+
+export function SettingsTab() {
+    const [hovered, setHovered] = useState(false);
+    return (
+        <div
+            aria-label="Settings tab"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{ display: 'inline-flex', fontSize: '0.75rem', alignItems: 'center', backgroundColor: 'var(--ifm-color-primary)', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', filter: hovered ? 'brightness(0.88)' : 'none', transition: 'filter 0.15s ease' }}>
+            <i>Profile_name</i>
+            <FontAwesomeIcon icon={faSliders} style={{ marginLeft: '0.25rem' }} />
+        </div>
+    );
+}
+
+export function AuditsTab() {
+    return Tab({ icon: faNewspaper, label: "Audits" });
+}
+
+export function Tab({ icon, label, backgroundColor = 'var(--ifm-color-primary)' }) {
+    const [hovered, setHovered] = useState(false);
+    return (
+        <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{ display: 'inline-flex', fontSize: '0.75rem', alignItems: 'center', backgroundColor: backgroundColor, color: 'white', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', filter: hovered ? 'brightness(0.88)' : 'none', transition: 'filter 0.15s ease' }}>
+            <FontAwesomeIcon icon={icon} style={{ marginRight: '0.25rem' }} />
+            {label}
+        </div>
+    );
+}
+
+export function Button({ icon, label }) {
+    const [hovered, setHovered] = useState(false);
+    return (
+        <span
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{ display: 'inline-flex', fontSize: '0.75rem', alignItems: 'center', color: hovered ? 'white' : 'var(--ifm-color-primary)', backgroundColor: hovered ? 'var(--ifm-color-primary)' : 'var(--ifm-background-color)', border: '1px solid var(--ifm-color-primary)', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', transition: 'background-color 0.15s ease, color 0.15s ease' }}>
+            {icon && <FontAwesomeIcon icon={icon} style={{ marginRight: '0.25rem' }} />}
+            {label}
+        </span>
+    );
+}
+
+export function SROnly({ children }) {
+    return <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', borderWidth: 0 }}>{children}</span>;
 }
 
 # Control the access to your flows
-
 ## Available flow permissions
 {/* vale Google.WordList = NO */}
-The following table describes the permitted flow-related capabilities for users, based on the set role they receive on a folder. *Reader*, *Operator* or *Folder admin*. You can both single **local users** and **groups** to folders.
+The following table describes the permitted flow-related capabilities for users, based on the set role they receive on a folder. *Reader*, *Operator* or *Folder admin*. You can assign both **local users** and **groups** to folders.
 
+<AllowIcon aria-hidden="true" /> Allowed &nbsp;&nbsp; <DisallowIcon aria-hidden="true" /> Not allowed
 |          |                            | Reader | Operator | Folder admin | Description                                                                                                                                                           |
 | -------- | -------------------------- | :----: | :------: | :----------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Flow     | View **flow** statuses     |    <DisallowIcon/>   |    <AllowIcon/>     |      <AllowIcon/>       | [Accessing the homepage](../flows/index.mdx) and viewing the status summary of the available flows for the user.                                                      |
-|          | Resubmit/Resume **flow**   |   <DisallowIcon/>    |    <AllowIcon/>     |      <AllowIcon/>       | Users can resubmit/resume/ignore [messages mapped to an Azure Logic App workflow](../flows/04_import-flow-traces/import-flows-via-la.mdx) directly from the Dashboard |
-|          | Add **flow**               |   <DisallowIcon/>    |    <DisallowIcon/>     |      <AllowIcon/>       | [Adding a new flow to a folder](../flows/01_add.mdx), possibly with alerts                                                                                            |
-|          | Edit **flow**              |   <DisallowIcon/>    |    <DisallowIcon/>     |      <AllowIcon/>       | [Changing the flow](../flows/01_add.mdx) mapping, properties, alerts                                                                                                  |
-|          | Delete **flow**            |   <DisallowIcon/>    |    <DisallowIcon/>     |      <AllowIcon/>       | Removing a flow from a folder                                                                                                                                         |
-| Messages | View **messages**          |   <AllowIcon/>    |    <AllowIcon/>     |      <AllowIcon/>       | [Searching for messages](../flows/02_search.mdx) for a selected flow available for the user                                                                           |
-| Folder   | View **folders**           |   <AllowIcon/>    |    <AllowIcon/>     |      <AllowIcon/>       | Viewing folder hierarchy structure with available flows for the user                                                                                                  |
-|          | Edit **folder**            |   <DisallowIcon/>   |    <DisallowIcon/>     |      <DisallowIcon/>       | Renaming the folder and changing hierarchy structure                                                                                                                  |
-|          | Grant **flow** permissions |   <DisallowIcon/>    |    <DisallowIcon/>     |      <DisallowIcon/>       | [Assigning permissions on folders](../flows/01_add.mdx#flow-permissions) for users and groups to access the flows                                                     |
-|          | Delete **folder**          |   <DisallowIcon/>    |    <DisallowIcon/>     |      <DisallowIcon/>       | Removing a folder from the hierarchy, removing all flows and sub-folders under it as well                                                                             |
+| Flow     | View **flow** statuses     |    <AllowIcon/>   |    <AllowIcon/>     |      <AllowIcon/>       | [Navigate to the homepage](../flows/index.mdx) and viewing the status summary of the flows for the user.                                                      |
+| <SROnly>Flow</SROnly> | Resubmit/Resume **flow**   |   <DisallowIcon/>    |    <AllowIcon/>     |      <AllowIcon/>       | Run operations on the flow like [<Button label="Resubmit" icon={faArrowRotateLeft} />/<Button label="Resume" icon={faCirclePlay} />/<Button label="Ignore" icon={faEyeSlash} />](../flows/04_import-flow-traces/import-flows-via-la.mdx). |
+| <SROnly>Flow</SROnly> | Add **flow**               |   <DisallowIcon/>    |    <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faPlus} label="Create a new flow"/>](../flows/01_add.mdx) in a folder, possibly with alerts.                                                                                            |
+| <SROnly>Flow</SROnly> | Edit **flow**              |   <DisallowIcon/>    |    <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faPenToSquare} label="Edit flow"/>](../flows/01_add.mdx)'s mapping, properties, alerts.                                                                                                  |
+| <SROnly>Flow</SROnly> | Delete **flow**            |   <DisallowIcon/>    |    <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faTrashCan} label="Delete flow"/>](../flows/01_add.mdx) from a folder.                                                                                                                                         |
+| Messages | View **messages**          |   <AllowIcon/>    |    <AllowIcon/>     |      <AllowIcon/>       | [<Button icon={faMagnifyingGlass} label="Search"/>](../flows/02_search.mdx) for messages went through a flow.                                                                           |
+| Folder   | View **folders**           |   <AllowIcon/>    |    <AllowIcon/>     |      <AllowIcon/>       | View folder list with flows.                                                                                                  |
+| <SROnly>Folder</SROnly> | Edit **folder**            |   <DisallowIcon/>   |    <DisallowIcon/>     |      <DisallowIcon/>       | [<Button icon={faPenToSquare} label="Edit folder"/>](../flows/01_add.mdx)'s name and position in the list.                                                                                                                  |
+| <SROnly>Folder</SROnly> | Grant **flow** permissions |   <DisallowIcon/>    |    <DisallowIcon/>     |      <DisallowIcon/>       | [<Button icon={faUserGroup} label="Edit folder permissions"/>](../flows/01_add.mdx#flow-permissions) for users and groups to access the flows.                                                     |
+| <SROnly>Folder</SROnly> | Delete **folder**          |   <DisallowIcon/>    |    <DisallowIcon/>     |      <DisallowIcon/>       | [<Button icon={faTrashCan} label="Delete folder"/>](../flows/01_add.mdx) from the list (removes all flows and sub-folders under it as well).                                                                             |
 
 :::info[System admins]
-Users with the *System admin* user role (either as a local user or via a member of a group with such role) has the same permissions as the *Folder admin* permission on <u>all</u> flows in the Dashboard -- regardless whether you assigned the *System admin* user to the folder or not.
+Users with the *System admin* user role (either as a local user or via a member of a group with such role) has the same permissions as the *Folder admin* permission on **all** flows in the Dashboard -- regardless whether you assigned the *System admin* user to the folder or not.
 :::
 
 ## Available user roles
 The following table describes what non-flow related parts of the Dashboard are available for users, based on their assigned roles: *Non-admin* and *System admin*. Microsoft Entra ID users receive their role based on the role of the group that they are a member of. Local users receive personalized roles for each one separately. 
 
+<AllowIcon aria-hidden="true" /> Allowed &nbsp;&nbsp; <DisallowIcon aria-hidden="true" /> Not allowed
 |          |                                 | Non-admin | System admin | Description                                                                                                                                                                                    |
 | -------- | ------------------------------- | :-------: | :----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Users    | View **users**                  |     <DisallowIcon/>     |      <AllowIcon/>       | Accessing the `[Users]` page and viewing all **local** and **Entra ID** users                                                                                                                  |
-|          | Add **local user**              |     <DisallowIcon/>     |      <AllowIcon/>       | Adding a new **local** user with credentials to the Dashboard                                                                                                                                  |
-|          | Add **Microsoft Entra ID user** |     <PartialAllowIcon/>     |      <PartialAllowIcon/>       | 'Sign in with' on the sign in page automatically creates an user, when that user is a member of a [synced group](../installation/01_give_ad_access.mdx)                                        |
-|          | Edit **local user** role        |     <DisallowIcon/>     |      <AllowIcon/>       | Changing the user role of **local** users (**Entra ID** users receive their role via their **group**)                                                                                          |
-|          | Delete **user**                 |     <DisallowIcon/>     |      <AllowIcon/>       | Removing a **local** or **Entra ID** user from accessing the Dashboard permanently (remove **Entra ID** users from synced groups as well, if they're not allowed to sign back in) |
-| Groups   | View **groups**                 |     <DisallowIcon/>     |      <AllowIcon/>       | Accessing the `[Groups]` page and viewing all synced groups                                                                                                                                    |
-|          | Sync **groups**                 |     <DisallowIcon/>     |      <AllowIcon/>       | Running the [`[Sync all groups]`](../installation/01_give_ad_access.mdx) operation                                                                                                             |
-|          | Disable **group**               |     <DisallowIcon/>     |      <AllowIcon/>       | [Temporary pause the group's authority](../installation/01_give_ad_access.mdx) from accessing flows                                                                                            |
-|          | Edit **group** role             |     <DisallowIcon/>     |      <AllowIcon/>       | [Changing the user role](../installation/01_give_ad_access.mdx) of a single group                                                                                                              |
-|          | Delete **group**                |     <DisallowIcon/>     |      <AllowIcon/>       | Removing a group's authority from accessing flows (if a Microsoft Entra ID user is still a member of the group, the group still syncs)                                                         |
-| Settings | View **settings**               |     <AllowIcon/>     |      <AllowIcon/>       | Accessing the [`[Settings]`](../settings.mdx) page and viewing all Dashboard settings                                                                                                          |
-|          | Edit **settings**               |     <DisallowIcon/>     |      <AllowIcon/>       | [Changing the Dashboard settings](../settings.mdx)                                                                                                                                             |
-| Audits   | View **audits**                 |     <DisallowIcon/>     |      <AllowIcon/>       | Accessing the [`[Audits]`](../security/04_auditing.mdx) page and viewing all security audits                                                                                                   |
+| Users    | View **users**                  |     <DisallowIcon/>     |      <AllowIcon/>       | Navigate to the [<UsersTab />](./01_users.mdx) page and view all **local** and **Entra ID** users.                                                                                                                  |
+| <SROnly>Users</SROnly> | Add **local user**              |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faPlus} label="Add a new user"/>](./01_users.mdx) with **local** credentials to the Dashboard.                                                                                                                                  |
+| <SROnly>Users</SROnly> | Add **Microsoft Entra ID user** |     <AllowIcon />     |      <AllowIcon />       | [<Tab icon={faMicrosoft} label="Sign in with..." backgroundColor="#1F73AD" />](../installation/01_give_ad_access.mdx) on the sign in page automatically adds an user when they're a member of a [synced group](../installation/01_give_ad_access.mdx)                                        |
+| <SROnly>Users</SROnly> | Edit **local user** role        |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faPencil} label="Edit role"/>](./01_users.mdx) of **local** users (**Entra ID** users receive their role via their **group**).                                                                                          |
+| <SROnly>Users</SROnly> | Delete **user**                 |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faTrashCan} label="Delete user"/>](./01_users.mdx) from accessing the Dashboard permanently (remove **Entra ID** users from synced groups as well, if they're not allowed to sign back in). |
+| Groups   | View **groups**                 |     <DisallowIcon/>     |      <AllowIcon/>       | View the [<GroupsTab />](./01_users.mdx) page and viewing all synced groups.                                                                                                                                    |
+| <SROnly>Groups</SROnly> | Sync **groups**                 |     <DisallowIcon/>     |      <AllowIcon/>       | Run the [<Button label="Sync all groups" />](../installation/01_give_ad_access.mdx) operation.                                                                                                             |
+| <SROnly>Groups</SROnly> | Disable **group**               |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faCirclePause} label="Disable group" />](../installation/01_give_ad_access.mdx)'s authority from accessing flows.                                                                                            |
+| <SROnly>Groups</SROnly> | Edit **group** role             |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faUserShield} label="Edit role" />](../installation/01_give_ad_access.mdx#assign-user-role-to-required-groups) of a single group accessing flows.                                                                                                              |
+| <SROnly>Groups</SROnly> | Delete **group**                |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faTrashCan} label="Delete group" />](../installation/01_give_ad_access.mdx)'s authority from accessing flows (if a Microsoft Entra ID user is still a member of the group, the [group still synchronizes](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus).)                                                         |
+| Settings | View **settings**               |     <AllowIcon/>     |      <AllowIcon/>       | View current Dashboard settings via the [<SettingsTab />](../settings.mdx) page.                                                                                                          |
+| <SROnly>Settings</SROnly> | Edit **settings**               |     <DisallowIcon/>     |      <AllowIcon/>       | Edit the Dashboard settings via the [<SettingsTab />](../settings.mdx) page.                                                                                                                                             |
+| Audits   | View **audits**                 |     <DisallowIcon/>     |      <AllowIcon/>       | Accessing the [<AuditsTab />](../security/04_auditing.mdx) page and viewing all security audits.                                                                                                   |
