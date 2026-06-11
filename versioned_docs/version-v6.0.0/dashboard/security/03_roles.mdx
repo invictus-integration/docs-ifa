@@ -3,6 +3,8 @@ sidebar_label: Access to flows
 title: Access to flows
 ---
 
+{/* vale off */}
+
 import { useState } from 'react';
 import {faCircleCheck, faCircleXmark, faCircle, faUser, faNewspaper, faCirclePlay, faEyeSlash, faTrashCan, faCirclePause } from '@fortawesome/free-regular-svg-icons';
 import { faPeopleGroup, faSliders, faArrowRotateLeft, faPlus, faPenToSquare, faMagnifyingGlass, faUserGroup, faUserShield, faPencil } from '@fortawesome/free-solid-svg-icons';
@@ -72,6 +74,8 @@ export function Button({ icon, label }) {
 export function SROnly({ children }) {
     return <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', borderWidth: 0 }}>{children}</span>;
 }
+
+{/* vale on */}
 
 # Control the access to your flows
 ## Available flow permissions
