@@ -1,37 +1,45 @@
 ---
 sidebar_label: Add new flows
 title: Add new flows
+hide_table_of_contents: true
+breadcrumbs: false
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { OnlyFolderAdminsBadge, NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
 import { Flows, FlowTraces, FlowTraceImporting } from '@site/src/components/TermHighlight';
+import { TextInput, CheckBoxInput, ToggleInput, DropDownInput, NumberInput, AddInput } from '@site/src/components/InputControls';
 import Breadcrumb from '@site/src/components/Breadcrumb';
+import DetailsLink from '@site/src/components/DetailsLink';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCirclePlus} from '@fortawesome/free-regular-svg-icons';
+import {faPenToSquare, faEllipsis, faPlus, faUserGroup, faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 
 # Add new flows <OnlyFolderAdminsBadge/>
-Users can create [folders](./index.mdx#organizing-flows-in-folders) via the Dashboard to organize their <Flows/>.
+{/* vale Vale.Spelling = NO */}
+<Breadcrumb paths={[`Your Flows`, <><i>your_folder</i> •••</>, <><FontAwesomeIcon icon={faPlus} /> Create New Flow</>]} />
+{/* vale Vale.Spelling = YES */}
 
-## Add/Edit a flow
-<Breadcrumb paths={[`Your Flows`, `••• on a folder or flow`, `Create New / Edit Flow`]} />
+As business user, you can create new <Flows /> to track your integrations. By specifying the right mapping and context, you can track the messages going through your integrations
 
-| Flow property           | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ----------------------- | :------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Flow Name**           |   yes    | A case sensitive name that describe the client interaction (example: ex. invoice request, invoice approval, …)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **Folder**              |   yes    | The location of where to save the flow. Flows are always structured in folders.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **Mapping**             |    no    | The mapping that's used to 'map' imported messages to this flow. Invictus treats these special business properties (**Domain**, **Service**, **Action**, **Version**) differently (loaded from 'tracked properties, for instance, when using [importing them via Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx). Invictus adds a dedicated `WorkflowName` in those cases as well to map the messages of the Logic App workflow to the flow.)                                                                                                                                                                                                          |
-| **Business Properties** |    no    | Context properties to describe the flow. These are only here to provide metadata.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Advanced Settings**   |    no    | <ul><li>*Connected Dashboard:* in a hybrid (BizTalk + Azure) setup, it's necessary to have a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. [More details on hybrid setups](../settings.mdx).</li><li>*Show milestone and event text:* displays the flow milestone and event text data.</li><li><NewSinceBadge version="v6.2" /> *Show Resubmit / Resume*: make the 'Resubmit/Resume' flow action buttons available per flow.</li><li>*Custom resubmit/resume URLs:* Check these options and provide the necessary URLs to use [your own resume and resubmit logic](./04_import-flow-traces/import-flows-via-la.mdx).</li></ul> |
-| **Alerts**              |    no    | [See alerting](#flow-alerting)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Property                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Flow Name**           | A <TextInput label="Flow Name" /> that describes the client interaction (example: *invoice request*, *invoice approval*)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Folder**              | The <DropDownInput label="Folder" /> where to add the flow. Flows are always structured in [folders](./index.mdx#organizing-flows-in-folders).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Mapping**             | The information to identify messages going through this flow. The <TextInput label="Domain" />, <TextInput label="Service" />, <TextInput label="Action" /> and <TextInput label="Version" /> are special business properties to 'map' messages to flows. You can use <TextInput label="Workflow name" /> in cases where the message goes through an Azure Logic App workflow.                                                                                                                                                                                                          |
+| **Business Properties** | Metadata context properties to further describe the flow. Every <TextInput label="Business property name" /> you add here gets filled if the message contains the corresponding value.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Advanced Settings**   | <ul><li><ToggleInput label="Connected Dashboard" /> (= [hybrid setups](../settings.mdx) require a link from one Dashboard (BizTalk) to the other Dashboard (Azure))</li><li><ToggleInput label="Show milestone and event text" /> (= displays the flow milestone and event text data)</li><li><ToggleInput label="Show Resubmit / Resume" /> (= make the 'Resubmit/Resume' flow action buttons available per flow, <NewSinceBadge version="v6.2" />)</li><li><ToggleInput label="Custom resubmit URL" /><TextInput label="Your resubmit URL" /> and <ToggleInput label="Custom resume URL" /><TextInput label="Your resume URL" /> (= turn these options on and provide the URLs to use [your own resume and resubmit logic](./04_import-flow-traces/import-flows-via-la.mdx))</li></ul> |
+| **Alerts**              | <DetailsLink targetId="flow-alerting">See alerting</DetailsLink>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
 <details id="flow-permissions">
 <summary><span>**Allow access to flow**</span></summary>
 
-<Breadcrumb paths={[`Your Flows`, `Click ••• of folder`, `Edit Folder Permissions`]} />
-
 You can allow both active Microsoft Entra ID groups and local users to access the flows in the folder. 
-Based on the [chosen role](../security/03_roles.mdx), the user receives their allowed permissions on the flow. 
+Based on the [allowed role](../security/03_roles.mdx), the user receives their allowed permissions on the flow. 
+
+{/* vale Vale.Spelling = NO */}
+<Breadcrumb paths={[`Your Flows`, <><i>your_folder</i> •••</>, <><FontAwesomeIcon icon={faUserGroup} /> Edit Folder Permissions</>]} />
+{/* vale Vale.Spelling = YES */}
 
 :::info[Admins can access all flows]
 Users with the *System admin* role can access all flows in every folder available.
@@ -41,69 +49,80 @@ Users with the *System admin* role can access all flows in every folder availabl
 <details id="flow-alerting">
 <summary><span>**Add an alert for a flow**</span></summary>
 
+{/* vale write-good.TooWordy = NO */}
+You can create [Azure Monitor alerts](https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview) right from the flow.
+This allows you to pro-actively monitor your flows and get notified when something needs your attention, for example when a flow becomes inactive or starts failing. 
+{/* vale write-good.TooWordy = YES */}
+
 :::warning[require role assignments after installation]
 The Invictus Dashboard [requires additional role assignments](../installation/03_give_la_access.md) to add alerts to flows.
 :::
 
-<Breadcrumb paths={[`Your Flows`, `Click ••• of flow`, `Edit Flow`, `(+) Alert rule`]} />
+{/* vale Vale.Spelling = NO */}
+<Breadcrumb paths={[`Your Flows`, <><i>your_flow</i> •••</>, <><FontAwesomeIcon icon={faPenToSquare} /> Edit Flow</>, <><FontAwesomeIcon icon={faCirclePlus} /> Alert rule</>]} />
+{/* vale Vale.Spelling = YES */}
 
 <table border="1" cellpadding="4" cellspacing="0">
   <thead>
     <tr>
-      <th>Alert property</th>
-      <th>Required</th>
+      <th>Property</th>
       <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><strong>Alert name</strong></td>
-      <td>yes</td>
-      <td>The name for the alert rule, must be unique per flow. (Name automatically has the flow name added as a prefix to it.)</td>
+      <td>The <TextInput label="Alert name" /> for the alert rule must be unique per flow. (Flow name becomes a prefix.)</td>
     </tr>
     <tr>
       <td><strong>Description</strong></td>
-      <td>no</td>
-      <td>The optional text giving more context to the alert.</td>
+      <td>The <TextInput label="Description" /> text giving more context to the alert.</td>
     </tr>
     <tr>
       <td><strong>Severity</strong></td>
-      <td>yes</td>
-      <td>The level of severity of the alert.</td>
+      <td>The level of <DropDownInput label="Severity" /> of the alert. This determines the importance and urgency of the alert.</td>
     </tr>
     <tr>
       <td><strong>Schedule</strong></td>
-      <td>yes</td>
       <td>
         <ul>
-          <li><em>Frequency</em>: how often to execute the rule - value must be between the range of <code>5-1440</code>.</li>
-          <li><em>Time window</em>: range that Azure uses, the logs for the last x minutes - value must be between the range of <code>5-2880</code>.</li>
+          <li><NumberInput label="Frequency" /> (= how often to execute the rule - in the range of <code>5-1440</code>)</li>
+          <li><NumberInput label="Time window" /> (= range that Azure uses, the logs for the last x minutes - in the range of <code>5-2880</code>)</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td><strong>Trigger</strong></td>
-      <td>yes</td>
-      <td>The <em>Threshold</em> value together with the <em>Threshold Operator</em> (<code>Equal</code>/<code>GreaterThan</code>/<code>LessThan</code>) defines when to trigger the alert rule.</td>
+      <td>The <NumberInput label="Threshold" /> value and the <DropDownInput label="Threshold Operator" /> defines when to trigger the alert rule.</td>
     </tr>
     <tr>
       <td><strong>Throttling</strong></td>
-      <td>no</td>
-      <td><em>Suppress alerts (minutes)</em>: suppress triggered alerts for x minutes.</td>
+      <td>The <ToggleInput label="Suppress alerts" /> and <NumberInput label="Suppress alerts (minutes)" /> allows you to throttle triggered alerts for x minutes to prevent alert fatigue.</td>
     </tr>
     <tr>
       <td><strong>Query</strong></td>
-      <td>yes</td>
       <td>
-        <details><summary><em>Invictus Activity Check</em></summary>Monitors flow activity via Azure logs (<code>InvictusImportJobFlowActivityAlert</code> custom events). Invictus logs one activity per active flow every hour. If an alert running every 60 minutes finds no logs in the last 60 minutes (threshold &lt; 0), Invictus flags the flow as inactive and triggers an alert. Note: logging is per flow (not per message) and may exceed one entry per hour due to scaling or multi-threading. To increase logging frequency, reduce <code>FlowActivityIntervalInMinutes</code> during deployment (<a href="../installation/index.mdx?step=deploy">link</a>).</details>
-        <details><summary><em>Invictus Error Check</em></summary>Monitors flow activity via Azure logs (<code>InvictusImportJobFlowErrorAlert</code>). Invictus logs an entry for each flow that triggers an error. If an alert running every 10 minutes finds more than 0 logs in the last 10 minutes (threshold &gt; 0), Invictus flags the flow as failed and triggers an alert.</details>
-        <details><summary><em>Azure Resource Count</em></summary>Use custom Azure alert syntax, see the official <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview">Microsoft documentation</a> to learn more about alerting.</details>
+        <Tabs>
+          <TabItem value="invictus-activity-check" label={<><DropDownInput label="Invictus Activity Check" /></>}>
+            Monitors flow activity via Azure logs (custom events with name: <code>InvictusImportJobFlowActivityAlert</code>).
+            Invictus logs one activity per active flow every hour. If an alert running every 60 minutes finds no logs in the last 60 minutes (threshold &lt; 0), Invictus flags the flow as inactive and triggers an alert. 
+            :::tip[logging frequency]
+            Logging happens per flow (not per message) and may exceed one entry per hour due to scaling or multi-threading. 
+            Reduce [`FlowActivityIntervalInMinutes`](../installation/index.mdx?q=q=FlowActivityIntervalInMinutes#bicep-template-parameters) to increase logging frequency.
+            :::
+          </TabItem>
+          <TabItem value="invictus-error-check" label={<><DropDownInput label="Invictus Error Check" /></>}>
+            Monitors flow activity via Azure logs (custom events with name: <code>InvictusImportJobFlowErrorAlert</code>). Invictus logs an entry for each flow that triggers an error. If an alert running every 10 minutes finds more than 0 logs in the last 10 minutes (threshold &gt; 0), Invictus flags the flow as failed and triggers an alert.
+          </TabItem>
+          <TabItem value="azure-result-count" label={<><DropDownInput label="Azure Result Count" /></>}>
+            Use custom Azure alert syntax, see the official <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview">Microsoft documentation</a> to learn more about alerting.
+          </TabItem>
+        </Tabs>
       </td>
     </tr>
     <tr>
       <td><strong>Recipients</strong></td>
-      <td>yes</td>
-      <td>The email recipients that get notified upon a triggered alert rule.</td>
+      <td>Add a email <AddInput label="Recipient" /> that gets notified with a mail with your email <TextInput label="Subject" /> upon a triggered alert rule.</td>
     </tr>
   </tbody>
 </table>
