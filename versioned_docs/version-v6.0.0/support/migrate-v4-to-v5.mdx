@@ -1,11 +1,13 @@
 ---
 sidebar_label: Migrate from v4.x to v5
+title: Migrate from v4.x to v5
 pagination_prev: null
 pagination_next: null
 ---
 
 import {faTrashCan,faPen,faCirclePlus,faFlag} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
 
 export function RemoveIcon() {
     return <FontAwesomeIcon icon={faTrashCan} color="#f43f5e" />
@@ -252,12 +254,17 @@ Use the [migration tool from Codit's Integration Practice](https://github.com/Co
   "runAfter": {}
 }
 ```
+
+:::warning[changed behavior]
+The new Transco component does not fall back on an empty `string` when the extracted value for the parameter is `null`.
+You have to explicitly set a `defaultValue` with an empty `string` to maintain the same behavior as before. <NewSinceBadge version="v6.4" />
+:::
 </details>
 
 <details id="migrate-matrix">
 <summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
 
-The new Transco now includes the Matrix capabilities, only authentication and endpoints requires changing.
+The new Transco now includes the basic Matrix capabilities, only authentication and endpoints requires changing.
 
 ```diff
 "Extract_Message_Context": {
