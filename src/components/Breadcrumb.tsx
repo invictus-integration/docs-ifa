@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './Breadcrumb.module.css';
 
 type BreadcrumbProps = {
-  /** Array of string segments; the last is active */
-  paths?: string[];
+  /** Array of segments (strings or React nodes, e.g. <FontAwesomeIcon />); the last is active */
+  paths?: React.ReactNode[];
   /** Array of React nodes — each becomes one item; the last is active by default */
   items?: React.ReactNode[];
   /** When false, no item receives the active style. Defaults to true. */

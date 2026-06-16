@@ -5,7 +5,7 @@
   gap: 4px;
   padding: 6px 12px;
   margin: 0 0 20px 0;
-  background: var(--ifm-color-emphasis-100);
+  background: var(--ifm-color-secondary-lightest);
   border-left: var(--ifm-alert-border-left-width) solid var(--ifm-color-primary);
   border-radius: var(--ifm-alert-border-radius);
   font-size: 13px;
@@ -14,7 +14,7 @@
 }
 
 [data-theme='dark'] .nav {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--ifm-color-gray-800)
 }
 
 .logo {
@@ -55,4 +55,8 @@
 .active {
   color: var(--ifm-color-primary);
   font-weight: 600;
+}
+
+[data-theme='dark'] .active {
+  color: #36b1c5;
 }
