@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.iconBlock {
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  border: 3px dashed var(--ifm-color-primary);
+  border-radius: 12px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.iconBlock img {
+  /* Override the global centered-block rule for doc images */
+  display: block !important;
+  margin: 0 !important;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta h1 {
+  margin: 0;
+  line-height: 1.1;
+}
+
+.tagline {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ifm-color-primary);
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+html[data-theme='dark'] .tagline {
+  color: var(--ifm-link-color);
+}

@@ -1,15 +1,21 @@
 ---
 sidebar_label: PubSub
 title: PubSub
+hide_title: true
 ---
 
 import ParameterTable from "@site/src/components/ParameterTable";
+import ComponentHeader from "@site/src/components/ComponentHeader";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import Admonition from '@theme/Admonition';
 import {faPaperPlane, faEnvelope, faCheckDouble, faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-# Run Logic App workflows as publisher/subscriber with the <u>PubSub</u>
+<ComponentHeader
+  icon="/img/icons/pubsub.png"
+  name="PubSub component"
+  tagline="Publish / Subscribe messaging"
+/>
 
 :::note[motivation]
 Asynchronous messaging helps with decoupling publishers from consumers, as it avoids the blocking during publishing. Especially in Azure Logic Apps workflows, where we can't assume that the interaction between publisher and consumer is always synchronous.

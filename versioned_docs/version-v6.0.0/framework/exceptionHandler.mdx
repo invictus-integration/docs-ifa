@@ -1,6 +1,7 @@
 ---
 sidebar_label: Exception Handler
 title: Exception Handler
+hide_title: true
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,8 +10,12 @@ import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 import {faLightbulb} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ComponentHeader from "@site/src/components/ComponentHeader";
 
-# Explain Logic App workflows failures with the <u>Exception Handler</u>
+<ComponentHeader
+	icon="/img/icons/exception-handler.png"
+	name="Exception Handler component"
+	tagline="Failure diagnostics" />
 
 :::note[motivation]
 Most who have worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a generic error that offers no clear information on what went wrong.
