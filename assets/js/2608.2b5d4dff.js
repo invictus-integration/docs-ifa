@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkinvictus_integration=self.webpackChunkinvictus_integration||[]).push([["2608"],{7875(i,n,c){c.d(n,{uu9:()=>e});var e={prefix:"fab",iconName:"microsoft",icon:[448,512,[],"f3ca","M0 32l214.6 0 0 214.6-214.6 0 0-214.6zm233.4 0l214.6 0 0 214.6-214.6 0 0-214.6zM0 265.4l214.6 0 0 214.6-214.6 0 0-214.6zm233.4 0l214.6 0 0 214.6-214.6 0 0-214.6z"]}}}]);
