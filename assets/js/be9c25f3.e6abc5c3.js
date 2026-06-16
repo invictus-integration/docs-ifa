@@ -70,7 +70,7 @@
 
 /* Dark mode */
 html[data-theme='dark'] .invictus-tooltip {
-  --tooltip-bg: #1e2829;
+  --tooltip-bg: var(--ifm-color-gray-800);
   color: #d8eaed;
 }
 
