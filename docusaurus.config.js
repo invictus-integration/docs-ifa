@@ -37,6 +37,7 @@ const config = {
           path: 'preview',
           sidebarCollapsible: false,
           includeCurrentVersion: true,
+          breadcrumbs: false,
           admonitions: {
             keywords: ['praise'],
             extendDefaults: true,
@@ -99,12 +100,7 @@ const config = {
         {
           type: 'search',
           position: 'right',
-        },
-        {
-          href: 'https://github.com/invictus-integration/docs-ifa',
-          label: 'GitHub',
-          position: 'right',
-        },
+        }
       ],
     },
 
