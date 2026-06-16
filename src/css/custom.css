@@ -4,7 +4,6 @@
  */
 
 :root {
-  /* Primary theme color: Deep blue-green */
   --ifm-color-primary: #014550;
   --ifm-color-primary-dark: #013c46;
   --ifm-color-primary-darker: #01363f;
@@ -13,7 +12,6 @@
   --ifm-color-primary-lighter: #12707d;
   --ifm-color-primary-lightest: #2a8f9c;
 
-  /* Secondary color (neutral grays) */
   --ifm-color-secondary: #b8c0c2;
   --ifm-color-secondary-dark: #8a9293;
   --ifm-color-secondary-darker: #6c7374;
@@ -22,7 +20,6 @@
   --ifm-color-secondary-lighter: #e8edee;
   --ifm-color-secondary-lightest: #f3f6f7;
 
-  /* Warning (unchanged) */
   --ifm-color-warning: #ff970f;
   --ifm-color-warning-dark: #db770a;
   --ifm-color-warning-darker: #b75b07;
@@ -33,7 +30,6 @@
 
   --ifm-code-font-size: 95%;
 
-  /* Gray scale - tuned toward neutral instead of purplish-blue */
   --ifm-color-gray-100: #eef1f1;
   --ifm-color-gray-200: #d9dddd;
   --ifm-color-gray-300: #c4c8c8;
@@ -44,7 +40,6 @@
   --ifm-color-gray-800: #1A202C;
   --ifm-color-gray-900: #171923;
 
-  /* Global spacing and borders */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-navbar-background-color: var(--ifm-color-primary);
   --ifm-navbar-link-color: var(--ifm-color-secondary-lightest);
@@ -54,6 +49,8 @@
   --ifm-toc-border-color: var(--ifm-color-gray-200);
   --ifm-global-spacing: 1.5rem;
   --docusaurus-details-decoration-color: var(--ifm-color-primary);
+  --ifm-table-stripe-background: var(--ifm-color-secondary-lighter);
+  --ifm-menu-color-background-active: var(--ifm-color-secondary-lighter);
 }
 
 .navbar {
@@ -84,7 +81,9 @@ html[data-theme='dark'] {
   --ifm-toc-border-color: black;
   --ifm-breadcrumb-color-active: var(--ifm-link-color);
   --ifm-dropdown-background-color: var(--ifm-color-gray-800);
-  --ifm-table-stripe-background: #1A202C
+  --ifm-table-stripe-background: var(--ifm-color-gray-800);
+  --ifm-menu-color-background-active: var(--ifm-color-gray-800);
+  --ifm-menu-color-active: var(--ifm-color-primary-lightest);
 }
 
 html[data-theme='dark'] .footer--dark {
@@ -164,12 +163,16 @@ h5 {
 }
 
 h1 {
-  margin-top: 0.25rem;
+  margin-top: 1.2rem;
 }
 
 p {
   font-size: 1.1rem;
   line-height: 150%;
+}
+
+.theme-doc-markdown a {
+  text-decoration: underline;
 }
 
 strong,

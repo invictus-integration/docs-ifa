@@ -1,51 +1,53 @@
 ---
 sidebar_label: 'Search for messages'
+title: 'Search for messages in a flow'
+hide_table_of_contents: true
 ---
 
+import {useColorMode} from '@docusaurus/theme-common';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { Flow, FlowTraces } from "@site/src/components/TermHighlight";
+import { NewSinceBadge } from '@site/src/components/OnlyAdminsBadge';
+import { faAngleDown, faICursor, faMagnifyingGlass, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faCircleDot, faCalendar, faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CheckBoxInput, DateInput, DropDownInput, TextInput, TableHeaderStyle, NoListStyle } from '@site/src/components/InputControls';
 
 # Search for messages in a flow
-<Breadcrumb paths={[`Your Flows`, `Click on a flow`]} />
+<Breadcrumb paths={[`Your Flows`, <><FontAwesomeIcon icon={faArrowPointer} /> Click on a flow</>]} />
 
-The Dashboard allows users to search for messages that went through a <Flow />. This helps during defect localization or verification of client integrations. The `[Select Flows]` dropdown provides you to select one or more flows for which the search query should take place.  
+The Dashboard allows you to search for messages that went through a <Flow />. This helps with defect localization or verification of client integrations.
+With the <DropDownInput label="Select Flows" /> dropdown you can select one or more flows to search for related messages.  
 
 ![Select flows dropdown multi-select](/images/v2_search-advanced3.png)
 
-Additionally, the Dashboard provides *Basic* and *Advanced* search capabilities to deepen the search.
-
 <Tabs groupId="search-type">
 <TabItem value="basic" label="Basic search" default>
-The user is able to perform a basic text search through the top search bar.
+You can use the top <TextInput label="Search" icon={faMagnifyingGlass} /> box to perform a basic query for messages in the selected flows. This searches through the properties of the message.
 
 ![Basic search example](/images/dashboard/search-for-flow-traces-basic-search.gif)
 
-This searches (case-insensitive) through these properties of the flow trace.
 
-| Flow trace property | Description                                                                                                                                                                                                                                                                                                                   |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Chain ID**        | Shows only the flow traces within the same transaction, linked together with the Chain ID, also known in Azure Logic Apps as the 'client tracking ID'.                                                                                                                                                                        |
-| **DSAV**            | Shows only flow traces with the same mapping: Domain, Service, Action, Version. (These are special business properties that are treated differently during flow trace importing, loaded from 'tracked properties, for instance, when using [importing them via Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx).) |
-
-Click the `[Search]` button or press `[Enter]` to perform your query.
+| Message property | Description                                                                                                                                                                                                                                                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Chain ID**        | Includes messages with a matching Chain ID (= transaction ID), also known in Azure Logic Apps as the 'client tracking ID'.                                                                                                                                                                        |
+| **DSAV**            | Includes messages with a matching mapping (**Domain**, **Service**, **Action**, **Version**). |
 
 </TabItem>
 <TabItem value="advanced" label="Advanced search">
-An additional set of filters are available when clicking open the **Advanced Search** pane to further subset the flow traces search query. 
+A set of filters are available when clicking open the <span style={TableHeaderStyle}>Advanced Search <FontAwesomeIcon icon={faAngleDown} /></span> pane to further subset the flow traces search query. 
 
 ![Advanced search example](/images/dashboard/search-for-flow-traces-advanced-search.gif)
 
-The following filters may be applied:
-
-| Filter parameter | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ---------------- | :------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Date filter**  |   yes    | Shows only the flow traces within a given time frame. Possible options are: <ul><li>`all` (= last 30 days)</li><li>`after [your date]`</li><li>`before [your date]`</li><li>`between [your start date] and [your end date]`</li><li>`last [your amount] [minutes\|hours\|days\|weeks\|months]`</li></ul>                                                                                                                                                                                                                                                  |
-| **Chain ID**     |    no    | Shows only the flow traces within the same transaction, linked together with the Chain ID, also known in Azure Logic Apps as the 'client tracking ID'.                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Status**       |    no    | Shows only the flow traces at a given state: <ul><li>`Active`: currently processing, ([including resubmit & resume for Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx))</li><li>`Completed`: successfully finished processing.</li><li>`Error`: failure during processing ([including Logic Apps failures](./04_import-flow-traces/import-flows-via-la.mdx))</li><li>`Ignored`: [when importing via LogicApps](./04_import-flow-traces/import-flows-via-la.mdx), flows that users ignored via the Dashboard.</li></ul>                       |
-| **DSAV**         |    no    | Shows only flow traces with the same mapping: **Domain**, **Service**, **Action**, **Version**. (Invictus treats these special business properties differently when mapping imported messages, loaded from 'tracked properties, for instance, when using [importing them via Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx).) <br/> An extra `Contains Word` option is available to also include partial matches of these mappings.                                                                                                         |
-| **Properties**   |    no    | Shows only flow traces that has certain custom user properties defined. You can filter by the property value by using a format: <ul><li>`Equal`: include exact matches.</li><li>`Not Equal`: include differences</li><li>`Starts With`: include matching prefix</li><li>`Ends With`: include matching postfix</li><li>`Contains`: include partial matches.</li><li>`Regex`: include matching patterns ([regular expression language](https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference))</li></ul> |
+| Filter           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Status**       | Shows only the messages at a given state:<br/><br/> <ul style={NoListStyle}><li><CheckBoxInput label="Active" checked={true} /> (= messages currently processing, [including resubmit & resume for Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx))</li><li><CheckBoxInput label="Completed" /> (= messages successfully finished processing)</li><li><CheckBoxInput label="Error" /> (= failure during messages processing, [including Logic Apps failures](./04_import-flow-traces/import-flows-via-la.mdx))</li><li><CheckBoxInput label="Ignored" /> (= messages that operators ignored via the Dashboard)</li><li><CheckBoxInput label="Cancelled" /> (= messages that were manually cancelled by operators) <NewSinceBadge version="v6.2" /></li></ul>                       |
+| **Date filter**  | Shows only the messages within a given time frame. Possible options are:<br/><br/> <ul style={NoListStyle}><li><FontAwesomeIcon icon={faCircleDot} /> All dates (= last 30 days)</li><li><FontAwesomeIcon icon={faCircle} /> After <DateInput /></li><li><FontAwesomeIcon icon={faCircle} /> Before <DateInput /></li><li><FontAwesomeIcon icon={faCircle} /> Between <DateInput /> and <DateInput /></li><li><FontAwesomeIcon icon={faCircle} /> Last <TextInput label="amount" /> <DropDownInput label="time period" /></li></ul>                                                                                                                                                                                                                                                  |
+| **DSAV**         | Shows only messages with the same mapping: <TextInput label="Domain" />, <TextInput label="Service" />, <TextInput label="Action" />, <TextInput label="Version" />. (Invictus treats these special business properties differently when mapping imported messages, loaded from 'tracked properties, for instance, when using [importing them via Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx).) <br/> A <CheckBoxInput label="Contains Word" /> checkbox is available to include partial matches of these mappings.                                                                                                         |
+| **Chain ID**     | Shows only the messages within the same transaction, linked together with provided <TextInput label="Chain ID" />, also known in Azure Logic Apps as the 'client tracking ID'.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| **Properties**   | Shows only messages that has certain custom user properties defined. You can filter by using a format: <ul><li><DropDownInput label="your property"/> <DropDownInput label="Equal"/> <TextInput label="your value" /> (= include exact matches)</li><li><DropDownInput label="your property"/> <DropDownInput label="Not Equal"/> <TextInput label="your value" /> (= include differences)</li><li><DropDownInput label="your property"/> <DropDownInput label="Starts With"/> <TextInput label="your value" /> (= include matching prefix)</li><li><DropDownInput label="your property"/> <DropDownInput label="Ends With"/> <TextInput label="your value" /> (= include matching postfix)</li><li><DropDownInput label="your property"/> <DropDownInput label="Contains"/> <TextInput label="your value" /> (= include partial matches)</li><li><DropDownInput label="your property"/> <DropDownInput label="Regex"/> <TextInput label="your value" /> (= include matching patterns, [regular expression language](https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference))</li></ul> |
 
 </TabItem>
 </Tabs>
