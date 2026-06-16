@@ -69,6 +69,8 @@ By doing this you will lose access to the old Dashboard and the ability to view 
 :::danger[Import before September 2026]
 If you're running a version below v6, ensure your [Azure Service Bus connection string includes `TransportType=Amqp;`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-dotnet#configure-connection-string-to-use-amqp-10).This affects the following running apps/components:
 * PubSub
+
+Make sure to use at least v5.6.2 to receive the latest Azure Service Bus fixes for this. You should be aware that this is a hotfix for the behavior and has a performance impact on the PubSub interactions in a heavy-load scenarios due to the nature of this fix (throttled to a one instance).
 :::
 
 ### Common migrating issues
