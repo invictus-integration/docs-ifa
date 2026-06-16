@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "@docusaurus/Link";
 import styles from "./ComponentCard.module.css";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,7 +19,7 @@ type ComponentCardProps = {
 
 export default function ComponentCard({ icon, name, tagline, description, href }: ComponentCardProps) {
   return (
-    <a href={href} className={styles.card}>
+    <Link to={href} className={styles.card}>
       <div className={styles.iconBlock}>
         <img src={icon} alt={`${name} icon`} />
       </div>
@@ -27,6 +28,6 @@ export default function ComponentCard({ icon, name, tagline, description, href }
       <hr className={styles.divider} />
       <p className={styles.description}>{description}</p>
       <p className={styles.link}>Learn more <FontAwesomeIcon icon={faAnglesRight} /></p>
-    </a>
+    </Link>
   );
 }
