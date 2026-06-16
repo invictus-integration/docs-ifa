@@ -5,6 +5,7 @@ hide_table_of_contents: true
 ---
 
 import { Flow, Flows, FlowTrace, FlowTraces, FlowTraceImporting } from '@site/src/components/TermHighlight';
+import ComponentCard from '@site/src/components/ComponentCard';
 
 # Invictus for Azure architecture
 An Invictus installation consists of two major parts: the **Dashboard** and the **Framework**.
@@ -27,16 +28,86 @@ The Invictus **Dashboard** provides a business user friendly UI for interacting 
   * <u>**Store job:**</u> listens for new batches (*Azure Event Hubs*), loads referenced canonical message (*Azure Blob Storage*), and combines as flow trace models (*Cosmos DB for MongoDB*). These flow traces get available via the **Dashboard App** to the business user.
 
 ## Framework
-<br/>
-![Architecture diagram](/images/InvictusV2Diagram_Framework.png "Invictus Framework architecture diagram")
-<br/>
+The Invictus **Framework** provides a set of reusable components to support Azure Logic Apps workflows or other integrations.
 
-Common integration patterns aren't always built into tasks within the Azure Logic App workflow editor. The Invictus **Framework** provides these patterns as HTTP endpoints that client workflows can interact with.
+<Columns>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/transco.png"
+      name="Transco"
+      tagline="Property promotion & transformation"
+      description="Promote client properties from external/internal data sources and perform XSLT transformations."
+      href="./framework/transcoV2"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/pubsub.png"
+      name="PubSub"
+      tagline="Publish / subscribe messaging"
+      description="Decouples Logic App workflows into publishers and subscribers using Azure Service Bus, enabling reliable cross-workflow messaging."
+      href="./framework/pubsubV2"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/exception-handler.png"
+      name="Exception Handler"
+      tagline="Failure diagnostics"
+      description="Captures Logic App workflow failures and explains error diagnostics, giving operators clear insight into what went wrong and where."
+      href="./framework/exceptionHandler"
+    />
+  </Column>
+</Columns>
 
-* [**PubSub:**](./framework/pubsubV2.mdx) uses Azure Service Bus as a message broker to publish/subscribe on messages across Azure Logic Apps. 
-* [**Time Sequencer:**](./framework/timesequencer.mdx) control the order in which Azure Logic App workflows can run based on a custom timestamp.
-* [**Sequence Controller:**](./framework/sequencecontroller.mdx) control the order in which Azure Logic App workflow can run based on a custom sequence order.
-* [**XML/JSON Converter:**](./framework/xmljsonconverter.mdx) convert XML-JSON based on a custom XSLT transformation.
-* [**XSD Validator:**](./framework/xsd-validator.mdx) validate XML based on a custom XSD schema.
-* [**Regex Translator:**](./framework/regextranslation.mdx) translate user content based on custom regular expression patterns.
-* [**Transco:**](./framework/transcoV2.mdx) promote properties in an user content based on database records.
+<Columns>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/sequence-controller.png"
+      name="Sequence Controller"
+      tagline="Index-based ordering"
+      description="Orchestrates Logic App workflow execution order based on custom sequence indices, ensuring strict processing order regardless of trigger times."
+      href="./framework/sequencecontroller"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/time-sequencer.png"
+      name="Time Sequencer"
+      tagline="Timestamp-based ordering"
+      description="Orchestrates Logic App workflow execution order based on custom timestamps, ensuring time-controlled processing order regardless of trigger times."
+      href="./framework/timesequencer"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/regex-translator.png"
+      name="Regex Translator"
+      tagline="Pattern-based translation"
+      description="Matches and replaces values in message content using configurable regular expression patterns."
+      href="./framework/regextranslation"
+    />
+  </Column>
+</Columns>
+
+<Columns>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/xml-json-converter.png"
+      name="XML/JSON Converter"
+      tagline="Format conversion"
+      description="Transforms XML payloads to JSON or JSON payloads to XML using a custom XSLT stylesheet."
+      href="./framework/xmljsonconverter"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/xsd-validator.png"
+      name="XSD Validator"
+      tagline="XML schema validation"
+      description="Validates XML payloads against an XSD schema definition, returning a structured validation result."
+      href="./framework/xsd-validator"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}} />
+</Columns>

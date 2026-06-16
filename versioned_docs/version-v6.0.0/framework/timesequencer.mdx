@@ -1,6 +1,7 @@
 ---
 sidebar_label: Time Sequencer
 title: Time Sequencer
+hide_title: true
 ---
 
 import ParameterTable from "@site/src/components/ParameterTable";
@@ -8,8 +9,13 @@ import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import {faHourglassHalf, faCheckDouble, faLink, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Admonition from "@theme/Admonition";
+import ComponentHeader from "@site/src/components/ComponentHeader";
 
-# Run Logic App workflows in sequence by timestamps with the <u>Time Sequencer</u>
+<ComponentHeader
+  icon="/img/icons/time-sequencer.png"
+  name="Time Sequencer component"
+  tagline="Timestamp-based ordering"
+  />
 
 :::note[motivation]
 At the time of writing, there is no built-in way in Azure Logic Apps to 'control' the sequence in which workflow runs are executing. In certain scenarios, even though a  workflow triggers before another, you want the first one to wait for the second. A common example is entity updates, where you don't want older updates to override newer ones - even though the workflow with the older updates 'happened after' the newer ones.
