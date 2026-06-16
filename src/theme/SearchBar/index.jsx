@@ -188,6 +188,9 @@ export default function SearchBar() {
   const [termResults, setTermResults] = useState([]);
   const [faqResults, setFaqResults] = useState([]);
 
+  // Mobile two-column tab: 'pages' | 'knowledge' — pages always default
+  const [mobileKnowledgeTab, setMobileKnowledgeTab] = useState('pages');
+
   // Platform-aware shortcut label (SSR-safe)
   const [shortcutLabel, setShortcutLabel] = useState('Ctrl K');
   useEffect(() => {
@@ -203,6 +206,9 @@ export default function SearchBar() {
   const skipSearchResetRef = useRef(false);
   const listboxId = 'search-listbox';
   const debouncedQuery = useDebounce(query, 300);
+
+  // Reset mobile tab to pages on each new search so pages are always shown first
+  useEffect(() => { setMobileKnowledgeTab('pages'); }, [debouncedQuery]);
 
   // Search
   useEffect(() => {
@@ -774,12 +780,35 @@ export default function SearchBar() {
                   {/* ── Search results — single column or two-column layout ── */}
                   {hasKnowledgeResults ? (
                     <div className={styles.twoColBody}>
+                      {/* Mobile-only tab bar: switches between Pages and Terms & FAQ */}
+                      <div className={styles.mobileTabs} role="tablist" aria-label="Result sections">
+                        <button
+                          role="tab"
+                          aria-selected={mobileKnowledgeTab === 'pages'}
+                          className={`${styles.mobileTab} ${mobileKnowledgeTab === 'pages' ? styles.mobileTabActive : ''}`}
+                          onClick={() => setMobileKnowledgeTab('pages')}
+                        >
+                          <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
+                          Pages
+                          {results.length > 0 && <span className={styles.mobileTabBadge}>{results.length}</span>}
+                        </button>
+                        <button
+                          role="tab"
+                          aria-selected={mobileKnowledgeTab === 'knowledge'}
+                          className={`${styles.mobileTab} ${mobileKnowledgeTab === 'knowledge' ? styles.mobileTabActive : ''}`}
+                          onClick={() => setMobileKnowledgeTab('knowledge')}
+                        >
+                          <FontAwesomeIcon icon={faBook} aria-hidden="true" />
+                          Terms &amp; FAQ
+                          <span className={styles.mobileTabBadge}>{termResults.length + faqResults.length}</span>
+                        </button>
+                      </div>
                       {/* Left: page results — owns the listbox in two-column mode */}
                       <div
                         id={listboxId}
                         role="listbox"
                         aria-label="Page results"
-                        className={styles.pageCol}
+                        className={`${styles.pageCol}${mobileKnowledgeTab !== 'pages' ? ` ${styles.mobileTabHidden}` : ''}`}
                       >
                         <div className={styles.knowledgeSectionHeader} role="presentation" aria-hidden="true">
                           <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
@@ -859,7 +888,7 @@ export default function SearchBar() {
                       <div
                         role="region"
                         aria-label="Glossary terms and FAQ"
-                        className={styles.knowledgeCol}
+                        className={`${styles.knowledgeCol}${mobileKnowledgeTab !== 'knowledge' ? ` ${styles.mobileTabHidden}` : ''}`}
                       >
 
                         {termResults.length > 0 && (

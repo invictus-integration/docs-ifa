@@ -1500,28 +1500,100 @@
   color: var(--ifm-color-primary-lightest);
 }
 
-/* Responsive: stack columns on narrow viewports */
+/* ── Mobile tab bar — hidden on desktop ── */
+.mobileTabs {
+  display: none;
+}
+
+/* mobileTabHidden has no effect on desktop (both columns always visible) */
+.mobileTabHidden {}
+
+/* Responsive: tab-based layout on narrow viewports */
 @media (max-width: 768px) {
   .wideModal {
     max-width: 100%;
   }
 
+  /* Switch to column so the tab bar renders above the active panel */
   .twoColBody {
     flex-direction: column;
   }
 
-  .pageCol {
-    max-height: 280px;
-    border-right: none;
-    border-bottom: 1px solid var(--ifm-color-secondary-lighter);
+  /* Show tab bar */
+  .mobileTabs {
+    display: flex;
+    flex-shrink: 0;
+    border-bottom: 2px solid var(--ifm-color-secondary-lighter);
+    /* background: var(--ifm-background-surface-color); */
   }
 
-  [data-theme='dark'] .pageCol {
+  [data-theme='dark'] .mobileTabs {
     border-bottom-color: rgba(255, 255, 255, 0.08);
   }
 
+  .mobileTab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    color: var(--ifm-color-secondary-darkest);
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  [data-theme='dark'] .mobileTab {
+    color: var(--ifm-color-secondary);
+  }
+
+  .mobileTabActive {
+    color: var(--ifm-color-primary);
+    border-bottom-color: var(--ifm-color-primary);
+    font-weight: 600;
+  }
+
+  .mobileTabBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: var(--ifm-color-secondary-light);
+    color: var(--ifm-color-secondary-darkest);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .mobileTabActive .mobileTabBadge {
+    background: var(--ifm-color-primary);
+    color: #fff;
+  }
+
+  /* Hide the inactive panel — !important guards against specificity races */
+  .mobileTabHidden {
+    display: none !important;
+  }
+
+  /* Each tab panel gets full available height rather than splitting it */
+  .pageCol {
+    flex: 1;
+    max-height: calc(100vh - 220px);
+    border-right: none;
+    border-bottom: none;
+  }
+
   .knowledgeCol {
-    flex: 0 0 auto;
-    max-height: 240px;
+    flex: 1;
+    max-height: calc(100vh - 220px);
   }
 }
