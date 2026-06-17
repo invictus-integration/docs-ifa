@@ -1,13 +1,12 @@
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import FolderHierarchy from '@site/src/components/FolderHierarchy';
 import { Folder, Flow } from '@site/src/components/InputControls';
-import { Flows } from '@site/src/components/TermHighlight';
 import {faCircle,faArrowPointer, faWarning, faLink} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Admonition from '@theme/Admonition';
 
 # Dashboard Homepage: Overview of flow statuses
-The Dashboard home page shows you an overview of the current status of all your <Flows/>. The aggregated status of the messages received by that flow can be:
+The Dashboard home page shows you an overview of the current status of all your [flows](../../support/help-center-business.mdx?q=flow). The aggregated status of the messages received by that flow can be:
 * <FontAwesomeIcon icon={faCircle} color="#00a2ff" /> **Active:** messages currently processed by the flow.
 * <FontAwesomeIcon icon={faCircle} color="#059669" /> **Completed:** messages completed successfully by the flow.
 * <FontAwesomeIcon icon={faCircle} color="#f43f5e" /> **Error:** messages suspended, dehydrated or terminated by the flow.

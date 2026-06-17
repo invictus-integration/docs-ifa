@@ -8,7 +8,6 @@ import {useColorMode} from '@docusaurus/theme-common';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Breadcrumb from '@site/src/components/Breadcrumb';
-import { Flow, FlowTraces } from "@site/src/components/TermHighlight";
 import { NewSinceBadge } from '@site/src/components/Badges';
 import { faAngleDown, faICursor, faMagnifyingGlass, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import { faCircle, faCircleDot, faCalendar, faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
@@ -18,7 +17,7 @@ import { CheckBoxInput, DateInput, DropDownInput, TextInput, TableHeaderStyle, N
 # Search for messages in a flow
 <Breadcrumb paths={[`Your Flows`, <><FontAwesomeIcon icon={faArrowPointer} /> Click on a flow</>]} />
 
-The Dashboard allows you to search for messages that went through a <Flow />. This helps with defect localization or verification of client integrations.
+The Dashboard allows you to search for messages that went through a flow. This helps with defect localization or verification of client integrations.
 With the <DropDownInput label="Select Flows" /> dropdown you can select one or more flows to search for related messages.  
 
 ![Select flows dropdown multi-select](/images/v2_search-advanced3.png)
