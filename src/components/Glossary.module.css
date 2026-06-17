@@ -142,6 +142,15 @@
       "definition";
     gap: 0.4rem 0;
   }
+
+  /* Larger tap targets for the filter chip — matches tagButton mobile sizing */
+  .filterChip {
+    min-height: 44px;
+  }
+
+  .filterChipClear {
+    padding: 0 1rem;
+  }
 }
 
 /* ── Alphabet jump navigation ── */
@@ -198,42 +207,55 @@
   opacity: 0.25;
 }
 
-/* ── Active filter chip (shown when showSearch=false and ?q= is set) ── */
+/* ── Active filter chip (shown when showSearch=false and ?q= is set) ──
+   Styled as an active tag — same border-radius, padding, and border weight
+   as the tagButton family in ParameterTable, in its selected/hovered state. */
 .filterChip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 10px;
+  gap: 0;
   margin-bottom: 0.75rem;
-  border-radius: 20px;
-  background: var(--ifm-color-gray-100);
-  border: 1px solid var(--ifm-color-gray-300);
+  border-radius: 6px;
+  background: var(--ifm-color-secondary-lightest);
+  border: 2px solid var(--ifm-color-primary);
   font-size: 0.82rem;
-  color: var(--ifm-font-color-base);
+  font-family: inherit;
+  overflow: hidden;
 }
 
-[data-theme='dark'] .filterChip {
-  background: rgba(42, 143, 156, 0.14);
-  border-color: rgba(42, 143, 156, 0.4);
+.filterChipLabel {
+  padding: 4px 10px;
+}
+
+:global([data-theme='dark']) .filterChip {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary);
 }
 
 .filterChipClear {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: none;
+  align-self: stretch;
+  gap: 5px;
+  background: var(--ifm-color-primary);
   border: none;
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
   font-size: 0.78rem;
   font-weight: 500;
-  color: var(--ifm-color-primary);
+  color: #fff;
   font-family: inherit;
-  padding: 0;
-  transition: color 0.1s;
+  padding: 0 0.6rem;
+  transition: background 0.15s;
+  white-space: nowrap;
 }
 
 .filterChipClear:hover {
-  color: var(--ifm-color-primary-dark);
+  background: var(--ifm-color-primary-darkest);
+}
+
+:global([data-theme='dark']) .filterChipClear:hover {
+  background: var(--ifm-color-primary-darker);
 }
 
 /* ── Skip link for keyboard/screen-reader navigation ── */
