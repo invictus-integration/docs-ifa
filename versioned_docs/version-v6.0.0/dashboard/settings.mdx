@@ -1,10 +1,13 @@
 ---
 sidebar_label: Customize Dashboard
+title: Customize Dashboard
 ---
 
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSlidersH } from '@fortawesome/free-solid-svg-icons';
+import { faSlidersH, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { ToggleInput, TextInput } from '@site/src/components/InputControls';
+import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 
 # Customize the Dashboard to your needs
 <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
@@ -12,21 +15,25 @@ import { faSlidersH } from '@fortawesome/free-solid-svg-icons';
 ## Connected Dashboard
 
 {/* vale Microsoft.Terms = NO */}
-A hybrid (BizTalk + Azure) setup requires a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. 
 With the introduction of the claim-check component, you can now start from one flow in cloud and continue on prem (and vice versa).
- It provides a click-through experience between the two different Dashboards.
+It provides a click-through experience between the two different Dashboards.
+
+A hybrid (BizTalk + Azure) setup requires a link from one Dashboard (BizTalk) to the other Dashboard (Azure) for hybrid flows. 
 {/* vale Microsoft.Terms = YES */}
 
-Locate the option to enter the Connected Dashboard URL which is the base URL of the other Dashboard which you want to connect to.
+<Walkthrough>
+  <Collapsible title="Provide base URL of other Dashboard">
+    Locate the <TextInput label="Connected Dashboard URL" /> input on the Settings page.
+    This base URL should point to the other Dashboard which you want to connect to.
 
-![settings](/images/v2_settings1.png)
+  </Collapsible>
+  <Collapsible title="Enable Connected Dashboard for a flow">
+    Toggle the <ToggleInput label="Connected Dashboard" /> for the desired flow in its advanced settings.
 
-Now you need to enable the Connected Dashboard for the required flow. You can active this by either creating a new flow or editing an existing one (showing 'Edit Flow' below).
+  </Collapsible>
+  <Collapsible title="Query messages from that flow">
+    Search for messages of this configured flow and notice a new <FontAwesomeIcon icon={faUpRightFromSquare} /> button for each message.
+    This navigates you to the Connected Dashboard URL for that message chain.
+  </Collapsible>
+</Walkthrough>
 
-![settings](/images/v2_settings2.png)
-
-If you navigate to the page for that flow, you'll see a new button for each table row. Clicking on this button navigates you to your specified Connected Dashboard URL for that message chain.
-
-![settings](/images/v2_settings3.png)
-
-If you're not signed in into the other Dashboard, it directs you to the sign in page but with a return URL. Once signed in, the Dashboard redirects you to the actual link.
