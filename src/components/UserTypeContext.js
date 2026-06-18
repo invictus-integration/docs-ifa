@@ -31,9 +31,18 @@ function writeStoredUserType(type) {
   try { localStorage.setItem(STORAGE_KEY, type); } catch { }
 }
 
+function normalizeId(id) {
+  return id.replace('/index', '');
+}
+
+function pathMatchesId(path, id) {
+  const normalized = normalizeId(id);
+  return path === normalized || path.endsWith('/' + normalized);
+}
+
 function detectUserTypeFromPath(path, businessIds, technicalIds) {
-  if (businessIds.some(id => path.includes(id))) return 'business';
-  if (technicalIds.some(id => path.includes(id.replace('/index', '')))) return 'technical';
+  if (businessIds.some(id => pathMatchesId(path, id))) return 'business';
+  if (technicalIds.some(id => pathMatchesId(path, id))) return 'technical';
   return null;
 }
 
