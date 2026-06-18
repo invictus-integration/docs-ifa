@@ -9,6 +9,7 @@ import TabItem from '@theme/TabItem';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
 
 <ComponentHeader
   icon="/img/icons/transco.png"
@@ -17,17 +18,31 @@ import ComponentHeader from "@site/src/components/ComponentHeader";
 />
 
 :::note[motivation]
-Integration scenarios often need to 'promote' or 'enrich' messages/data from external stored systems. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
+Integration scenarios often need to 'promote' or 'enrich' messages/data from either internal or external data sources. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
 
-Invictus provides a Transco component to promote properties from a database, by using the content or context to create the SQL query which executes against the specified table. Transco can also perform transformations on XML content by simply specifying the XSLT file from storage (Transco supports XSLT 1.0 syntax.).
+Invictus provides a Transco component to
+<Walkthrough>
+<Collapsible number="SQL" title="Promote client requests with client's database">
+
+The Transco component can execute SQL commands to promote properties from a SQL database table.
+The component creates the SQL query based on a stored configuration file and executes it against the client's database.
+
+You can promote the result of the SQL query back to the response. 
+
+</Collapsible>
+<Collapsible number="XSLT" title="Transform client requests via stored transformation">
+
+The Transco component can execute XSLT transformations on XML content based on a stored XSLT file (Transco supports XSLT 1.0 syntax).
+The component applies the transformation to the request content and promotes the transformed result back to the response. 
+
+</Collapsible>
+</Walkthrough>
 :::
 
-![Transco v2 XML example](/images/framework/transco-v2-example.png)
-
 ## Available endpoints
-* `/api/TranscoXML`: uses XML content and a Transco configuration file to list the instructions necessary to promote values from an SQL database or to transform the content via an XSLT file.
+* `/api/TranscoXML`: uses XML content and a Transco configuration file to list the instructions necessary to promote values or to transform the content via an XSLT file.
 
-* `/api/TranscoJson`: uses JSON content and a Transco configuration file to list the instructions necessary to promote values from an SQL database. The component can't perform transformations on JSON content.
+* `/api/TranscoJson`: uses JSON content and a Transco configuration file to list the instructions necessary to promote values. The component can't perform transformations on JSON content.
 
 * `/api/MatrixBasicPromote`: accepts a list of parameters and promotes them to the `Context` in the response.
 
@@ -35,9 +50,9 @@ Invictus provides a Transco component to promote properties from a database, by 
 <TabItem value="json-xml" label="XML/JSON">
 
 The Transco request requires following values:
-* XML/JSON content in BASE 64 format;
+* XML/JSON content in Base64 format;
 * Context as key-value pair list;
-* Name of Transco config file in Azure Blob Storage.
+* Name of Transco config file in an Azure Blob Storage container.
 
 <details>
 <summary>**Full request body JSON example**</summary>
@@ -71,33 +86,117 @@ The Transco request requires following values:
 ```
 </details>
 
-## Transco config file
+## Transco configuration file
 The component requires a JSON Transco configuration file to describe the instructions to perform. Execution of instructions happens in the order in which they appear.
-
-The request should specifies the name of the configuration file.
 
 <Tabs groupId="Transco-instructions">
 <TabItem value="sql-command" label="SQL Commands" default>
 
-The Transco component can execute SQL commands to promote properties from a specified database and table. The database connection happens via either a raw connection string or the name of an Azure Key Vault secret holding the connection string.
+<Walkthrough>
+<Collapsible title="Set the scope of the command instruction">
+By default, the Transco component applies the command instruction to the entire `Content`.
+You can specify a scope for the instruction by providing a `scopePath` in the configuration file.
+This path is an XPath or JPath expression that points to a specific part of the content. The command applies then only to that part of the content.
 
-You can populate the parameters of the SQL query from 3 sources:
- - XML/JSON request content via XPath/JPath
- - Request context
- - Fixed value
+```json
+"scopePath": [XPath/JPath of content scope],
+"namespaces": [
+  {
+    "namespace": [XML Namespace],
+    "prefix": [XML Namespace prefix]
+  }
+]
+// ...
+```
 
-The component inserts the SQL query result at the specified `destination` XPath or JPath. For `XPaths` ending at an attribute (ex: `/persons/person/@name`), it inserts the value in that attribute. Otherwise, it insert the value in the inner text of the XML node.
+</Collapsible>
 
-* The `scopePath` option sets the affected nodes to apply the command.
-* Always provide a connection to the SQL database (via a connection string in plain text or in an Azure Key Vault secret).
-* Denote parameters in the SQL query with an `@` symbol. You may give parameters a name or indexed with a number.
-  ```sql
-  SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
-  -- or
-  SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
-  ```
+<Collapsible title="Set the connection to the SQL database">
+Provide the database connection via a raw connection string or the name of an Azure Key Vault secret holding the connection string.
 
+```json
+"command": {
+   "databaseConnectionString":[Raw connection string to DB],
+   "databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
+}
+// ...
+```
+</Collapsible>
+
+<Collapsible title="Set the SQL query and parameters">
+
+You can populate the parameters of the SQL query from these sources:
+ - `path` (= XML/JSON request content via XPath/JPath)
+ - `context`(= Request `Context` key-value collection)
+ - `value` (= Fixed value defined in the config file itself)
+<br/>
+
+```json
+"command": {
+  "commandValue": [SQL query to execute],
+  "parameters": [
+    {
+      "paramName": [Name of parameter in SQL query],
+      "value": [XPath/JPath if "valueType=path", Context key if "valueType=context", or any string value if "valueType=fixedValue"],
+      "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+      "valueType": ["path" or "fixedValue" or "context"]
+    },
+    {
+      "paramName": [Name of parameter in SQL query],
+      "value": [XPath/JPath if "valueType=path", Context key if "valueType=context", or any string value if "valueType=fixedValue"],
+      "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+      "valueType": ["path" or "fixedValue" or "context"]
+    }
+  ]
+  // ...
+}
+```
+
+Denote parameters in the SQL query with an `@` symbol. You may give parameters a name or indexed with a number.
+```sql
+SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
+-- or
+SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
+```
+
+:::tip[control SQL query result]
+With the `isMandatory` option, you control whether a `null` result of the SQL query should throw an error.
+You can also specify a `defaultValue` to handle those cases.
+
+When the query returns more than one column, you use the `columnName` of the value to be inserted in the content.
+
+```json
+"command": {
+  // ...
+  "isMandatory": [If true, will throw error when result is null],
+  "defaultValue": [Default value of result],
+  "columnName": [Obtain value from specified column if query returns more than one field. If empty, use value from first column],
+}
+```
+:::
+
+</Collapsible>
+
+<Collapsible title="Set the destination of the SQL query result">
+
+The `destination` is an XPath/JPath expression that navigates within the `Content` to insert the result of the SQL query.
+For a XPath ending at an attribute (ex: `/persons/person/@name`), the component inserts the value into that attribute.
+Otherwise, the component inserts the value in the inner text of the XML node.
+
+You can also promote the SQL query result to the `Context` instead of the `Content`. In that case, set `promoteToContext=true`.
+
+```json
+"command": {
+  // ...
+  "destination": [XPath/JPath of the results destination, or Context key if "promoteToContext=true"],
+  "promoteToContext": [If true, the component saves the SQL query result at the Context with "destination" as key]
+}
+```
+
+</Collapsible>
+</Walkthrough>
 </TabItem>
+
 <TabItem value="xml-transformation" label="XML Transformation">
 
 The Transco component can execute XSLT transformations on XML content. You must specify the name of the XSLT file in the storage account. 
@@ -125,13 +224,6 @@ This instruction is only available when calling the `/TranscoXML` endpoint.
 </TabItem>
 </Tabs>
 
-:::info[storage account]
-Save all required files in the Azure Storage Account and in a Blob Storage container with the name: `Transcov2configstore` (Invictus automatically creates this container):
-* `/Configs` folder with Transco config files
-* `/XSLTs` folder with transformation files
-* `/Assemblies` folder with assembly and dependency DLL files
-:::
-
 <details>
 <summary>**Full Transco config file specification**</summary>
 
@@ -146,38 +238,32 @@ Save all required files in the Azure Storage Account and in a Blob Storage conta
           "prefix": [XML Namespace prefix]
         }
       ],
-      "destination": [XPath/JPath of the results destination, or Context key if promoteToContext = true],
-      "promoteToContext": [If true query result is saved to Context at key destination],
       "command": {
         "databaseConnectionString":[Raw connection string to DB],
-         "databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
-         "commandValue": [SQL query to be executed],
-         "isMandatory": [If true, will throw error when result is null],
-        "columnName": [Obtain value from specified column if query returns multiple fields. If empty, value from first column is obtained],
-         "defaultValue": [Default value of result],
-         "parameters": [
-           {
+        "databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
+        "commandValue": [SQL query to be executed],
+        "isMandatory": [If true, will throw error when result is null],
+        "columnName": [Obtain value from specified column if query returns more than one field. If empty, use value from first column],
+        "defaultValue": [Default value of result],
+        "parameters": [
+          {
             "paramName": [Name of param in query],
-             "value": [Type dependent. XPath or JPath if valueType = "path"],
-             "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
-             "valueType": ["path" or "fixedValue" or "context"]
+            "value": [Type dependent. XPath or JPath if valueType = "path"],
+            "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
+            "valueType": ["path" or "fixedValue" or "context"]
           },
           {
             "paramName": [Name of param in query],
             "value": [Type dependent. Any string value if valueType = "fixedValue"],
             "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
             "valueType": ["path" or "fixedValue" or "context"]
-          },
-          {
-            "paramName": [Name of param in query],
-            "value": [Type dependent. Key to value in context if valueType = "context"],
-            "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
-            "valueType": ["path" or "fixedValue" or "context"]
           }
         ],
+        "destination": [XPath/JPath of the results destination, or Context key if "promoteToContext=true"],
+        "promoteToContext": [If true, the component saves the SQL query result to Context with "destination" as key],
         "cache": {
-          "useCaching": [If true, query result is cached],
-          "cachingTimeout": [Cache timeout timespan]
+          "useCaching": [If true, caches the SQL query result],
+          "cachingTimeout": [Cache timeout time span]
         }
       }
     },
@@ -199,13 +285,20 @@ Save all required files in the Azure Storage Account and in a Blob Storage conta
   "options": {
     "configCache": {
       "useCaching": [If true, config file is cached],
-      "cachingTimeout": [Cache timeout timespan]
+      "cachingTimeout": [Cache timeout time span]
     },
     "indentResult": [If true, Transco results will be formatted and indented]
   }
  }
 ```
 </details>
+
+:::info[storage account]
+Save all required files in the Azure Storage Account and in a Blob Storage container with the name: `Transcov2configstore` (Invictus automatically creates this container):
+* `/Configs` folder with Transco config files
+* `/XSLTs` folder with transformation files
+* `/Assemblies` folder with assembly and dependency DLL files
+:::
 
 </TabItem>
 <TabItem value="matrix-basic" label="Matrix basic promote">
