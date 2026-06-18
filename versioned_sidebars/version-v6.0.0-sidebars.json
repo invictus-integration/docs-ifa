@@ -86,14 +86,62 @@
       "items": [
         "framework/installation/index",
         "framework/deprecated/index",
-        "framework/exceptionHandler",
-        "framework/pubsubV2",
-        "framework/regextranslation",
-        "framework/sequencecontroller",
-        "framework/timesequencer",
-        "framework/transcoV2",
-        "framework/xmljsonconverter",
-        "framework/xsd-validator"
+        {
+          "type": "doc",
+          "id": "framework/transcoV2",
+          "customProps": {
+            "icon": "plus"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/pubsubV2",
+          "customProps": {
+            "icon": "envelope"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/exceptionHandler",
+          "customProps": {
+            "icon": "triangle-exclamation"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/sequencecontroller",
+          "customProps": {
+            "icon": "hashtag"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/timesequencer",
+          "customProps": {
+            "icon": "clock"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/regextranslation",
+          "customProps": {
+            "icon": "language"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/xmljsonconverter",
+          "customProps": {
+            "icon": "retweet"
+          }
+        },
+        {
+          "type": "doc",
+          "id": "framework/xsd-validator",
+          "customProps": {
+            "icon": "check"
+          }
+        }
       ]
     },
     {

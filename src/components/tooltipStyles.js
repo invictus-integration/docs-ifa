@@ -79,7 +79,7 @@ const TOOLTIP_STYLES = `
 
 /* Dark mode */
 html[data-theme='dark'] .invictus-tooltip {
-  --tooltip-bg: #1e2829;
+  --tooltip-bg: var(--ifm-color-gray-800);
   color: #d8eaed;
 }
 
@@ -260,8 +260,8 @@ export function usePinnedTooltip(ref) {
       setFocused(true);
       activate();
     },
-    onBlur:              () => setFocused(false),
-    onClick:             () => setPinned(p => !p),
+    onBlur: () => setFocused(false),
+    onClick: () => setPinned(p => !p),
     onTooltipMouseEnter: () => {
       clearTimeout(hideTimer.current);
       setTooltipHovered(true);
