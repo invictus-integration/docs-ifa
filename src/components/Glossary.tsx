@@ -178,7 +178,7 @@ export function Glossary({ terms, userType, showSearch = true, unconstrained = f
       {/* Active filter chip when showSearch=false but URL has ?q= */}
       {!showSearch && search && (
         <div className={styles.filterChip} role="status" aria-live="polite">
-          <span>Filtered by: <strong>{search}</strong></span>
+          <span className={styles.filterChipLabel}>Filtered by: <strong>{search}</strong></span>
           <button
             className={styles.filterChipClear}
             onClick={() => setSearch("")}
