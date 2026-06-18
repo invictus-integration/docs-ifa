@@ -401,6 +401,14 @@
     ]
   },
   {
+    "name": "acrSku",
+    "description": "The pricing tier of the Azure Container Apps registry that hosts the Dashboard's container images.",
+    "default": "Standard",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
     "name": "azureActiveDirectoryClientId",
     "description": "The application ID of the Microsoft Entra ID app registration that facilitates authentication towards the client's Microsoft Entra ID resource, useful when the Dashboard is configured for Microsoft Entra ID signin authentication.",
     "tags": [
