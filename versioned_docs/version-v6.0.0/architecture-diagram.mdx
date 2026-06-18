@@ -4,28 +4,47 @@ sidebar_position: 2
 hide_table_of_contents: true
 ---
 
-import { Flow, Flows, FlowTrace, FlowTraces, FlowTraceImporting } from '@site/src/components/TermHighlight';
 import ComponentCard from '@site/src/components/ComponentCard';
 
 # Invictus for Azure architecture
 An Invictus installation consists of two major parts: the **Dashboard** and the **Framework**.
 
 ## Dashboard
-The Invictus **Dashboard** provides a business user friendly UI for interacting with client integrations (commonly Azure Logic Apps), without requiring direct access to Azure. The Dashboard displays integrations as <Flows variant="technical"/>, supported by diagnostic data (here called <FlowTraces/>) loaded via Invictus' backend infrastructure.
+The Invictus **Dashboard** provides a business user friendly UI for interacting with client integrations (commonly Azure Logic Apps), without requiring direct access to Azure.
+The Dashboard displays integrations as [flows](./support/help-center-technical.mdx?q=flow), supported by diagnostic data (here called [flow traces](./support/help-center-technical.mdx?q=flow%20trace)) loaded via Invictus' backend infrastructure.
 
-<br/>
-![Architecture diagram](/images/InvictusV2Diagram_Dashboard.png "Invictus Dashboard architecture diagram")
-<br/>
-
-* <Flow variant="technical" />
-  * <u>**Dashboard App:**</u> the business user interacts with the **Dashboard** via a deployed web app. Here, users manage their flows.
-  * <u>**Dashboard Gateway:**</u> serves as the backend API for the **Dashboard App**. It shows the stored flows (*Cosmos DB for MongoDB*) and triggers flow operations (*Azure Service Bus*).  
-  * <u>**Flow Handler:**</u> based on the required flow action triggered by the business user (*Ignore*, *Resubmit*, *Resume*) in the **Dashboard App**, it interacts with the deployed Azure Logic Apps on the client environment (See [import flow traces via Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx) for more info).
-* <FlowTrace />
-  * <u>**[type] import job:**</u> the Invictus installation provides 'import jobs' which are interaction endpoints to push flow traces into the **Dashboard**. These come from external client resources (Azure Logic Apps, Azure Data Factory, Azure Event Hubs). Once received, they push a canonical message into the system (*Azure Service Bus*).
-  * <u>**Cache job:**</u> listens for new canonical messages (*Azure Service Bus*) and caches them as batches (*Azure Blob Storage*).
-  * <u>**Merge job:**</u> listens for new/updated batches (*Azure Event Hubs*) and synchronizes the storage (*Cosmos DB for MongoDB*) with 'message content view' information (input/output of Azure Logic Apps, see [import flow traces via Azure Logic App workflows](./dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx) for more info).
-  * <u>**Store job:**</u> listens for new batches (*Azure Event Hubs*), loads referenced canonical message (*Azure Blob Storage*), and combines as flow trace models (*Cosmos DB for MongoDB*). These flow traces get available via the **Dashboard App** to the business user.
+<Columns>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/dashboard-ui.png"
+      name="Dashboard application"
+      tagline="Integration monitoring & management"
+      description="A web application for business users to monitor and manage their integrations, imported via flow traces."
+      href="./dashboard/flows"
+    />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/dashboard-api.png"
+      name="Dashboard gateway"
+      tagline="Interact with imported flow traces via API"
+      description="A backend API that serves the Dashboard application, providing access to imported flow traces and triggering flow operations."
+      href="./dashboard/installation"
+      />
+  </Column>
+</Columns>
+<Columns>
+  <Column style={{marginBottom: "1.5rem"}}>
+    <ComponentCard
+      icon="/img/icons/import-jobs.png"
+      name="Flow trace import jobs"
+      tagline="Importing flow traces from external sources"
+      description="A set of jobs that import flow traces from external sources (Azure Logic Apps, Azure Data Factory, Azure Event Hubs) into the Dashboard system."
+      href="./dashboard/flows/import-flow-traces"
+      />
+  </Column>
+  <Column style={{marginBottom: "1.5rem"}} />
+</Columns>
 
 ## Framework
 The Invictus **Framework** provides a set of reusable components to support Azure Logic Apps workflows or other integrations.
