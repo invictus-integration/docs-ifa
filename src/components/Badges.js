@@ -36,6 +36,15 @@ export function NewSinceBadge({ version }) {
   });
 }
 
+export function DeprecatedSinceBadge({ version, label }) {
+  return Badge({
+    title: `Deprecated since ${version}`,
+    tooltip: `Feature deprecated since **Invictus ${version}**. ${label}`,
+    backgroundColor: '#b55d00',
+    color: 'white',
+  });
+}
+
 export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'white' }) {
   useTooltipStyles();
 
