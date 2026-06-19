@@ -127,6 +127,7 @@
 
 .descCell p {
   margin: 0;
+  font-size: 1rem;
 }
 
 :global([data-theme='dark']) .descCell {
@@ -139,8 +140,8 @@
   overflow: hidden;
 }
 
-.row + .row,
-.answerPanel + .row {
+.row+.row,
+.answerPanel+.row {
   margin-top: 4px;
 }
 
@@ -273,24 +274,42 @@
   margin-top: 2px;
 }
 
-.badgeRequired, .badgeDeprecated, .badgeSince, .badgeDefault {
-  font-size: 0.75rem;
-  padding: 1px 4px;
-  border-radius: 3px;
+.badgeRequired,
+.badgeDeprecated,
+.badgeSince,
+.badgeDefault {
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 4px;
   color: white;
 }
 
-.badgeRequired code, .badgeDeprecated code, .badgeSince code, .badgeDefault code {
-  font-size: 0.75rem !important;
+.badgeRequired code,
+.badgeDeprecated code,
+.badgeSince code,
+.badgeDefault code {
+  font-size: 0.8rem !important;
   background: none;
   padding: 0;
   color: inherit;
 }
 
-.badgeRequired   { background-color: #b10006; }
-.badgeDeprecated { background-color: #b55d00; }
-.badgeSince      { background-color: #059669; }
-.badgeDefault    { background-color: var(--ifm-color-emphasis-200); color: var(--ifm-font-color-base); }
+.badgeRequired {
+  background-color: #b10006;
+}
+
+.badgeDeprecated {
+  background-color: #b55d00;
+}
+
+.badgeSince {
+  background-color: #059669;
+}
+
+.badgeDefault {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+}
 
 .versionBadge {
   font-size: 0.7rem;
@@ -595,8 +614,15 @@
 }
 
 /* Rotate ↑/↓ glyphs to make consistent left/right arrows */
-.kbdRotateLeft  { display: inline-block; transform: rotate(-90deg); }
-.kbdRotateRight { display: inline-block; transform: rotate(90deg); }
+.kbdRotateLeft {
+  display: inline-block;
+  transform: rotate(-90deg);
+}
+
+.kbdRotateRight {
+  display: inline-block;
+  transform: rotate(90deg);
+}
 
 .footerAskAi {
   display: inline-flex;
@@ -709,12 +735,33 @@
   line-height: 1.6;
 }
 
-.aiAnswer p { margin: 0 0 0.6em; font-size: inherit; }
-.aiAnswer p:last-child { margin-bottom: 0; }
-.aiAnswer strong { font-weight: 600; }
-.aiAnswer em { font-style: italic; }
-.aiAnswer ul, .aiAnswer ol { margin: 0.4em 0 0.6em 1.2em; padding: 0; }
-.aiAnswer li { margin-bottom: 0.2em; font-size: inherit; }
+.aiAnswer p {
+  margin: 0 0 0.6em;
+  font-size: inherit;
+}
+
+.aiAnswer p:last-child {
+  margin-bottom: 0;
+}
+
+.aiAnswer strong {
+  font-weight: 600;
+}
+
+.aiAnswer em {
+  font-style: italic;
+}
+
+.aiAnswer ul,
+.aiAnswer ol {
+  margin: 0.4em 0 0.6em 1.2em;
+  padding: 0;
+}
+
+.aiAnswer li {
+  margin-bottom: 0.2em;
+  font-size: inherit;
+}
 
 .aiPlaceholder {
   font-size: 0.875rem;
@@ -881,8 +928,15 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 /* ─────────────────────────────────────────────
@@ -948,13 +1002,19 @@
     font-size: 0.7rem;
   }
 
-  .badgeRequired, .badgeDeprecated, .badgeSince, .badgeDefault {
-    font-size: 0.72rem;
+  .badgeRequired,
+  .badgeDeprecated,
+  .badgeSince,
+  .badgeDefault {
+    font-size: 0.8rem;
     padding: 1px 4px;
   }
 
-  .badgeRequired code, .badgeDeprecated code, .badgeSince code, .badgeDefault code {
-    font-size: 0.72rem !important;
+  .badgeRequired code,
+  .badgeDeprecated code,
+  .badgeSince code,
+  .badgeDefault code {
+    font-size: 0.8rem !important;
   }
 
   .nameCell {

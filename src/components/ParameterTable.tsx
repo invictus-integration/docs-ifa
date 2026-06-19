@@ -7,6 +7,7 @@ import { useLocation, useHistory } from "@docusaurus/router";
 import highlightStyles from "./highlight.module.css";
 import inputStyles from "./tableSearchInput.module.css";
 import rowStyles from "./resultRow.module.css";
+import { NewSinceBadge, DeprecatedSinceBadge, DefaultValueBadge } from "./Badges";
 
 export type Parameter = {
   name: string;
@@ -15,7 +16,7 @@ export type Parameter = {
   properties?: Parameter[];
   required?: boolean;
   default?: any;
-  deprecatedSince?: string;
+  deprecatedSince?: { version: string; note: string };
   newSince?: string;
 };
 
@@ -281,8 +282,8 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
                 {p.default !== undefined && (
                   <span className={rowStyles.badgeDefault}>default: <code>{p.default.toString()}</code></span>
                 )}
-                {p.newSince && <span className={rowStyles.badgeSince}>new since {p.newSince}</span>}
-                {p.deprecatedSince && <span className={rowStyles.badgeDeprecated}>deprecated since: {p.deprecatedSince}</span>}
+                {p.newSince && <NewSinceBadge version={p.newSince} style={{ fontSize: '0.875rem', marginLeft: '0px' }} />}
+                {p.deprecatedSince && <DeprecatedSinceBadge version={p.deprecatedSince.version} note={p.deprecatedSince.note} style={{ fontSize: '0.875rem', marginLeft: '0px' }} />}
               </div>
             )}
           </td>
@@ -431,7 +432,11 @@ const resultCountStyle: React.CSSProperties = {
   color: "var(--ifm-font-color-base)",
 };
 
-const codeStyle: React.CSSProperties = { color: "var(--ifm-color-primary)", backgroundColor: "var(--ifm-background-color)" };
+const codeStyle: React.CSSProperties = {
+  fontSize: "0.95rem",
+  color: "var(--ifm-color-primary)",
+  backgroundColor: "var(--ifm-background-color)"
+};
 
 const tagBadgeStyle: React.CSSProperties = {
   marginRight: "6px",
