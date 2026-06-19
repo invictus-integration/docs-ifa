@@ -6,7 +6,7 @@ pagination_next: null
 ---
 
 import React from 'react';
-import { SharedNote } from '@site/src/components/Badges';
+import { SharedNote, NewSinceBadge, DeprecatedSinceBadge } from '@site/src/components/Badges';
 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
@@ -206,17 +206,21 @@ The identity running the Bicep deployment (the service principal used by your Az
 | `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.  |
 | `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                           |
 | `variableGroupName` | DevOps variable group to write the Bicep outputs to (ex. `Invictus_CosmosDb_DbName`).                         |
-| `useBeta`           | Indicates the environment of the Azure Container App registry where the deployment gets its container images. |
 {/* vale Google.WordList = YES*/}
 
 ### Optional Parameters    
 {/* vale Microsoft.Terms = NO */}
 | Argument name                  | Default value   | Description                                                                                                                                |
 | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `artifactsPath`                | `$PSScriptRoot` | Path on the Azure DevOps agent that stores the downloaded Invictus artifacts ([publish and download build artifacts])                      |
-| `resourceGroupLocation`        | 'West Europe'   | In case no resource group is available with the name `resourceGroupName`, the deployment uses this location to create such resource group. |
+| `acrEnvironment`               | `prod`          | The environment from where the script pulls the Invictus artifacts. (`prod`, `beta` or `staging`). <NewSinceBadge version="v6.3" />                   |
 | `additionalTemplateParameters` | `[]`            | Custom named parameters for the Bicep template you wish to override. More on this below.                                                   |
+| `artifactsPath`                | `$PSScriptRoot` | Path on the Azure DevOps agent that stores the downloaded Invictus artifacts ([publish and download build artifacts])                      |
+| `enableVnetSupport`            | `False`         | Deploys Invictus into a VNET. |
+| `resourceGroupLocation`        | `West Europe`   | In case no resource group is available with the name `resourceGroupName`, the deployment uses this location to create such resource group. |
+| `translateBicepOutput`         | `False`         | If set to `True`, translates the Bicep outputs  (`_` becomes `.`) before placing them in an Azure DevOps variable group. |
+| `validateOnly`                 | `False`         | If set to `True`, the Bicep deployment only validates the template and doesn't deploy any resources.                |     
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.                      |
+| `useBeta`                      | `$null`         | Indicates the environment of the Azure Container App registry where the deployment gets its container images. <DeprecatedSinceBadge version="v6.3" label="Use the `acrEnvironment` parameter instead." />  |
 {/* Microsoft.Terms = YES */}
 
 <details>
