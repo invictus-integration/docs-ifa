@@ -27,16 +27,28 @@ export function OnlyFolderAdminsBadge() {
   });
 }
 
-export function NewSinceBadge({ version }) {
+export function NewSinceBadge({ version, style }) {
   return Badge({
     title: `New since ${version}`,
     tooltip: `Feature included since **Invictus ${version}**.`,
     backgroundColor: '#059669',
     color: 'white',
+    style,
   });
 }
 
-export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'white' }) {
+export function DeprecatedSinceBadge({ version, note, style }) {
+  return Badge({
+    title: `Deprecated since ${version}`,
+    tooltip: `Feature deprecated since **Invictus ${version}**. ${note}`,
+    backgroundColor: '#b55d00',
+    color: 'white',
+    style,
+
+  });
+}
+
+export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'white', style }) {
   useTooltipStyles();
 
   const badgeRef = useRef(null);
@@ -74,7 +86,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
     <>
       <span
         ref={badgeRef}
-        style={{ position: 'relative', display: 'inline-block', marginLeft: '8px', textTransform: 'none', fontWeight: 'bold' }}
+        style={{ position: 'relative', display: 'inline-block', marginLeft: '8px', textTransform: 'none', fontWeight: 'bold', ...style }}
         role="button"
         aria-pressed={pinned}
         aria-describedby={visible ? tooltipId : undefined}
@@ -99,6 +111,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
             userSelect: 'none',
             borderBottom: '1.5px dotted currentColor',
             '--badge-accent': backgroundColor,
+            ...style,
           }}
         >
           {title}

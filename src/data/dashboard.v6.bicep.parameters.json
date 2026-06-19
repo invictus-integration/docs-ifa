@@ -761,7 +761,10 @@
   {
     "name": "logAnalyticsWorkspaceImportFunctionV2Cron",
     "description": "The time period in which the automatically Azure Functions timer trigger [imports Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
-    "deprecatedSince": "v6.2, will be removed in v7, support for automatically triggering importing stops.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, support for automatically triggering importing stops."
+    },
     "default": "0 */10 * * * *",
     "tags": [
       "importing",
@@ -772,7 +775,10 @@
     "name": "logAnalyticsWorkspaceMaxNoOfRows",
     "description": "The maximum amount of rows to query the Azure Log Analytics workspace to automatically [import Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
     "default": "1000",
-    "deprecatedSince": "v6.2, will be removed in v7, support for automatically triggering importing stops.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, support for automatically triggering importing stops."
+    },
     "tags": [
       "importing",
       "deprecated"
@@ -815,7 +821,10 @@
   {
     "name": "flowBlobArchiverFunctionCron",
     "description": "The CRON expression that represents the time period in which flow trace information is archived.",
-    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
+    },
     "default": "0 0 */3 * * *",
     "tags": [
       "storage",
@@ -826,7 +835,10 @@
     "name": "hashCacheClearFunctionCron",
     "description": "The CRON expression that represents the time period in which to clear the Dashboard storage backend cache.",
     "default": "0 00 03 * * *",
-    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Azure Storage Account policies.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, clearing happens via Azure Storage Account policies."
+    },
     "tags": [
       "storage",
       "deprecated"
@@ -836,7 +848,10 @@
     "name": "workFlowEventsClearFunctionCron",
     "description": "The CRON expression that represents the time period in which to clear the Azure Logic Apps workflow Dashboard backend storage.",
     "default": "0 */15 * * * *",
-    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
+    },
     "tags": [
       "storage",
       "deprecated"
@@ -846,7 +861,10 @@
     "name": "azureWebJobsWorkFlowEventsClearFunctionDisabled",
     "description": "Indicates whether the Azure Functions timer trigger should be disabled, meaning the Azure Logic Apps workflow Dashboard backend storage won't be cleared.",
     "default": "true",
-    "deprecatedSince": "v6.2, will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
+    },
     "tags": [
       "storage",
       "deprecated"
@@ -856,7 +874,10 @@
     "name": "maxMessageStatusCacheInDay",
     "description": "The maximum amount of messages per day cached during importing.",
     "default": "60",
-    "deprecatedSince": "v6.2, will be removed in v7, caching happens independently now.",
+    "deprecatedSince": {
+      "version": "v6.2",
+      "note": "will be removed in v7, caching happens independently now."
+    },
     "tags": [
       "storage",
       "scaling",
