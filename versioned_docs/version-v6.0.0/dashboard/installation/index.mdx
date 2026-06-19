@@ -6,7 +6,7 @@ pagination_next: null
 
 import React from 'react';
 
-import { SharedNote } from '@site/src/components/Badges';
+import { SharedNote, NewSinceBadge, DeprecatedSinceBadge } from '@site/src/components/Badges';
 import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 
 import ParameterTable from "@site/src/components/ParameterTable";
@@ -212,6 +212,7 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">BICEP
 | Argument name                      | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `arcName`                          | The name of the Azure Container Registry name to deploy the container images to. (Make sure to override also the `containerRegistryName` BICEP parameter if you want a custom name.) |
+| `arcPath`                          | The Azure Container App registry base path to form the source image location of the container images.         |
 | `arcUsername`                      | The username credential to authenticate the Docker CLI.                                                                                                                                                                                                                                                                                                                                                         |
 | `arcPassword`                      | The password credential to authenticate into the Docker CLI.                                                                                                                                                                                                                                                                                                                                                    |
 | `resourcePrefix`                   | Prefix used for deployed Azure resources (ex. `invictus-{prefix}-vlt`)                                                                                                                                                                                                                                                                                                                                          |
@@ -226,7 +227,6 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">BICEP
 | `isProvisionedCosmos`              | If the value is 1, the installation deploys a Cosmos DB with provisioned throughput. Otherwise, a serverless Cosmos DB. [How to choose between provisioned and serverless](https://learn.microsoft.com/en-us/azure/cosmos-db/throughput-serverless).                                                                                                                                                            |
 | `identityProviderApplicationId`    | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                                 |
 | `identityProviderClientSecret`     | See [Container Authentication].                                                                                                                                                                                                                                                                                                                                                                                 |
-| `useBeta`                          | Indicates the environment of the Azure Container App registry where the deployment gets its container images.                                                                                                                                                                                                                                                                                                   |
 
 {/* vale Google.WordList = YES */}
 
@@ -235,11 +235,19 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">BICEP
 {/* vale Microsoft.Terms = NO */}
 | Argument name                  | Default value   | Description                                                                                                           |
 | ------------------------------ | --------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `artifactsPath`                | `$PSScriptRoot` | Path on the DevOps agent where you downloaded the Invictus artifacts <br/> ([publish and download build artifacts])   |
-| `resourceGroupLocation`        | 'West Europe'   | Azure location where you want the Invictus resources deployed.                                                        |
-| `isAdDisabled`                 | `False`         | Boolean flag to activate Entra ID authentication in the Dashboard.                                                    |
+| `acrEnvironment`               | `prod`          | The environment from where the script pulls the Invictus artifacts. (`prod`, `beta` or `staging`). <NewSinceBadge version="v6.3" />                   |
 | `additionalTemplateParameters` | []              | Optional named parameters for the Bicep template you wish to override. More on this below.                            |
+| `artifactsPath`                | `$PSScriptRoot` | Path on the DevOps agent where you downloaded the Invictus artifacts <br/> ([publish and download build artifacts])   |
+| `enableVnetSupport`            | `False`         | Deploys Invictus into a VNET. |
+| `isAdDisabled`                 | `False`         | Boolean flag to activate Entra ID authentication in the Dashboard.                                                    |
+| `resourceGroupLocation`        | `West Europe`   | Azure location where you want the Invictus resources deployed.                                                        |
+| `sqlToMigrateServerName`       | `invictus-{$resourcePrefix}-sqlsvr` | The name of the SQL Server to migrate from. Only used when `performSqlDataMigration=1`.                     |
+| `sqlToMigrateDBName`           | `coditcip`      | The name of the SQL Database to migrate from. Only used when `performSqlDataMigration=1`.                   |
+| `sqlToMigrateUserName`         | `InvictusFrameworkAdmin` | The username of the SQL Database to migrate from. Only used when `performSqlDataMigration=1`.                 |
+| `translateBicepOutput`         | `False`         | If set to `True`, translates the Bicep outputs  (`_` becomes `.`) before placing them in an Azure DevOps variable group. |
+| `validateOnly`                 | `False`         | If set to `True`, the Bicep deployment only validates the template and doesn't deploy any resources.                |     
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment. |
+| `useBeta`                      | `$null`         | Indicates the environment of the Azure Container App registry where the deployment gets its container images. <DeprecatedSinceBadge version="v6.3" label="Use the `acrEnvironment` parameter instead." />  |
 {/* vale Microsoft.Terms = YES */}
 
 <details>
