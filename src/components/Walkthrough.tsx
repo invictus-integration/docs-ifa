@@ -3,14 +3,14 @@ import styles from './Walkthrough.module.css';
 
 type WalkthroughProps = { children: ReactNode; label?: string };
 type StepProps = { title: string; children: ReactNode; number?: number; headingLevel?: 2 | 3 | 4 };
-type TaskProps = { title: string; children: ReactNode; number?: number; id?: string };
+type TaskProps = { title: string; children: ReactNode; string?: number; id?: string };
 
 /** Ordered list wrapper for Step and Collapsible components. Injects step numbers. */
 export function Walkthrough({ children, label = 'Steps' }: WalkthroughProps) {
   return (
     <ol className={styles.walkthrough} aria-label={label}>
       {React.Children.map(children, (child: any, index: number) =>
-        React.isValidElement(child) ? React.cloneElement(child, { number: index + 1 } as any) : child
+        React.isValidElement(child) ? React.cloneElement(child, { number: child.props.number ?? index + 1 } as any) : child
       )}
     </ol>
   );
@@ -58,7 +58,7 @@ export function Collapsible({ title, children, number, id }: TaskProps) {
           aria-hidden="true"
           width="16" height="16" viewBox="0 0 16 16" fill="none"
         >
-          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
       {open && (

@@ -677,6 +677,14 @@
     ]
   },
   {
+    "name": "acrSku",
+    "description": "The pricing tier of the Azure Container Apps registry that hosts the Dashboard's container images.",
+    "default": "Standard",
+    "tags": [
+      "container-apps"
+    ]
+  },
+  {
     "name": "caeVnetInfraRgName",
     "description": "The name of the Azure Container Apps infrastructure resource group ([when VNET is enabled](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env)).",
     "default": "invictus-${resourcePrefix}-cae-infra",
@@ -772,13 +780,13 @@
     ]
   },
   {
-     "name": "aiResourcesLocation",
+    "name": "aiResourcesLocation",
     "description": "Location where the Framework deploys the Azure AI Foundray services.",
     "default": "swedencentral",
     "newSince": "v6.3",
     "tags": [
-        "comp:exception-handler"
-      ]
+      "comp:exception-handler"
+    ]
   },
   {
     "name": "containerAppEnvironmentSubnets",
