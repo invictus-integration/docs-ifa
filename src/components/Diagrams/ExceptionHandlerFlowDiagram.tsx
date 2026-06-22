@@ -1,3 +1,4 @@
+import { useColorMode } from "@docusaurus/theme-common";
 import React from "react";
 
 const c = {
@@ -99,88 +100,621 @@ function LogicAppUnit({
   );
 }
 
-// ── Desktop layout ────────────────────────────────────────────────────────────
-// Invictus handler on the left, two client apps stacked on the upper/lower right.
-// The Invictus unit is vertically centered between the two client units.
-const D_IX = 10;
-const D_IY = 111;
-const D_CX = 290;
-const D_C1Y = 36;
-const D_C2Y = 186;
-
-// Routing: right edge of Invictus header block (arrow target = the trigger block)
-const D_INV_HDR_RX = hdrX(D_IX) + HW + 1;  // 161
-// Routing: left edge of client left-child (Trigger — arrow origin, no block crossing)
-const D_CLI_LEFT_X = lChX(D_CX);            // 290
-// Midpoint X between the two units (bend point for the C2 L-shaped path)
-const D_MID_X = Math.round((D_IX + UNIT_W + D_CX) / 2);  // 245
-
 function DesktopDiagram() {
-  const c1CY = chCY(D_C1Y);  // 127 — center Y of Client 1 children row
-  const c2CY = chCY(D_C2Y);  // 277 — center Y of Client 2 children row
-  // Invictus header center Y — the two arrows enter at slightly different offsets
-  const invHdrCY = D_IY + Math.round(HH / 2);  // 132
-
   return (
     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={680}
+      height={430}
       viewBox="0 0 495 313"
       role="img"
       aria-labelledby="ehfd-d-title ehfd-d-desc"
-      style={{ width: "100%", maxWidth: 680, display: "block", margin: "2rem auto", fontFamily: "inherit", overflow: "visible" }}
+      style={{ margin: "auto", display: "block", fontFamily: "inherit" }}
     >
-      <title id="ehfd-d-title">Exception Handler flow diagram</title>
-      <desc id="ehfd-d-desc">
-        Two Client Logic Apps (each with a Trigger and Exception Scope step) send dashed arrows to
-        a Common Exception Handler Logic App highlighted in the Invictus color palette. The central
-        app has a Receive step and a ResolveException step.
-      </desc>
-      <defs>
-        <marker id="ehfd-d-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" style={{ fill: c.primaryLight }} />
-        </marker>
-      </defs>
-
-      {/* Common Exception Handler — Invictus (left) */}
-      <LogicAppUnit
-        ux={D_IX} uy={D_IY}
-        title="Client Logic App"
-        headerLabel="Exception Handler"
-        leftLabel="Receive"
-        rightLabel="ResolveException"
-        variant="invictus"
+      <rect
+        width={110}
+        height={42}
+        x={50}
+        y={111.015}
+        rx={3}
+        ry={3}
+        style={{
+          fill: "#014550",
+        }}
       />
-
-      {/* Dashed arrow: Client 1 Trigger → Invictus header (straight horizontal — c1CY ≈ header cy) */}
+      <text
+        x={-52.459}
+        y={-3.754}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#fff",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(105.41 129.871)"
+      >
+        <tspan x={-52.459} y={-3.754}>
+          {"E"}
+        </tspan>
+        <tspan x={-44.122} y={-3.754}>
+          {"x"}
+        </tspan>
+        <tspan x={-37.622} y={-3.754}>
+          {"c"}
+        </tspan>
+        <tspan x={-31.74} y={-3.754}>
+          {"e"}
+        </tspan>
+        <tspan x={-25.858} y={-3.754}>
+          {"p"}
+        </tspan>
+        <tspan x={-18.74} y={-3.754}>
+          {"t"}
+        </tspan>
+        <tspan x={-14.077} y={-3.754}>
+          {"i"}
+        </tspan>
+        <tspan x={-10.021} y={-3.754}>
+          {"o"}
+        </tspan>
+        <tspan x={-3.521} y={-3.754}>
+          {"n"}
+        </tspan>
+        <tspan
+          x={3.597}
+          y={-3.754}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={7.347} y={-3.754}>
+          {"H"}
+        </tspan>
+        <tspan x={16.903} y={-3.754}>
+          {"a"}
+        </tspan>
+        <tspan x={23.403} y={-3.754}>
+          {"n"}
+        </tspan>
+        <tspan x={30.521} y={-3.754}>
+          {"d"}
+        </tspan>
+        <tspan x={37.638} y={-3.754}>
+          {"l"}
+        </tspan>
+        <tspan x={41.695} y={-3.754}>
+          {"e"}
+        </tspan>
+        <tspan x={47.577} y={-3.754}>
+          {"r"}
+        </tspan>
+        <tspan x={-28.602} y={10.665}>
+          {"L"}
+        </tspan>
+        <tspan x={-20.265} y={10.665}>
+          {"o"}
+        </tspan>
+        <tspan x={-13.765} y={10.665}>
+          {"g"}
+        </tspan>
+        <tspan x={-7.265} y={10.665}>
+          {"i"}
+        </tspan>
+        <tspan x={-3.209} y={10.665}>
+          {"c"}
+        </tspan>
+        <tspan
+          x={2.673}
+          y={10.665}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={6.423} y={10.665}>
+          {"A"}
+        </tspan>
+        <tspan x={15.367} y={10.665}>
+          {"p"}
+        </tspan>
+        <tspan x={22.485} y={10.665}>
+          {"p"}
+        </tspan>
+      </text>
       <path
-        d={`M${D_CLI_LEFT_X},${c1CY} H${D_INV_HDR_RX}`}
-        style={arrowStyle} markerEnd="url(#ehfd-d-arr)"
+        d="M105 153.015v14M55 167.015h100M55 167.015v14M155 167.015v14"
+        style={{
+          stroke: "#014550",
+          strokeWidth: 1.5,
+          fill: "none",
+        }}
       />
-
-      {/* Dashed arrow: Client 2 Trigger → Invictus header (L-shape via midpoint) */}
+      <rect
+        width={90}
+        height={42}
+        x={10}
+        y={181.015}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#014550",
+          strokeWidth: 2,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <rect
+        width={90}
+        height={42}
+        x={110}
+        y={181.015}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#014550",
+          strokeWidth: 2,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
       <path
-        d={`M${D_CLI_LEFT_X},${c2CY} H${D_MID_X} V${invHdrCY + 6} H${D_INV_HDR_RX}`}
-        style={arrowStyle} markerEnd="url(#ehfd-d-arr)"
+        strokeLinecap="round"
+        d="M278.51 127.015H160.933"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 1.5,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
       />
-
-      {/* Client Logic App 1 — upper right */}
-      <LogicAppUnit
-        ux={D_CX} uy={D_C1Y}
-        title="Client Logic App"
-        headerLabel="Logic App"
-        leftLabel="Trigger"
-        rightLabel="Exception Scope"
-        variant="client"
+      <path
+        strokeLinecap="round"
+        d="M341.37 255.242h-62.92V138.015H161"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 1.5,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
+        vectorEffect="non-scaling-stroke"
       />
-
-      {/* Client Logic App 2 — lower right */}
-      <LogicAppUnit
-        ux={D_CX} uy={D_C2Y}
-        title="Client Logic App"
-        headerLabel="Logic App"
-        leftLabel="Trigger"
-        rightLabel="Exception Scope"
-        variant="client"
+      <rect
+        width={110}
+        height={42}
+        x={330}
+        y={36.015}
+        rx={3}
+        ry={3}
+        style={{
+          fill: "#6c7374",
+        }}
       />
+      <text
+        x={-15.75}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#fff",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(382.166 53.06)"
+      >
+        <tspan x={-15.75} y={3.456}>
+          {"S"}
+        </tspan>
+        <tspan x={-8.632} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan x={-2.75} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={3.75} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={10.868} y={3.456}>
+          {"e"}
+        </tspan>
+      </text>
+      <rect
+        width={122.873}
+        height={99.368}
+        x={323.974}
+        y={62.464}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <rect
+        width={75.007}
+        height={30.491}
+        x={345.234}
+        y={85.729}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <rect
+        width={110}
+        height={42}
+        x={330}
+        y={186.015}
+        rx={3}
+        ry={3}
+        style={{
+          fill: "#6c7374",
+        }}
+      />
+      <text
+        x={-15.75}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#fff",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(385.795 203.578)"
+      >
+        <tspan x={-15.75} y={3.456}>
+          {"S"}
+        </tspan>
+        <tspan x={-8.632} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan x={-2.75} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={3.75} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={10.868} y={3.456}>
+          {"e"}
+        </tspan>
+      </text>
+      <rect
+        width={75.007}
+        height={30.491}
+        x={344.543}
+        y={126.181}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <rect
+        width={122.873}
+        height={99.368}
+        x={324.206}
+        y={211.64}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <rect
+        width={75.007}
+        height={30.491}
+        x={345.288}
+        y={235.711}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <rect
+        width={75.007}
+        height={30.491}
+        x={344.543}
+        y={276.243}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <text
+        x={-19.112}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        className="resolve-text"
+        style={{
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(381.55 101.03)"
+      >
+        <tspan x={-19.112} y={3.141}>
+          {"R"}
+        </tspan>
+        <tspan x={-10.981} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-5.633} y={3.141}>
+          {"s"}
+        </tspan>
+        <tspan x={-0.833} y={3.141}>
+          {"o"}
+        </tspan>
+        <tspan x={5.077} y={3.141}>
+          {"l"}
+        </tspan>
+        <tspan x={8.764} y={3.141}>
+          {"v"}
+        </tspan>
+        <tspan x={14.673} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-19.112}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        className="resolve-text"
+        style={{
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(381.55 250.168)"
+      >
+        <tspan x={-19.112} y={3.141}>
+          {"R"}
+        </tspan>
+        <tspan x={-10.981} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-5.633} y={3.141}>
+          {"s"}
+        </tspan>
+        <tspan x={-0.833} y={3.141}>
+          {"o"}
+        </tspan>
+        <tspan x={5.077} y={3.141}>
+          {"l"}
+        </tspan>
+        <tspan x={8.764} y={3.141}>
+          {"v"}
+        </tspan>
+        <tspan x={14.673} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-25.67}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        className="resolve-text"
+        style={{
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(381.922 141.382)"
+      >
+        <tspan x={-25.67} y={3.141}>
+          {"T"}
+        </tspan>
+        <tspan x={-19.009} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-13.661} y={3.141}>
+          {"r"}
+        </tspan>
+        <tspan x={-8.314} y={3.141}>
+          {"m"}
+        </tspan>
+        <tspan x={0.925} y={3.141}>
+          {"i"}
+        </tspan>
+        <tspan x={4.613} y={3.141}>
+          {"n"}
+        </tspan>
+        <tspan x={11.083} y={3.141}>
+          {"a"}
+        </tspan>
+        <tspan x={16.992} y={3.141}>
+          {"t"}
+        </tspan>
+        <tspan x={21.232} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-25.67}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        className="resolve-text"
+        style={{
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(383.038 291.443)"
+      >
+        <tspan x={-25.67} y={3.141}>
+          {"T"}
+        </tspan>
+        <tspan x={-19.009} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-13.661} y={3.141}>
+          {"r"}
+        </tspan>
+        <tspan x={-8.314} y={3.141}>
+          {"m"}
+        </tspan>
+        <tspan x={0.925} y={3.141}>
+          {"i"}
+        </tspan>
+        <tspan x={4.613} y={3.141}>
+          {"n"}
+        </tspan>
+        <tspan x={11.083} y={3.141}>
+          {"a"}
+        </tspan>
+        <tspan x={16.992} y={3.141}>
+          {"t"}
+        </tspan>
+        <tspan x={21.232} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <path
+        strokeLinecap="round"
+        d="M279.242 125.45V97.722M341.106 98.774h-61.55"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 1.5,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="m160.816 127.063 8.894-3.879v7.758ZM160.641 138.122l8.895-3.879v7.758Z"
+        style={{
+          strokeWidth: 0,
+          fill: "#014550",
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <text
+        x={-28.602}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        className="resolve-text"
+        style={{
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(457.974 25.886)"
+      >
+        <tspan x={-28.602} y={3.456}>
+          {"L"}
+        </tspan>
+        <tspan x={-20.265} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={-13.765} y={3.456}>
+          {"g"}
+        </tspan>
+        <tspan x={-7.265} y={3.456}>
+          {"i"}
+        </tspan>
+        <tspan x={-3.209} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan
+          x={2.673}
+          y={3.456}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={6.423} y={3.456}>
+          {"A"}
+        </tspan>
+        <tspan x={15.367} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={22.485} y={3.456}>
+          {"p"}
+        </tspan>
+      </text>
+      <text
+        x={-28.602}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        className="resolve-text"
+        style={{
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(461.084 174.102)"
+      >
+        <tspan x={-28.602} y={3.456}>
+          {"L"}
+        </tspan>
+        <tspan x={-20.265} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={-13.765} y={3.456}>
+          {"g"}
+        </tspan>
+        <tspan x={-7.265} y={3.456}>
+          {"i"}
+        </tspan>
+        <tspan x={-3.209} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan
+          x={2.673}
+          y={3.456}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={6.423} y={3.456}>
+          {"A"}
+        </tspan>
+        <tspan x={15.367} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={22.485} y={3.456}>
+          {"p"}
+        </tspan>
+      </text>
     </svg>
   );
 }
@@ -205,63 +739,635 @@ function MobileDiagram() {
 
   return (
     <svg
-      viewBox="0 0 222 475"
-      role="img"
-      aria-labelledby="ehfd-m-title ehfd-m-desc"
-      style={{ width: "100%", maxWidth: 380, display: "block", margin: "2rem auto", fontFamily: "inherit", overflow: "visible" }}
+      xmlns="http://www.w3.org/2000/svg"
+
+      viewBox="0 0 360 550"
     >
-      <title id="ehfd-m-title">Exception Handler flow diagram</title>
-      <desc id="ehfd-m-desc">
-        Two Client Logic Apps send their Exception Scope to a central Common Exception Handler
-        Logic App that uses the Invictus ResolveException component.
-      </desc>
-      <defs>
-        <marker id="ehfd-m-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" style={{ fill: c.primaryLight }} />
-        </marker>
-      </defs>
-
-      {/* Client Logic App 1 — top */}
-      <LogicAppUnit
-        ux={M_UX} uy={M_C1Y}
-        title="Client Logic App"
-        headerLabel="Logic App"
-        leftLabel="Trigger"
-        rightLabel="Exception Scope"
-        variant="client"
+      <rect
+        width={75.007}
+        height={30.491}
+        x={142.514}
+        y={444.646}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
       />
-
-      {/* Dashed arrow: Client 1 Exception Scope → Invictus header (right margin, then down) */}
+      <rect
+        width={110}
+        height={42}
+        x={128.78}
+        y={24.744}
+        rx={3}
+        ry={3}
+        style={{
+          fill: "#6c7374",
+        }}
+      />
+      <rect
+        width={122.873}
+        height={99.368}
+        x={123.21}
+        y={55.36}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <rect
+        width={75.007}
+        height={30.491}
+        x={145.886}
+        y={75.33}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <text
+        x={-19.112}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        style={{
+          fill: "#000",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(183.955 90.531)"
+      >
+        <tspan x={-19.112} y={3.141}>
+          {"R"}
+        </tspan>
+        <tspan x={-10.981} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-5.633} y={3.141}>
+          {"s"}
+        </tspan>
+        <tspan x={-0.833} y={3.141}>
+          {"o"}
+        </tspan>
+        <tspan x={5.077} y={3.141}>
+          {"l"}
+        </tspan>
+        <tspan x={8.764} y={3.141}>
+          {"v"}
+        </tspan>
+        <tspan x={14.673} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <rect
+        width={75.007}
+        height={30.491}
+        x={144.504}
+        y={113.34}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <text
+        x={-25.67}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        style={{
+          fill: "#000",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(182.573 127.85)"
+      >
+        <tspan x={-25.67} y={3.141}>
+          {"T"}
+        </tspan>
+        <tspan x={-19.009} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-13.661} y={3.141}>
+          {"r"}
+        </tspan>
+        <tspan x={-8.314} y={3.141}>
+          {"m"}
+        </tspan>
+        <tspan x={0.925} y={3.141}>
+          {"i"}
+        </tspan>
+        <tspan x={4.613} y={3.141}>
+          {"n"}
+        </tspan>
+        <tspan x={11.083} y={3.141}>
+          {"a"}
+        </tspan>
+        <tspan x={16.992} y={3.141}>
+          {"t"}
+        </tspan>
+        <tspan x={21.232} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-15.75}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#fff",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(181.882 44.92)"
+      >
+        <tspan x={-15.75} y={3.456}>
+          {"S"}
+        </tspan>
+        <tspan x={-8.632} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan x={-2.75} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={3.75} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={10.868} y={3.456}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-28.602}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#000",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(277.713 18.351)"
+      >
+        <tspan x={-28.602} y={3.456}>
+          {"L"}
+        </tspan>
+        <tspan x={-20.265} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={-13.765} y={3.456}>
+          {"g"}
+        </tspan>
+        <tspan x={-7.265} y={3.456}>
+          {"i"}
+        </tspan>
+        <tspan x={-3.209} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan
+          x={2.673}
+          y={3.456}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={6.423} y={3.456}>
+          {"A"}
+        </tspan>
+        <tspan x={15.367} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={22.485} y={3.456}>
+          {"p"}
+        </tspan>
+      </text>
+      <rect
+        width={110}
+        height={42}
+        x={131.72}
+        y={225.025}
+        rx={3}
+        ry={3}
+        style={{
+          fill: "#014550",
+        }}
+      />
       <path
-        d={`M${cliExsRX},${exsCY1} H${M_SIDE_X} V${invHdrCY - 6} H${invHdrRX}`}
-        style={arrowStyle} markerEnd="url(#ehfd-m-arr)"
+        strokeLinecap="round"
+        d="M288.236 90.09h-61.551M288.399 248.906V96.31"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 1.5,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
+        vectorEffect="non-scaling-stroke"
       />
-
-      {/* Common Exception Handler — Invictus (middle) */}
-      <LogicAppUnit
-        ux={M_UX} uy={M_INY}
-        title="Common Exception Handler"
-        headerLabel="Exception Handler"
-        leftLabel="Receive"
-        rightLabel="ResolveException"
-        variant="invictus"
-      />
-
-      {/* Dashed arrow: Client 2 Exception Scope → Invictus header (right margin, then up) */}
       <path
-        d={`M${cliExsRX},${exsCY2} H${M_SIDE_X} V${invHdrCY + 6} H${invHdrRX}`}
-        style={arrowStyle} markerEnd="url(#ehfd-m-arr)"
+        strokeLinecap="round"
+        d="M283.349 248.177h-39.182"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 2,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
+        vectorEffect="non-scaling-stroke"
       />
-
-      {/* Client Logic App 2 — bottom */}
-      <LogicAppUnit
-        ux={M_UX} uy={M_C2Y}
-        title="Client Logic App"
-        headerLabel="Logic App"
-        leftLabel="Trigger"
-        rightLabel="Exception Scope"
-        variant="client"
+      <text
+        x={-52.459}
+        y={-3.754}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={700}
+        style={{
+          fill: "#fff",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(187.694 247.322)"
+      >
+        <tspan x={-52.459} y={-3.754}>
+          {"E"}
+        </tspan>
+        <tspan x={-44.122} y={-3.754}>
+          {"x"}
+        </tspan>
+        <tspan x={-37.622} y={-3.754}>
+          {"c"}
+        </tspan>
+        <tspan x={-31.74} y={-3.754}>
+          {"e"}
+        </tspan>
+        <tspan x={-25.858} y={-3.754}>
+          {"p"}
+        </tspan>
+        <tspan x={-18.74} y={-3.754}>
+          {"t"}
+        </tspan>
+        <tspan x={-14.077} y={-3.754}>
+          {"i"}
+        </tspan>
+        <tspan x={-10.021} y={-3.754}>
+          {"o"}
+        </tspan>
+        <tspan x={-3.521} y={-3.754}>
+          {"n"}
+        </tspan>
+        <tspan
+          x={3.597}
+          y={-3.754}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={7.347} y={-3.754}>
+          {"H"}
+        </tspan>
+        <tspan x={16.903} y={-3.754}>
+          {"a"}
+        </tspan>
+        <tspan x={23.403} y={-3.754}>
+          {"n"}
+        </tspan>
+        <tspan x={30.521} y={-3.754}>
+          {"d"}
+        </tspan>
+        <tspan x={37.638} y={-3.754}>
+          {"l"}
+        </tspan>
+        <tspan x={41.695} y={-3.754}>
+          {"e"}
+        </tspan>
+        <tspan x={47.577} y={-3.754}>
+          {"r"}
+        </tspan>
+        <tspan x={-28.602} y={10.665}>
+          {"L"}
+        </tspan>
+        <tspan x={-20.265} y={10.665}>
+          {"o"}
+        </tspan>
+        <tspan x={-13.765} y={10.665}>
+          {"g"}
+        </tspan>
+        <tspan x={-7.265} y={10.665}>
+          {"i"}
+        </tspan>
+        <tspan x={-3.209} y={10.665}>
+          {"c"}
+        </tspan>
+        <tspan
+          x={2.673}
+          y={10.665}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={6.423} y={10.665}>
+          {"A"}
+        </tspan>
+        <tspan x={15.367} y={10.665}>
+          {"p"}
+        </tspan>
+        <tspan x={22.485} y={10.665}>
+          {"p"}
+        </tspan>
+      </text>
+      <path
+        d="m241.862 248.184 8.894-3.88v7.758Z"
+        style={{
+          strokeWidth: 0,
+          fill: "#014550",
+        }}
+        vectorEffect="non-scaling-stroke"
       />
+      <path
+        d="M186.119 267.211v14M136.119 281.727h100M235.394 281.012v14M136.75 281.05v14"
+        style={{
+          stroke: "#014550",
+          strokeWidth: 1.5,
+          fill: "none",
+        }}
+      />
+      <rect
+        width={90}
+        height={42}
+        x={190.396}
+        y={295.14}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#014550",
+          strokeWidth: 2,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <rect
+        width={90}
+        height={42}
+        x={91.793}
+        y={294.975}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#014550",
+          strokeWidth: 2,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <rect
+        width={110}
+        height={42}
+        x={125.5}
+        y={395.685}
+        rx={3}
+        ry={3}
+        style={{
+          fill: "#6c7374",
+        }}
+      />
+      <rect
+        width={122.873}
+        height={99.368}
+        x={119.064}
+        y={419.889}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <text
+        x={-15.75}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#fff",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(179.284 413.038)"
+      >
+        <tspan x={-15.75} y={3.456}>
+          {"S"}
+        </tspan>
+        <tspan x={-8.632} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan x={-2.75} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={3.75} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={10.868} y={3.456}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-19.112}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        style={{
+          fill: "#000",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(180.5 458.023)"
+      >
+        <tspan x={-19.112} y={3.141}>
+          {"R"}
+        </tspan>
+        <tspan x={-10.981} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-5.633} y={3.141}>
+          {"s"}
+        </tspan>
+        <tspan x={-0.833} y={3.141}>
+          {"o"}
+        </tspan>
+        <tspan x={5.077} y={3.141}>
+          {"l"}
+        </tspan>
+        <tspan x={8.764} y={3.141}>
+          {"v"}
+        </tspan>
+        <tspan x={14.673} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <text
+        x={-25.67}
+        y={3.141}
+        fontFamily="inherit"
+        fontSize={10}
+        fontWeight={600}
+        style={{
+          fill: "#000",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(178.676 498.144)"
+      >
+        <tspan x={-25.67} y={3.141}>
+          {"T"}
+        </tspan>
+        <tspan x={-19.009} y={3.141}>
+          {"e"}
+        </tspan>
+        <tspan x={-13.661} y={3.141}>
+          {"r"}
+        </tspan>
+        <tspan x={-8.314} y={3.141}>
+          {"m"}
+        </tspan>
+        <tspan x={0.925} y={3.141}>
+          {"i"}
+        </tspan>
+        <tspan x={4.613} y={3.141}>
+          {"n"}
+        </tspan>
+        <tspan x={11.083} y={3.141}>
+          {"a"}
+        </tspan>
+        <tspan x={16.992} y={3.141}>
+          {"t"}
+        </tspan>
+        <tspan x={21.232} y={3.141}>
+          {"e"}
+        </tspan>
+      </text>
+      <rect
+        width={75.007}
+        height={30.491}
+        x={141.298}
+        y={482.943}
+        fill="none"
+        rx={3}
+        ry={3}
+        style={{
+          stroke: "#6c7374",
+          strokeWidth: 1.5,
+          fill: "#000",
+          fillOpacity: 0,
+        }}
+      />
+      <path
+        strokeLinecap="round"
+        d="M137.93 462.204H64.106M64.046 458.717V245.763"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 1.5,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        strokeLinecap="round"
+        d="M127.862 245.752H64.34"
+        style={{
+          stroke: "#065b68",
+          strokeWidth: 2,
+          strokeDasharray: "6 4",
+          strokeLinecap: "round",
+          fill: "none",
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="m131.383 245.831-8.894 3.88v-7.759Z"
+        style={{
+          strokeWidth: 0,
+          fill: "#014550",
+        }}
+        vectorEffect="non-scaling-stroke"
+      />
+      <text
+        x={-28.602}
+        y={3.456}
+        fontFamily="inherit"
+        fontSize={11}
+        fontWeight={600}
+        style={{
+          fill: "#000",
+          textDecorationThickness: "6.6667%",
+          whiteSpace: "pre",
+        }}
+        transform="translate(272.958 385.521)"
+      >
+        <tspan x={-28.602} y={3.456}>
+          {"L"}
+        </tspan>
+        <tspan x={-20.265} y={3.456}>
+          {"o"}
+        </tspan>
+        <tspan x={-13.765} y={3.456}>
+          {"g"}
+        </tspan>
+        <tspan x={-7.265} y={3.456}>
+          {"i"}
+        </tspan>
+        <tspan x={-3.209} y={3.456}>
+          {"c"}
+        </tspan>
+        <tspan
+          x={2.673}
+          y={3.456}
+          style={{
+            whiteSpace: "pre",
+          }}
+        />
+        <tspan x={6.423} y={3.456}>
+          {"A"}
+        </tspan>
+        <tspan x={15.367} y={3.456}>
+          {"p"}
+        </tspan>
+        <tspan x={22.485} y={3.456}>
+          {"p"}
+        </tspan>
+      </text>
     </svg>
   );
 }
@@ -277,6 +1383,8 @@ export default function ExceptionHandlerFlowDiagram(): JSX.Element {
           .ehfd-wide   { display: none;  }
           .ehfd-narrow { display: block; }
         }
+        .resolve-text { fill: black; }
+        [data-theme="dark"] .resolve-text { fill: white; }
       `}</style>
       <div className="ehfd-wide"><DesktopDiagram /></div>
       <div className="ehfd-narrow"><MobileDiagram /></div>
