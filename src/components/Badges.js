@@ -104,7 +104,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
             color: color,
             padding: '2px 6px',
             borderRadius: '4px',
-            fontSize: '1rem',
+            fontSize: 'inherit',
             fontWeight: '600',
             fontFamily: 'Bitter',
             cursor: 'help',
