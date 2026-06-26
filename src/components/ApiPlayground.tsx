@@ -1,7 +1,29 @@
 import React, { useState, useCallback, useRef, useEffect, useId } from "react";
 import DocusaurusCodeBlock from "@theme/CodeBlock";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import styles from "./ApiPlayground.module.css";
 import rowStyles from "./resultRow.module.css";
+
+// Renders a markdown string while applying an existing CSS class to the
+// wrapping paragraph and ensuring links open in a new tab safely.
+function MarkdownText({ children, className }: { children: string; className: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        p: ({ children: kids }) => <p className={className}>{kids}</p>,
+        a: ({ href, children: kids }) => (
+          <a href={href} target="_blank" rel="noopener noreferrer">
+            {kids}
+          </a>
+        ),
+      }}
+    >
+      {children}
+    </ReactMarkdown>
+  );
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -10,19 +32,21 @@ export type ApiParameter = {
   type: string;
   required?: boolean;
   description: string;
+  /** Optional React nodes (e.g. <NewSinceBadge />) rendered after the required badge. */
+  badges?: React.ReactNode;
 };
 
 export type ApiResponse = {
   status: number;
   label: string;
-  description?: string;
+  description?: React.ReactNode;
   body: unknown;
 };
 
 export type ApiPlaygroundProps = {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   path: string;
-  description?: string;
+  description?: React.ReactNode;
   parameters?: ApiParameter[];
   request?: unknown;
   responses: ApiResponse[];
@@ -138,7 +162,11 @@ export default function ApiPlayground({
       </div>
 
       {/* ── Description ── */}
-      {description && <p className={styles.description}>{description}</p>}
+      {description && (
+        typeof description === "string"
+          ? <MarkdownText className={styles.description}>{description}</MarkdownText>
+          : <div className={styles.description}>{description}</div>
+      )}
 
       {/* ── Two-panel grid ── */}
       <div className={styles.grid}>
@@ -168,8 +196,11 @@ export default function ApiPlayground({
                       {p.required && (
                         <span className={styles.requiredBadge}>required</span>
                       )}
+                      {p.badges && (
+                        <span className={styles.paramBadgeSlot}>{p.badges}</span>
+                      )}
                     </div>
-                    <p className={styles.paramDesc}>{p.description}</p>
+                    <MarkdownText className={styles.paramDesc}>{p.description}</MarkdownText>
                   </li>
                 ))}
               </ul>
@@ -224,7 +255,9 @@ export default function ApiPlayground({
             className={styles.responseBody}
           >
             {selectedResponse.description && (
-              <p className={styles.responseDesc}>{selectedResponse.description}</p>
+              typeof selectedResponse.description === "string"
+                ? <MarkdownText className={styles.responseDesc}>{selectedResponse.description}</MarkdownText>
+                : <div className={styles.responseDesc}>{selectedResponse.description}</div>
             )}
             <DocusaurusCodeBlock language="json">
               {JSON.stringify(selectedResponse.body, null, 2)}

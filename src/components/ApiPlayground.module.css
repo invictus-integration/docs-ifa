@@ -214,6 +214,13 @@
   background-color: var(--ifm-color-danger);
 }
 
+/* Scales any slotted badge (e.g. NewSinceBadge) to match the required badge size.
+   zoom is used because the Badge component sets font-size via inline styles. */
+.paramBadgeSlot {
+  display: contents;
+  zoom: 0.72;
+}
+
 .paramDesc {
   font-size: 0.8rem;
   line-height: 1.45;
@@ -673,6 +680,10 @@
   color: #fff1f2;
   padding: 1px 6px;
   border-radius: 3px;
+}
+
+.paramBadgeSlot {
+  zoom: 0.8;
 }
 
 [data-theme="dark"] .requiredBadge {

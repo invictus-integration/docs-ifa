@@ -86,7 +86,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
     <>
       <span
         ref={badgeRef}
-        style={{ position: 'relative', display: 'inline-block', marginLeft: '8px', textTransform: 'none', fontWeight: 'bold', ...style }}
+        style={{ position: 'relative', display: 'inline-block', marginLeft: '8px', textTransform: 'none', fontWeight: 'normal', ...style }}
         role="button"
         aria-pressed={pinned}
         aria-describedby={visible ? tooltipId : undefined}
@@ -104,9 +104,9 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
             color: color,
             padding: '2px 6px',
             borderRadius: '4px',
-            fontSize: 'inherit',
+            fontSize: '0.9rem',
             fontWeight: '600',
-            fontFamily: 'Bitter',
+            fontFamily: 'Inter',
             cursor: 'help',
             userSelect: 'none',
             borderBottom: '1.5px dotted currentColor',
@@ -116,7 +116,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
         >
           {title}
         </span>
-      </span>
+      </span >
 
       {tooltipEl}
     </>
@@ -184,9 +184,9 @@ export function SharedNote() {
             color: ACCENT,
             padding: '2px 6px',
             borderRadius: '4px',
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             fontWeight: '600',
-            fontFamily: 'Bitter',
+            fontFamily: 'Inter',
             cursor: 'help',
             userSelect: 'none',
             outline: 'none',
