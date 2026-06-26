@@ -161,7 +161,7 @@ describe('SearchBar navigation (local search)', () => {
       openSearchAndType('resourcePrefix');
       cy.get('[data-cy=search-result]').contains('resourcePrefix').first().click();
       cy.get('[data-cy=search-results] tbody tr').should('have.length.greaterThan', 0);
-      cy.get('[data-cy=search-results] tbody tr td:nth-child(2) code')
+      cy.get('[data-cy=search-results] tbody tr td:nth-child(1) code')
         .first()
         .should('contain', 'resourcePrefix');
     });
