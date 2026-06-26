@@ -10,6 +10,11 @@ import Admonition from '@theme/Admonition';
 import {faCircleDown, faHourglassHalf, faCheckDouble, faEarthEurope, faLink, faBoltLightning, faRotate} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import SequenceControllerFlowDiagram from "@site/src/components/Diagrams/SequenceControllerFlowDiagram";
+import SequenceControllerSortDiagram from "@site/src/components/Diagrams/SequenceControllerSortDiagram";
+import {Walkthrough, Collapsible} from "@site/src/components/Walkthrough";
+import ApiPlayground from "@site/src/components/ApiPlayground";
+import {NewSinceBadge} from "@site/src/components/Badges";
 
 <ComponentHeader
   icon="/img/icons/sequence-controller.png"
@@ -20,114 +25,286 @@ import ComponentHeader from "@site/src/components/ComponentHeader";
 :::note[motivation]
 Some dependent external systems can't handle parallel message processing or requires a certain order of messages. Sending messages serially (for example, by setting the concurrency on a Logic App to `1`) can be a solution, at the cost of a big performance impact.
 
-<FontAwesomeIcon icon={faEarthEurope} /> **A customer story from the trenches** <br/>
-*A downstream application can't handle calls at the same time for the same order ID, by using the **Sequence Controller** we guarantee a single call per order ID (by using the order ID in the `sequenceName`) and we don't have the use the concurrency option for the Logic App which would dramatically slow down the processing for all messages.*
+> <FontAwesomeIcon icon={faEarthEurope} /> **A customer story from the trenches** <br/>
+> *A downstream application can't handle calls at the same time for the same order ID, by using the **Sequence Controller** we guarantee a single call per order ID (by using the order ID in the `sequenceName`) and we don't have the use the concurrency option for the Logic App which would dramatically slow down the processing for all messages.*
 
 The Invictus Framework provides a **Sequence Controller** component that allows you to process Logic App workflow runs in a specified order. Even parallel triggered workflows won't overblown the external dependency with messages.
 
 <FontAwesomeIcon icon={faLink} /> See also the [Message Sequence](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageSequence.html) integration pattern.
 :::
 
-## Available endpoints
-The **Sequence Controller** component is available as a HTTP endpoint in your Logic App workflow. To include sequence processing to your workflow, add these three HTTP interaction tasks:
+## Component usage
+The **Sequence Controller** component has three main endpoints to control the sequence of Azure Logic App workflow.
+Use the following diagram to integrate the component in your workflow. 
 
-* <a href="#-get-sequence-number">`/api/GetSequenceNumber`</a>: allows the workflow to determine what current position it has in the sequence;
-* <a href="#-wait-for-sequence">`/api/WaitForSequence`</a>: allows the workflow to wait its turn, doing the actual work in a **Control** task;
-* <a href="#-complete-sequence">`/api/ConfirmExecutionCompleted`</a>: allows the workflow to signal that the next workflow in the sequence is up.
-
-<Admonition type="praise" icon={<FontAwesomeIcon icon={faBoltLightning} />} title="Advanced usage: reset sequence">
-There also exists a <a href="#-reset-sequence">`/api/ResetSequence`</a> action that allows admins to externally remove references to old sequences or possibly reuse sequence names.
-</Admonition>
-
-![Pseudo Logic App workflow with Sequence Controller](/images/framework/pseudo-logic-app-w-sequence-controller.png)
+<SequenceControllerFlowDiagram />
+<SequenceControllerSortDiagram />
 
 The component processes workflows in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order.
 If workflow 1 gets triggered before workflow 2, the second workflow waits for the first workflow.
 
-![Pseudo Logic App workflow runs with Sequence Controller](/images/framework/pseudo-logic-app-workflow-runs-w-sequence-controller.png)
+<Walkthrough>
+<Collapsible number={<FontAwesomeIcon icon={faCircleDown} />} title="Get sequence number" >
 
-## <FontAwesomeIcon icon={faCircleDown} /> Get sequence number
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/GetSequenceNumber"
+  description="Gets the current sequence number for a given sequence name. If the sequence does not exist, it will create one and return the first number."
+  parameters={[
+    {
+      name: "SequenceName",
+      type: "string",
+      required: true,
+      description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
+    },
+    {
+      name: "SequenceStart",
+      type: "integer",
+      required: false,
+      description: "Optional starting number for the sequence. If not provided, the sequence will start at 1."
+    }
+  ]}
+  request={{
+    SequenceName: "my-sequence-name"
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "Returns the current sequence number for the given sequence name.",
+      body: 1
+    },
+    {
+      status: 400,
+      label: "Bad Request",
+      description: "The request is missing required parameters or has invalid values.",
+      body: "Failed to get sequence number because the request body does not contain the required 'SequenceName' parameter."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to get sequence number due to an internal server error."
+    },
+    {
+      status: 507,
+      label: "Maximized sequence number",
+      description: "The sequence number has reached its maximum value and cannot be incremented further.",
+      body: "Failed to get sequence number because the sequence number has reached its maximum value, please reset the sequence or use a different sequence name."
+    }
+  ]}
+/>
+{/* vale on */}
 
-First step for the Logic App workflow to run in sequence, is to take a number in the line. Doing this requires you to send a HTTP POST request to the `/api/GetSequenceNumber` endpoint of the deployed **Sequence Controller**.
+</Collapsible>
+<Collapsible number={<FontAwesomeIcon icon={faHourglassHalf} />} title="Wait for sequence" >
 
-:::tip
-You can circumvent this step in some advanced scenarios where you keep track of the order numbers and pass it yourself during the <a href="#-wait-for-sequence">`/api/WaitForSequence`</a>.
-:::
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/WaitForExecution"
+  description="Waits for the current Azure Logic App workflow run to be allowed to continue"
+  parameters={[
+    {
+      name: "SequenceName",
+      type: "string",
+      required: true,
+      description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
+    },
+    {
+      name: "InstanceId",
+      type: "string",
+      required: true,
+      description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
+    },
+    {
+      name: "Timestamp",
+      type: "string",
+      required: true,
+      description: "Date time to control the order of the Azure Logic App workflows in the 'sequence'."
+    },
+    {
+      name: "CallbackUri",
+      type: "string",
+      required: true,
+      description: "Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`."
+    }
+  ]}
+  request={{
+    SequenceName: "my-sequence",
+    InstanceId: "my-instance-1",
+    Timestamp: "2024-06-01T12:00:00Z",
+    CallbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "HTTP management payload",
+      description: "Provides a [HTTP management payload](https://learn.microsoft.com/en-us/azure/durable-task/durable-functions/durable-functions-http-features?tabs=csharp-isolated) for orchestrating the workflow.",
+      body: {
+        // create a json object for the .NET HttpManagementPayload
+        id: "00000000-0000-0000-0000-000000000000",
+        purgeHistoryDeleteUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        statusQueryGetUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        terminatePostUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        restartPostUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        resumePostUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        rewindPostUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        suspendPostUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/...",
+        sendEventPostUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
+      }
+    },
+    {
+      status: 400,
+      label: "Bad Sequence Request",
+      description: "The request is malformed or missing required parameters.",
+      body: "Failed to wait for execution because the request body fails model validation: The 'SequenceName' should not be blank."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to wait for execution due to an internal server error."
+    }
+  ]}
+/>
+{/* vale on */}
 
-The most minimal request body only contains the name of the sequence. 
-This correlates all related workflows. Assuming this is the first workflow, it receives number 1 in the response body; the second workflow receives number 2, and so forth.
+</Collapsible>
+<Collapsible number={<FontAwesomeIcon icon={faCheckDouble} />} title="Complete sequence" >
 
-```json
-// POST /api/GetSequenceNumber
-{
-  "sequenceName": "<my-sequence-name>",
-}
-```
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/ConfirmExecutionCompleted"
+  description="Signals that the current Azure Logic App workflow run has completed its execution and allows the next workflow in the sequence to proceed."
+  parameters={[
+    {
+      name: "SequenceName",
+      type: "string",
+      required: true,
+      description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
+    },
+     {
+      name: "CurrentCounter",
+      type: "integer",
+      required: true,
+      description: "Current counter value of the workflow run in the sequence. This value should match the counter obtained from the `/api/GetSequenceNumber` endpoint."
+    },
+    {
+      name: "RetentionDays",
+      type: "integer",
+      required: true,
+      description: "Number of days to retain the sequence information after completion.",
+      badges: <NewSinceBadge version='v6.2' />
+    },
+    {
+      name: "Status",
+      type: "SequenceStatus",
+      required: false,
+      description: "Optional status of the current workflow run. If not provided, the default status is 'Completed'. Can be 'Completed' or 'Processing'."
+    },
+  ]}
+  request={{
+    SequenceName: "my-sequence",
+    CurrentCounter: 1,
+    RetentionDays: 7,
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "The current workflow run has been marked as completed, allowing the next workflow in the sequence to proceed.",
+      body: "Successfully completed an item in the sequence."
+    },
+    {
+      status: 200,
+      label: "PassThru",
+      description: "The `CurrentCounter` does not match any of the expected counters in the sequence, ignores the request.",
+      body: "Cannot complete an item in a sequence because the sequence did not result in any matching sequence controls, pass thru."
+    },
+    {
+      status: 400,
+      label: "Bad Request",
+      description: "The request is missing required parameters or has invalid values.",
+      body: "Failed to confirm execution completion because the request body does not contain the required 'SequenceName' parameter."
+    },
+    {
+      status: 404,
+      label: "Not Found",
+      description: "The specified sequence name does not exist.",
+      body: "Failed to confirm execution completion because the specified sequence does not exist."
+    },
+    {
+      status: 409,
+      label: "Already Completed",
+      description: "The current workflow run has already been marked as completed.",
+      body: "Failed to confirm execution completion because the current workflow run has already been marked as completed."
+    },
+    {
+      status: 424,
+      label: "Callback Failed",
+      description: "The custom callback endpoint responded with a non-success status code.",
+      body: "Failed to confirm execution completion because the custom callback endpoint responded with a non-success status code."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to confirm execution completion due to an internal server error."
+    }
+  ]}>
+</ApiPlayground>
+{/* vale on */}
+</Collapsible>
 
-{/* vale Google.Colons = NO */}
-You require the counter in the response body for the next step: <a href="#-wait-for-sequence">`/api/WaitForSequence`</a>.
-{/* vale Google.Colons = YES */}
+<Collapsible number={<FontAwesomeIcon icon={faRotate} />} title="Reset sequence (only for advanced usages)" >
 
-:::tip[start later]
-If you want to start the sequence at a later point, you can also pass the `sequenceStart` with your own start number. Only make sure that you pass this along future calls.
-```json
-// POST /api/GetSequenceNumber
-{
-  "sequenceName": "<my-sequence-name>",
-  "sequenceStart": 10
-}
-```
-:::
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/ResetSequence"
+  description={<>
+    Resets the sequence for a given sequence name, allowing for reuse or cleanup of old sequences.
+    <Admonition type="danger" title="Resetting sequences">This action <strong>SHOULD NOT</strong> be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.</Admonition>
+  </>}
+  parameters={[
+    {
+      name: "SequenceName",
+      type: "string",
+      required: true,
+      description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
+    }
+  ]}
+  request={{
+    SequenceName: "my-sequence"
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "The sequence has been successfully reset.",
+      body: "Successfully reset the sequence."
+    },
+    {
+      status: 400,
+      label: "Bad Request",
+      description: "The request is missing required parameters or has invalid values.",
+      body: "Failed to reset sequence because the request body does not contain the required 'SequenceName' parameter."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to reset sequence due to an internal server error."
+    }
+  ]}>
+</ApiPlayground>
+{/* vale on */}
+</Collapsible>
 
-## <FontAwesomeIcon icon={faHourglassHalf} /> Wait for sequence
+</Walkthrough>
 
-The next step for the Logic App workflow to run in sequence, is to wait its turn. You require the counter collected from the previous <a href="#️-get-sequence-number">`/api/GetSequenceNumber`</a> step.
-
-To make the workflow wait, the workflow requires a HTTP-callback task. This allows you to pass in a webhook that the deployed **Sequence Controller** can call when its the workflow's turn to proceed.
-
-Send this request in this HTTP callback task:
-
-```json
-// POST /api/WaitForExecution
-{
-  "sequenceName": "<my-sequence-name>",
-  "counter": @sequenceCounter, // Collected via /api/GetSequenceNumber.
-  "callbackUri": @listCallbackUrl() // Available through the HTTP-callback task.
-}
-```
-
-## <FontAwesomeIcon icon={faCheckDouble} /> Complete sequence
-
-The final step for the Logic App workflow to run in sequence, is to signal the completion of the item in the sequence. This allows the next workflow to proceed. 
-You require the counter collected from the previous <a href="#️-get-sequence-number">`/api/GetSequenceNumber`</a> step.
-
-Add a HTTP task with this request to complete the in-sequence work of the workflow:
-```json
-// POST /api/ConfirmExecutionCompleted
-{
-  "sequenceName": "<my-sequence-name>",
-  "currentCounter": @sequenceCounter, // Collected via /api/GetSequenceNumber
-}
-```
-
-## <FontAwesomeIcon icon={faRotate} /> Reset sequence
-
-The deployed **Sequence Controller** allows admins to reset stored sequences. This could be useful if you want to reuse certain sequence names or for cleaning references.
-
-:::danger
-{/* vale Microsoft.Contractions = NO */}
-This action **SHOULD NOT** be part of any Logic App workflow as resetting sequences in the middle of processing will result in indefinitely 'hanging' workflow runs.
-{/* vale Microsoft.Contractions = YES */}
-:::
-
-Reset the sequence by sending this request:
-
-```json
-// POST /api/ResetSequence
-{
-  "sequenceName": "<my-sequence-name>"
-}
-```
-
-## Related Bicep template parameters
+### Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={["comp:sequence-controller"]} />

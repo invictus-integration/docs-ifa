@@ -55,7 +55,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **ACR private endpoint unreachable:** Invictus no longer creates the Azure Container Registry without public access before a private endpoint is available.
     - **SequenceController fixes:** two bugs resolved in the SequenceController Framework component:
       - A scaling issue that produced a high number of timeout errors for `WaitForExecution`.
-      - The component keeping state indefinitely under certain conditions.
+      - A new `RetentionDays` request parameter prevents the component from keeping state indefinitely under certain conditions.
     - **Flow name editing: cursor jumping to end:** the cursor no longer jumps to the end of the text field when editing a flow name.
     - **Access tokens included in logs:** Invictus no longer includes access tokens in log output.
   </Fixes>
