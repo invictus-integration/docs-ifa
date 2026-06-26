@@ -3,6 +3,7 @@ import DocusaurusCodeBlock from "@theme/CodeBlock";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./ApiPlayground.module.css";
+import rowStyles from "./resultRow.module.css";
 
 // Renders a markdown string while applying an existing CSS class to the
 // wrapping paragraph and ensuring links open in a new tab safely.
@@ -64,6 +65,19 @@ function getStatusGroup(status: number): StatusGroup {
 
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function typeBadgeClass(type: string): string {
+  switch (type.toLowerCase()) {
+    case "string":  return rowStyles.typeBadgeString;
+    case "int":
+    case "integer": return rowStyles.typeBadgeInt;
+    case "bool":
+    case "boolean": return rowStyles.typeBadgeBool;
+    case "object":  return rowStyles.typeBadgeObject;
+    case "array":   return rowStyles.typeBadgeArray;
+    default:        return rowStyles.typeBadgeDefault;
+  }
 }
 
 // ─── ApiPlayground ───────────────────────────────────────────────────────────
@@ -178,7 +192,7 @@ export default function ApiPlayground({
                   <li key={p.name} className={styles.param}>
                     <div className={styles.paramMeta}>
                       <code className={styles.paramName}>{p.name}</code>
-                      <span className={styles.paramType}>{p.type}</span>
+                      <span className={`${rowStyles.typeBadge} ${typeBadgeClass(p.type)}`}>{p.type}</span>
                       {p.required && (
                         <span className={styles.requiredBadge}>required</span>
                       )}
