@@ -38,21 +38,21 @@ The **XSD Validator** has a single endpoint available. Given a user XML and a re
   description="Validates a Base64-encoded XML document against a named XSD schema, stored in Azure Blob Storage. Returns whether the XML is valid and lists any schema violations found."
   parameters={[
     {
-      name: "Content",
+      name: "content",
       type: "string",
       required: true,
       description: "The input XML document as a Base64-encoded string."
     },
     {
-      name: "XsdName",
+      name: "xsdName",
       type: "string",
       required: true,
       description: "The filename of the XSD schema stored in the internal blob storage container (for example `person.xsd`)."
     }
   ]}
   request={{
-    Content: "PHBlcnNvbj48Zmlyc3ROYW1lPkpvaG48L2ZpcnN0TmFtZT48L2xhc3ROYW1lPkRvZTwvbGFzdE5hbWU+PHByb2R1Y3RUeXBlPjEwPC9wcm9kdWN0VHlwZT48L3BlcnNvbj4=",
-    XsdName: "person.xsd"
+    content: "PHBlcnNvbj48Zmlyc3ROYW1lPkpvaG48L2ZpcnN0TmFtZT48L2xhc3ROYW1lPkRvZTwvbGFzdE5hbWU+PHByb2R1Y3RUeXBlPjEwPC9wcm9kdWN0VHlwZT48L3BlcnNvbj4=",
+    xsdName: "person.xsd"
   }}
   responses={[
     {
@@ -87,17 +87,13 @@ The **XSD Validator** has a single endpoint available. Given a user XML and a re
       status: 404,
       label: "Not Found",
       description: "No XSD schema with the given name was found in the blob storage container.",
-      body: {
-        error: "Failed to validate the input XML against a provided XSD schema because the XSD schema 'person.xsd' was not found in the store."
-      }
+      body: "Failed to validate the input XML against a provided XSD schema because the XSD schema 'person.xsd' was not found in the store."
     },
     {
       status: 500,
       label: "Server Error",
       description: "An unexpected error occurred inside the validator. See the logs for more details.",
-      body: {
-        error: "Failed to validate the input XML against a provided XSD schema because an unexpected error occurred while processing the request, please see the logs for more details."
-      }
+      body: "Failed to validate the input XML against a provided XSD schema because an unexpected error occurred while processing the request, please see the logs for more details."
     }
   ]}
 />
@@ -112,7 +108,7 @@ Upload referenced XSD schema files to the Azure Blob Storage container `xsdvalid
 </Walkthrough>
 
 {/* vale Google.Headings = NO */}
-## Related Bicep template parameters
+### Related Bicep template parameters
 {/* vale Google.Headings = YES */}
 <ParameterTable parameters={parameters} fixedTags={[`comp:xsd-validator`]} />
 
