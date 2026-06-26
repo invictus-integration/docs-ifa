@@ -52,35 +52,35 @@ If workflow 1 uses a custom timestamp that happened 'earlier' than the one used 
   description="Waits for the current Azure Logic App workflow run to be allowed to continue"
   parameters={[
     {
-      name: "SequenceName",
+      name: "sequenceName",
       type: "string",
       required: true,
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
     },
     {
-      name: "InstanceId",
+      name: "instanceId",
       type: "string",
       required: true,
       description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
     },
     {
-      name: "Timestamp",
+      name: "timestamp",
       type: "string",
       required: true,
       description: "Date time to control the order of the Azure Logic App workflows in the 'sequence'."
     },
     {
-      name: "CallbackUri",
+      name: "callbackUri",
       type: "string",
       required: true,
       description: "Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`."
     }
   ]}
   request={{
-    SequenceName: "my-sequence",
-    InstanceId: "my-instance-1",
-    Timestamp: "2024-06-01T12:00:00Z",
-    CallbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
+    sequenceName: "my-sequence",
+    instanceId: "my-instance-1",
+    timestamp: "2024-06-01T12:00:00Z",
+    callbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
   }}
   responses={[
     {
@@ -127,21 +127,21 @@ If workflow 1 uses a custom timestamp that happened 'earlier' than the one used 
   description="Signals that the current Azure Logic App workflow run has completed its time-sensitive actions and allows waiting workflows to continue."
   parameters={[
     {
-      name: "SequenceName",
+      name: "sequenceName",
       type: "string",
       required: true,
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that require sequencing (same across workflow runs)."
     },
     {
-      name: "InstanceId",
+      name: "instanceId",
       type: "string",
       required: true,
       description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
     }
   ]}
   request={{
-    SequenceName: "my-sequence",
-    InstanceId: "my-instance-1"
+    sequenceName: "my-sequence",
+    instanceId: "my-instance-1"
   }}
   responses={[
     {
