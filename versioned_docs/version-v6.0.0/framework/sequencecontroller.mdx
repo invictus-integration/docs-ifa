@@ -53,20 +53,20 @@ If workflow 1 gets triggered before workflow 2, the second workflow waits for th
   description="Gets the current sequence number for a given sequence name. If the sequence does not exist, it will create one and return the first number."
   parameters={[
     {
-      name: "SequenceName",
+      name: "sequenceName",
       type: "string",
       required: true,
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
     },
     {
-      name: "SequenceStart",
+      name: "sequenceStart",
       type: "integer",
       required: false,
       description: "Optional starting number for the sequence. If not provided, the sequence will start at 1."
     }
   ]}
   request={{
-    SequenceName: "my-sequence-name"
+    sequenceName: "my-sequence-name"
   }}
   responses={[
     {
@@ -107,35 +107,35 @@ If workflow 1 gets triggered before workflow 2, the second workflow waits for th
   description="Waits for the current Azure Logic App workflow run to be allowed to continue"
   parameters={[
     {
-      name: "SequenceName",
+      name: "sequenceName",
       type: "string",
       required: true,
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
     },
     {
-      name: "InstanceId",
+      name: "instanceId",
       type: "string",
       required: true,
       description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
     },
     {
-      name: "Timestamp",
+      name: "timestamp",
       type: "string",
       required: true,
       description: "Date time to control the order of the Azure Logic App workflows in the 'sequence'."
     },
     {
-      name: "CallbackUri",
+      name: "callbackUri",
       type: "string",
       required: true,
       description: "Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`."
     }
   ]}
   request={{
-    SequenceName: "my-sequence",
-    InstanceId: "my-instance-1",
-    Timestamp: "2024-06-01T12:00:00Z",
-    CallbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
+    sequenceName: "my-sequence",
+    instanceId: "my-instance-1",
+    timestamp: "2024-06-01T12:00:00Z",
+    callbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
   }}
   responses={[
     {
@@ -181,35 +181,35 @@ If workflow 1 gets triggered before workflow 2, the second workflow waits for th
   description="Signals that the current Azure Logic App workflow run has completed its execution and allows the next workflow in the sequence to proceed."
   parameters={[
     {
-      name: "SequenceName",
+      name: "sequenceName",
       type: "string",
       required: true,
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
     },
      {
-      name: "CurrentCounter",
+      name: "currentCounter",
       type: "integer",
       required: true,
       description: "Current counter value of the workflow run in the sequence. This value should match the counter obtained from the `/api/GetSequenceNumber` endpoint."
     },
     {
-      name: "RetentionDays",
+      name: "retentionDays",
       type: "integer",
       required: true,
       description: "Number of days to retain the sequence information after completion.",
       badges: <NewSinceBadge version='v6.2' />
     },
     {
-      name: "Status",
+      name: "status",
       type: "SequenceStatus",
       required: false,
       description: "Optional status of the current workflow run. If not provided, the default status is 'Completed'. Can be 'Completed' or 'Processing'."
     },
   ]}
   request={{
-    SequenceName: "my-sequence",
-    CurrentCounter: 1,
-    RetentionDays: 7,
+    sequenceName: "my-sequence",
+    currentCounter: 1,
+    retentionDays: 7,
   }}
   responses={[
     {
@@ -271,14 +271,14 @@ If workflow 1 gets triggered before workflow 2, the second workflow waits for th
   </>}
   parameters={[
     {
-      name: "SequenceName",
+      name: "sequenceName",
       type: "string",
       required: true,
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
     }
   ]}
   request={{
-    SequenceName: "my-sequence"
+    sequenceName: "my-sequence"
   }}
   responses={[
     {
