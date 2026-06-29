@@ -1,5 +1,7 @@
 ---
 sidebar_label: Import via Logic Apps
+title: Import flow traces via Azure Logic App workflows
+hide_title: true
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,11 +9,20 @@ import TabItem from '@theme/TabItem';
 import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 import { OnlyFolderAdminsBadge, OnlyOperatorsBadge } from '@site/src/components/Badges';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faLink, faSquareCheck, faShield, faAt} from '@fortawesome/free-solid-svg-icons';
-import {faSquare, faCirclePlay} from '@fortawesome/free-regular-svg-icons';
+import {faLink, faSquareCheck, faShield, faAt, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons';
+import {faSquare, faCirclePlay, faEyeSlash} from '@fortawesome/free-regular-svg-icons';
 import Admonition from '@theme/Admonition';
+import { ToggleInput, TextInput, Button } from '@site/src/components/InputControls';
+import ThemedImage from '@theme/ThemedImage';
+import ComponentHeader from '@site/src/components/ComponentHeader';
+import ParameterTable from '@site/src/components/ParameterTable';
+import parameters from "@site/src/data/dashboard.v6.bicep.parameters.json";
 
-# Import flow traces via Azure Logic App workflows
+<ComponentHeader
+  icon="/img/icons/import-jobs.svg"
+  name="Logic App import job"
+  tagline="Import flow traces from Azure Logic App workflows" />
+
 Invictus is fully supported to import flows from Azure Logic Apps. It allows to keep track of the **execution tree** of the ran workflows, plus with **tracked properties** you can trace specific data for your needs besides the general **diagnostic settings**.
 
 <Walkthrough>
@@ -30,8 +41,6 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
         Make sure that the `Workflow runtime` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs.
         :::
 
-        ![Diagnostic settings for Consumption](/images/dashboard/flowtrace/diagnostic-settings-la-consumption.png)
-
         > <FontAwesomeIcon icon={faLink} /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
 
       </TabItem>
@@ -39,8 +48,6 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
       :::warning
       Make sure that the `Function Application Logs` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs with additional cost.
       :::
-
-      ![Diagnostic settings for Standard](/images/dashboard/flowtrace/diagnostic-settings-la-standard.png)
     
       > <FontAwesomeIcon icon={faLink} /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=standard) on how this can be configured manually.
     
@@ -177,32 +184,26 @@ The resume function executes an "Azure Resubmit" for each failed function in the
 
 Users can choose to ignore a message, normally this could be the case when a message is in failed status. The user can select one or many messages and choose to "Ignore" them.
 
-When a user sets a message to ignore, its status changes and shows as follows:
-
-![handling buttons](/images/v2_handling3.png)
+When a user sets a message to 'ignore', the row indicates this with an <FontAwesomeIcon icon={faEyeSlash} /> icon.
 
 </TabItem>
 <TabItem value="custom" label="Custom">
 
 You can resume/resubmit flows via a custom interaction HTTP endpoint instead of the default Azure management URL. This resumes/resubmits the Azure Logic App workflow mapped to the flow (via **DSAV** and **Workflow name** properties).
 
-### Configure flow for custom resume/resubmit
-Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of **Custom resubmit URL** and **Custom resume URL** respectively. Enter a HTTPS URL in one of the fields to set a resubmit/resume URL. The <FontAwesomeIcon icon={faCirclePlay} /> button tests whether the Dashboard can reach the URL.
+**Configure flow for custom resume/resubmit**
 
-A message pops up to show if the test was successful.
-
-![Advanced settings test URL success](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-testurl-success.png)
+Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of <ToggleInput label="Custom resubmit URL" /> and <ToggleInput label="Custom resume URL" /> respectively.
+Enter a <TextInput label="HTTPS URL" /> to set a resubmit/resume URL. The <FontAwesomeIcon icon={faCirclePlay} /> button tests whether the Dashboard can reach the URL.
 
 You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, click the <FontAwesomeIcon icon={faAt} /> button to open the HTTP headers dialog box where you can add custom HTTP headers.
 
-![Advanced settings headers dialog inputted header](/images/v2_custom-resumeresubmit-flowscreen-advancedsettings-headers-dialog-inputted-header.png)
+**Resume/Resubmit a flow**
+* Once configured, navigate to the [search flow traces](../02_search.mdx) page by selecting the flow in the sidebar you just adapted for custom resume/resubmit.
+* Open the flow operations of the message you want to resubmit.
+* Click the <Button icon={faArrowRotateLeft} label="Resubmit" /> or <Button icon={faCirclePlay} label="Resume" /> item in the list to trigger the custom resubmit/resume URL.
 
-### Resume/Resubmit a flow
-Once configured, navigate to the [search flow traces](../02_search.mdx) page by selecting the flow in the sidebar you just adapted for custom resume/resubmit. You can only resume/resubmit flows based on available flow traces. 
-
-![Clicking resubmit on a flow run](/images/v2_flowpage_clicking_resubmit.png)
-
-The Dashboard sends a HTTP `POST` request to the configured custom resubmit URL, with a body containing information about the workflow run.
+The Dashboard sends a HTTP `POST` request to the <TextInput label="Custom resubmit URL" /> or <TextInput label="Custom resume URL" /> you configured, with a body containing information about the workflow run.
 
 <details>
 <summary>**Full JSON request body example**</summary>
@@ -256,7 +257,20 @@ ___
 
 In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first one in the chain, which you can identify by the null `x-iv-parent-workflow-run-id`, this scenario acts as a **Resubmit**. As soon as Invictus receives the events for 4, 5 and 6, it links 4 with 1 through the `OriginWorkFlowRunId` which the `LogicAppRuntime` supplies and ignores all descendants of 1.
 
-![scenario 1](/images/import-scenario1.png)
+ <div style={{display:'flex', gap:'1rem', flexWrap:'wrap', alignItems:'flex-start'}}>
+   <ThemedImage
+     alt="Before Resubmit"
+     sources={{ light: '/images/dashboard/flowtrace/la/import-scenario1-before.svg',
+                dark:  '/images/dashboard/flowtrace/la/import-scenario1-before.dark.svg' }}
+     style={{flex:'1', minWidth:'280px'}}
+   />
+   <ThemedImage
+     alt="After Resubmit"
+     sources={{ light: '/images/dashboard/flowtrace/la/import-scenario1-after.svg',
+                dark:  '/images/dashboard/flowtrace/la/import-scenario1-after.dark.svg' }}
+     style={{flex:'1', minWidth:'280px'}}
+   />
+ </div>
 
 </details>
 
@@ -267,7 +281,20 @@ In this scenario, Logic App 1 resubmits. Since the Azure Logic App is the first 
 In this scenario, the resubmitted Logic App is number 3. Since this isn't the first Azure Logic App in the chain, this acts as a **Resume**. As soon as Invictus receives the events for number 4, it can immediately link it to number 1 since it still has the same `x-iv-parent-workflow-run-id`. Through the `OriginWorkFlowRunId` of 333 Azure Logic App 4 is then treated as a resubmit of 3. Resume operations only ignore the resubmitted Azure Logic Apps and its descendants, not the whole chain.
 {/* vale proselint.Diacritical = YES */}
 
-![scenario 2](/images/import-scenario2.png)
+<div style={{display:'flex', gap:'1rem', flexWrap:'wrap', alignItems:'flex-start'}}>
+  <ThemedImage
+    alt="Before Resume"
+    sources={{ light: '/images/dashboard/flowtrace/la/import-scenario2-before.svg',
+               dark:  '/images/dashboard/flowtrace/la/import-scenario2-before.dark.svg' }}
+    style={{flex:'1', minWidth:'280px'}}
+  />
+  <ThemedImage
+    alt="After Resume"
+    sources={{ light: '/images/dashboard/flowtrace/la/import-scenario2-after.svg',
+               dark:  '/images/dashboard/flowtrace/la/import-scenario2-after.dark.svg' }}
+    style={{flex:'1', minWidth:'280px'}}
+  />
+</div>
 
 </details>
 
@@ -276,7 +303,20 @@ In this scenario, the resubmitted Logic App is number 3. Since this isn't the fi
 
 This scenario looks like scenario two. In this case the developer decided to resubmit Azure Logic App 3. You can only achieve this through the Azure Portal as the Invictus Dashboard only resubmits failed Azure Logic Apps.
 
-![scenario 3](/images/import-scenario3.png)
+<div style={{display:'flex', gap:'1rem', flexWrap:'wrap', alignItems:'flex-start'}}>
+  <ThemedImage
+    alt="Before Resubmit"
+    sources={{ light: '/images/dashboard/flowtrace/la/import-scenario3-before.svg',
+               dark:  '/images/dashboard/flowtrace/la/import-scenario3-before.dark.svg' }}
+    style={{flex:'1', minWidth:'280px'}}
+  />
+  <ThemedImage
+    alt="After Resubmit"
+    sources={{ light: '/images/dashboard/flowtrace/la/import-scenario3-after.svg',
+               dark:  '/images/dashboard/flowtrace/la/import-scenario3-after.dark.svg' }}
+    style={{flex:'1', minWidth:'280px'}}
+  />
+</div>
 
 </details>
 
@@ -285,6 +325,22 @@ This scenario looks like scenario two. In this case the developer decided to res
 
 In this scenario the developer resubmitted Azure Logic App 2 and Azure Logic App 3.
 
-![scenario 4](/images/import-scenario4.png)
+<div style={{display:'flex', gap:'1rem', flexWrap:'wrap', alignItems:'flex-start'}}>
+  <ThemedImage
+    alt="Before Resubmit"
+    sources={{ light: '/images/dashboard/flowtrace/la/import-scenario4-before.svg',
+               dark:  '/images/dashboard/flowtrace/la/import-scenario4-before.dark.svg' }}
+    style={{flex:'1', minWidth:'280px'}}
+  />
+  <ThemedImage
+    alt="After Resubmit"
+    sources={{ light: '/images/dashboard/flowtrace/la/import-scenario4-after.svg',
+               dark:  '/images/dashboard/flowtrace/la/import-scenario4-after.dark.svg' }}
+    style={{flex:'1', minWidth:'280px'}}
+  />
+</div>
 
 </details>
+
+## Related Bicep template parameters
+<ParameterTable parameters={parameters} fixedTags={[`import:la`]} />
