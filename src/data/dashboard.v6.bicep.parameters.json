@@ -141,7 +141,8 @@
     "default": "invictus-${resourcePrefix}-evhb",
     "tags": [
       "messaging",
-      "importing"
+      "importing",
+      "import:la"
     ]
   },
   {
@@ -151,7 +152,8 @@
     "default": "invictus-${resourcePrefix}-evhb-v2",
     "tags": [
       "messaging",
-      "importing"
+      "importing",
+      "import:la"
     ]
   },
   {
@@ -198,7 +200,8 @@
     "description": "The name of the Azure Container App deployed for the import job that [imports diagnostic traces from client Azure Logic Apps](/dashboard/flows/import-flow-traces/import-flows-via-la).",
     "default": "inv-${resourcePrefix}-importjob",
     "tags": [
-      "container-apps"
+      "container-apps",
+      "import:la"
     ]
   },
   {
@@ -681,7 +684,8 @@
     "description": "The URL that navigates to the Azure Container App image of the [import job that imports diagnostic traces from Azure Logic Apps](/dashboard/flows/import-flow-traces/import-flows-via-la).",
     "default": "${resourcePrefix}.acr.azurecr.io/${env}/logicapps.importjob:${version}-${date}",
     "tags": [
-      "container-apps"
+      "container-apps",
+      "import:la"
     ]
   },
   {
@@ -833,7 +837,8 @@
     "description": "A list of Azure Logic Apps workflow error codes (ex. 'ActionConditionFailed', 'ActionFailed'...) that the [import job importing diagnostic traces from Azure Logic App workflows](/dashboard/flows/import-flow-traces/import-flows-via-la) should use to filter in specific diagnostic traces. \n * Use `*` to include all error codes. \n * Use `<error-code>` for a single code. \n * Use  `<error-code>, <error-code>` for more than one code.",
     "default": "*",
     "tags": [
-      "importing"
+      "importing",
+      "import:la"
     ]
   },
   {
@@ -861,6 +866,7 @@
     },
     "tags": [
       "importing",
+      "import:la",
       "deprecated"
     ]
   },
@@ -1359,7 +1365,8 @@
     "tags": [
       "container-apps",
       "scaling",
-      "importing"
+      "importing",
+      "import:la"
     ]
   },
   {
