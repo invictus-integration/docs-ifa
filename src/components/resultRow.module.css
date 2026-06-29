@@ -89,15 +89,80 @@
   border-left-color: var(--ifm-color-primary);
 }
 
-.tableRow:hover .iconWrap,
-.tableRow.rowActive .iconWrap {
-  background: var(--ifm-color-primary-lightest);
+/* Deprecated row — subtle warm orange tint */
+.rowDeprecated {
+  background: rgba(181, 93, 0, 0.05) !important;
+}
+
+.rowDeprecated td:first-child {
+  border-left-color: rgba(181, 93, 0, 0.35);
+}
+
+.rowDeprecated:hover,
+.rowDeprecated.rowActive {
+  background: rgba(181, 93, 0, 0.1) !important;
+}
+
+:global([data-theme='dark']) .rowDeprecated {
+  background: rgba(251, 146, 60, 0.07) !important;
+}
+
+:global([data-theme='dark']) .rowDeprecated:hover,
+:global([data-theme='dark']) .rowDeprecated.rowActive {
+  background: rgba(251, 146, 60, 0.13) !important;
+}
+
+/* New-since row — subtle green tint */
+.rowNew {
+  background: rgba(5, 150, 105, 0.05) !important;
+}
+
+.rowNew td:first-child {
+  border-left-color: rgba(5, 150, 105, 0.35);
+}
+
+.rowNew:hover,
+.rowNew.rowActive {
+  background: rgba(5, 150, 105, 0.1) !important;
+}
+
+:global([data-theme='dark']) .rowNew {
+  background: rgba(74, 222, 128, 0.07) !important;
+}
+
+:global([data-theme='dark']) .rowNew:hover,
+:global([data-theme='dark']) .rowNew.rowActive {
+  background: rgba(74, 222, 128, 0.13) !important;
+}
+
+/* Fixed-width rightmost column that holds the expand/collapse chevron.
+   Empty for leaf rows — no placeholder needed since the chevron column
+   always occupies the same space. Mirrors the FAQ/help-center end-of-row pattern. */
+.chevronCell {
+  width: 32px;
+  padding: 12px 10px 12px 4px;
+  vertical-align: top;
+  text-align: right;
+}
+
+/* Expand chevron — styled to match the FAQ .chevron class */
+.expandChevron {
+  font-size: 0.75rem;
+  color: var(--ifm-color-secondary-dark);
+  transition: color 0.1s;
+}
+
+.tableRow:hover .expandChevron,
+.tableRow.rowActive .expandChevron {
   color: var(--ifm-color-primary);
 }
 
-:global([data-theme='dark']) .tableRow:hover .iconWrap,
-:global([data-theme='dark']) .tableRow.rowActive .iconWrap {
-  background: rgba(42, 143, 156, 0.2);
+:global([data-theme='dark']) .expandChevron {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+:global([data-theme='dark']) .tableRow:hover .expandChevron,
+:global([data-theme='dark']) .tableRow.rowActive .expandChevron {
   color: var(--ifm-color-primary);
 }
 
@@ -106,20 +171,14 @@
   color: var(--ifm-color-primary);
 }
 
-.iconCell {
-  width: 52px;
-  padding: 20px 8px 20px 12px;
-  vertical-align: top;
-}
-
 .nameCell {
   width: 35%;
-  padding: 20px 8px;
+  padding: 12px 8px;
   vertical-align: top;
 }
 
 .descCell {
-  padding: 20px 16px 20px 8px;
+  padding: 12px 14px 12px 8px;
   vertical-align: top;
   font-size: 0.875rem;
   color: var(--ifm-font-color-base);
@@ -266,21 +325,37 @@
   margin: 0;
 }
 
-/* Badge row */
+/* Badge row — offset to align with the name text, past the inline chevron */
 .badgeRow {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
-.badgeRequired,
+.badgeRequired {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #881337;
+  color: #fff1f2;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+[data-theme='dark'] .badgeRequired {
+  color: #fda4af;
+  background: #2d0a12;
+}
+
 .badgeDeprecated,
 .badgeSince,
 .badgeDefault {
-  font-size: 0.8rem;
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-size: 0.72rem;
+  padding: 1px 5px;
+  border-radius: 6px;
   color: white;
 }
 
@@ -292,10 +367,6 @@
   background: none;
   padding: 0;
   color: inherit;
-}
-
-.badgeRequired {
-  background-color: #b10006;
 }
 
 .badgeDeprecated {
@@ -311,10 +382,107 @@
   color: var(--ifm-font-color-base);
 }
 
+/* ── Type badges (Bicep / OpenAPI parameter types) ──────────────────────────
+   All colors are derived from the site's own design tokens:
+     string       → site secondary gray (#b8c0c2 family)
+     int/integer  → site warning orange (#ff970f / --ifm-color-warning)
+     bool/boolean → site purple (#734dc4 / .flow-trace-text)
+     object       → site primary teal (#014550 / --ifm-color-primary)
+     array        → site coral (#d6955c / .flow-add-number)
+     securestring → site danger red (~#dc2626)
+     secureobject → site danger red, deeper
+   ────────────────────────────────────────────────────────────────────────── */
+
+.typeBadge {
+  display: inline-block;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* string — site secondary gray (neutral; most common type) */
+.typeBadgeString {
+  background: rgba(184, 192, 194, 0.25);
+  color: #4e5354;
+}
+:global([data-theme='dark']) .typeBadgeString {
+  background: rgba(184, 192, 194, 0.15);
+  color: #b8c0c2;
+}
+
+/* int — site warning orange */
+.typeBadgeInt {
+  background: rgba(255, 151, 15, 0.12);
+  color: #934304;
+}
+:global([data-theme='dark']) .typeBadgeInt {
+  background: rgba(255, 151, 15, 0.18);
+  color: #ffb84b;
+}
+
+/* bool — site purple (#734dc4, also used in .flow-trace-text) */
+.typeBadgeBool {
+  background: rgba(115, 77, 196, 0.1);
+  color: #5a3ba8;
+}
+:global([data-theme='dark']) .typeBadgeBool {
+  background: rgba(115, 77, 196, 0.18);
+  color: #c4aff0;
+}
+
+/* object — site primary teal */
+.typeBadgeObject {
+  background: rgba(1, 69, 80, 0.1);
+  color: #013c46;
+}
+:global([data-theme='dark']) .typeBadgeObject {
+  background: rgba(42, 143, 156, 0.2);
+  color: #2a8f9c;
+}
+
+/* array — site coral (#d6955c, also used in .flow-add-number) */
+.typeBadgeArray {
+  background: rgba(214, 149, 92, 0.15);
+  color: #7a3c00;
+}
+:global([data-theme='dark']) .typeBadgeArray {
+  background: rgba(214, 149, 92, 0.2);
+  color: #e8b07a;
+}
+
+/* securestring — danger red */
+.typeBadgeSecureString {
+  background: rgba(220, 38, 38, 0.09);
+  color: #991b1b;
+}
+:global([data-theme='dark']) .typeBadgeSecureString {
+  background: rgba(220, 38, 38, 0.15);
+  color: #fca5a5;
+}
+
+/* secureobject — danger red, slightly softer */
+.typeBadgeSecureObject {
+  background: rgba(220, 38, 38, 0.06);
+  color: #7f1d1d;
+}
+:global([data-theme='dark']) .typeBadgeSecureObject {
+  background: rgba(220, 38, 38, 0.1);
+  color: #f87171;
+}
+
+/* fallback for unknown types */
+.typeBadgeDefault {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+}
+
 .versionBadge {
   font-size: 0.7rem;
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: 6px;
   white-space: nowrap;
   font-family: var(--ifm-font-family-monospace);
   color: var(--ifm-color-emphasis-700);
@@ -372,6 +540,27 @@
 .tagButtonActive:hover {
   border-color: var(--ifm-color-primary-darkest);
   background: var(--ifm-color-primary-darkest);
+}
+
+/* Tag suggested by the current search text — not yet active but visually prompted */
+.tagButtonSuggested {
+  border-color: var(--ifm-color-primary);
+  border-style: dashed;
+  color: var(--ifm-color-primary);
+  background: color-mix(in srgb, var(--ifm-color-primary) 8%, transparent);
+}
+
+.tagButtonSuggested:hover {
+  border-style: solid;
+  background: color-mix(in srgb, var(--ifm-color-primary) 14%, transparent);
+}
+
+:global([data-theme='dark']) .tagButtonSuggested {
+  background: rgba(42, 143, 156, 0.12);
+}
+
+:global([data-theme='dark']) .tagButtonSuggested:hover {
+  background: rgba(42, 143, 156, 0.2);
 }
 
 :global([data-theme='dark']) .tagButton {
@@ -470,7 +659,7 @@
   padding: 1px 5px;
   font-size: 0.75rem;
   border: 1px solid var(--ifm-color-emphasis-400);
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--ifm-color-emphasis-200);
   font-family: inherit;
 }
@@ -1002,12 +1191,20 @@
     font-size: 0.7rem;
   }
 
-  .badgeRequired,
   .badgeDeprecated,
   .badgeSince,
   .badgeDefault {
     font-size: 0.8rem;
-    padding: 1px 4px;
+    padding: 1px 5px;
+  }
+
+  .badgeRequired {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 6px;
+    color: #fff;
+    background-color: var(--ifm-color-danger);
   }
 
   .badgeRequired code,
@@ -1078,4 +1275,51 @@
     font-size: 0.82rem;
     min-height: 44px;
   }
+}
+
+/* ── Disclosure row (collapsed state) ── */
+.disclosureRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: none;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.disclosureRow:hover {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-emphasis-100);
+}
+
+:global([data-theme='dark']) .disclosureRow {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme='dark']) .disclosureRow:hover {
+  border-color: var(--ifm-color-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.disclosureChevron {
+  font-size: 0.7rem;
+  color: var(--ifm-color-emphasis-600);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.disclosureRow:hover .disclosureChevron {
+  color: var(--ifm-color-primary);
+}
+
+.disclosureCount {
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+  opacity: 0.75;
 }

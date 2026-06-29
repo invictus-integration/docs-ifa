@@ -8,9 +8,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
-import {faLightbulb} from "@fortawesome/free-solid-svg-icons";
+import {faLightbulb, faFloppyDisk, faLanguage} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import ExceptionHandlerFlowDiagram from "@site/src/components/Diagrams/ExceptionHandlerFlowDiagram";
+import {Walkthrough, Collapsible} from "@site/src/components/Walkthrough";
 
 <ComponentHeader
 	icon="/img/icons/exception-handler.png"
@@ -23,11 +25,24 @@ Most who have worked with Logic Apps is familiar with the error `An action faile
 Invictus provides an **Exception Handler** Framework component that retrieves the actual error message from an Azure Logic App and optionally translate this to a human readable text.
 :::
 
+## Component usage
+To centralize exception handling, create a Logic App that acts as a 'fallback handler'. This Logic App calls the Exception Handler component and returns the response. 
+All the other Logic Apps can call this fallback Logic App.
+
+:::tip
+* Use a [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook) to call the fallback Logic App so that if anything fails in the fallback Logic App, you can resubmit this and return the response asynchronously.
+* Interact with the component in a scope block and use the **Terminate** action to return the response from the Exception Handler component to the Logic App dashboard.
+:::
+
+<ExceptionHandlerFlowDiagram />
+
+<Walkthrough>
+	<Collapsible number={<FontAwesomeIcon icon={faLanguage} />} title="Resolve Azure Logic App exceptions">
+
 :::info[Access Rights]
 The Exception Handler component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. Assign these to the Exception Handler component to allow the component access to the client's Logic Apps.
 :::
 
-## Resolve Azure Logic App exceptions
 The **Exception Handler** component has as single `/api/ResolveException` endpoint to request inspection of failed Azure Logic App workflow runs. It differs based on the Logic App type.
 
 <Tabs groupId="la-type">
@@ -107,10 +122,12 @@ The function responds with a list of errors for the failed actions, for example:
 ```
 </details>
 
-## Stored Azure Logic App exceptions translations
+	</Collapsible>
+
+    <Collapsible number={<FontAwesomeIcon icon={faFloppyDisk} />} title="Store Azure Logic App exception translations">
 
 :::note
-The ExceptionHandler function makes use of the [RegexTranslator](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/regextranslation.md) component to translate the original error from the Logic App.
+The ExceptionHandler function makes use of the [RegexTranslator](./regextranslation.mdx) component to translate the original error from the Logic App.
 :::
 
 A solution has an Azure Logic App that used to return the generic `An action failed. No dependent actions succeeded` error. By using the Exception Handler, you can improve this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
@@ -202,78 +219,9 @@ This gives the following response:
 ```
 </details>
 
-{/* vale Microsoft.HeadingPunctuation = NO */}
-## How to use in your Azure Logic Apps?
-{/* vale Microsoft.HeadingPunctuation = YES */}
+	</Collapsible>
 
-Use the Exception Handler as a common exception handler Logic App that calls the Exception Handler component and return the response. 
-All the other Logic Apps can call this common Logic App. This centralizes your exception handling.
-
-:::tip
-use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.
-:::
-
-![Logic Apps setup with Exception Handler](/images/framework/logic-app-setup-w-exception-handler.png)
-
-<details>
-<summary>**Logic Apps Exception Handling example**</summary>
-
-![logic-app](/images/exceptionhandler-logic-app.png)
-
-Take a look at the code for the `Scope Exception Handling` below. Pay attention to the `Terminate` action as this uses the information from the Exception Handler component and shows it in the Dashboard.
-
-![dashboard](/images/exceptionhandler-logic-app-dashboard.png)
-
-
-``` json
-"Scope_ExceptionHandling": {
-  "actions": {
-	"ResolveException": {
-	  "inputs": {
-		"subscribe": {
-		  "body": {
-			"callbackurl": "@{listCallbackUrl()}",
-			"logicApp": "@{workflow().name}",
-			"resourceGroup": "@{parameters('resourceGroupName')}",
-			"run": "@{workflow()['run']['name']}",
-			"subscription": "@{parameters('subscriptionId')}",
-			"correlationId": "@trigger().clientTrackingId"
-		  },
-		  "method": "POST",
-		  "uri": "[listCallbackUrl(resourceId(variables('exceptionHandlerResourceGroupName'), 'Microsoft.Logic/workflows/triggers', variables('exceptionHandlerLogicAppName'), 'manual'), providers('Microsoft.Logic', 'workflows').apiVersions[0]).value]"
-		},
-		"unsubscribe": {}
-	  },
-	  "runAfter": {},
-	  "type": "HttpWebhook"
-	},
-	"Terminate": {
-	  "inputs": {
-		"runError": {
-		  "code": "@{if(equals(body('ResolveException').Status, 'Failed'), body('ResolveException').code, null)}",
-		  "message": "@{if(equals(body('ResolveException').Status, 'Failed'), body('ResolveException').description, null)}"
-		},
-		"runStatus": "@{body('ResolveException').Status}"
-	  },
-	  "runAfter": {
-		"ResolveException": [
-		  "Succeeded"
-		]
-	  },
-	  "type": "Terminate"
-	}
-  },
-  "runAfter": {
-	"Scope": [
-	  "Failed",
-	  "Skipped",
-	  "TimedOut"
-	]
-  },
-  "type": "Scope"
-}
-```
-</details>
+</Walkthrough>
 
 ## Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={["comp:exception-handler"]} />

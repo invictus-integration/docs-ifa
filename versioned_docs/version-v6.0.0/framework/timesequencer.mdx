@@ -6,10 +6,14 @@ hide_title: true
 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
-import {faHourglassHalf, faCheckDouble, faLink, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
+import {faHourglassHalf, faCheckDouble, faLink, faInfoCircle, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Admonition from "@theme/Admonition";
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import TimeSequencerFlowDiagram from "@site/src/components/Diagrams/TimeSequencerFlowDiagram";
+import TimeSequencerSortDiagram from "@site/src/components/Diagrams/TimeSequencerSortDiagram";
+import ApiPlayground from "@site/src/components/ApiPlayground";
+import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
 
 <ComponentHeader
   icon="/img/icons/time-sequencer.png"
@@ -18,50 +22,172 @@ import ComponentHeader from "@site/src/components/ComponentHeader";
   />
 
 :::note[motivation]
-At the time of writing, there is no built-in way in Azure Logic Apps to 'control' the sequence in which workflow runs are executing. In certain scenarios, even though a  workflow triggers before another, you want the first one to wait for the second. A common example is entity updates, where you don't want older updates to override newer ones - even though the workflow with the older updates 'happened after' the newer ones.
+At the time of writing, Azure does not provide a built-in way to control the order in which Azure Logic Apps workflow runs are processed.
+This can be a problem when handling entity updates, where older updates may overwrite newer ones if they are processed later. In these situations, you may want an earlier-triggered workflow to wait for a later one to complete.
 
-**Time Sequencer** is a Framework component that allows you by interacting with HTTP endpoints to set up sequences, controlled by custom timestamps, to ensure that workflows run in a time-controlled fashion. The component stores the sequence information in an Azure Blob Storage container, called `invictustimesequencer`.
+**Time Sequencer** is a Framework component that allows you by interacting with HTTP endpoints to set up sequences, controlled by custom timestamps, to ensure that workflows run in a time-controlled fashion.
 :::
 
-## Available endpoints
-* <a href="#wait-for-execution">`/api/WaitForExecution`</a>: by sending a request, it allows the currently running Azure Logic App workflow to possibly 'halt' its execution until their time to run actions.
-* <a href="#complete-execution">`/api/CompleteExecution`</a>: by sending a request, it flags the currently running Azure Logic App workflow as 'completed', so that the next workflow run can continue to run.
+## Component usage
+The Time Sequencer component has two main endpoints to control the sequence of Azure Logic App workflow runs.
+Use the following diagram to integrate the component in your workflow. 
+{/* vale Google.WordList = NO */}
+{/* vale write-good.TooWordy = NO */}
+Based on the result of the first endpoint (`Start` or `Stop`), the run should terminate or do the necessary time-sensitive actions before completing the sequence with the second endpoint.
+{/* vale Google.WordList = YES */}
+{/* vale write-good.TooWordy = YES */}
 
-![Pseudo Azure Logic App setup with Time Sequencer component](/images/framework/pseudo-logic-app-w-time-sequencer.png)
+<TimeSequencerFlowDiagram />
+<TimeSequencerSortDiagram />
 
 Workflows process in sequence after the **Wait**. The place between the **Wait** and **Complete** task allows you to place your own logic that needs to run in order. 
 If workflow 1 uses a custom timestamp that happened 'earlier' than the one used in workflow 2, the second workflow waits for the first workflow.
 
-![Pseudo Azure Logic App workflow runs with Time Sequencer component](/images/framework/pseudo-logic-app-workflow-runs-w-time-sequencer.png)
+<Walkthrough>
+<Collapsible number={<FontAwesomeIcon icon={faHourglassHalf} />} title="Wait for execution" >
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/WaitForExecution"
+  description="Waits for the current Azure Logic App workflow run to be allowed to continue"
+  parameters={[
+    {
+      name: "sequenceName",
+      type: "string",
+      required: true,
+      description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
+    },
+    {
+      name: "instanceId",
+      type: "string",
+      required: true,
+      description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
+    },
+    {
+      name: "timestamp",
+      type: "string",
+      required: true,
+      description: "Date time to control the order of the Azure Logic App workflows in the 'sequence'."
+    },
+    {
+      name: "callbackUri",
+      type: "string",
+      required: true,
+      description: "Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`."
+    }
+  ]}
+  request={{
+    sequenceName: "my-sequence",
+    instanceId: "my-instance-1",
+    timestamp: "2024-06-01T12:00:00Z",
+    callbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Start",
+      description: "The current workflow run is allowed to continue.",
+      body: "Start"
+    },
+    {
+      status: 200,
+      label: "Stop",
+      description: "The current workflow run is not allowed to continue and should terminate.",
+      body: "Stop"
+    },
+    {
+      status: 400,
+      label: "Bad Sequence Request",
+      description: "The request is malformed or missing required parameters.",
+      body: "Failed to wait for execution because the request body fails model validation: The 'SequenceName' should not be blank."
+    },
+    {
+      status: 404,
+      label: "Sequence Not Found",
+      description: "The sequence was not found in the backend storage.",
+      body: "Failed to wait for execution because the sequence was not found in the backend storage."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to wait for execution due to an unexpected error."
+    }
+  ]}
+/>
+{/* vale on */}
+</Collapsible>
 
-## <FontAwesomeIcon icon={faHourglassHalf} /> Wait for execution
-By using an Azure Logic Apps [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook?tabs=standard#add-an-http-webhook-trigger) to send a HTTP POST request to `/api/WaitForExecution` endpoint, the **Time Sequencer** component can queue a workflow run signal the run when it can continue. Determine the order of workflow runs by passing a custom `Timestamp` with the request body.
+<Collapsible number={<FontAwesomeIcon icon={faCheckDouble} />} title="Complete execution" >
+{/* vale off */}
 
-| JSON property  | Required | Description                                                                                                                              |
-| -------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `SequenceName` |   yes    | Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs). |
-| `InstanceId`   |   yes    | Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run).                     |
-| `Timestamp`    |   yes    | Date time to control the order of the Azure Logic App workflows in the 'sequence'.                                                       |
-| `CallbackUri`  |   yes    | Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`.                                                   |
+<ApiPlayground
+  method="POST"
+  path="/api/CompleteExecution"
+  description="Signals that the current Azure Logic App workflow run has completed its time-sensitive actions and allows waiting workflows to continue."
+  parameters={[
+    {
+      name: "sequenceName",
+      type: "string",
+      required: true,
+      description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that require sequencing (same across workflow runs)."
+    },
+    {
+      name: "instanceId",
+      type: "string",
+      required: true,
+      description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
+    }
+  ]}
+  request={{
+    sequenceName: "my-sequence",
+    instanceId: "my-instance-1"
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Completed",
+      description: "The current workflow run has successfully signaled completion.",
+      body: "OK"
+    },
+    {
+      status: 400,
+      label: "Bad Request",
+      description: "The request is malformed or missing required parameters.",
+      body: "Failed to complete execution because the request body fails model validation."
+    },
+    {
+      status: 404,
+      label: "Sequence Not Found",
+      description: "The sequence was not found in the backend storage.",
+      body: "Failed to complete execution because the sequence was not found in the backend storage."
+    },
+    {
+      status: 424,
+      label: "Callback failed",
+      description: "Custom callback endpoint responded with a non-success status code.",
+      body: "Failed to complete execution because the custom callback endpoint responded with a non-success status code."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to complete execution due to an unexpected error."
+    }
+  ]}
+/>
 
-## <FontAwesomeIcon icon={faCheckDouble} /> Complete execution
-When the <a href="#wait-for-execution">`/api/WaitForExecution`</a> operation responds with `Start`, then any custom user actions in the Azure Logic App workflow can be executed. Once those are done, the workflow should signal the **Time Sequencer** component, so that any waiting workflows can continue their execution.
+</Collapsible>
 
-Signaling completion happens with a HTTP POST request to the `/api/CompleteExecution` endpoint, using following required request parameters in the request body:
-
-| JSON property  | Required | Description                                                                                                                      |
-| -------------- | :------: | -------------------------------------------------------------------------------------------------------------------------------- |
-| `SequenceName` |   yes    | Transactional name of 'sequence' to group all Azure Logic App workflow runs that require sequencing (same across workflow runs). |
-| `InstanceId`   |   yes    | Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run).             |
-
-<Admonition type="info" icon={<FontAwesomeIcon icon={faInfoCircle} />} title="sequence cleanup">
+<Collapsible number={<FontAwesomeIcon icon={faTrashCan} />} title="Clean up sequences" >
 The **Time Sequencer** component stores the Azure Logic App workflow 'sequences' in an Azure Blob Storage container, called `invictustimesequencer`. The following policy rules are currently hardcoded on the Azure Storage Account in regards of cleaning these sequences:
 * **Move to cool storage**: greater than `10 days` after modification.
 * **Delete the blob**: greater than `60 days` after modification.
 * **Delete blob snapshot**: greater than `90 days` after creation.
 
 <FontAwesomeIcon icon={faLink} /> [More info on Azure Storage Account policies](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-configure?tabs=azure-portal)
-</Admonition>
+</Collapsible>
+</Walkthrough>
 
-## Related Bicep template parameters
+### Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={["comp:time-sequencer"]} />

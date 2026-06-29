@@ -1,0 +1,822 @@
+/* ─── Playground container ───────────────────────────────────────────────── */
+
+.playground {
+  border: 1px solid var(--ifm-form-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.65rem 1rem;
+  background: var(--ifm-color-emphasis-100);
+  border-bottom: 1px solid var(--ifm-form-border-color);
+}
+
+[data-theme="dark"] .header {
+  background: var(--ifm-color-emphasis-200);
+}
+
+/* ─── Method badge ───────────────────────────────────────────────────────── */
+
+.methodBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--ifm-font-family-monospace);
+  padding: 3px 9px;
+  border-radius: 6px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.methodGET {
+  background-color: #16a34a;
+}
+
+.methodPOST {
+  background-color: #2563eb;
+}
+
+.methodPUT {
+  background-color: #d97706;
+}
+
+.methodPATCH {
+  background-color: #7c3aed;
+}
+
+.methodDELETE {
+  background-color: #dc2626;
+}
+
+/* ─── Path ───────────────────────────────────────────────────────────────── */
+
+.path {
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ─── Simulated badge ────────────────────────────────────────────────────── */
+
+.simulatedBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-500);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: help;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* ─── Description ────────────────────────────────────────────────────────── */
+
+.description {
+  padding: 0.7rem 1rem 0;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.55;
+}
+
+/* ─── Grid ───────────────────────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Panels ─────────────────────────────────────────────────────────────── */
+
+.panel {
+  padding: 1rem;
+  min-width: 0;
+}
+
+.panel+.panel {
+  border-left: 1px solid var(--ifm-form-border-color);
+}
+
+@media (max-width: 768px) {
+  .panel+.panel {
+    border-left: none;
+    border-top: 1px solid var(--ifm-form-border-color);
+  }
+}
+
+.panelTitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ifm-color-emphasis-500);
+  margin: 0 0 0.75rem;
+  padding: 0;
+}
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
+
+.section+.section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.sectionLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ifm-color-emphasis-500);
+  margin: 0 0 0.4rem;
+  padding: 0;
+}
+
+/* ─── Code block ─────────────────────────────────────────────────────────── */
+
+/*
+ * The Docusaurus <CodeBlock> component renders with its own margin by default.
+ * Reset it so code blocks sit flush inside panel sections.
+ */
+.panel :global(.theme-code-block) {
+  margin-bottom: 0;
+}
+
+/* ─── Parameters list ────────────────────────────────────────────────────── */
+
+.paramList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.param {
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.paramMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.paramName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  background: transparent;
+  padding: 1px 5px;
+  border: none;
+}
+
+/* Matches .badgeRequired from resultRow.module.css */
+.requiredBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  color: #fff;
+  background-color: var(--ifm-color-danger);
+}
+
+/* Scales any slotted badge (e.g. NewSinceBadge) to match the required badge size.
+   zoom is used because the Badge component sets font-size via inline styles. */
+.paramBadgeSlot {
+  display: contents;
+  zoom: 0.72;
+}
+
+.paramDesc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Status tabs ────────────────────────────────────────────────────────── */
+
+.statusTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+/*
+ * Matches the .tagButton pattern from resultRow.module.css:
+ * 2px border, border-radius 6px, font-family inherit.
+ * Status group classes set --tab-accent via CSS custom properties so the
+ * active state and status code color are derived from the HTTP status group.
+ */
+.statusTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: var(--ifm-font-color-base);
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.statusTab:hover {
+  border-color: var(--tab-accent);
+  background: var(--tab-accent-bg);
+}
+
+.statusTab:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Status group: sets CSS custom properties consumed by .statusTabActive and .statusCode */
+.statusSuccess {
+  --tab-accent: #16a34a;
+  --tab-accent-bg: rgba(22, 163, 74, 0.08);
+}
+
+.statusWarning {
+  --tab-accent: #d97706;
+  --tab-accent-bg: rgba(217, 119, 6, 0.08);
+}
+
+.statusError {
+  --tab-accent: #dc2626;
+  --tab-accent-bg: rgba(220, 38, 38, 0.08);
+}
+
+.statusInfo {
+  --tab-accent: #2563eb;
+  --tab-accent-bg: rgba(37, 99, 235, 0.08);
+}
+
+:global([data-theme='dark']) .statusSuccess {
+  --tab-accent: #4ade80;
+  --tab-accent-bg: rgba(74, 222, 128, 0.1);
+
+}
+
+:global([data-theme='dark']) .statusWarning {
+  --tab-accent: #fb923c;
+  --tab-accent-bg: rgba(251, 146, 60, 0.1);
+}
+
+:global([data-theme='dark']) .statusError {
+  --tab-accent: #f87171;
+  --tab-accent-bg: rgba(248, 113, 113, 0.1);
+}
+
+:global([data-theme='dark']) .statusInfo {
+  --tab-accent: #60a5fa;
+  --tab-accent-bg: rgba(96, 165, 250, 0.1);
+}
+
+.statusTabActive {
+  border-color: var(--tab-accent) !important;
+  background: var(--tab-accent-bg) !important;
+}
+
+.statusCode {
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--tab-accent);
+}
+
+.statusLabel {
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+
+/* ─── Response body ──────────────────────────────────────────────────────── */
+
+.responseBody {
+  animation: fadeSlideIn 0.25s ease both;
+  outline: none;
+  /* focus ring handled below */
+}
+
+/* Keyboard users can Tab into the panel to reach the copy button.
+   Show a subtle inset ring so they know where focus landed. */
+.responseBody:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.responseDesc {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0 0 0.45rem;
+  padding: 0;
+  line-height: 1.45;
+  font-style: italic;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .responseBody {
+    animation: none;
+  }
+
+  .statusTab {
+    transition: none;
+  }
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.65rem 1rem;
+  background: var(--ifm-color-emphasis-100);
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+
+.endpointRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ─── Method badge ───────────────────────────────────────────────────────── */
+
+.methodBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--ifm-font-family-monospace);
+  padding: 3px 9px;
+  border-radius: 6px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.methodGET {
+  background-color: #16a34a;
+}
+
+.methodPOST {
+  background-color: var(--ifm-color-primary);
+}
+
+.methodPUT {
+  background-color: #d97706;
+}
+
+.methodPATCH {
+  background-color: #7c3aed;
+}
+
+.methodDELETE {
+  background-color: #dc2626;
+}
+
+/* ─── Path ───────────────────────────────────────────────────────────────── */
+
+.path {
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* ─── Simulated badge ────────────────────────────────────────────────────── */
+
+.simulatedBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--ifm-toc-border-color);
+  color: var(--ifm-color-emphasis-500);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: help;
+  user-select: none;
+}
+
+/* ─── Send button ────────────────────────────────────────────────────────── */
+
+.sendBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Bitter', sans-serif;
+  padding: 5px 13px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--ifm-color-primary);
+  color: #fff;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.sendBtn:hover:not(:disabled) {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+.sendBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ─── Spinner ────────────────────────────────────────────────────────────── */
+
+.spinner {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.55s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Description ────────────────────────────────────────────────────────── */
+
+.description {
+  padding: 0.7rem 1rem 0;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.55;
+}
+
+/* ─── Grid ───────────────────────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Panels ─────────────────────────────────────────────────────────────── */
+
+.panel {
+  padding: 1rem;
+  min-width: 0;
+}
+
+.panel+.panel {
+  border-left: 1px solid var(--ifm-toc-border-color);
+}
+
+@media (max-width: 768px) {
+  .panel+.panel {
+    border-left: none;
+    border-top: 1px solid var(--ifm-toc-border-color);
+  }
+}
+
+.panelTitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ifm-color-emphasis-500);
+  margin: 0 0 0.75rem;
+  padding: 0;
+}
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
+
+.section+.section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.sectionLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ifm-color-emphasis-500);
+  margin: 0 0 0.4rem;
+  padding: 0;
+}
+
+/* ─── Code block ─────────────────────────────────────────────────────────── */
+
+.codeBlock {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--ifm-toc-border-color);
+}
+
+.pre {
+  padding: 0.8rem !important;
+  font-size: 0.775rem !important;
+  line-height: 1.55 !important;
+  overflow-x: auto;
+  margin: 0 !important;
+}
+
+.copyBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  z-index: 1;
+}
+
+.copyBtn:hover {
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+}
+
+[data-theme="light"] .copyBtn {
+  background: rgba(0, 0, 0, 0.07);
+  color: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .copyBtn:hover {
+  background: rgba(0, 0, 0, 0.14);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* ─── Parameters list ────────────────────────────────────────────────────── */
+
+.paramList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.param {
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.paramMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.paramName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  background: transparent;
+  padding: 0;
+}
+
+.requiredBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #881337;
+  color: #fff1f2;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.paramBadgeSlot {
+  zoom: 0.8;
+}
+
+[data-theme="dark"] .requiredBadge {
+  color: #fda4af;
+  background: #2d0a12;
+}
+
+.paramDesc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Status tabs ────────────────────────────────────────────────────────── */
+
+.statusTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.statusTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--ifm-toc-border-color);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  color: var(--ifm-font-color-base);
+}
+
+.statusTab:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* Status group CSS custom properties — used by .statusTabActive */
+.statusSuccess {
+  --tab-accent: #16a34a;
+  --tab-accent-bg: rgba(22, 163, 74, 0.08);
+}
+
+.statusWarning {
+  --tab-accent: #d97706;
+  --tab-accent-bg: rgba(217, 119, 6, 0.08);
+}
+
+.statusError {
+  --tab-accent: #dc2626;
+  --tab-accent-bg: rgba(220, 38, 38, 0.08);
+}
+
+.statusInfo {
+  --tab-accent: #2563eb;
+  --tab-accent-bg: rgba(37, 99, 235, 0.08);
+}
+
+[data-theme="dark"] .statusSuccess {
+  --tab-accent: #4ade80;
+  --tab-accent-bg: rgba(74, 222, 128, 0.1);
+}
+
+[data-theme="dark"] .statusWarning {
+  --tab-accent: #fb923c;
+  --tab-accent-bg: rgba(251, 146, 60, 0.1);
+}
+
+[data-theme="dark"] .statusError {
+  --tab-accent: #f87171;
+  --tab-accent-bg: rgba(248, 113, 113, 0.1);
+}
+
+[data-theme="dark"] .statusInfo {
+  --tab-accent: #60a5fa;
+  --tab-accent-bg: rgba(96, 165, 250, 0.1);
+}
+
+.statusTabActive {
+  border-color: var(--tab-accent) !important;
+  background: var(--tab-accent-bg) !important;
+}
+
+.statusCode {
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--tab-accent);
+}
+
+.statusLabel {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+/* ─── Response body ──────────────────────────────────────────────────────── */
+
+.responseBody {
+  /* set by JS via key remounting for animation */
+}
+
+.responseBodyLoading {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: blur(1px);
+  transition: opacity 0.2s, filter 0.2s;
+}
+
+.responseBodyVisible {
+  animation: fadeSlideIn 0.3s ease both;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.responseDesc {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0 0 0.45rem;
+  padding: 0;
+  line-height: 1.45;
+  font-style: italic;
+}

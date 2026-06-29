@@ -7,6 +7,10 @@ hide_title: true
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import ApiPlayground from "@site/src/components/ApiPlayground";
+import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 
 <ComponentHeader
   icon="/img/icons/xsd-validator.png"
@@ -20,55 +24,91 @@ When processing XML files in Logic App workflows, XSD validation is a necessary 
 The Invictus Framework provides a **XSD Validator** component that allows you to validate XML files within your Logic App workflow by storing the XSD schemas in an Azure Blob Storage container. The interaction with the component happens via a HTTP endpoint; circumventing the need of an expensive **Azure Integration Account**.
 :::
 
-{/* vale Microsoft.HeadingAcronyms = NO */}
-{/* vale Google.Headings = NO */}
-## XSD validate user XML
-{/* vale Microsoft.HeadingAcronyms = YES */}
-{/* vale Google.Headings = YES */}
+## Component usage
 
-The **XSD Validator** has a single endpoint available: `/api/ValidateXmlAgainstXsd`. Given an user XML and referenced XSD schema (stored in Azure Blob Storage), the endpoint response with the result of the validation, possibly with violation failures.
+<Walkthrough>
+<Collapsible number={<FontAwesomeIcon icon={faCircleCheck} />} title="XSD validate user XML" open={true}>
 
-| JSON property | Required | Description                                                       |
-| ------------- | :------: | ----------------------------------------------------------------- |
-| `Content`     |   yes    | The **BASE64**-encoded XML user input that needs to be validated. |
-| `XsdName`     |   yes    | The name of the XSD schema, stored in Azure Blob Storage.         |
+The **XSD Validator** has a single endpoint available. Given a user XML and a referenced XSD schema stored in Azure Blob Storage, the endpoint responds with the validation result and any schema violations found.
 
-<details>
-<summary>**Full request example**</summary>
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/ValidateXmlAgainstXsd"
+  description="Validates a Base64-encoded XML document against a named XSD schema, stored in Azure Blob Storage. Returns whether the XML is valid and lists any schema violations found."
+  parameters={[
+    {
+      name: "content",
+      type: "string",
+      required: true,
+      description: "The input XML document as a Base64-encoded string."
+    },
+    {
+      name: "xsdName",
+      type: "string",
+      required: true,
+      description: "The filename of the XSD schema stored in the internal blob storage container (for example `person.xsd`)."
+    }
+  ]}
+  request={{
+    content: "PHBlcnNvbj48Zmlyc3ROYW1lPkpvaG48L2ZpcnN0TmFtZT48L2xhc3ROYW1lPkRvZTwvbGFzdE5hbWU+PHByb2R1Y3RUeXBlPjEwPC9wcm9kdWN0VHlwZT48L3BlcnNvbj4=",
+    xsdName: "person.xsd"
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Valid",
+      description: "The XML is well-formed and passes all schema rules.",
+      body: {
+        isValid: true,
+        exceptions: []
+      }
+    },
+    {
+      status: 200,
+      label: "Invalid",
+      description: "The XML is parseable but violates one or more schema constraints. Each violation is listed in exceptions.",
+      body: {
+        isValid: false,
+        exceptions: [
+          {
+            message: "The element 'person' has invalid child element 'productType'. List of possible elements expected: 'firstName', 'lastName'."
+          }
+        ]
+      }
+    },
+    {
+      status: 400,
+      label: "Bad Request",
+      description: "The request body could not be parsed. Ensure the request body is a valid JSON with the required fields.",
+      body: "Failed to validate the input XML against a provided XSD schema because the request body was not a JSON with an Base64-encoded XML document and a XSD schema name."
+    },
+    {
+      status: 404,
+      label: "Not Found",
+      description: "No XSD schema with the given name was found in the blob storage container.",
+      body: "Failed to validate the input XML against a provided XSD schema because the XSD schema 'person.xsd' was not found in the store."
+    },
+    {
+      status: 500,
+      label: "Server Error",
+      description: "An unexpected error occurred inside the validator. See the logs for more details.",
+      body: "Failed to validate the input XML against a provided XSD schema because an unexpected error occurred while processing the request, please see the logs for more details."
+    }
+  ]}
+/>
+{/* vale off */}
 
-```json
-// POST -> /api/ValidateXmlAgainstXsd
-{
-    "Content": "PHBlcnNvbj48Zmlyc3ROYW1lPkpvaG48L2ZpcnN0TmFtZT48L2xhc3ROYW1lPkRvZTwvbGFzdE5hbWU+PHByb2R1Y3RUeXBlPjEwPC9wcm9kdWN0VHlwZT48L3BlcnNvbj4=",
-    "XsdName": "person.xsd"
-}
-```
-</details>
+</Collapsible>
+<Collapsible number={<FontAwesomeIcon icon={faFloppyDisk} />} title="Upload XSD schemas to Azure Blob storage">
 
-<details>
-<summary>**Full response example**</summary>
-
-```json
-// 200 OK <- /api/ValidateXmlAgainstXsd
-{
-    "isValid": false,
-    "exceptions": [
-        {
-            "message": "The element 'person' has invalid child element 'productType'. List of possible elements expected: 'firstName', 'lastName'." 
-        }
-    ]
-}
-```
-</details>
-
-{/* vale Microsoft.HeadingAcronyms = NO */}
-{/* vale Google.Headings = NO */}
-## Stored XSD schemas
-{/* vale Microsoft.HeadingAcronyms = YES */}
-{/* vale Google.Headings = YES */}
 Upload referenced XSD schema files to the Azure Blob Storage container `xsdvalidatorstore` (available upon installation), within the Invictus Azure Storage Account that's part of the installation.
 
+</Collapsible>
+</Walkthrough>
+
 {/* vale Google.Headings = NO */}
-## Related Bicep template parameters
+### Related Bicep template parameters
 {/* vale Google.Headings = YES */}
 <ParameterTable parameters={parameters} fixedTags={[`comp:xsd-validator`]} />
+

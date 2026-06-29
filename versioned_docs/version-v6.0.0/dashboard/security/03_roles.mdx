@@ -3,79 +3,11 @@ sidebar_label: Access to flows
 title: Access to flows
 ---
 
-{/* vale off */}
-
 import { useState } from 'react';
 import {faCircleCheck, faCircleXmark, faCircle, faUser, faNewspaper, faCirclePlay, faEyeSlash, faTrashCan, faCirclePause } from '@fortawesome/free-regular-svg-icons';
 import { faPeopleGroup, faSliders, faArrowRotateLeft, faPlus, faPenToSquare, faMagnifyingGlass, faUserGroup, faUserShield, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faMicrosoft} from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-export function DisallowIcon(props) {
-    return <FontAwesomeIcon icon={faCircleXmark} color="#dc2626" aria-label="Not allowed" {...props} />
-}
-
-export function AllowIcon(props) {
-    return <FontAwesomeIcon icon={faCircleCheck} color="#047857" aria-label="Allowed" {...props} />
-}
-
-export function UsersTab() {
-    return Tab({ icon: faUser, label: "Users" });
-}
-
-export function GroupsTab() {
-    return Tab({ icon: faPeopleGroup, label: "Groups" });
-}
-
-export function SettingsTab() {
-    const [hovered, setHovered] = useState(false);
-    return (
-        <div
-            aria-label="Settings tab"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            style={{ display: 'inline-flex', fontSize: '0.75rem', alignItems: 'center', backgroundColor: 'var(--ifm-color-primary)', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', filter: hovered ? 'brightness(0.88)' : 'none', transition: 'filter 0.15s ease' }}>
-            <i>Profile_name</i>
-            <FontAwesomeIcon icon={faSliders} style={{ marginLeft: '0.25rem' }} />
-        </div>
-    );
-}
-
-export function AuditsTab() {
-    return Tab({ icon: faNewspaper, label: "Audits" });
-}
-
-export function Tab({ icon, label, backgroundColor = 'var(--ifm-color-primary)' }) {
-    const [hovered, setHovered] = useState(false);
-    return (
-        <div
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            style={{ display: 'inline-flex', fontSize: '0.75rem', alignItems: 'center', backgroundColor: backgroundColor, color: 'white', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', filter: hovered ? 'brightness(0.88)' : 'none', transition: 'filter 0.15s ease' }}>
-            <FontAwesomeIcon icon={icon} style={{ marginRight: '0.25rem' }} />
-            {label}
-        </div>
-    );
-}
-
-export function Button({ icon, label }) {
-    const [hovered, setHovered] = useState(false);
-    return (
-        <span
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            style={{ display: 'inline-flex', fontSize: '0.75rem', alignItems: 'center', color: hovered ? 'white' : 'var(--ifm-color-primary)', backgroundColor: hovered ? 'var(--ifm-color-primary)' : 'var(--ifm-background-color)', border: '1px solid var(--ifm-color-primary)', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', transition: 'background-color 0.15s ease, color 0.15s ease' }}>
-            {icon && <FontAwesomeIcon icon={icon} style={{ marginRight: '0.25rem' }} />}
-            {label}
-        </span>
-    );
-}
-
-export function SROnly({ children }) {
-    return <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', borderWidth: 0 }}>{children}</span>;
-}
-
-{/* vale on */}
+import { DisallowIcon, AllowIcon, AuditsTab, Button, GroupsTab, SROnly, SettingsTab, Tab, UsersTab, SignInWithMicrosoftButton } from '@site/src/components/InputControls';
 
 # Control the access to your flows
 ## Available flow permissions
@@ -108,7 +40,7 @@ The following table describes what non-flow related parts of the Dashboard are a
 | -------- | ------------------------------- | :-------: | :----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Users    | View **users**                  |     <DisallowIcon/>     |      <AllowIcon/>       | Navigate to the [<UsersTab />](./01_users.mdx) page and view all **local** and **Entra ID** users.                                                                                                                  |
 | <SROnly>Users</SROnly> | Add **local user**              |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faPlus} label="Add a new user"/>](./01_users.mdx) with **local** credentials to the Dashboard.                                                                                                                                  |
-| <SROnly>Users</SROnly> | Add **Microsoft Entra ID user** |     <AllowIcon />     |      <AllowIcon />       | [<Tab icon={faMicrosoft} label="Sign in with..." backgroundColor="#1F73AD" />](../installation/01_give_ad_access.mdx) on the sign in page automatically adds an user when they're a member of a [synced group](../installation/01_give_ad_access.mdx)                                        |
+| <SROnly>Users</SROnly> | Add **Microsoft Entra ID user** |     <AllowIcon />     |      <AllowIcon />       | [<SignInWithMicrosoftButton />](../installation/01_give_ad_access.mdx) on the sign in page automatically adds an user when they're a member of a [synced group](../installation/01_give_ad_access.mdx)                                        |
 | <SROnly>Users</SROnly> | Edit **local user** role        |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faPencil} label="Edit role"/>](./01_users.mdx) of **local** users (**Entra ID** users receive their role via their **group**).                                                                                          |
 | <SROnly>Users</SROnly> | Delete **user**                 |     <DisallowIcon/>     |      <AllowIcon/>       | [<Button icon={faTrashCan} label="Delete user"/>](./01_users.mdx) from accessing the Dashboard permanently (remove **Entra ID** users from synced groups as well, if they're not allowed to sign back in). |
 | Groups   | View **groups**                 |     <DisallowIcon/>     |      <AllowIcon/>       | View the [<GroupsTab />](./01_users.mdx) page and viewing all synced groups.                                                                                                                                    |

@@ -1,3 +1,6 @@
 [default.extend-words]
 snet = "snet"
 ser = "ser"
+
+[files]
+extend-exclude = ["src/components/*"]
