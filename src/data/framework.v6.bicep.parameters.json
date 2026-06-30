@@ -949,6 +949,16 @@
     ]
   },
   {
+    "name": "useAIExceptionHandlerInterpreter",
+    "type": "bool",
+    "description": "Feature flag to control whether the Exception Handler component deploys with the Azure AI Foundry interpreter.",
+    "default": "false",
+    "newSince": "v6.3",
+    "tags": [
+      "comp:exception-handler"
+    ]
+  },
+  {
     "name": "aiResourcesLocation",
     "type": "string",
     "description": "Location where the Framework deploys the Azure AI Foundray services.",
