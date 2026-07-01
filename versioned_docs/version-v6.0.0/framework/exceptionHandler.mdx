@@ -152,43 +152,43 @@ By default it uses the [Regex Translator](./regextranslation.mdx) component for 
   description="Resolves the exception of a failed Azure Logic App Standard workflow run. Returns the actual error message and optionally translates this to a human readable text."
   parameters={[
     {
-      name: "WorkflowRunId",
+      name: "workflowRunId",
       type: "string",
       required: true,
       description: "The ID of the failed Azure Logic App workflow run."
     },
     {
-      name: "WorkflowName",
+      name: "workflowName",
       type: "string",
       required: true,
       description: "The name of the Azure Logic App to inspect."
     },
     {
-      name: "SiteName",
+      name: "siteName",
       type: "string",
       required: true,
       description: "The site name of the Azure Logic App to inspect."
     },
     {
-      name: "SubscriptionId",
+      name: "subscriptionId",
       type: "string",
       required: true,
       description: "The ID of the Azure subscription where the client hosts their Logic App."
     },
     {
-      name: "ResourceGroupName",
+      name: "resourceGroupName",
       type: "string",
       required: true,
       description: "The ID of the Azure resource group within the subscription where the client hosts their Logic App."
     }
   ]}
   request={{
-    WorkflowRunId: "08584773878007282344320782622CU00",
-    WorkflowName: "ProcessMessage",
-    SiteName: "cdt-dev-we-somelogicapp",
-    SubscriptionId: "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
-    ResourceGroupName: "some-resource-group",
-    Type: "Standard"
+    workflowRunId: "08584773878007282344320782622CU00",
+    workflowName: "ProcessMessage",
+    siteName: "cdt-dev-we-somelogicapp",
+    subscriptionId: "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
+    resourceGroupName: "some-resource-group",
+    type: "Standard"
   }}
   responses={[
     {
