@@ -35,4 +35,4 @@ The Transco component for IfA uses KeyVault to retrieve the `DBAlias` connection
 3. Go to KeyVault that is located in the IfA setup in Azure
 4. Go to Secrets and Add a secret: Remember to use the DbAlias property value as the Name and the configured connection string as the Value.
 
-> ![```DBAlias```](/images/transco-dbalias.png)
+> ![```DBAlias```](/images/archive/transco-dbalias.png)
