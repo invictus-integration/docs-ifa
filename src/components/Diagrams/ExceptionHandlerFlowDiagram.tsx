@@ -97,19 +97,19 @@ export default function ExceptionHandlerFlow() {
         {/* ══ Exception Handler Logic App ══ */}
         <rect x="20" y="110" width="220" height="152" rx="6"
           fill={c.clientBoxBg} stroke={c.clientBoxStroke} strokeWidth="1.5" />
-        <text x="130" y="85" textAnchor="middle" fontSize="13" fontWeight="700" fill={c.ehTitle} style={{ fontFamily: HEADING_FONT }}>
+        <text x="130" y="85" textAnchor="middle" fontSize="13" fontWeight="700" fill={c.clientLabel} style={{ fontFamily: HEADING_FONT }}>
           Exception Handler
         </text>
-        <text x="130" y="101" textAnchor="middle" fontSize="13" fontWeight="700" fill={c.ehTitle} style={{ fontFamily: HEADING_FONT }}>
+        <text x="130" y="101" textAnchor="middle" fontSize="13" fontWeight="700" fill={c.clientLabel} style={{ fontFamily: HEADING_FONT }}>
           Logic App
         </text>
 
         {/* ── Resolve (invictus-style block) ── */}
         <rect x={RES_X} y={RES_Y} width="204" height={INV_H} rx="6"
-          fill={c.childBox} stroke={c.childStroke} strokeWidth="1" />
+          fill={c.ehBox} stroke={c.childStroke} strokeWidth="1" />
         {/* Icon badge — lighter accent section, clipped to rounded corners */}
         <rect x={RES_X} y={RES_Y} width={RESOLVE_BADGE_W} height={INV_H}
-          fill={c.childStroke} clipPath="url(#clip-eh-resolve)" />
+          fill={c.ehStroke} clipPath="url(#clip-eh-resolve)" />
         {/* Triangle-exclamation icon centred in the badge */}
         <path
           d={resolveIconPath}
@@ -147,7 +147,7 @@ export default function ExceptionHandlerFlow() {
         <text
           x="130" y="220"
           textAnchor="middle" dominantBaseline="middle"
-          fontSize="11" fill={c.ehTitle}
+          fontSize="11" fill={c.actionText}
           style={{ fontFamily: BODY_FONT }}
         >
           Return
