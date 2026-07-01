@@ -10,6 +10,7 @@ import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import ComponentHeader from "@site/src/components/ComponentHeader";
 import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
+import { NewSinceBadge } from "@site/src/components/Badges";
 
 <ComponentHeader
   icon="/img/icons/transco.png"
@@ -109,6 +110,11 @@ This path is an XPath or JPath expression that points to a specific part of the 
 // ...
 ```
 
+:::tip[errors during development <NewSinceBadge version="v6.4" />]
+Uses [ASP.NET Core environments](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/environments) to hard-fail scope not found errors during development and testing,
+while in production, the component ignores those errors and skips the command instruction.
+:::
+
 </Collapsible>
 
 <Collapsible title="Set the connection to the SQL database">
@@ -152,18 +158,34 @@ You can populate the parameters of the SQL query from these sources:
 }
 ```
 
+:::warning[named parameters]
+The Transco explicitly does not support named parameters for SQL objects like stored procedures due to the complexity of fully supporting SQL syntax.
+
 Denote parameters in the SQL query with an `@` symbol. You may give parameters a name or indexed with a number.
 ```sql
 SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @Name AND Active = @Active*
 -- or
 SELECT CustomerStatus FROM dbo.Customers WHERE CustomerName = @1 AND Active = @2*
 ```
+:::
 
-:::tip[control SQL query result]
-With the `isMandatory` option, you control whether a `null` result of the SQL query should throw an error.
-You can also specify a `defaultValue` to handle those cases.
+:::tip[default value for parameters <NewSinceBadge version="v6.4" />]
+You can also specify a `defaultValue` for each parameter in case the specified source doesn't yield a value.
+This avoids errors due to missing parameter values and allows the SQL query to execute with default values when necessary.
+```json
+"parameters": [
+  {
+    "paramName": ...,
+    "value": ...,
+    "defaultValue": [Default value of parameter]
+  }
+]
+```
+:::
 
-When the query returns more than one column, you use the `columnName` of the value to be inserted in the content.
+* With the `isMandatory` option, you control whether a `null` result of the SQL query should throw an error.
+* You can also specify a `defaultValue` to handle those cases.
+* When the query returns more than one column, you use the `columnName` of the value to be inserted in the content.
 
 ```json
 "command": {
@@ -173,7 +195,6 @@ When the query returns more than one column, you use the `columnName` of the val
   "columnName": [Obtain value from specified column if query returns more than one field. If empty, use value from first column],
 }
 ```
-:::
 
 </Collapsible>
 
