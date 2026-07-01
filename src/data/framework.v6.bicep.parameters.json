@@ -709,10 +709,11 @@
   {
     "name": "keyVaultName",
     "type": "string",
-    "description": "The name of the shared Azure Key Vault, used by all Framework components.",
+    "description": "The name of the shared Azure Key Vault, used by Framework components that require secrets.",
     "default": "invictus-${resourcePrefix}-vlt",
     "tags": [
-      "security"
+      "security",
+      "comp:transco"
     ]
   },
   {
@@ -961,7 +962,7 @@
   {
     "name": "aiResourcesLocation",
     "type": "string",
-    "description": "Location where the Framework deploys the Azure AI Foundray services.",
+    "description": "Location where the Framework deploys the Azure AI Foundry services.",
     "default": "swedencentral",
     "newSince": "v6.3",
     "tags": [
