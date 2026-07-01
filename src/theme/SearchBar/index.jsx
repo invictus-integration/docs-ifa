@@ -721,6 +721,7 @@ export default function SearchBar() {
                     <div key={r.filepath} className={styles.recentItemRow} onMouseEnter={() => setActiveIndex(i)}>
                       <div
                         id={`search-opt-${i}`}
+                        data-cy="recent-result"
                         className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
                         role="option"
                         aria-selected={i === activeIndex}

@@ -267,7 +267,7 @@ describe('SearchBar navigation (local search)', () => {
       // Open the modal without typing — recents list should appear.
       cy.get('[data-cy=search-trigger]').click();
       cy.get('[data-cy=local-fallback-hint]').should('not.exist'); // no query = no search
-      cy.get('[data-cy=search-result]').first().click(); // click the recent entry
+      cy.get('[data-cy=recent-result]').first().click(); // click the recent entry
 
       // navigate() must use result.query ('installation') as the highlight term
       // because the live input query is empty when replaying from recents.
@@ -320,8 +320,9 @@ describe('SearchBar navigation (local search)', () => {
       cy.get('[data-cy=search-result]').first().click();
       cy.get('#search-highlight-chip', { timeout: 4000 }).should('be.visible');
 
+      // cy.visit() is a full page reload — chip element is gone from the DOM entirely.
       cy.visit('/');
-      cy.get('#search-highlight-chip').should('not.be.visible');
+      cy.get('#search-highlight-chip').should('not.exist');
     });
 
   });
