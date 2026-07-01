@@ -894,6 +894,16 @@
     ]
   },
   {
+     "name": "useAIExceptionHandlerInterpreter",
+    "type": "bool",
+    "description": "Feature flag to control whether the Exception Handler component deploys with the Azure AI Foundry interpreter.",
+    "default": "false",
+    "newSince": "v6.3",
+    "tags": [
+      "comp:exception-handler"
+    ]
+  },
+  {
     "name": "containerAppEnvironmentSubnets",
     "type": "array",
     "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
