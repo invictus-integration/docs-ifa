@@ -11,6 +11,11 @@ import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import ComponentFlowDiagram from "@site/src/components/Diagrams/ComponentFlowDiagram";
+import {Walkthrough, Collapsible} from "@site/src/components/Walkthrough";
+import { faRotateBack } from '@fortawesome/free-solid-svg-icons';
+import ApiPlayground from "@site/src/components/ApiPlayground";
 
 <ComponentHeader
   icon="/img/icons/xml-json-converter.png"
@@ -24,106 +29,215 @@ To run simple XML/JSON transformations, the built-in Logic Apps expressions [`js
 Invictus provides a **XML/JSON Converter** component which converts XML/JSON contents, while running a XSLT transformation beforehand (stored in Azure Blob Storage). Removing the complexity from the Logic App
 :::
 
-## Available endpoints
-* `/api/XmlToJson`: transforms incoming request with XML contents to a response with the JSON result.
-* `/api/JsonToXml`: transforms incoming request with JSON contents to a response with the XML result. 
+## Component usage
+{/* vale off */}
+<ComponentFlowDiagram
+  name="XML/JSON Converter"
+  tagline="Format conversion with XSLT transformation"
+  icon={faArrowsRotate}
+  rows={[
+    {
+      input: "XML",
+      opTitle: "XML → JSON",
+      opSubtitle: "XSLT transformation",
+      output: "JSON",
+      storageLabel: "Azure Blob Storage",
+    },
+    {
+      input: "JSON",
+      opTitle: "JSON → XML",
+      opSubtitle: "XSLT transformation",
+      output: "XML",
+      storageLabel: "Azure Blob Storage",
+    },
+  ]}
+/>
+{/* vale on */}
 
-<Tabs groupId="xml-json-conversions">
-<TabItem value="xml-json" label="XML-JSON">
+<Walkthrough>
+<Collapsible number={<FontAwesomeIcon icon={faArrowsRotate} />} title="XML → JSON">
 
-The `/api/XmlToJson` endpoint transforms a provided BASE 64-encoded XML contents to a BASE 64-encoded JSON result. A XSLT transformation (stored in the Azure Blob Storage container called `xmltojsonconfigstore`) gets run beforehand to map the request in the right structure. This stored transformation gets referenced in the request. 
-
-| Request property | Required | Description                                                                               |
-| ---------------- | :------: | ----------------------------------------------------------------------------------------- |
-| `Content`        |   yes    | The BASE 64-encoded XML contents.                                                         |
-| `ConfigName`     |   yes    | The filename of the XSLT transformation, stored in Azure Blob Storage.                   |
-| `Context`        |    no    | The dictionary providing context to the conversion, gets copied 1:1 to the response.      |
-| `XPath`          |    no    | The XPath expression that selects a specific XML node before the XSLT transformation.     |
-| `JPath`          |    no    | The JPath expression that selects a specific JSON property after the XSLT transformation. |
-
-<details>
-<summary>**Full request JSON body example**</summary>
-
-```json
-// POST /api/XmlToJson
-{
-    "Content": "eyJFbnZlbG9wZSI6IHiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." ,
-    "ConfigName":"IDD038-inbound.xsl",
-    "XPath": "/CustomerAccount/Message",
-    "JPath": "$.Envelope",
-    "Context": {
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/XmlToJson"
+  description="Transforms a Base64-encoded XML document to a Base64-encoded JSON document, using a XSLT transformation stored in Azure Blob Storage (container=`xmltojsonconfigstore`)."
+  request={{
+    content: "eyJFbnZlbG9wZSI6IHiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." ,
+    configName:"IDD038-inbound.xsl",
+    xPath: "/CustomerAccount/Message",
+    jPath: "$.Envelope",
+    context: {
         "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
     }
-}
-```
-</details>
+  }}
+  parameters={[
+    {
+        name: "content",
+        type: "string",
+        required: true,
+        description: "The input XML document as a Base64-encoded string."
+    },
+    {
+        name: "configName",
+        type: "string",
+        required: true,
+        description: "The filename of the XSLT transformation, stored in Azure Blob Storage (container=`xmltojsonconfigstore`)."
+    },
+    {
+        name: "xPath",
+        type: "string",
+        required: false,
+        description: "The XPath expression that selects a specific XML node before the XSLT transformation."
+    },
+    {
+        name: "jPath",
+        type: "string",
+        required: false,
+        description: "The JPath expression that selects a specific JSON property after the XSLT transformation."
+    },
+    {
+        name: "context",
+        type: "object",
+        required: false,
+        description: "The dictionary providing context to the conversion, gets copied 1:1 to the response."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "The XML was successfully transformed to JSON.",
+      body: {
+        content: "ejHixZlwI9HiU2FsxNPcmRluIjp7ICAgICagICa...",
+        context: {
+            "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
+        }
+      }
+    },
+    {
+        status: 400,
+        label: "Invalid request",
+        description: "The request body could not be parsed. Ensure the request body is a valid JSON with the required fields.",
+        body: "Failed to transform the input XML to JSON because the request body was not a JSON with an Base64-encoded XML document and a XSLT transformation name."
+    },
+    {
+        status: 400,
+        label: "Invalid XML or JSON",
+        description: "The provided XML or JSON document result is not valid.",
+        body: "Failed to transform the input XML to JSON because the provided XML is not valid."
+    },
+    {
+        status: 404,
+        label: "XPath or JPath Not Found",
+        description: "The provided XPath or JPath expression did not match any node in the XML or JSON document.",
+        body: "Failed to transform the input XML to JSON because the provided XPath or JPath expression did not match any node in the XML or JSON document."
+    },
+    {
+        status: 500,
+        label: "Internal Server Error",
+        description: "An unexpected error occurred during the transformation process.",
+        body: "Failed to transform the input XML to JSON because an unexpected error occurred during the transformation process."
+    }
+  ]}
+/>
+{/* vale on */}
 
-<details>
-<summary>**Full response JSON body example**</summary>
+</Collapsible>
 
-```json
-// 200 OK <- /api/XmlToJson
-{
-    "Content": "ejHixZlwI9HiU2FsxNPcmRluIjp7ICAgICagICa...",
-    "Context": {
+<Collapsible number={<FontAwesomeIcon icon={faArrowsRotate} />} title="JSON → XML">
+
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/JsonToXml"
+  description="Transforms a Base64-encoded JSON document to a Base64-encoded XML document, using a XSLT transformation stored in Azure Blob Storage (container=`xmltojsonconfigstore`)."
+  request={{
+    content: "eyJFbnZlbG9wZSI6IHiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." ,
+    configName:"IDD038-inbound.xsl",
+    jPath: "$.Envelope",
+    xPath: "/CustomerAccount/Message",
+    context: {
         "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
     }
-}
-```
-</details>
-
-</TabItem>
-
-
-<TabItem value="json-xml" label="JSON-XML">
-
-The `/api/JsonToXml` endpoint transforms a provided BASE 64-encoded JSON contents to a BASE 64-encoded XML result. A XSLT transformation (stored in the Azure Blob Storage container called `xmltojsonconfigstore`) gets run beforehand to map the request in the right structure. This stored transformation gets referenced in the request. 
-
-| Request property | Required | Description                                                                                |
-| ---------------- | :------: | ------------------------------------------------------------------------------------------ |
-| `Content`        |   yes    | The BASE 64-encoded JSON contents.                                                         |
-| `ConfigName`     |   yes    | The filename of the XSLT transformation, stored in Azure Blob Storage.                    |
-| `Context`        |    no    | The dictionary providing context to the conversion, gets copied 1:1 to the response.       |
-| `JPath`          |    no    | The XPath expression that selects a specific JSON property before the XSLT transformation. |
-| `XPath`          |    no    | The JPath expression that selects a specific XML node after the XSLT transformation.       |
-
-<details>
-<summary>**Full request JSON body example**</summary>
-
-```json
-// POST /api/JsonToXml
-{
-    "Content": "eyJFbnZlbG9wZSI6IHiU2FsZXNPcmRlckluIjp7ICAgICAgICAg...." ,
-    "ConfigName":"IDD038-inbound.xsl",
-    "JPath": "$.Envelope",
-    "XPath": "/CustomerAccount/Message",
-    "Context": {
-        "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
+  }}
+  parameters={[
+    {
+      name: "content",
+      type: "string",
+      required: true,
+      description: "The input JSON document as a Base64-encoded string."
+    },
+    {
+      name: "configName",
+      type: "string",
+      required: true,
+      description: "The filename of the XSLT transformation, stored in Azure Blob Storage (container=`xmltojsonconfigstore`)."
+    },
+    {
+      name: "jPath",
+      type: "string",
+      required: false,
+      description: "The JPath expression that selects a specific JSON property before the XSLT transformation."
+    },
+    {
+      name: "xPath",
+      type: "string",
+      required: false,
+      description: "The XPath expression that selects a specific XML node after the XSLT transformation."
+    },
+    {
+      name: "context",
+      type: "object",
+      required: false,
+      description: "The dictionary providing context to the conversion, gets copied 1:1 to the response."
     }
-}
-```
-</details>
-
-<details>
-<summary>**Full response JSON body example**</summary>
-
-```json
-// 200 OK <- /api/JsonToXml
-{
-    "Content": "ejHixZlwI9HiU2FsxNPcmRluIjp7ICAgICagICa...",
-    "Context": {
-        "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "The JSON was successfully transformed to XML.",
+      body: {
+        content: "ejHixZlwI9HiU2FsxNPcmRluIjp7ICAgICagICa...",
+        context: {
+            "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
+        }
+      }
+    },
+    {
+        status: 400,
+        label: "Invalid request",
+        description: "The request body could not be parsed. Ensure the request body is a valid JSON with the required fields.",
+        body: "Failed to transform the input JSON to XML because the request body was not a JSON with an Base64-encoded JSON document and a XSLT transformation name."
+    },
+    {
+        status: 400,
+        label: "Invalid XML or JSON",
+        description: "The provided JSON or XML document result is not valid.",
+        body: "Failed to transform the input JSON to XML because the provided JSON or XML is not valid."
+    },
+    {
+        status: 404,
+        label: "XPath or JPath Not Found",
+        description: "The provided XPath or JPath expression did not match any node in the XML or JSON document.",
+        body: "Failed to transform the input JSON to XML because the provided XPath or JPath expression did not match any node in the XML or JSON document."
+    },
+    {
+        status: 500,
+        label: "Internal Server Error",
+        description: "An unexpected error occurred during the transformation process.",
+        body: "Failed to transform the input JSON to XML because an unexpected error occurred during the transformation process."
     }
-}
-```
-</details>
-</TabItem>
+  ]}
+/>
 
-</Tabs>
+{/* vale on */}
+</Collapsible>
 
-___
+</Walkthrough>
 
 {/* vale Google.Headings = NO */}
-## Related Bicep template parameters
+### Related Bicep template parameters
 {/* vale Google.Headings = YES */}
 <ParameterTable parameters={parameters} fixedTags={[`comp:xml-json-converter`]} />

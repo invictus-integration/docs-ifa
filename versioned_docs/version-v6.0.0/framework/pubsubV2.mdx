@@ -8,10 +8,12 @@ import {Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
 import ParameterTable from "@site/src/components/ParameterTable";
 import ComponentHeader from "@site/src/components/ComponentHeader";
 import PubSubFlowDiagram from "@site/src/components/Diagrams/PubSubFlowDiagram";
+import PubSubFlowMobileDiagram from "@site/src/components/Diagrams/PubSubFlowMobileDiagram";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import Admonition from '@theme/Admonition';
 import {faPaperPlane, faEnvelope, faCheckDouble, faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ApiPlayground from "@site/src/components/ApiPlayground";
 
 <ComponentHeader
   icon="/img/icons/pubsub.png"
@@ -29,148 +31,258 @@ Invictus provides a solution called the **PubSub**, that allows Azure Service Bu
 
 ## Component usage
 Use the PubSub component in your Logic App workflows with the following interaction:
-<PubSubFlowDiagram />
+<style>{`.pubsub-wide{display:block}.pubsub-narrow{display:none}@media(max-width:640px){.pubsub-wide{display:none}.pubsub-narrow{display:block}}`}</style>
+
+<div className="pubsub-wide">
+  <PubSubFlowDiagram />
+</div>
+<div className="pubsub-narrow">
+  <PubSubFlowMobileDiagram />
+</div>
 
 <Walkthrough>
 <Collapsible number={<FontAwesomeIcon icon={faPaperPlane} />} title="Publish single message" id="publish-single-message">
 
-The `/api/Publish` endpoint allows users to send a single message to the configured Azure Service Bus topic (default: `pubsubv2router`) where subscribers are listening to.
-
-[`Body`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.body?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-body
-[`ApplicationProperties`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.applicationproperties?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-applicationproperties
-[`MessageId`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.messageid?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-messageid
-
-| JSON property | Required (default) | Translates to `ServiceBusMessage` | Description                                                                                                                                                                                                                                                                                                                                                                                |
-| ------------- | :----------------: | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Content`     |        yes         | [`Body`]                          | Raw binary content for the message. If exceeds certain size (default `20 000 bytes`), then the component applies the claim-check pattern. The message gets sent with an empty body, and the content gets saved in Azure Blob Storage. The *Subscribe* action automatically loads the content based on specific properties from either the message itself or from Blob Storage. |
-| `Context`     |        yes         | [`ApplicationProperties`]         | User-provided properties, appended with the HTTP request headers `x-ms-client-tracking-id` and `x-ms-workflow-run-id` if present                                                                                                                                                                                                                                                           |
-| `MessageId`   |   no (new GUID)    | [`MessageId`]                     | Optional message ID for duplicate detection purposes.                                                                                                                                                                                                                                                                                                                                      |
-
-<details>
-<summary>**Full request example**</summary>
-
-```json
-// POST /api/Publish
-{
-  "Content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
-  "MessageId": "b0f11049-7f4d-4bae-90b2-91d93e69367d",
-  "Context": {
-    "x-applicationName": "InvoiceApp",
-    "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
-    "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
-    "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08"
-  }
-}
-```
-</details>
-
-The endpoint responds with `202 Accepted`, if the message gets published successfully.
-
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/Publish"
+  description="Publishes a single message to the configured Azure Service Bus topic (default: `pubsubv2router`)."
+  request={{
+    Content: "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+    Context: {
+      "x-applicationName": "InvoiceApp",
+      "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
+      "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
+      "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08"
+    },
+  }}
+  parameters={[
+    {
+      name: "Content",
+      type: "string",
+      required: true,
+      description: "Raw binary content for the message (translates to [`ServiceBusMessage.Body`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.body?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-body)). If exceeds certain size (default `20 000 bytes`), then the component applies the claim-check pattern. The message gets sent with an empty body, and the content gets saved in Azure Blob Storage. The *Subscribe* action automatically loads the content based on specific properties from either the message itself or from Blob Storage."
+    },
+    {
+      name: "Context",
+      type: "object",
+      required: true,
+      description: "User-provided properties (translates to [`ServiceBusMessage.ApplicationProperties`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.applicationproperties?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-applicationproperties)), appended with the HTTP request headers `x-ms-client-tracking-id` and `x-ms-workflow-run-id` if present"
+    },
+    {
+      name: "MessageId",
+      type: "string",
+      required: false,
+      description: "Optional message ID (translates to [`ServiceBusMessage.MessageId`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusmessage.messageid?view=azure-dotnet#azure-messaging-servicebus-servicebusmessage-messageid)) for duplicate detection purposes."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "OK",
+      body: "Message published successfully."
+    },
+    {
+      status: 400,
+      label: "Invalid request",
+      description: "The request body is invalid or missing required properties.",
+      body: "Failed to publish message because the request body is invalid or missing required properties."
+    },
+    {
+      status: 400,
+      label: "Send failure",
+      description: "The message failed to send to the Azure Service Bus topic due to a Service Bus-specific error, serialization or the when the claim-check failed.",
+      body: "Failed to publish message due to an unexpected Azure Service Bus error, please check the logs for more information."
+    },
+    {
+      status: 500,
+      label: "Internal server error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to publish message due to an unexpected error, please check the logs for more information."
+    }
+  ]}
+/>
+{/* vale on */}
 
 </Collapsible>
 
 <Collapsible number={<FontAwesomeIcon icon={faEnvelope} />} title="Subscribe for messages" id="subscribe-for-messages">
-The `/api/Subscribe` endpoint allows users to periodically ask for any available published messages on the configured Azure Service Bus topic (default: `pubsubv2router`).
 
-[`SubscriptionName`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.createsubscriptionoptions.subscriptionname?view=azure-dotnet#azure-messaging-servicebus-administration-createsubscriptionoptions-subscriptionname
-[`SqlExpression`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.sqlrulefilter.sqlexpression?view=azure-dotnet#azure-messaging-servicebus-administration-sqlrulefilter-sqlexpression
-[`Rule`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.ruleproperties.name?view=azure-dotnet#azure-messaging-servicebus-administration-ruleproperties-name
-[`BatchSize`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceiver.receivemessagesasync?view=azure-dotnet#azure-messaging-servicebus-servicebusreceiver-receivemessagesasync(system-int32-system-nullable((system-timespan))-system-threading-cancellationtoken)
-[`MaxWaitTime`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceiver.receivemessagesasync?view=azure-dotnet#azure-messaging-servicebus-servicebusreceiver-receivemessagesasync(system-int32-system-nullable((system-timespan))-system-threading-cancellationtoken)
-[`ReceiveAndDelete`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceivemode?view=azure-dotnet
-[`PeekLock`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceivemode?view=azure-dotnet
-
-| JSON property            |       Required (default)       | Translates to Service Bus           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------ | :----------------------------: | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Subscription`           |              yes               | [`SubscriptionName`]                | Name of Azure Service Bus topic subscription, gets created if not exists. (Name is also used as name of the [`Rule`].)                                                                                                                                                                                                                                                                                                                                            |
-| `Filter`                 | no (subscribe on all messages) | [`SqlExpression`]                   | Optional SQL expression that acts as a filter rule for which messages to subscribe on.                                                                                                                                                                                                                                                                                                                                                                            |
-| `BatchSize`              |            no (10)             | [`BatchSize`]                       | Maximum messages to receive during this single call.                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `TimeoutMilliseconds`    |           no (1min)            | [`MaxWaitTime`]                     | Maximum time to wait for a message before responding with an empty set of messages.                                                                                                                                                                                                                                                                                                                                                                               |
-| `ShouldDeleteOnReceive`  |          no (`false`)          | [`ReceiveAndDelete`]                | `false` (default) means [`PeekLock`], `true` means receiving messages with [`ReceiveAndDelete`]. <br/><br/> <Admonition type="warning">In some rare cases, the use of `ShouldDeleteOnReceive=true` could cause the receiver to lose messages. For example when an error occurs on during receiving and one loses the sequence number, or when cancelled/scaled-down happens at the exact moment the client receives the message (and doesn't exist on the topic subscription anymore).</Admonition> |
-| `SkipSubscriptionUpsert` |          no (`false`)          | create/update subscription and rule | `true` means there should already be a topic subscription available, `false` (default) means that a subscription will be created with the provided `Filter`.                                                                                                                                                                                                                                                                                                      |
-
-:::tip
-One can also use the HTTP request query parameters instead of the request body to `POST` to the `/api/Subscribe` endpoint: `/api/Subscribe?Subscription=orderProcessor`.
-:::
-
-<details>
-<summary>**Full request example**</summary>
-
-```json
-// POST -> /api/Subscribe
-{
-    "Subscription": "orderProcessor",
-    "Filter": "sys.label = 'OrderCreated'",
-    "BatchSize": 11,
-    "TimeoutMilliseconds": 30000,
-    "ShouldDeleteOnReceive": false,
-    "SkipSubscriptionUpsert": false
-}
-```
-</details>
-
-<details>
-<summary>**Full response example**</summary>
-
-```json
-// 200 OK <- /api/Subscribe
-[
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/Subscribe"
+  description="Subscribes to messages on the configured Azure Service Bus topic (default: `pubsubv2router`)."
+  parametersTitle="Body/Query parameters"
+  request={{
+    Subscription: "subscriptionName",
+    Filter: "x-applicationName = 'InvoiceApp'"
+  }}
+  parameters={[
     {
-        "subscription": "orderProcessor",
-        "content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
-        "context": {
+      name: "Subscription",
+      type: "string",
+      required: true,
+      description: "Name of Azure Service Bus topic subscription (translates to [`CreateSubscriptionOptions.SubscriptionName`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.createsubscriptionoptions.subscriptionname?view=azure-dotnet#azure-messaging-servicebus-administration-createsubscriptionoptions-subscriptionname)), creates if not exists. (Name is also used as name of the [rule](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.ruleproperties.name?view=azure-dotnet#azure-messaging-servicebus-administration-ruleproperties-name).)"
+    },
+    {
+      name: "Filter",
+      type: "string",
+      required: false,
+      description: "Optional SQL expression (translates to [`SqlExpression`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.administration.sqlrulefilter.sqlexpression?view=azure-dotnet#azure-messaging-servicebus-administration-sqlrulefilter-sqlexpression)) that acts as a filter rule for which messages to subscribe on."
+    },
+    {
+      name: "BatchSize",
+      type: "integer",
+      required: false,
+      description: "Maximum messages to receive during this single call. Translates to [`BatchSize`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceiver.receivemessagesasync?view=azure-dotnet#azure-messaging-servicebus-servicebusreceiver-receivemessagesasync(system-int32-system-nullable((system-timespan))-system-threading-cancellationtoken))."
+    },
+    {
+      name: "TimeoutMilliseconds",
+      type: "integer",
+      required: false,
+      description: "Maximum time to wait for a message before responding with an empty set of messages. Translates to [`MaxWaitTime`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceiver.receivemessagesasync?view=azure-dotnet#azure-messaging-servicebus-servicebusreceiver-receivemessagesasync(system-int32-system-nullable((system-timespan))-system-threading-cancellationtoken))"
+    },
+    {
+      name: "ShouldDeleteOnReceive",
+      type: "boolean",
+      required: false,
+      description: (<>
+        <code>false</code> (default) means <a href="https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock" target="_blank" rel="noopener noreferrer"><code>PeekLock</code></a>, <code>true</code> means receiving messages with <a href="https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete" target="_blank" rel="noopener noreferrer"><code>ReceiveAndDelete</code></a>.
+        <Admonition type="warning">
+          In some rare cases, the use of <code>ShouldDeleteOnReceive=true</code> could cause the receiver to lose messages — for example when an error occurs during receiving and the sequence number is lost, or when a scale-down happens at the exact moment the client receives the message.
+        </Admonition>
+      </>)
+    },
+    {
+      name: "SkipSubscriptionUpsert",
+      type: "boolean",
+      required: false,
+      description: "`true` means there should already be a topic subscription available, `false` (default) means that a subscription will be created with the provided `Filter`."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "OK",
+      description: "Returns a list of messages received from the Azure Service Bus topic subscription.",
+      body: [
+        {
+          subscription: "orderProcessor",
+          content: "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+          context: {
             "x-applicationName": "InvoiceApp",
             "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
             "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
             "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
             "x-ms-client-tracking-id": "test",
             "Diagnostic-Id": "00-0cc7ed09eeaa51b0e835d90890aefb60-b0a02deac9f6fe6d-00"
-        },
-        "sequenceNumber": 99
+          },
+          sequenceNumber: 99
+        }
+      ]
     },
-    ...
-]
-```
-</details>
-
-:::warning[internal workaround]
-Because messages can be 'acknowledged' separately from the receive location by 'subscription', the message is internally [deferred](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-deferral). This is due to restrictions in the Azure SDK which impose that the same receiver must both receive and settle message. Deferring a message doesn't have this limitation.
-:::
+    {
+      status: 400,
+      label: "Invalid request",
+      description: "The request body is invalid or missing required properties.",
+      body: "Failed to subscribe for messages because the request body is invalid or missing required properties."
+    },
+    {
+      status: 400,
+      label: "Subscription failure",
+      description: "The subscription retrieval failed due to a Service Bus-specific error.",
+      body: "Failed to subscribe for messages due to an unexpected Azure Service Bus error, please see the logs for more information."
+    },
+    {
+      status: 500,
+      label: "Internal server error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to subscribe for messages due to an unexpected error, please check the logs for more information."
+    }
+  ]}
+/>
+{/* vale on */}
 
 </Collapsible>
 
 <Collapsible number={<FontAwesomeIcon icon={faCheckDouble} />} title="Acknowledge message" id="acknowledge-message">
 
-The `/api/Acknowledge` endpoint allows users to 'settle' a received message via the `/api/Subscribe` endpoint. This requires the **sequence number** of the message.
+:::warning[internal workaround]
+Because messages can be 'acknowledged' separately from the receive location by 'subscription', the message is internally [deferred](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-deferral). This is due to restrictions in the Azure SDK which impose that the same receiver must both receive and settle message. Deferring a message doesn't have this limitation.
+:::
 
-[`CreateReceiver`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusclient.createreceiver?view=azure-dotnet#azure-messaging-servicebus-servicebusclient-createreceiver(system-string-system-string)
-[Message settlement]: https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement
-[`ReceiveDeferredMessage`]: https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceiver.receivedeferredmessageasync?view=azure-dotnet
-[`MessageNotFound`]: https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-exceptions-latest
-
-| JSON Property             | Required (default) | Translates to Service Bus  | Description                                                                                                                                                                                      |
-| ------------------------- | :----------------: | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Subscription`            |        yes         | [`CreateReceiver`]         | Name of Azure Service Bus topic subscription to receive the deferred message on (See **internal workaround** on `/api/Subscribe`)                                    |
-| `SequenceNumber`          |        yes         | [`ReceiveDeferredMessage`] | Unique number assigned by Service Bus, received by the `/api/Subscribe` response.                                                                                                                        |      
-| `AcknowledgementType`     |  no (`Complete`)   | [Message settlement]       | Type of acknowledge action to take on the message: <ul><li>`Complete`</li><li>`Abandon`</li><li>`Defer`</li><li>`DeadLetter`</li></ul>                                                           |
-| `IgnoreNotFoundException` |    no (`false`)    | [`MessageNotFound`]        | `true` means that `MessageNotFound` Service Bus failures during lookup of the message by its `SequenceNumber` will result in `202 Accepted`; `false` means a `400 BadRequest` will be responded. |
-
-<details>
-<summary>**Full request example**</summary>
-
-```json
-// POST /api/Acknowledge
-{
-    "Subscription": "subscriptionName",
-    "AcknowledgementType":"Complete",
-    "SequenceNumber": 99,
-    "IgnoreNotFoundException": false,
-}
-```
-</details>
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/Acknowledge"
+  description="Acknowledges a message received via the `/api/Subscribe` endpoint. This requires the `SequenceNumber` of the message."
+  request={{
+    Subscription: "subscriptionName",
+    AcknowledgementType: "Complete",
+    SequenceNumber: 99,
+    IgnoreNotFoundException: false
+  }}
+  parameters={[
+    {
+      name: "Subscription",
+      type: "string",
+      required: true,
+      description: "Name of Azure Service Bus topic subscription (translates to [`CreateReceiver`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusclient.createreceiver?view=azure-dotnet#azure-messaging-servicebus-servicebusclient-createreceiver(system-string-system-string))) to receive the deferred message on (See **internal workaround** on `/api/Subscribe`)."
+    },
+    {
+      name: "SequenceNumber",
+      type: "integer",
+      required: true,
+      description: "Unique number assigned by Service Bus (translates to [`ReceiveDeferredMessage`](https://learn.microsoft.com/en-us/dotnet/api/azure.messaging.servicebus.servicebusreceiver.receivedeferredmessageasync?view=azure-dotnet)), received by the `/api/Subscribe` response."
+    },
+    {
+      name: "AcknowledgementType",
+      type: "string",
+      required: false,
+      description: <>
+        Type of acknowledge action to take on the message (translates to <a href="https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement" target="_blank" rel="noopener noreferrer">Messages settlement</a>). Default is <code>Complete</code>. Options are:<ul><li><code>Complete</code></li><li><code>Abandon</code></li><li><code>Defer</code></li><li><code>DeadLetter</code></li></ul>
+      </>
+    },
+    {
+      name: "IgnoreNotFoundException",
+      type: "boolean",
+      required: false,
+      description: "`true` means that [`MessageNotFound`](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-exceptions-latest) Service Bus failures during lookup of the message by its `SequenceNumber` will result in `202 Accepted`; `false` means a `400 BadRequest` will be responded. Default is `false`."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "OK",
+      description: "Message acknowledged successfully.",
+      body: "Message acknowledged successfully."
+    },
+    {
+      status: 400,
+      label: "Invalid request",
+      description: "The request body is invalid or missing required properties.",
+      body: "Failed to acknowledge message because the request body is invalid or missing required properties."
+    },
+    {
+      status: 400,
+      label: "Acknowledge failure",
+      description: "The message acknowledge failed due to a Service Bus-specific error.",
+      body: "Failed to acknowledge message due to an unexpected Azure Service Bus error, please see the logs for more information."
+    },
+    {
+      status: 500,
+      label: "Internal server error",
+      description: "An unexpected error occurred while processing the request.",
+      body: "Failed to acknowledge message due to an unexpected error, please check the logs for more information."
+    }
+  ]}
+/>
+{/* vale on */}
 
 </Collapsible>
 </Walkthrough>
 
-## Related Bicep template parameters
+### Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={["comp:pubsub"]} />

@@ -48,6 +48,10 @@
   --ifm-navbar-search-input-color: var(--ifm-color-gray-800);
   --ifm-toc-border-color: var(--ifm-color-gray-200);
   --ifm-global-spacing: 1.5rem;
+
+  /* Typography — also consumed by inline SVG diagrams via var() */
+  --ifm-font-family-base: 'Inter', sans-serif;
+  --ifm-heading-font-family: 'Bitter', sans-serif;
   --docusaurus-details-decoration-color: var(--ifm-color-primary);
   --ifm-table-stripe-background: var(--ifm-color-secondary-lighter);
   --ifm-menu-color-background-active: var(--ifm-color-secondary-lighter);
