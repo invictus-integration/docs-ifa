@@ -1,120 +1,139 @@
 import React from "react";
+import { useColorMode } from "@docusaurus/theme-common";
 
-// ── Shared CSS-variable palette (mirrors TimeSequencerFlowDiagram) ────────────
-const c = {
-  primary: "var(--ifm-color-primary)",
-  primaryLight: "var(--ifm-color-primary-light)",
-  primaryDark: "var(--ifm-color-primary-darker)",
-  primaryLightest: "var(--ifm-color-primary-lightest)",
-  secondary: "var(--ifm-color-secondary)",
-  secondaryDark: "var(--ifm-color-secondary-darker)",
-  warning: "var(--ifm-color-warning)",
-  bg: "var(--ifm-background-color)",
-  text: "var(--ifm-font-color-base)",
-} as const;
+const HEADING_FONT = "var(--ifm-heading-font-family, 'Bitter', Georgia, serif)";
 
-// ── Block style presets (same as flow diagram) ────────────────────────────────
-const ACCENT = 6;
-
-// Sequence number → visual type
-//   1: invictus  — teal filled
-//   2: step      — dark filled
-//   3: warning   — orange filled
-//   4: regular   — outlined
-type BlockType = "invictus" | "step" | "warning" | "regular";
-
-const TYPES: Record<1 | 2 | 3 | 4, BlockType> = {
-  1: "invictus",
-  2: "step",
-  3: "warning",
-  4: "regular",
+const LIGHT = {
+  slot1Box: "#2a8f9c",
+  slot1Accent: "#014550",
+  slot1Text: "#ffffff",
+  slot2Box: "#6c7374",
+  slot2Text: "#ffffff",
+  slot3Box: "#01363f",
+  slot3Text: "#ffffff",
+  slot4Box: "#ffffff",
+  slot4Stroke: "#b8c0c2",
+  slot4Text: "#1c1e21",
+  separatorFill: "#6c7374",
 };
 
-// ── Dimensions ────────────────────────────────────────────────────────────────
-const BW = 72;
-const BH = 44;
-const GAP = 12;
-const STEP = BW + GAP;        // 84
-const BY = 18;
-const PAD = 16;
-const GROUP_W = 4 * BW + 3 * GAP;   // 324
+const DARK = {
+  slot1Box: "#2a8f9c",
+  slot1Accent: "#014550",
+  slot1Text: "#ffffff",
+  slot2Box: "#6B7280",
+  slot2Text: "#ffffff",
+  slot3Box: "#013c46",
+  slot3Text: "#a0dde5",
+  slot4Box: "#1F2937",
+  slot4Stroke: "#6B7280",
+  slot4Text: "#D1D5DB",
+  separatorFill: "#9CA3AF",
+};
 
-const LEFT_X = PAD;
-const SEP_X = PAD + GROUP_W + 32;
-const RIGHT_X = SEP_X + 32;
-const VB_W = RIGHT_X + GROUP_W + PAD;
-const VB_H = BY + BH + BY;
-
-// ── Block component ───────────────────────────────────────────────────────────
-function Block({ x, type, label }: { x: number; type: BlockType; label: string }) {
-  const rectStyle =
-    type === "invictus" ? { fill: c.primaryLightest } :
-      type === "step" ? { fill: c.secondaryDark } :
-        type === "warning" ? { fill: c.primaryDark, } :
-          { fill: c.bg, stroke: c.secondary, strokeWidth: 1.5 };
-
-  const textStyle =
-    type === "regular"
-      ? { fontSize: 18, fontWeight: 700, fill: c.text, fontFamily: "var(--ifm-font-family-monospace)" }
-      : { fontSize: 18, fontWeight: 700, fill: "#ffffff", fontFamily: "var(--ifm-font-family-monospace)" };
-
-  const accentFill =
-    type === "invictus" ? c.primary :
-      type === "regular" ? c.secondary : null;
-
+function SequenceBox({
+  x,
+  label,
+  fill,
+  textFill,
+  accentFill,
+  strokeFill,
+}: {
+  x: number;
+  label: string;
+  fill: string;
+  textFill: string;
+  accentFill?: string;
+  strokeFill?: string;
+}) {
   return (
     <>
-      <rect x={x} y={BY} width={BW} height={BH} rx={2} style={rectStyle} />
-      <text x={x + BW / 2} y={BY + BH / 2}
-        textAnchor="middle" dominantBaseline="middle" style={textStyle}>
+      <rect
+        x={x}
+        y="18"
+        width="72"
+        height="44"
+        rx="2"
+        fill={fill}
+        stroke={strokeFill}
+        strokeWidth={strokeFill ? "1.5" : undefined}
+      />
+      {accentFill && <rect x={x} y="18" width="6" height="44" fill={accentFill} />}
+      {strokeFill && <rect x={x} y="18" width="6" height="44" fill={strokeFill} />}
+      <text
+        x={x + 36}
+        y="40"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize="18"
+        fontWeight="700"
+        fill={textFill}
+        style={{ fontFamily: HEADING_FONT }}
+      >
         {label}
       </text>
     </>
   );
 }
 
-// ── Diagram ───────────────────────────────────────────────────────────────────
-export default function SequenceControllerSortDiagram(): JSX.Element {
-  // Left: arrival order — 2, 1, 3, 4
-  // Right: sorted order — 1, 2, 3, 4
-  const left: Array<1 | 2 | 3 | 4> = [2, 1, 3, 4];
-  const right: Array<1 | 2 | 3 | 4> = [1, 2, 3, 4];
+export default function SequenceControllerSort() {
+  const { colorMode } = useColorMode();
+  const c = colorMode === "dark" ? DARK : LIGHT;
 
   return (
-    <svg
-      viewBox={`0 0 ${VB_W} ${VB_H}`}
-      role="img"
-      aria-labelledby="scsd-title scsd-desc"
-      style={{
-        width: "100%", maxWidth: 760, display: "block",
-        margin: "2rem auto", fontFamily: "inherit", overflow: "visible"
-      }}
-    >
-      <title id="scsd-title">Sequence Controller sorting diagram</title>
-      <desc id="scsd-desc">
-        Four workflow executions with sequence numbers 2, 1, 3 and 4 arrive in
-        unordered sequence. After the Sequence Controller processes them they are
-        executed in order: 1, 2, 3, 4.
-      </desc>
-
-      {/* Left group — unordered arrival */}
-      {left.map((seq, i) => (
-        <Block key={`L-${seq}`} x={LEFT_X + i * STEP} type={TYPES[seq]} label={String(seq)} />
-      ))}
-
-      {/* ">" separator */}
-      <text
-        x={SEP_X} y={BY + BH / 2}
-        textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 26, fontWeight: 700, fill: c.secondaryDark }}
+    <div style={{ maxWidth: 820, margin: "2rem auto" }}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        viewBox="0 0 744 80"
+        role="img"
+        aria-label="Sequence Controller sorting diagram"
       >
-        {">"}
-      </text>
-
-      {/* Right group — ordered execution */}
-      {right.map((seq, i) => (
-        <Block key={`R-${seq}`} x={RIGHT_X + i * STEP} type={TYPES[seq]} label={String(seq)} />
-      ))}
-    </svg>
+        <SequenceBox x={16} label="2" fill={c.slot2Box} textFill={c.slot2Text} />
+        <SequenceBox
+          x={100}
+          label="1"
+          fill={c.slot1Box}
+          accentFill={c.slot1Accent}
+          textFill={c.slot1Text}
+        />
+        <SequenceBox x={184} label="3" fill={c.slot3Box} textFill={c.slot3Text} />
+        <SequenceBox
+          x={268}
+          label="4"
+          fill={c.slot4Box}
+          strokeFill={c.slot4Stroke}
+          textFill={c.slot4Text}
+        />
+        <text
+          x="372"
+          y="40"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize="26"
+          fontWeight="700"
+          fill={c.separatorFill}
+          style={{ fontFamily: HEADING_FONT }}
+        >
+          {">"}
+        </text>
+        <SequenceBox
+          x={404}
+          label="1"
+          fill={c.slot1Box}
+          accentFill={c.slot1Accent}
+          textFill={c.slot1Text}
+        />
+        <SequenceBox x={488} label="2" fill={c.slot2Box} textFill={c.slot2Text} />
+        <SequenceBox x={572} label="3" fill={c.slot3Box} textFill={c.slot3Text} />
+        <SequenceBox
+          x={656}
+          label="4"
+          fill={c.slot4Box}
+          strokeFill={c.slot4Stroke}
+          textFill={c.slot4Text}
+        />
+      </svg>
+    </div>
   );
 }

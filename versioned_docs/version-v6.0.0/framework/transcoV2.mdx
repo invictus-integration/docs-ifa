@@ -10,6 +10,9 @@ import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import ComponentHeader from "@site/src/components/ComponentHeader";
 import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
+import ComponentFlowDiagram from "@site/src/components/Diagrams/ComponentFlowDiagram";
+import ApiPlayground from "@site/src/components/ApiPlayground";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 
 <ComponentHeader
   icon="/img/icons/transco.png"
@@ -20,7 +23,49 @@ import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
 :::note[motivation]
 Integration scenarios often need to 'promote' or 'enrich' messages/data from either internal or external data sources. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
 
-Invictus provides a Transco component to
+Invictus provides a Transco component to promote properties from a SQL database or to transform XML content via XSLT transformations. The component can also promote values to the context of the response.
+:::
+
+## Component usage
+The Transco component has endpoints available for XML or JSON content.
+Given a stored Transco configuration file, the component promotes values from a client's SQL database or transforms XML content via a stored XSLT file.
+
+{/* vale off */}
+<ComponentFlowDiagram
+  name="Transco"
+  tagline="Property Promotion & Transformation"
+  icon={faGear}
+  iconEvenOdd
+  rows={[
+    {
+      input: "XML or JSON",
+      opTitle: "SQL Promote",
+      opSubtitle: "Promote via client's database",
+      output: "Enriched",
+      storageLabel: "Client's DB + Azure Blob Storage",
+    },
+    {
+      input: "XML",
+      opTitle: "XSLT Transform",
+      opSubtitle: "Transform via XSLT",
+      output: "Transformed",
+      storageLabel: "Azure Blob Storage",
+    },
+    {
+      input: "Parameters",
+      opTitle: "Basic Promote",
+      opSubtitle: "Promote to context",
+      output: "Context"
+    },
+  ]}
+/>
+{/* vale on */}
+
+{/* <Tabs>
+<TabItem value="xml-json" label="XML/JSON">
+
+
+
 <Walkthrough>
 <Collapsible number="SQL" title="Promote client requests with client's database">
 
@@ -37,57 +82,101 @@ The component applies the transformation to the request content and promotes the
 
 </Collapsible>
 </Walkthrough>
-:::
 
-## Available endpoints
-* `/api/TranscoXML`: uses XML content and a Transco configuration file to list the instructions necessary to promote values or to transform the content via an XSLT file.
-
-* `/api/TranscoJson`: uses JSON content and a Transco configuration file to list the instructions necessary to promote values. The component can't perform transformations on JSON content.
-
-* `/api/MatrixBasicPromote`: accepts a list of parameters and promotes them to the `Context` in the response.
+</TabItem>
+</Tabs> */}
 
 <Tabs groupId="transco-endpoints">
 <TabItem value="json-xml" label="XML/JSON">
 
-The Transco request requires following values:
-* XML/JSON content in Base64 format;
-* Context as key-value pair list;
-* Name of Transco config file in an Azure Blob Storage container.
-
-<details>
-<summary>**Full request body JSON example**</summary>
-
-```json
-// POST /api/TranscoXML
-// POST /api/TranscoJson
-{
-  "Content": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PHJvb3Q+PG5hbWUgc3RhdHVzPSJNZW1iZXIiPkpvaG4gRG9lPC9uYW1lPjwvcm9vdD4=",
-  "Context": {
-    "CustomerActive": "true" 
-  }, 
-  "TranscoConfig": "docs_config.json"
-}
-```
-</details>
-
-<details>
-<summary>**Full response body JSON example**</summary>
-
-```json
-// 200 OK <- /api/TranscoXML
-// 200 OK <- /api/TranscoJson
-{
-  "Content": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PE1lbWJlcj5Kb2huIERvZTwvTWVtYmVyPg==",
-  "Context": {
-    "CustomerActive": "true"
-  },
-  "TranscoConfig": "docs_config.json"
-}
-```
-</details>
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/TranscoXML or /api/TranscoJson"
+  description="Promotes values from a SQL database or transforms XML content via a stored XSLT file, based on a stored Transco configuration file."
+  request={{
+    content: "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PHJvb3Q+PG5hbWUgc3RhdHVzPSJNZW1iZXIiPkpvaG4gRG9lPC9uYW1lPjwvcm9vdD4=",
+    transcoConfig: "docs_config.json",
+    context: {
+      customerActive: true
+    }
+  }}
+  parameters={[
+    {
+      name: "content",
+      type: "string",
+      required: true,
+      description: "The input XML or JSON content as a Base64-encoded string."
+    },
+    {
+      name: "transcoConfig",
+      type: "string",
+      required: true,
+      description: "The filename of the Transco configuration file, stored in the internal blob storage container (for example `docs_config.json`)."
+    },
+    {
+      name: "context",
+      type: "object",
+      required: false,
+      description: "The dictionary providing context to the conversion, gets copied 1:1 to the response."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "The Transco component successfully promoted values or transformed the content.",
+      body: {
+        content: "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+PE1lbWJlcj5Kb2huIERvZTwvTWVtYmVyPg==",
+        transcoConfig: "docs_config.json",
+        context: {
+          customerActive: true
+        }
+      }
+    },
+    {
+      status: 400,
+      label: "Invalid request",
+      description: "The request was invalid or missing required parameters.",
+      body: "Failed to transco transform content because the request body did not contain a valid JSON with the required fields."
+    },
+    {
+      status: 404,
+      label: "Transco config not found",
+      description: "The specified Transco configuration file could not be found.",
+      body: "Failed to transco transform content because the Transco configuration file 'docs_config.json' was not found in the backend storage."
+    },
+    {
+      status: 404,
+      label: "XSLT not found",
+      description: "The specified XSLT file could not be found.",
+      body: "Failed to transco transform content because the XSLT file 'docs_transform.xsl' was not found in the backend storage."
+    },
+    {
+      status: 424,
+      label: "SQL query failed",
+      description: "The SQL query execution failed.",
+      body: "Failed to transco transform content because the SQL query execution failed, please see the logs for more details."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An error occurred while processing the request.",
+      body: "Failed to transco transform content because an unexpected error occurred, please see the logs for more details."
+    },
+    {
+      status: 501,
+      label: "XSLT result not XML",
+      description: "The result of the XSLT transformation was not a valid XML document.",
+      body: "Failed to transco transform content because the result of the XSLT transformation was not a valid XML document."
+    }
+  ]}
+/>
+{/* vale on */}
 
 ## Transco configuration file
 The component requires a JSON Transco configuration file to describe the instructions to perform. Execution of instructions happens in the order in which they appear.
+Store the configuration file in the Azure Storage Account in the `Transcov2configstore` container, in the `/Configs` folder.
 
 <Tabs groupId="Transco-instructions">
 <TabItem value="sql-command" label="SQL Commands" default>
@@ -199,28 +288,49 @@ You can also promote the SQL query result to the `Context` instead of the `Conte
 
 <TabItem value="xml-transformation" label="XML Transformation">
 
-The Transco component can execute XSLT transformations on XML content. You must specify the name of the XSLT file in the storage account. 
+<Walkthrough>
+<Collapsible title="Specify name of the XSLT transformation file">
 
-Specify required assemblies and dependencies used by the transformation, while the respective DLL files are to be in the storage account.
+The Transco component can execute XSLT transformations on XML content. Specify the name of the XSLT file as an instruction in the Transco configuration file.
+Store the XSLT file in the Azure Storage Account in the `Transcov2configstore` container, in the `/XSLTs` folder.
 
-This instruction is only available when calling the `/TranscoXML` endpoint.
 ```json
 {
-  "xsltTransform": [Name of XSLT file],
-  "extensions": [
+  "instructions": [
     {
-      "namespace": [Assembly namespace],
-      "assemblyName": [Assembly name],
-      "className": [Assembly class name],
-      "dependencies": [
-        "[DLL dependency file name]",
-        "[DLL dependency file name]"
+      "xsltTransform": "[Name of XSLT file]"
+    }
+  ]
+}
+```
+</Collapsible>
+<Collapsible title="Specify required assemblies and dependencies">
+When the XSLT transformation requires custom extension functions, specify them as required assemblies and dependencies in the Transco configuration file.
+Store the assembly and dependency DLL files in the Azure Storage Account in the `Transcov2configstore` container, in the `/Assemblies` folder.
+
+```json
+{
+  "instructions": [
+    {
+      "xsltTransform": "[Name of XSLT file]",
+      "extensions": [
+        {
+          "namespace": "[Assembly namespace]",
+          "assemblyName": "[Assembly name]",
+          "className": "[Assembly class name]",
+          "dependencies": [
+            "[DLL dependency file name]",
+            "[DLL dependency file name]"
+          ]
+        }
       ]
     }
   ]
 }
 ```
 
+</Collapsible>
+</Walkthrough>
 </TabItem>
 </Tabs>
 
@@ -231,49 +341,49 @@ This instruction is only available when calling the `/TranscoXML` endpoint.
 {
   "instructions": [
     {
-      "scopePath": [XPath/JPath of content scope],
+      "scopePath": "[XPath/JPath of content scope]",
       "namespaces": [
         {
-          "namespace": [XML Namespace],
-          "prefix": [XML Namespace prefix]
+          "namespace": "[XML Namespace]",
+          "prefix": "[XML Namespace prefix]"
         }
       ],
       "command": {
-        "databaseConnectionString":[Raw connection string to DB],
-        "databaseKeyVaultName": [Name of DB connection string secret in Key Vault],
-        "commandValue": [SQL query to be executed],
-        "isMandatory": [If true, will throw error when result is null],
-        "columnName": [Obtain value from specified column if query returns more than one field. If empty, use value from first column],
-        "defaultValue": [Default value of result],
+        "databaseConnectionString":"[Raw connection string to DB]",
+        "databaseKeyVaultName": "[Name of DB connection string secret in Key Vault]",
+        "commandValue": "[SQL query to be executed]",
+        "isMandatory": "[If true, will throw error when result is null]",
+        "columnName": "[Obtain value from specified column if query returns more than one field. If empty, use value from first column]",
+        "defaultValue": "[Default value of result]",
         "parameters": [
           {
-            "paramName": [Name of param in query],
-            "value": [Type dependent. XPath or JPath if valueType = "path"],
-            "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
-            "valueType": ["path" or "fixedValue" or "context"]
+            "paramName": "[Name of param in query]",
+            "value": "[Type dependent. XPath or JPath if valueType = 'path']",
+            "type": "[SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype]",
+            "valueType": "['path' or 'fixedValue' or 'context']"
           },
           {
-            "paramName": [Name of param in query],
-            "value": [Type dependent. Any string value if valueType = "fixedValue"],
-            "type": [SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype],
-            "valueType": ["path" or "fixedValue" or "context"]
+            "paramName": "[Name of param in query]",
+            "value": "[Type dependent. Any string value if valueType = 'fixedValue']",
+            "type": "[SQL DB type. See: https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype]",
+            "valueType": "['path' or 'fixedValue' or 'context']"
           }
         ],
-        "destination": [XPath/JPath of the results destination, or Context key if "promoteToContext=true"],
-        "promoteToContext": [If true, the component saves the SQL query result to Context with "destination" as key],
+        "destination": "[XPath/JPath of the results destination, or Context key if 'promoteToContext=true']",
+        "promoteToContext": "[If true, the component saves the SQL query result to Context with 'destination' as key]",
         "cache": {
-          "useCaching": [If true, caches the SQL query result],
-          "cachingTimeout": [Cache timeout time span]
+          "useCaching": "[If true, caches the SQL query result]",
+          "cachingTimeout": "[Cache timeout time span]"
         }
       }
     },
     {
-      "xsltTransform": [Name of XSLT file],
+      "xsltTransform": "[Name of XSLT file]",
       "extensions": [
         {
-          "namespace": [Assembly namespace],
-           "assemblyName": [Assembly name],
-           "className": [Assembly class name],
+          "namespace": "[Assembly namespace]",
+           "assemblyName": "[Assembly name]",
+           "className": "[Assembly class name]",
            "dependencies": [
              "[DLL dependency file name]",
              "[DLL dependency file name]"
@@ -284,21 +394,14 @@ This instruction is only available when calling the `/TranscoXML` endpoint.
   ],
   "options": {
     "configCache": {
-      "useCaching": [If true, config file is cached],
-      "cachingTimeout": [Cache timeout time span]
+      "useCaching": "[If true, config file is cached]",
+      "cachingTimeout": "[Cache timeout time span]"
     },
-    "indentResult": [If true, Transco results will be formatted and indented]
+    "indentResult": "[If true, Transco results will be formatted and indented]"
   }
  }
 ```
 </details>
-
-:::info[storage account]
-Save all required files in the Azure Storage Account and in a Blob Storage container with the name: `Transcov2configstore` (Invictus automatically creates this container):
-* `/Configs` folder with Transco config files
-* `/XSLTs` folder with transformation files
-* `/Assemblies` folder with assembly and dependency DLL files
-:::
 
 </TabItem>
 <TabItem value="matrix-basic" label="Matrix basic promote">
@@ -312,102 +415,183 @@ Transco XML/JSON operations also support promotion of values to the context.
 The SQL operation will now save the result to the context.
 :::
 
-| Supported request parameter | type                                                            |
-| --------------------------- | --------------------------------------------------------------- |
-| `KeyValueCollection`        | Key-Value collection <br/> (each pair is individually promoted) |
-| `Flow`                      | `string`                                                        |
-| `Domain`                    | `string`                                                        |
-| `Service`                   | `string`                                                        |
-| `Action`                    | `string`                                                        |
-| `Version`                   | `string`                                                        |
-| `Sender`                    | `string`                                                        |
-| `ApplicationName`           | `string`                                                        |
-| `Milestone`                 | `string`                                                        |
-| `ConversationId`            | `string`                                                        |
-| `CorrelationId`             | `string`                                                        |
-| `BatchId`                   | `string`                                                        |
-| `Data1`                     | `string`                                                        |
-| `Data2`                     | `string`                                                        |
-| `Data3`                     | `string`                                                        |
-
-<details>
-<summary>**Full request body JSON example**</summary>
-
-```json
-// POST /api/api/MatrixBasicPromote
-{
- "Content":  "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
- "Context":  {
- "x-conversationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",
- "x-correlationId":  "fc13d345-ebd7-44f2-89a9-4371258c0a08",
- "x-batchId":  "975f7ea4-6247-431b-afb6-6d27fb47516f",
- "x-applicationName":  "InvoiceApp",
- "filter":  "endtoendintegrationtests"	    
- },   
- "KeyValueCollection":  {
-  "w":  3,
-  "l":  10.2,
-  "h":  1,
-  "t":  200,
- },
- "Flow":  "fl1",
- "Domain":  "do",
- "Service":  "sr1",
- "Action":  "Ac",
- "Version":  "Vs",
- "Sender":  "Snd",
- "ApplicationName":  "Snd",
- "Milestone":  "2018",
- "ConversationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",   
- "CorrelationId":  "29500405-d7cf-4877-a72b-a3288cff9dc0", 
- "BatchId":  "29500405-d7cf-4877-a72b-a3288cff9dc0",  
- "Data1":  "d1", 
- "Data2":  "d2", 
- "Data3":  "d3"
-}
-```
-</details>
-
-<details>
-<summary>**Full response body JSON example**</summary>
-
-```json
-// 200 OK /api/api/MatrixBasicPromote
-{
-    "content": "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
-    "context": {
-        "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
-        "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
-        "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
-        "x-applicationName": "InvoiceApp",
-        "filter": "endtoendintegrationtests",
-        "Flow": "fl1",
-        "Domain": "do",	    
-        "Service": "sr1",
-        "Action": "Ac",
-        "Version": "Vs",
-        "ApplicationName": "Snd",
-        "Milestone": "2018",
-        "Data1": "d1",
-        "Data2": "d2",
-        "Data3": "d3",
-        "Sender": "Snd",
-        "w": 3,
-        "l": 10.2,
-        "h": 1,
-        "t": 200
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/MatrixBasicPromote"
+  description="Accepts a list of parameters and promotes them to the `Context` in the response."
+  request={{
+    content: "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+    context: {
+      "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
+      "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
+      "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
+      "x-applicationName": "InvoiceApp",
+      "filter": "salesforceconnector"
     },
-    "conversationId": null,
-    "correlationId": null,
-    "batchId": "29500405-d7cf-4877-a72b-a3288cff9dc0"
-}
-```
-</details>
+    keyValueCollection: {
+      customer: "John Doe",
+      amount: 50,
+      currency: "GBP"
+    },
+    flow: "fl1",
+    domain: "sales"
+  }}
+  parameters={[
+    {
+      name: "content",
+      type: "string",
+      required: true,
+      description: "The input content as a Base64-encoded string."
+    },
+    {
+      name: "context",
+      type: "object",
+      required: false,
+      description: "The dictionary providing context to the conversion, gets copied 1:1 to the response."
+    },
+    {
+      name: "keyValueCollection",
+      type: "object",
+      required: false,
+      description: "A collection of key-value pairs to promote to the context."
+    },
+    {
+      name: "flow",
+      type: "string",
+      required: false,
+      description: "The flow identifier for the request."
+    },
+    {
+      name: "domain",
+      type: "string",
+      required: false,
+      description: "The domain identifier for the request."
+    },
+    {
+      name: "service",
+      type: "string",
+      required: false,
+      description: "The service identifier for the request."
+    },
+    {
+      name: "action",
+      type: "string",
+      required: false,
+      description: "The action identifier for the request."
+    },
+    {
+      name: "version",
+      type: "string",
+      required: false,
+      description: "The version identifier for the request."
+    },
+    {
+      name: "sender",
+      type: "string",
+      required: false,
+      description: "The sender identifier for the request."
+    },
+    {
+      name: "applicationName",
+      type: "string",
+      required: false,
+      description: "The application name for the request."
+    },
+    {
+      name: "milestone",
+      type: "string",
+      required: false,
+      description: "The milestone identifier for the request."
+    },
+    {
+      name: "conversationId",
+      type: "string",
+      required: false,
+      description: "The conversation identifier for the request."
+    },
+    {
+      name: "correlationId",
+      type: "string",
+      required: false,
+      description: "The correlation identifier for the request."
+    },
+    {
+      name: "batchId",
+      type: "string",
+      required: false,
+      description: "The batch identifier for the request."
+    },
+    {
+      name: "data1",
+      type: "string",
+      required: false,
+      description: "The data1 identifier for the request."
+    },
+    {
+      name: "data2",
+      type: "string",
+      required: false,
+      description: "The data2 identifier for the request."
+    },
+    {
+      name: "data3",
+      type: "string",
+      required: false,
+      description: "The data3 identifier for the request."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "Success",
+      description: "The Transco component successfully promoted values to the context.",
+      body: {
+        content: "ew0KICAiQ291bnRyeUNvZGUiOiAiQkUiLA0KICAiTW9uZXkiOiAgeyAiQW1vdW50IjogIDUwLCAiQ3VycmVuY3kiOiAgIkdCUCIgIH0NCn0NCg==",
+        context: {
+          "x-conversationId": "29500405-d7cf-4877-a72b-a3288cff9dc0",
+          "x-correlationId": "fc13d345-ebd7-44f2-89a9-4371258c0a08",
+          "x-batchId": "975f7ea4-6247-431b-afb6-6d27fb47516f",
+          "x-applicationName": "InvoiceApp",
+          "filter": "salesforceconnector",
+          "flow": "fl1",
+          "domain": "sales",
+          "service": null,
+          "action": null,
+          "version": null,
+          "sender": null,
+          "applicationName": null,
+          "milestone": null,
+          "conversationId": null,
+          "correlationId": null,
+          "batchId": null,
+          "data1": null,
+          "data2": null,
+          "data3": null,
+          "customer": "John Doe",
+          "amount": 50,
+          "currency": "GBP"
+        }
+      }
+    },
+    {
+      status: 400,
+      label: "Invalid request",
+      description: "The request was invalid or missing required parameters.",
+      body: "Failed to promote values to the context because the request body did not contain a valid JSON with the required fields."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An error occurred while processing the request.",
+      body: "Failed to promote values to the context because an unexpected error occurred, please see the logs for more details."
+    }
+  ]}
+/>
+{/* vale on */}
 
 </TabItem>
 </Tabs>
 
-___
-
-## Related Bicep template parameters
+### Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={[`comp:transco`]} />

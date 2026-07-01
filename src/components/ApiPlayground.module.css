@@ -229,6 +229,11 @@
   padding: 0;
 }
 
+/* Reduce admonition heading size when rendered inside a parameter description */
+.paramDesc :global([class*="admonitionHeading"]) {
+  font-size: 0.75rem;
+}
+
 /* ─── Status tabs ────────────────────────────────────────────────────────── */
 
 .statusTabs {
@@ -697,6 +702,11 @@
   color: var(--ifm-color-emphasis-700);
   margin: 0;
   padding: 0;
+}
+
+/* Reduce admonition heading size when rendered inside a parameter description */
+.paramDesc :global([class*="admonitionHeading"]) {
+  font-size: 0.75rem;
 }
 
 /* ─── Status tabs ────────────────────────────────────────────────────────── */

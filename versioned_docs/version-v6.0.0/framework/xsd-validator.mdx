@@ -10,7 +10,8 @@ import ComponentHeader from "@site/src/components/ComponentHeader";
 import ApiPlayground from "@site/src/components/ApiPlayground";
 import { Walkthrough, Collapsible } from "@site/src/components/Walkthrough";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck, faFloppyDisk, faFileShield } from "@fortawesome/free-solid-svg-icons";
+import ComponentFlowDiagram from "@site/src/components/Diagrams/ComponentFlowDiagram";
 
 <ComponentHeader
   icon="/img/icons/xsd-validator.png"
@@ -25,9 +26,25 @@ The Invictus Framework provides a **XSD Validator** component that allows you to
 :::
 
 ## Component usage
+{/* vale off */}
+<ComponentFlowDiagram
+  name="XSD Validator"
+  tagline="XML schema validation"
+  icon={faFileShield}
+  rows={[
+    {
+      input: "XML document",
+      opTitle: "XSD Validator",
+      opSubtitle: "Schema validation",
+      output: "Validation result",
+      storageLabel: "Azure Blob Storage",
+    },
+  ]}
+/>
+{/* vale on */}
 
 <Walkthrough>
-<Collapsible number={<FontAwesomeIcon icon={faCircleCheck} />} title="XSD validate user XML" open={true}>
+<Collapsible number={<FontAwesomeIcon icon={faCircleCheck} />} title="XSD validate user XML">
 
 The **XSD Validator** has a single endpoint available. Given a user XML and a referenced XSD schema stored in Azure Blob Storage, the endpoint responds with the validation result and any schema violations found.
 
