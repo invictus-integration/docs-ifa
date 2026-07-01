@@ -94,7 +94,7 @@ export default function PubSubFlow() {
         </text>
         <line x1={22 + ACCENT_W + 3} y1="220" x2="218" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
         <text x="122" y="228" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
-          Azure Blob Storage
+          Azure Service Bus + Blob Storage
         </text>
         {/* HTTP badge */}
         <rect x="182" y="163" width="40" height="18" rx="3" fill={c.badge} />
@@ -116,7 +116,7 @@ export default function PubSubFlow() {
         </text>
         <line x1={301 + ACCENT_W + 3} y1="120" x2="497" y2="120" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
         <text x="401" y="128" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
-          Azure Blob Storage
+          Azure Service Bus + Blob Storage
         </text>
         {/* HTTP badge */}
         <rect x="461" y="63" width="40" height="18" rx="3" fill={c.badge} />
@@ -134,7 +134,7 @@ export default function PubSubFlow() {
         </text>
         <line x1={301 + ACCENT_W + 3} y1="220" x2="497" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
         <text x="401" y="228" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
-          Azure Blob Storage
+          Azure Service Bus + Blob Storage
         </text>
         {/* HTTP badge */}
         <rect x="461" y="163" width="40" height="18" rx="3" fill={c.badge} />
