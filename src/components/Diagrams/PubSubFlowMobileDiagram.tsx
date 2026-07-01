@@ -42,32 +42,32 @@ const DARK = {
   badge: "#c27311",
 };
 
-export default function PubSubFlow() {
+export default function PubSubFlowMobile() {
   const { colorMode } = useColorMode();
   const c = colorMode === "dark" ? DARK : LIGHT;
 
   return (
-    <div style={{ maxWidth: 680, margin: "2rem auto" }}>
+    <div style={{ maxWidth: 380, margin: "2rem auto" }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
-        viewBox="0 0 528 271"
+        viewBox="0 0 249 519"
         role="img"
-        aria-label="PubSub message flow diagram"
+        aria-label="PubSub message flow diagram for mobile layout"
       >
         <defs>
-          <marker id="arr-PubSub" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+          <marker id="arr-PubSubMobile" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
             <polygon points="0 0, 8 3, 0 6" fill={c.arrow} />
           </marker>
           {/* Clip paths keep the accent bar inside the rounded block corners */}
-          <clipPath id="clip-ps-publish">
+          <clipPath id="clip-psm-publish">
             <rect x="22" y="172" width="200" height={INV_H} rx={RX} />
           </clipPath>
-          <clipPath id="clip-ps-subscribe">
-            <rect x="301" y="72" width="200" height={INV_H} rx={RX} />
+          <clipPath id="clip-psm-subscribe">
+            <rect x="22" y="320" width="200" height={INV_H} rx={RX} />
           </clipPath>
-          <clipPath id="clip-ps-acknowledge">
-            <rect x="301" y="172" width="200" height={INV_H} rx={RX} />
+          <clipPath id="clip-psm-acknowledge">
+            <rect x="22" y="420" width="200" height={INV_H} rx={RX} />
           </clipPath>
         </defs>
 
@@ -84,11 +84,11 @@ export default function PubSubFlow() {
           Receive
         </text>
 
-        <line x1="122" y1="136" x2="122" y2="169" stroke={c.arrow} strokeWidth="1.5" markerEnd="url(#arr-PubSub)" />
+        <line x1="122" y1="136" x2="122" y2="169" stroke={c.arrow} strokeWidth="1.5" markerEnd="url(#arr-PubSubMobile)" />
 
         {/* Publish (Invictus) */}
         <rect x="22" y="172" width="200" height={INV_H} rx={RX} fill={c.invBox} stroke={c.invStroke} strokeWidth="1" />
-        <rect x="22" y="172" width={ACCENT_W} height={INV_H} fill={c.invAccent} clipPath="url(#clip-ps-publish)" />
+        <rect x="22" y="172" width={ACCENT_W} height={INV_H} fill={c.invAccent} clipPath="url(#clip-psm-publish)" />
         <text x="122" y="192" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="600" fill={c.invTitle} style={{ fontFamily: HEADING_FONT }}>
           Publish
         </text>
@@ -102,50 +102,49 @@ export default function PubSubFlow() {
           HTTP
         </text>
 
+        {/* Dashed arrow: Publish → Subscribe (via Service Bus) */}
+        <line x1="122" y1="236" x2="122" y2="317" stroke={c.arrow} strokeWidth="1.5" strokeDasharray="6 4" markerEnd="url(#arr-PubSubMobile)" />
+
         {/* ══ Subscriber Logic App ══ */}
-        <text x="289" y="44" fontSize="13" fontWeight="700" fill={c.labelText} style={{ fontFamily: HEADING_FONT }}>
+        <text x="10" y="292" fontSize="13" fontWeight="700" fill={c.labelText} style={{ fontFamily: HEADING_FONT }}>
           Subscriber Logic App
         </text>
-        <rect x="289" y="52" width="224" height="204" rx="4" fill="none" stroke={c.containerStroke} strokeWidth="1.5" />
+        <rect x="10" y="300" width="224" height="204" rx="4" fill="none" stroke={c.containerStroke} strokeWidth="1.5" />
 
         {/* Subscribe (Invictus) */}
-        <rect x="301" y="72" width="200" height={INV_H} rx={RX} fill={c.invBox} stroke={c.invStroke} strokeWidth="1" />
-        <rect x="301" y="72" width={ACCENT_W} height={INV_H} fill={c.invAccent} clipPath="url(#clip-ps-subscribe)" />
-        <text x="401" y="92" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="600" fill={c.invTitle} style={{ fontFamily: HEADING_FONT }}>
+        <rect x="22" y="320" width="200" height={INV_H} rx={RX} fill={c.invBox} stroke={c.invStroke} strokeWidth="1" />
+        <rect x="22" y="320" width={ACCENT_W} height={INV_H} fill={c.invAccent} clipPath="url(#clip-psm-subscribe)" />
+        <text x="122" y="340" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="600" fill={c.invTitle} style={{ fontFamily: HEADING_FONT }}>
           Subscribe
         </text>
-        <line x1={301 + ACCENT_W + 3} y1="120" x2="497" y2="120" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
-        <text x="401" y="128" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
+        <line x1={22 + ACCENT_W + 3} y1="368" x2="218" y2="368" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
+        <text x="122" y="376" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
           Azure Blob Storage
         </text>
         {/* HTTP badge */}
-        <rect x="461" y="63" width="40" height="18" rx="3" fill={c.badge} />
-        <text x="481" y="72" textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="700" letterSpacing="0.5" fill="#ffffff" style={{ fontFamily: BODY_FONT }}>
+        <rect x="182" y="311" width="40" height="18" rx="3" fill={c.badge} />
+        <text x="202" y="320" textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="700" letterSpacing="0.5" fill="#ffffff" style={{ fontFamily: BODY_FONT }}>
           HTTP
         </text>
 
-        <line x1="401" y1="136" x2="401" y2="169" stroke={c.arrow} strokeWidth="1.5" markerEnd="url(#arr-PubSub)" />
+        <line x1="122" y1="384" x2="122" y2="417" stroke={c.arrow} strokeWidth="1.5" markerEnd="url(#arr-PubSubMobile)" />
 
         {/* Acknowledge (Invictus) */}
-        <rect x="301" y="172" width="200" height={INV_H} rx={RX} fill={c.invBox} stroke={c.invStroke} strokeWidth="1" />
-        <rect x="301" y="172" width={ACCENT_W} height={INV_H} fill={c.invAccent} clipPath="url(#clip-ps-acknowledge)" />
-        <text x="401" y="192" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="600" fill={c.invTitle} style={{ fontFamily: HEADING_FONT }}>
+        <rect x="22" y="420" width="200" height={INV_H} rx={RX} fill={c.invBox} stroke={c.invStroke} strokeWidth="1" />
+        <rect x="22" y="420" width={ACCENT_W} height={INV_H} fill={c.invAccent} clipPath="url(#clip-psm-acknowledge)" />
+        <text x="122" y="440" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="600" fill={c.invTitle} style={{ fontFamily: HEADING_FONT }}>
           Acknowledge
         </text>
-        <line x1={301 + ACCENT_W + 3} y1="220" x2="497" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
-        <text x="401" y="228" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
+        <line x1={22 + ACCENT_W + 3} y1="468" x2="218" y2="468" stroke="rgba(255,255,255,0.18)" strokeWidth="0.75" />
+        <text x="122" y="476" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill={c.invSubtitle} style={{ fontFamily: BODY_FONT, opacity: 0.8 }}>
           Azure Blob Storage
         </text>
         {/* HTTP badge */}
-        <rect x="461" y="163" width="40" height="18" rx="3" fill={c.badge} />
-        <text x="481" y="172" textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="700" letterSpacing="0.5" fill="#ffffff" style={{ fontFamily: BODY_FONT }}>
+        <rect x="182" y="411" width="40" height="18" rx="3" fill={c.badge} />
+        <text x="202" y="420" textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="700" letterSpacing="0.5" fill="#ffffff" style={{ fontFamily: BODY_FONT }}>
           HTTP
         </text>
-
-        {/* Z-arrow: Publish → Subscribe (via Service Bus) */}
-        <path d="M 222,192 H 261 V 92 H 301" fill="none" stroke={c.arrow} strokeWidth="1.5" strokeDasharray="6 4" markerEnd="url(#arr-PubSub)" />
       </svg>
     </div>
   );
 }
-

@@ -31,7 +31,7 @@ export type ApiParameter = {
   name: string;
   type: string;
   required?: boolean;
-  description: string;
+  description: string | React.ReactNode;
   /** Optional React nodes (e.g. <NewSinceBadge />) rendered after the required badge. */
   badges?: React.ReactNode;
 };
@@ -47,6 +47,7 @@ export type ApiPlaygroundProps = {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   path: string;
   description?: React.ReactNode;
+  parametersTitle?: string;
   parameters?: ApiParameter[];
   request?: unknown;
   responses: ApiResponse[];
@@ -69,14 +70,14 @@ function capitalize(s: string): string {
 
 function typeBadgeClass(type: string): string {
   switch (type.toLowerCase()) {
-    case "string":  return rowStyles.typeBadgeString;
+    case "string": return rowStyles.typeBadgeString;
     case "int":
     case "integer": return rowStyles.typeBadgeInt;
     case "bool":
     case "boolean": return rowStyles.typeBadgeBool;
-    case "object":  return rowStyles.typeBadgeObject;
-    case "array":   return rowStyles.typeBadgeArray;
-    default:        return rowStyles.typeBadgeDefault;
+    case "object": return rowStyles.typeBadgeObject;
+    case "array": return rowStyles.typeBadgeArray;
+    default: return rowStyles.typeBadgeDefault;
   }
 }
 
@@ -86,6 +87,7 @@ export default function ApiPlayground({
   method,
   path,
   description,
+  parametersTitle,
   parameters,
   request,
   responses,
@@ -186,7 +188,7 @@ export default function ApiPlayground({
 
           {parameters && parameters.length > 0 && (
             <div className={styles.section}>
-              <p className={styles.sectionLabel} aria-hidden="true">Body Parameters</p>
+              <p className={styles.sectionLabel} aria-hidden="true">{parametersTitle || "Body Parameters"}</p>
               <ul className={styles.paramList} role="list">
                 {parameters.map((p) => (
                   <li key={p.name} className={styles.param}>
@@ -200,7 +202,10 @@ export default function ApiPlayground({
                         <span className={styles.paramBadgeSlot}>{p.badges}</span>
                       )}
                     </div>
-                    <MarkdownText className={styles.paramDesc}>{p.description}</MarkdownText>
+                    {typeof p.description === "string"
+                      ? <MarkdownText className={styles.paramDesc}>{p.description}</MarkdownText>
+                      : <div className={styles.paramDesc}>{p.description}</div>
+                    }
                   </li>
                 ))}
               </ul>
