@@ -58,13 +58,16 @@ describe('SearchBar navigation (local search)', () => {
       cy.location('pathname').should('not.eq', '/');
     });
 
-    it('does not append a query string or hash for plain doc results', () => {
+    it('strips the transient ?highlight= param so the final URL has no query string', () => {
+      // navigate() appends ?highlight=<term> so SearchHighlighter can mark the page,
+      // then SearchHighlighter immediately calls replaceState to clean up the URL.
       // "release notes" only matches static doc pages — none have an anchor field.
       openSearchAndType('release notes');
       cy.get('[data-cy=search-result]')
         .contains(/release notes/i)
         .first()
         .click();
+      // Cypress retries until replaceState has run (within 4 s default timeout).
       cy.location('search').should('eq', '');
       cy.location('hash').should('eq', '');
     });
@@ -191,6 +194,135 @@ describe('SearchBar navigation (local search)', () => {
       openSearchAndType('installation');
       cy.get('[data-cy=search-modal-input]').type('{esc}');
       cy.get('[data-search-modal]').should('not.exist');
+    });
+
+  });
+
+  // ── Search term highlighting ──────────────────────────────────────────────
+  //
+  // Verifies that SearchHighlighter (Root.js) correctly injects
+  // <mark data-search-highlight> elements on the destination page after the
+  // search modal navigates via history.push(?highlight=<term>).
+
+  describe('search term highlighting', () => {
+
+    it('injects <mark data-search-highlight> elements on the destination page', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      // SearchHighlighter waits for the MutationObserver to see DOM settle
+      // (80 ms debounce) before injecting marks — allow 4 s for new page + marks.
+      cy.get('mark[data-search-highlight]', { timeout: 4000 })
+        .should('have.length.greaterThan', 0);
+    });
+
+    it('marks exactly the first occurrence with data-search-highlight-first', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight-first]', { timeout: 4000 })
+        .should('have.length', 1);
+    });
+
+    it('cleans up ?highlight= from the URL while still injecting marks', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      // URL must be clean ...
+      cy.location('search', { timeout: 3000 }).should('not.include', 'highlight=');
+      // ... but marks must still be present (replaceState must not re-trigger the effect)
+      cy.get('mark[data-search-highlight]', { timeout: 4000 })
+        .should('have.length.greaterThan', 0);
+    });
+
+    it('applies highlights via SPA navigation — the previously broken path', () => {
+      // Regression guard for the original bug: [location.href] was always
+      // undefined, so the useEffect only fired on mount (= page reload).
+      // Fixed by using [location.pathname, location.search, location.hash].
+      // All history.push() calls here are SPA navigations (no full reload).
+      openSearchAndType('release');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight]', { timeout: 4000 })
+        .should('have.length.greaterThan', 0);
+    });
+
+    it('removes highlights when subsequently navigating without a ?highlight= param', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight]', { timeout: 4000 })
+        .should('have.length.greaterThan', 0);
+
+      // Plain navigation — SearchHighlighter should call removeSearchHighlights().
+      cy.visit('/');
+      cy.get('mark[data-search-highlight]').should('not.exist');
+    });
+
+    it('highlights using the stored query when replaying a recent search', () => {
+      // First search — creates a recent search entry with query='installation'.
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight]', { timeout: 4000 })
+        .should('have.length.greaterThan', 0);
+
+      // Go back to the home page so we can open the modal in "recents" mode.
+      cy.visit('/');
+
+      // Open the modal without typing — recents list should appear.
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=local-fallback-hint]').should('not.exist'); // no query = no search
+      cy.get('[data-cy=recent-result]').first().click(); // click the recent entry
+
+      // navigate() must use result.query ('installation') as the highlight term
+      // because the live input query is empty when replaying from recents.
+      cy.get('mark[data-search-highlight]', { timeout: 4000 })
+        .should('have.length.greaterThan', 0);
+    });
+
+  });
+
+  // ── Dismiss chip ──────────────────────────────────────────────────────────
+  //
+  // Verifies the amber filter chip that appears while highlights are active
+  // and the two ways to dismiss it: clicking the Clear button and pressing Escape.
+
+  describe('dismiss chip', () => {
+
+    it('shows the chip with the search term in the label when highlights are active', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight]', { timeout: 4000 }).should('have.length.greaterThan', 0);
+
+      cy.get('#search-highlight-chip').should('be.visible');
+      cy.get('#search-highlight-chip-label').should('contain', 'installation');
+    });
+
+    it('clicking the Clear button removes all marks and hides the chip', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight]', { timeout: 4000 }).should('have.length.greaterThan', 0);
+
+      cy.get('#search-highlight-dismiss').click();
+
+      cy.get('mark[data-search-highlight]').should('not.exist');
+      cy.get('#search-highlight-chip').should('not.be.visible');
+    });
+
+    it('pressing Escape removes all marks and hides the chip', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('mark[data-search-highlight]', { timeout: 4000 }).should('have.length.greaterThan', 0);
+
+      cy.get('body').type('{esc}');
+
+      cy.get('mark[data-search-highlight]').should('not.exist');
+      cy.get('#search-highlight-chip').should('not.be.visible');
+    });
+
+    it('hides the chip when navigating to a page without highlights', () => {
+      openSearchAndType('installation');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('#search-highlight-chip', { timeout: 4000 }).should('be.visible');
+
+      // cy.visit() is a full page reload — chip element is gone from the DOM entirely.
+      cy.visit('/');
+      cy.get('#search-highlight-chip').should('not.exist');
     });
 
   });
