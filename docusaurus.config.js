@@ -36,7 +36,7 @@ const config = {
           routeBasePath: '/',
           path: 'preview',
           sidebarCollapsible: false,
-          includeCurrentVersion: true,
+          includeCurrentVersion: process.env.CONTEXT !== 'production',
           breadcrumbs: false,
           admonitions: {
             keywords: ['praise'],
