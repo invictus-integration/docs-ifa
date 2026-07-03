@@ -1,108 +1,101 @@
-('use strict');
-
-// Original: https://github.com/sdras/night-owl-vscode-theme
+// Night Owl light -- token colors replaced with the Invictus site palette.
+// CSS variable source noted next to each color for traceability.
+// All colors verified >= 4.5:1 contrast on #f4f7f8 (WCAG AA).
 
 const theme = {
   plain: {
-    color: '#19203d',
-    backgroundColor: '#f6f8fa',
+    color: "#1c1e21",        // --inv-diagram-text
+    backgroundColor: "#f4f7f8", // --ifm-color-secondary-lightest area
   },
   styles: [
     {
-      types: ['changed'],
+      types: ["changed"],
       style: {
-        color: 'rgb(162, 191, 252)',
-        fontStyle: 'italic',
+        color: "#1d4fa8",    // navy blue -- 7.1:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['deleted'],
+      types: ["deleted"],
       style: {
-        color: 'hsl(5, 74%, 59%)',
-        fontStyle: 'italic',
+        color: "#b12828",    // dark red -- 6.1:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['inserted', 'attr-name'],
+      types: ["inserted", "attr-name"],
       style: {
-        color: 'hsl(119, 34%, 47%)',
-        fontStyle: 'italic',
+        color: "#1a6b35",    // forest green -- 6.1:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['comment'],
+      types: ["comment"],
       style: {
-        color: 'hsl(230, 4%, 64%)',
-        fontStyle: 'italic',
+        color: "#636a6b",    // teal-gray muted -- 5.1:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['string', 'url'],
+      types: ["string", "url"],
       style: {
-        color: 'hsl(119, 34%, 47%)',
+        color: "#1a6b35",    // forest green -- 6.1:1 (distinct from teal keywords)
       },
     },
     {
-      types: ['variable'],
+      types: ["builtin", "char", "constant"],
       style: {
-        color: '#249cff',
+        color: "#065b68",    // --ifm-color-primary-light -- 7.1:1
       },
     },
     {
-      types: ['number'],
+      types: ["variable"],
       style: {
-        color: 'hsl(35, 99%, 36%)',
+        color: "#b12828",    // dark red -- 6.1:1
       },
     },
     {
-      types: ['builtin', 'char', 'constant', 'function', 'operator'],
+      types: ["number"],
       style: {
-        color: '#249cff',
+        color: "#934304",    // --ifm-color-warning-darkest -- 6.3:1
       },
     },
     {
-      // This was manually added after the auto-generation
-      // so that punctuations are not italicised
-      types: ['punctuation'],
+      // manually added so punctuations are not italicised
+      types: ["punctuation"],
       style: {
-        color: '#19203d',
+        color: "#013c46",    // --ifm-color-primary-dark -- 10.5:1
       },
     },
     {
-      types: ['selector', 'doctype'],
+      types: ["function", "selector", "doctype"],
       style: {
-        color: '#19203d',
-        fontStyle: 'italic',
+        color: "#065b68",    // --ifm-color-primary-light -- 7.1:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['class-name'],
+      types: ["class-name"],
       style: {
-        color: 'hsl(35, 99%, 36%)',
+        color: "#934304",    // --ifm-color-warning-darkest -- 6.3:1
       },
     },
     {
-      types: ['tag', 'keyword'],
+      types: ["tag"],
       style: {
-        color: 'hsl(301, 63%, 40%)',
+        color: "#014550",    // --ifm-color-primary -- 9.9:1
       },
     },
     {
-      types: ['boolean'],
+      types: ["operator", "property", "keyword", "namespace"],
       style: {
-        color: 'hsl(35, 99%, 36%)',
+        color: "#014550",    // --ifm-color-primary -- 9.9:1
       },
     },
     {
-      types: ['property'],
+      types: ["boolean"],
       style: {
-        color: 'hsl(5, 74%, 59%)',
-      },
-    },
-    {
-      types: ['namespace'],
-      style: {
-        opacity: 0.8,
+        color: "#934304",    // --ifm-color-warning-darkest -- 6.3:1
       },
     },
   ],

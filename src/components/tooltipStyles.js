@@ -20,7 +20,7 @@ const TOOLTIP_STYLES = `
   z-index: 9999;
   pointer-events: auto;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid var(--tooltip-accent, #014550);
+  border-left: 4px solid var(--tooltip-accent, var(--ifm-color-primary));
   animation: invictus-tooltip-in 0.14s ease;
   white-space: normal;
 }
@@ -38,7 +38,7 @@ const TOOLTIP_STYLES = `
 
 .invictus-tooltip strong {
   font-family: 'Bitter', sans-serif;
-  color: var(--tooltip-accent, #014550);
+  color: var(--tooltip-accent, var(--ifm-color-primary));
 }
 
 .invictus-tooltip em {
@@ -53,7 +53,7 @@ const TOOLTIP_STYLES = `
 }
 
 .invictus-tooltip a {
-  color: var(--tooltip-accent, #014550);
+  color: var(--tooltip-accent, var(--ifm-color-primary));
   text-underline-offset: 2px;
 }
 
@@ -100,7 +100,7 @@ html[data-theme='dark'] .invictus-tooltip a {
   pointer-events: auto;
   cursor: auto;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.1),
-              0 0 0 2px var(--tooltip-accent, #014550);
+              0 0 0 2px var(--tooltip-accent, var(--ifm-color-primary));
 }
 
 /* Entrance animation */

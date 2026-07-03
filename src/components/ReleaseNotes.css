@@ -18,41 +18,41 @@
 .rn-admonition-feature code,
 .rn-admonition-technical code,
 .rn-admonition-fix code {
-  background-color: #f6f7f8;
+  background-color: var(--ifm-color-secondary-lightest);
 }
 
 html[data-theme='dark'] .rn-admonition-feature code {
-  background-color: #1a202c;
+  background-color: var(--ifm-color-gray-800);
 }
 
 .rn-admonition-feature {
-  color: #171923;
+  color: var(--ifm-color-gray-900);
   background-color: var(--ifm-background-color);
   border-color: var(--ifm-color-primary);
 }
 
 html[data-theme='dark'] .rn-admonition-feature {
-  color: #e3e3e3;
+  color: var(--ifm-color-secondary-light);
 }
 
 .rn-admonition-technical {
-  color: #171923;
+  color: var(--ifm-color-gray-900);
   background-color: var(--ifm-background-color);
   border-color: var(--ifm-color-secondary);
 }
 
 html[data-theme='dark'] .rn-admonition-technical {
-  color: #e3e3e3;
+  color: var(--ifm-color-secondary-light);
 }
 
 .rn-admonition-fix {
-  color: #171923;
+  color: var(--ifm-color-gray-900);
   background-color: var(--ifm-background-color);
   border-color: var(--ifm-color-danger);
 }
 
 html[data-theme='dark'] .rn-admonition-fix {
-  color: #e3e3e3;
+  color: var(--ifm-color-secondary-light);
 }
 
 .rn-dropdown {

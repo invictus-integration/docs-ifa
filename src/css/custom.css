@@ -1,9 +1,15 @@
 /* stylelint-disable docusaurus/copyright-header */
 /**
  * Custom global CSS for Docusaurus site using a deep greenish-blue primary color.
+ *
  */
 
+
+/* ─── 1. CSS Custom Properties (Light Mode) ──────────────────────────────── */
+
 :root {
+
+  /* 1a. Brand colors */
   --ifm-color-primary: #014550;
   --ifm-color-primary-dark: #013c46;
   --ifm-color-primary-darker: #01363f;
@@ -28,8 +34,7 @@
   --ifm-color-warning-lighter: #ffcd6f;
   --ifm-color-warning-lightest: #ffe29f;
 
-  --ifm-code-font-size: 95%;
-
+  /* 1b. Gray scale */
   --ifm-color-gray-100: #eef1f1;
   --ifm-color-gray-200: #d9dddd;
   --ifm-color-gray-300: #c4c8c8;
@@ -37,45 +42,102 @@
   --ifm-color-gray-500: #7e8282;
   --ifm-color-gray-600: #5b5f5f;
   --ifm-color-gray-700: #404343;
-  --ifm-color-gray-800: #1A202C;
+  --ifm-color-gray-800: #1a202c;
   --ifm-color-gray-900: #171923;
 
+  /* 1c. Layout & spacing */
+  --ifm-global-spacing: 1.5rem;
+  --ifm-toc-border-color: var(--ifm-color-gray-200);
+
+  /* 1d. Navbar tokens */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-navbar-background-color: var(--ifm-color-primary);
   --ifm-navbar-link-color: var(--ifm-color-secondary-lightest);
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary-darkest);
+  --ifm-navbar-link-hover-color: var(--ifm-color-secondary-dark);
   --ifm-navbar-search-input-background-color: var(--ifm-color-secondary-lighter);
   --ifm-navbar-search-input-color: var(--ifm-color-gray-800);
-  --ifm-toc-border-color: var(--ifm-color-gray-200);
-  --ifm-global-spacing: 1.5rem;
 
-  /* Typography — also consumed by inline SVG diagrams via var() */
+  /* 1e. Typography tokens — also consumed by inline SVG diagrams via var() */
   --ifm-font-family-base: 'Inter', sans-serif;
   --ifm-heading-font-family: 'Bitter', sans-serif;
+  --ifm-code-font-size: 95%;
   --docusaurus-details-decoration-color: var(--ifm-color-primary);
   --ifm-table-stripe-background: var(--ifm-color-secondary-lighter);
-  --ifm-menu-color-background-active: var(--ifm-color-secondary-lighter);
+  --ifm-menu-color-background-active: var(--ifm-color-secondary-lighter) !important;
+
+  /* 1f. Invictus component design tokens
+   *
+   *  Use these in custom components instead of hardcoded hex values.
+   *  --inv-tint-*       Translucent teal overlays for hover/active/focus
+   *  --inv-diagram-*    Colors for SVG flow diagram components
+   *  --inv-surface-*    Card and row backgrounds / borders
+   *  --inv-badge-*      Badge / pill colors
+   */
+
+  /* Tint overlays — teal-based transparency layers */
+  --inv-tint-subtle: rgba(1, 69, 80, 0.06);
+  /* barely-there, hover */
+  --inv-tint-soft: rgba(1, 69, 80, 0.08);
+  /* open/active state */
+  --inv-tint-active: rgba(1, 69, 80, 0.20);
+  /* stronger hover, badge surfaces */
+  --inv-tint-medium: rgba(1, 69, 80, 0.18);
+  /* focus rings, step connectors */
+  --inv-tint-strong: rgba(1, 69, 80, 0.28);
+  /* step ring halos */
+
+  /* Diagram — flow diagram header bar */
+  --inv-diagram-header-bg: #065b68;
+  --inv-diagram-header-accent: #014550;
+  --inv-diagram-header-text: #ffffff;
+  --inv-diagram-header-subtitle: #a0dde5;
+
+  /* Diagram — row/node surfaces */
+  --inv-diagram-surface: #ffffff;
+  --inv-diagram-surface-stroke: #b8c0c2;
+  --inv-diagram-text: #1c1e21;
+  --inv-diagram-arrow: #065b68;
+  --inv-diagram-separator: rgba(255, 255, 255, 0.18);
+
+  /* Diagram — customer step/task boxes (non-Invictus) */
+  --inv-diagram-step-bg: #e8edee;
+  --inv-diagram-step-text: #1c1e21;
+
+  /* Diagram — sort/sequence illustration boxes */
+  --inv-sort-a-bg: #065b68;
+  --inv-sort-b-bg: #b75b07;
+  --inv-sort-c-bg: #4e5354;
+  --inv-sort-d-bg: #8a9293;
+  --inv-sort-text: #ffffff;
+  --inv-sort-separator: #b8c0c2;
+  --inv-sort-slot-active-bg: #065b68;
+  --inv-sort-slot-active-accent: #014550;
+  --inv-sort-slot-default-bg: #f3f6f7;
+  --inv-sort-slot-default-text: #1c1e21;
+  --inv-sort-slot-pending-bg: #ffffff;
+  --inv-sort-slot-pending-stroke: #b8c0c2;
+  --inv-sort-slot-pending-text: #8a9293;
+
+  /* Surface — card/row backgrounds used in ResultRow, FolderHierarchy, etc. */
+  --inv-surface-row: #f1f5f9;
+  --inv-surface-row-border: #e2e8f0;
+  --inv-surface-row-text: #0f172a;
+
+  /* Badge — semantic pill colors */
+  --inv-badge-new-bg: #059669;
+  --inv-badge-new-text: #ffffff;
+  --inv-badge-deprecated-bg: #b55d00;
+  --inv-badge-deprecated-text: #ffffff;
+  --inv-badge-shared-bg: #e0f7f7;
+  --inv-badge-shared-text: #0b6369;
+  --inv-badge-shared-accent: #0b6369;
 }
 
-.navbar {
-  box-shadow: none;
-}
 
-.navbar button svg {
-  color: #ffffff;
-}
+/* ─── 2. Dark Mode ───────────────────────────────────────────────────────── */
 
-.navbar button:hover svg {
-  color: var(--ifm-color-primary-light);
-}
-
-html[data-theme='dark'] .navbar button:hover svg {
-  color: var(--ifm-color-primary-light);
-}
-
-
+/* 2a. Token overrides */
 html[data-theme='dark'] {
-  /* Dark background and greenish-blue primary */
   --ifm-background-color: var(--ifm-color-gray-900);
   --ifm-navbar-background-color: #014550;
   --ifm-color-primary: #2a8f9c;
@@ -86,30 +148,63 @@ html[data-theme='dark'] {
   --ifm-breadcrumb-color-active: var(--ifm-link-color);
   --ifm-dropdown-background-color: var(--ifm-color-gray-800);
   --ifm-table-stripe-background: var(--ifm-color-gray-800);
-  --ifm-menu-color-background-active: var(--ifm-color-gray-800);
+  --ifm-menu-color-background-active: var(--ifm-color-gray-800) !important;
   --ifm-menu-color-active: var(--ifm-color-primary-lightest);
+
+  /* Invictus tint overlays */
+  --inv-tint-subtle: rgba(42, 143, 156, 0.07);
+  --inv-tint-soft: rgba(42, 143, 156, 0.10);
+  --inv-tint-active: rgba(42, 143, 156, 0.20);
+  --inv-tint-medium: rgba(255, 255, 255, 0.12);
+  --inv-tint-strong: rgba(42, 143, 156, 0.40);
+
+  /* Diagram — flow diagram header bar */
+  --inv-diagram-header-bg: #1a5f68;
+  --inv-diagram-header-accent: #2a8f9c;
+
+  /* Diagram — row/node surfaces */
+  --inv-diagram-surface: #374151;
+  --inv-diagram-surface-stroke: #6B7280;
+  --inv-diagram-text: #D1D5DB;
+  --inv-diagram-arrow: #2a8f9c;
+
+  /* Diagram — customer step/task boxes (non-Invictus) */
+  --inv-diagram-step-bg: #2d3748;
+  --inv-diagram-step-text: #D1D5DB;
+
+  /* Diagram — sort/sequence illustration boxes */
+  --inv-sort-a-bg: #1a5f68;
+  --inv-sort-b-bg: #92400e;
+  --inv-sort-c-bg: #374151;
+  --inv-sort-d-bg: #4B5563;
+  --inv-sort-separator: #6B7280;
+  --inv-sort-slot-active-bg: #1a5f68;
+  --inv-sort-slot-active-accent: #2a8f9c;
+  --inv-sort-slot-default-bg: #374151;
+  --inv-sort-slot-default-text: #D1D5DB;
+  --inv-sort-slot-pending-bg: #1f2937;
+  --inv-sort-slot-pending-stroke: #6B7280;
+  --inv-sort-slot-pending-text: #9CA3AF;
+
+  /* Surface */
+  --inv-surface-row: #1A202C;
+  --inv-surface-row-border: #404343;
+  --inv-surface-row-text: #D1D5DB;
+
+  /* Badge */
+  --inv-badge-shared-bg: rgba(42, 143, 156, 0.15);
+  --inv-badge-shared-text: #4fcadf;
+  --inv-badge-shared-accent: #4fcadf;
 }
 
+/* 2b. Component styles */
 html[data-theme='dark'] .footer--dark {
   background-color: var(--ifm-color-gray-800);
   border-top: 1px solid black;
 }
 
-details.alert {
-  background-color: var(--ifm-color-secondary-lightest);
-  border-color: var(--ifm-color-primary);
-}
-
 html[data-theme='dark'] details.alert {
-  /* background-color: var(--ifm-alert-background-color-highlight); */
   background-color: var(--ifm-color-gray-800);
-}
-
-.alert--praise {
-  --ifm-alert-background-color: #f3e8ff;
-  --ifm-alert-background-color-highlight: #e1d5fa;
-  --ifm-alert-foreground-color: #6a1b9a;
-  --ifm-alert-border-color: #ab47bc;
 }
 
 html[data-theme='dark'] .alert--praise {
@@ -119,39 +214,26 @@ html[data-theme='dark'] .alert--praise {
   --ifm-alert-border-color: #ce93d8;
 }
 
-/* Highlighting code lines */
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
-}
-
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: var(--ifm-color-gray-800);
-}
-
-code {
-  background-color: var(--ifm-color-gray-100);
 }
 
 html[data-theme='dark'] code {
   background-color: var(--ifm-color-gray-800);
 }
 
-/* Footer */
-.footer--dark {
-  background-color: var(--ifm-color-gray-800);
+html[data-theme='dark'] .navbar button:hover svg {
+  color: var(--ifm-color-secondary-dark);
 }
 
-/* Branding tweaks */
-.navbar__brand img {
-  height: auto;
-  margin-right: 10px;
-  margin-bottom: 5px;
+html[data-theme='dark'] .navbar-sidebar__back {
+  background-color: var(--ifm-menu-color-background);
 }
 
-/* Typography */
+
+/* ─── 3. Base / Global ───────────────────────────────────────────────────── */
+
+/* 3a. Typography */
 html {
   font-family: 'Inter', sans-serif;
   font-weight: normal;
@@ -175,29 +257,16 @@ p {
   line-height: 150%;
 }
 
-.theme-doc-markdown a {
-  text-decoration: underline;
-}
-
 strong,
 .navbar__title {
   font-family: 'Bitter', sans-serif;
 }
 
-.navbar__title {
-  font-size: 1rem;
-  align-self: baseline;
-  margin-top: 8px;
+.theme-doc-markdown a {
+  text-decoration: underline;
 }
 
-nav.menu {
-  padding: 1rem;
-}
-
-.hidden {
-  display: none !important;
-}
-
+/* 3b. Images */
 [data-theme="light"] img[src$="#dark-mode-only"],
 [data-theme="dark"] img[src$="#light-mode-only"] {
   display: none;
@@ -208,46 +277,38 @@ nav.menu {
   display: block;
   margin-left: auto;
   margin-right: auto;
-
 }
 
-.flow-trace-text {
-  color: #734dc4;
+
+/* ─── 4. Components ──────────────────────────────────────────────────────── */
+
+/* 4a. Navbar */
+.navbar {
+  box-shadow: none;
 }
 
-.flow-text {
-  color: #406369;
+.navbar__brand img {
+  height: auto;
+  margin-right: 10px;
+  margin-bottom: 5px;
 }
 
-.flow-add-number {
-  display: inline-block;
-  background-color: #d6955c;
-  color: white;
-  font-family: 'Bitter', sans-serif;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  line-height: 24px;
-  font-weight: bold;
-  font-size: 14px;
+.navbar__title {
+  font-size: 1rem;
+  align-self: baseline;
+  margin-top: 8px;
 }
 
-.no-wrap {
-  white-space: nowrap;
+.navbar button svg {
+  color: #ffffff;
 }
 
-.footer-link {
-  color: var(--ifm-footer-link-color) !important;
-  transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+.navbar button:hover svg {
+  color: var(--ifm-color-secondary-dark);
 }
 
-.footer-link::hover,
-.footer-link::focus {
-  color: var(--ifm-color-primary-dark);
-}
-
-/* Mobile sidebar: the sidebar background inherits --ifm-navbar-background-color
+/* 4b. Mobile sidebar
+   The sidebar background inherits --ifm-navbar-background-color
    (our primary dark teal), so menu text must be light to stay readable. */
 .navbar-sidebar {
   --ifm-menu-color: var(--ifm-color-secondary-lightest);
@@ -276,8 +337,96 @@ nav.menu {
   stroke: var(--ifm-color-secondary-lightest);
 }
 
-html[data-theme='dark'] .navbar-sidebar__back {
-  background-color: var(--ifm-menu-color-background);
+nav.menu {
+  padding: 1rem;
 }
 
-/* User type switcher styles live in UserTypeSwitcher.module.css */
+/* 4c. Footer */
+.footer--dark {
+  background-color: var(--ifm-color-gray-800);
+}
+
+.footer-link {
+  color: var(--ifm-footer-link-color) !important;
+  transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  color: var(--ifm-color-primary-dark);
+}
+
+/* 4d. Alerts & details */
+details.alert {
+  background-color: var(--ifm-color-secondary-lightest);
+  border-color: var(--ifm-color-primary);
+}
+
+.alert--praise {
+  --ifm-alert-background-color: #f3e8ff;
+  --ifm-alert-background-color-highlight: #e1d5fa;
+  --ifm-alert-foreground-color: #6a1b9a;
+  --ifm-alert-border-color: #ab47bc;
+}
+
+/* 4e. Code blocks */
+code {
+  background-color: var(--ifm-color-gray-100);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+/* 4f. Flow / diagram utilities */
+.flow-trace-text {
+  color: #734dc4;
+}
+
+.flow-text {
+  color: #406369;
+}
+
+.flow-add-number {
+  display: inline-block;
+  background-color: #d6955c;
+  color: white;
+  font-family: 'Bitter', sans-serif;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+
+/* ─── 5. Utilities ───────────────────────────────────────────────────────── */
+
+.hidden {
+  display: none !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+
+/* ─── 6. Responsive ──────────────────────────────────────────────────────── */
+
+/* 6a. Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --ifm-menu-color-background-active: var(--ifm-color-primary-darker) !important;
+  }
+
+  [data-theme="dark"] {
+    --ifm-menu-color-background-active: var(--ifm-color-primary-darker) !important;
+  }
+}
+
+/* 6b. Mobile (≤ 640px) — covered by 6a; no additional overrides needed */

@@ -69,12 +69,12 @@
 
 :global([data-theme='dark']) .tableRow:hover,
 :global([data-theme='dark']) .tableRow.rowActive {
-  background: rgba(42, 143, 156, 0.1) !important;
+  background: var(--inv-tint-soft) !important;
 }
 
 :global([data-theme='dark']) .tableRow:focus-visible {
   outline-color: var(--ifm-color-primary);
-  background: rgba(42, 143, 156, 0.1) !important;
+  background: var(--inv-tint-soft) !important;
 }
 
 /* Left accent on the first cell — more reliable than box-shadow on <tr> */
@@ -244,11 +244,11 @@
 
 :global([data-theme='dark']) .row:hover,
 :global([data-theme='dark']) .rowActive {
-  background: rgba(42, 143, 156, 0.1);
+  background: var(--inv-tint-soft);
 }
 
 :global([data-theme='dark']) .row:focus-visible {
-  background: rgba(42, 143, 156, 0.1);
+  background: var(--inv-tint-soft);
   box-shadow: inset 2px 0 0 var(--ifm-color-primary);
 }
 
@@ -280,7 +280,7 @@
 
 :global([data-theme='dark']) .row:hover .iconWrap,
 :global([data-theme='dark']) .rowActive .iconWrap {
-  background: rgba(42, 143, 156, 0.2);
+  background: var(--inv-tint-active);
   color: var(--ifm-color-primary);
 }
 
@@ -370,11 +370,11 @@
 }
 
 .badgeDeprecated {
-  background-color: #b55d00;
+  background-color: var(--inv-badge-deprecated-bg);
 }
 
 .badgeSince {
-  background-color: #059669;
+  background-color: var(--inv-badge-new-bg);
 }
 
 .badgeDefault {
@@ -406,21 +406,21 @@
 /* string — site secondary gray (neutral; most common type) */
 .typeBadgeString {
   background: rgba(184, 192, 194, 0.25);
-  color: #4e5354;
+  color: var(--ifm-color-secondary-darkest);
 }
 :global([data-theme='dark']) .typeBadgeString {
   background: rgba(184, 192, 194, 0.15);
-  color: #b8c0c2;
+  color: var(--ifm-color-secondary);
 }
 
 /* int — site warning orange */
 .typeBadgeInt {
   background: rgba(255, 151, 15, 0.12);
-  color: #934304;
+  color: var(--ifm-color-warning-darkest);
 }
 :global([data-theme='dark']) .typeBadgeInt {
   background: rgba(255, 151, 15, 0.18);
-  color: #ffb84b;
+  color: var(--ifm-color-warning-light);
 }
 
 /* bool — site purple (#734dc4, also used in .flow-trace-text) */
@@ -436,11 +436,11 @@
 /* object — site primary teal */
 .typeBadgeObject {
   background: rgba(1, 69, 80, 0.1);
-  color: #013c46;
+  color: var(--ifm-color-primary-dark);
 }
 :global([data-theme='dark']) .typeBadgeObject {
-  background: rgba(42, 143, 156, 0.2);
-  color: #2a8f9c;
+  background: var(--inv-tint-active);
+  color: var(--ifm-color-primary-lightest);
 }
 
 /* array — site coral (#d6955c, also used in .flow-add-number) */
@@ -560,7 +560,7 @@
 }
 
 :global([data-theme='dark']) .tagButtonSuggested:hover {
-  background: rgba(42, 143, 156, 0.2);
+  background: var(--inv-tint-active);
 }
 
 :global([data-theme='dark']) .tagButton {
@@ -755,7 +755,7 @@
 }
 
 :global([data-theme='dark']) .rowFocused {
-  background: rgba(42, 143, 156, 0.1);
+  background: var(--inv-tint-soft);
 }
 
 .faqFooter {
@@ -1016,7 +1016,7 @@
 }
 
 :global([data-theme='dark']) .aiSourceLink:hover {
-  background: rgba(42, 143, 156, 0.1);
+  background: var(--inv-tint-soft);
 }
 
 .aiSourceIconWrap {
