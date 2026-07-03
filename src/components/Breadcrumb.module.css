@@ -58,5 +58,5 @@
 }
 
 [data-theme='dark'] .active {
-  color: #36b1c5;
+  color: var(--ifm-link-color);
 }

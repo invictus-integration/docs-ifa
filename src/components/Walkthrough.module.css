@@ -61,7 +61,7 @@
   align-items: center;
   flex-shrink: 0;
   box-shadow: 0 0 0 4px var(--ifm-background-color),
-    0 0 0 6px rgba(1, 69, 80, 0.3);
+    0 0 0 6px var(--inv-tint-medium);
   z-index: 1;
 }
 
@@ -82,7 +82,7 @@
 
 :global([data-theme='dark']) .walkthroughStepCircle {
   box-shadow: 0 0 0 4px var(--ifm-background-color),
-    0 0 0 6px rgba(42, 143, 156, 0.4);
+    0 0 0 6px var(--inv-tint-strong);
 }
 
 :global([data-theme='dark']) .walkthroughStepTitle {
@@ -126,7 +126,7 @@
   align-items: center;
   flex-shrink: 0;
   box-shadow: 0 0 0 3px var(--ifm-background-color),
-    0 0 0 5px rgba(1, 69, 80, 0.25);
+    0 0 0 5px var(--inv-tint-medium);
   z-index: 1;
   transition: box-shadow 0.15s ease;
 }
@@ -155,7 +155,7 @@
 }
 
 .walkthroughTaskHeader:hover {
-  background: rgba(1, 69, 80, 0.06);
+  background: var(--inv-tint-subtle);
   color: var(--ifm-color-primary);
 }
 
@@ -166,7 +166,7 @@
 }
 
 .walkthroughTaskOpen .walkthroughTaskHeader {
-  background: rgba(1, 69, 80, 0.08);
+  background: var(--inv-tint-soft);
   color: var(--ifm-color-primary);
 }
 
@@ -199,7 +199,7 @@
 
 :global([data-theme='dark']) .walkthroughTaskCircle {
   box-shadow: 0 0 0 3px var(--ifm-background-color),
-    0 0 0 5px rgba(42, 143, 156, 0.35);
+    0 0 0 5px var(--inv-tint-strong);
 }
 
 :global([data-theme='dark']) .walkthroughTaskHeader {
@@ -213,12 +213,12 @@
 
 :global([data-theme='dark']) .walkthroughTaskHeader:hover,
 :global([data-theme='dark']) .walkthroughTaskOpen .walkthroughTaskHeader {
-  background: rgba(42, 143, 156, 0.12);
-  color: var(--ifm-color-primary-light);
+  background: var(--ifm-menu-color-background-active);
+  color: var(--ifm-menu-color-active);
 }
 
 :global([data-theme='dark']) .walkthroughTaskContent {
-  color: #cbd5e1;
+  color: var(--ifm-color-secondary-light);
 }
 
 /* ─── Reduced motion ──────────────────────────────────────────────────────── */

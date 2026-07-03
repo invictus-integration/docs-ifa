@@ -179,13 +179,13 @@
 
 .alphaBtnActive {
   color: var(--ifm-color-primary);
-  background: rgba(42, 143, 156, 0.08);
-  border-color: rgba(42, 143, 156, 0.25);
+  background: var(--inv-tint-soft);
+  border-color: var(--inv-tint-medium);
 }
 
 .alphaBtnActive:hover,
 .alphaBtnActive:focus-visible {
-  background: rgba(42, 143, 156, 0.18);
+  background: var(--inv-tint-medium);
   border-color: var(--ifm-color-primary);
   outline: none;
 }
