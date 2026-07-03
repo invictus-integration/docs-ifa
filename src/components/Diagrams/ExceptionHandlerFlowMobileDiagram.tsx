@@ -1,6 +1,74 @@
 import React from "react";
-import { useColorMode } from "@docusaurus/theme-common";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+
+// Colors driven by CSS custom properties (--inv-diagram-*) in custom.css.
+const C = {
+  // Base keys (ComponentFlowDiagram-style)
+  header:          "var(--inv-diagram-header-bg)",
+  accent:          "var(--inv-diagram-header-accent)",
+  fill:            "var(--inv-diagram-surface)",
+  stroke:          "var(--inv-diagram-surface-stroke)",
+  text:            "var(--inv-diagram-text)",
+  arrow:           "var(--inv-diagram-arrow)",
+  rowTitle:        "var(--inv-diagram-header-text)",
+  rowSubtitle:     "var(--inv-diagram-header-subtitle)",
+  headerSubtitle:  "var(--inv-diagram-header-subtitle)",
+  separator:       "var(--inv-diagram-separator)",
+  // Invictus teal component blocks
+  invBox:          "var(--inv-diagram-header-bg)",
+  invAccent:       "var(--inv-diagram-header-accent)",
+  invStroke:       "var(--inv-diagram-header-accent)",
+  invTitle:        "var(--inv-diagram-header-text)",
+  invSubtitle:     "var(--inv-diagram-header-subtitle)",
+  badge:           "var(--inv-diagram-header-bg)",
+  // Regular action/container boxes
+  boxBg:           "var(--inv-diagram-surface)",
+  boxStroke:       "var(--inv-diagram-surface-stroke)",
+  bodyText:        "var(--inv-diagram-text)",
+  bodyAccent:      "var(--inv-diagram-surface-stroke)",
+  labelText:       "var(--inv-diagram-text)",
+  containerStroke: "var(--inv-diagram-surface-stroke)",
+  // ExceptionHandler-specific
+  clientBoxBg:     "var(--inv-diagram-surface)",
+  clientBoxStroke: "var(--inv-diagram-surface-stroke)",
+  clientLabel:     "var(--inv-diagram-text)",
+  ehBox:           "var(--inv-diagram-header-bg)",
+  ehStroke:        "var(--inv-diagram-header-accent)",
+  ehTitle:         "var(--inv-diagram-header-text)",
+  childStroke:     "var(--inv-diagram-header-accent)",
+  actionBg:        "var(--inv-diagram-surface)",
+  actionText:      "var(--inv-diagram-text)",
+  actionStroke:    "var(--inv-diagram-surface-stroke)",
+  scopeTitle:      "var(--inv-diagram-text)",
+  scopeSep:        "var(--inv-diagram-surface-stroke)",
+  // Customer step/task boxes (non-Invictus)
+  stepBox:         "var(--inv-diagram-step-bg)",
+  stepTitle:       "var(--inv-diagram-step-text)",
+  termBox:         "var(--inv-diagram-header-bg)",
+  controlTask:     "var(--inv-diagram-header-bg)",
+  groupBorder:     "var(--inv-diagram-surface-stroke)",
+  // Sort/sequence illustration boxes
+  aBox:            "var(--inv-sort-a-bg)",
+  aText:           "var(--inv-sort-text)",
+  bBox:            "var(--inv-sort-b-bg)",
+  bText:           "var(--inv-sort-text)",
+  cBox:            "var(--inv-sort-c-bg)",
+  cText:           "var(--inv-sort-text)",
+  dBox:            "var(--inv-sort-d-bg)",
+  dText:           "var(--inv-sort-text)",
+  separatorFill:   "var(--inv-sort-separator)",
+  slot1Box:        "var(--inv-sort-slot-active-bg)",
+  slot1Accent:     "var(--inv-sort-slot-active-accent)",
+  slot1Text:       "var(--inv-diagram-header-text)",
+  slot2Box:        "var(--inv-sort-slot-default-bg)",
+  slot2Text:       "var(--inv-sort-slot-default-text)",
+  slot3Box:        "var(--inv-sort-slot-default-bg)",
+  slot3Text:       "var(--inv-sort-slot-default-text)",
+  slot4Box:        "var(--inv-sort-slot-pending-bg)",
+  slot4Stroke:     "var(--inv-sort-slot-pending-stroke)",
+  slot4Text:       "var(--inv-sort-slot-pending-text)",
+};
+
 
 const HEADING_FONT = "var(--ifm-heading-font-family, 'Bitter', Georgia, serif)";
 const BODY_FONT =
@@ -22,48 +90,7 @@ const resolveIconScale = RESOLVE_ICON_SIZE / resolveIconVbW;
 const resolveIconTx = RES_X + (RESOLVE_BADGE_W - resolveIconVbW * resolveIconScale) / 2;
 const resolveIconTy = RES_Y + (INV_H - resolveIconVbH * resolveIconScale) / 2;
 
-const LIGHT = {
-  arrow: "#065b68",
-  ehBox: "#065b68",
-  ehStroke: "#014550",
-  ehTitle: "#ffffff",
-  childBox: "#014550",
-  childStroke: "#014550",
-  childText: "#a0dde5",
-  invSubtitle: "#a0dde5",
-  clientLabel: "#374151",
-  clientBoxBg: "#F9FAFB",
-  clientBoxStroke: "#D1D5DB",
-  scopeTitle: "#374151",
-  scopeSep: "#E5E7EB",
-  actionBg: "#FFFFFF",
-  actionStroke: "#D1D5DB",
-  actionText: "#374151",
-};
-
-const DARK = {
-  arrow: "#2a8f9c",
-  ehBox: "#1a5f68",
-  ehStroke: "#2a8f9c",
-  ehTitle: "#ffffff",
-  childBox: "#014550",
-  childStroke: "#2a8f9c",
-  childText: "#a0dde5",
-  invSubtitle: "#a0dde5",
-  clientLabel: "#D1D5DB",
-  clientBoxBg: "#374151",
-  clientBoxStroke: "#6B7280",
-  scopeTitle: "#F9FAFB",
-  scopeSep: "#4B5563",
-  actionBg: "#1F2937",
-  actionStroke: "#6B7280",
-  actionText: "#D1D5DB",
-};
-
 export default function ExceptionHandlerFlowMobile() {
-  const { colorMode } = useColorMode();
-  const c = colorMode === "dark" ? DARK : LIGHT;
-
   return (
     <div style={{ maxWidth: 360, margin: "1.5rem auto" }}>
       <svg
@@ -75,7 +102,7 @@ export default function ExceptionHandlerFlowMobile() {
       >
         <defs>
           <marker id="arr-EHMobile" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
-            <polygon points="0 0, 10 3.5, 0 7" fill={c.arrow} />
+            <polygon points="0 0, 10 3.5, 0 7" fill={C.arrow} />
           </marker>
           <marker id="arr-EHMobile-internal" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
             <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.7)" />
@@ -89,48 +116,48 @@ export default function ExceptionHandlerFlowMobile() {
         </defs>
 
         {/* ══ Logic App 1 (client) ══ */}
-        <text x="140" y="18" textAnchor="middle" fontSize="12" fontWeight="600" fill={c.clientLabel} style={{ fontFamily: HEADING_FONT }}>
+        <text x="140" y="18" textAnchor="middle" fontSize="12" fontWeight="600" fill={C.clientLabel} style={{ fontFamily: HEADING_FONT }}>
           Logic App
         </text>
-        <rect x="20" y="24" width="240" height="144" rx="4" fill={c.clientBoxBg} stroke={c.clientBoxStroke} strokeWidth="1.5" />
-        <text x="140" y="44" textAnchor="middle" fontSize="11" fontWeight="700" fill={c.scopeTitle} style={{ fontFamily: HEADING_FONT }}>
+        <rect x="20" y="24" width="240" height="144" rx="4" fill={C.clientBoxBg} stroke={C.clientBoxStroke} strokeWidth="1.5" />
+        <text x="140" y="44" textAnchor="middle" fontSize="11" fontWeight="700" fill={C.scopeTitle} style={{ fontFamily: HEADING_FONT }}>
           Scope
         </text>
-        <line x1="20" y1="54" x2="260" y2="54" stroke={c.scopeSep} strokeWidth="1" />
-        <rect x="30" y="64" width="220" height="34" rx="3" fill={c.actionBg} stroke={c.actionStroke} strokeWidth="1" />
-        <text x="140" y="85" textAnchor="middle" fontSize="11" fill={c.actionText} style={{ fontFamily: BODY_FONT }}>
+        <line x1="20" y1="54" x2="260" y2="54" stroke={C.scopeSep} strokeWidth="1" />
+        <rect x="30" y="64" width="220" height="34" rx="3" fill={C.actionBg} stroke={C.actionStroke} strokeWidth="1" />
+        <text x="140" y="85" textAnchor="middle" fontSize="11" fill={C.actionText} style={{ fontFamily: BODY_FONT }}>
           Resolve
         </text>
-        <rect x="30" y="108" width="220" height="34" rx="3" fill={c.actionBg} stroke={c.actionStroke} strokeWidth="1" />
-        <text x="140" y="129" textAnchor="middle" fontSize="11" fill={c.actionText} style={{ fontFamily: BODY_FONT }}>
+        <rect x="30" y="108" width="220" height="34" rx="3" fill={C.actionBg} stroke={C.actionStroke} strokeWidth="1" />
+        <text x="140" y="129" textAnchor="middle" fontSize="11" fill={C.actionText} style={{ fontFamily: BODY_FONT }}>
           Terminate
         </text>
 
         {/* Arrow: Logic App 1 → Exception Handler */}
-        <line x1="140" y1="168" x2="140" y2="206" stroke={c.arrow} strokeWidth="1.5" strokeDasharray="6,4" markerEnd="url(#arr-EHMobile)" />
+        <line x1="140" y1="168" x2="140" y2="206" stroke={C.arrow} strokeWidth="1.5" strokeDasharray="6,4" markerEnd="url(#arr-EHMobile)" />
 
         {/* ══ Exception Handler Logic App ══ */}
         <rect x="20" y="210" width="240" height="152" rx="6"
-          fill={c.clientBoxBg} stroke={c.clientBoxStroke} strokeWidth="1.5" />
-        <text x="130" y="190" textAnchor="middle" fontSize="13" fontWeight="700" fill={c.clientLabel} style={{ fontFamily: HEADING_FONT }}>
+          fill={C.clientBoxBg} stroke={C.clientBoxStroke} strokeWidth="1.5" />
+        <text x="130" y="190" textAnchor="middle" fontSize="13" fontWeight="700" fill={C.clientLabel} style={{ fontFamily: HEADING_FONT }}>
           Exception Handler Logic App
         </text>
 
         {/* ── Resolve (invictus-style block) ── */}
         <rect x={RES_X} y={RES_Y} width="224" height={INV_H} rx="6"
-          fill={c.ehBox} stroke={c.ehStroke} strokeWidth="1" />
+          fill={C.ehBox} stroke={C.ehStroke} strokeWidth="1" />
         <rect x={RES_X} y={RES_Y} width={RESOLVE_BADGE_W} height={INV_H}
-          fill={c.ehStroke} clipPath="url(#clip-ehm-resolve)" />
+          fill={C.ehStroke} clipPath="url(#clip-ehm-resolve)" />
         <path
           d={resolveIconPath}
-          fill={c.ehTitle}
+          fill={C.ehTitle}
           transform={`translate(${resolveIconTx.toFixed(2)},${resolveIconTy.toFixed(2)}) scale(${resolveIconScale.toFixed(6)})`}
         />
         <text
           x={RES_X + RESOLVE_BADGE_W + (224 - RESOLVE_BADGE_W) / 2}
           y={RES_Y + 18}
           textAnchor="middle" dominantBaseline="middle"
-          fontSize="13" fontWeight="600" fill={c.ehTitle}
+          fontSize="13" fontWeight="600" fill={C.ehTitle}
           style={{ fontFamily: HEADING_FONT }}
         >
           Resolve
@@ -138,13 +165,13 @@ export default function ExceptionHandlerFlowMobile() {
         <line
           x1={RES_X + RESOLVE_BADGE_W + 3} y1={RES_Y + 38}
           x2={RES_X + 224 - 3} y2={RES_Y + 38}
-          stroke="rgba(255,255,255,0.18)" strokeWidth="0.75"
+          stroke={C.separator} strokeWidth="0.75"
         />
         <text
           x={RES_X + RESOLVE_BADGE_W + (224 - RESOLVE_BADGE_W) / 2}
           y={RES_Y + 47}
           textAnchor="middle" dominantBaseline="middle"
-          fontSize="9" fill={c.invSubtitle}
+          fontSize="9" fill={C.invSubtitle}
           style={{ fontFamily: BODY_FONT, opacity: 0.8 }}
         >
           Regex Translator + AI Interpreter
@@ -152,35 +179,35 @@ export default function ExceptionHandlerFlowMobile() {
 
         {/* ── Return block ── */}
         <rect x="28" y="298" width="224" height="36" rx="3"
-          fill={c.actionBg} stroke={c.actionStroke} strokeWidth="1" />
+          fill={C.actionBg} stroke={C.actionStroke} strokeWidth="1" />
 
         <text
           x="140" y="316"
           textAnchor="middle" dominantBaseline="middle"
-          fontSize="11" fill={c.actionText}
+          fontSize="11" fill={C.actionText}
           style={{ fontFamily: BODY_FONT }}
         >
           Return
         </text>
 
         {/* Arrow: Exception Handler → Logic App 2 */}
-        <line x1="140" y1="555" x2="140" y2="365" stroke={c.arrow} strokeWidth="1.5" strokeDasharray="6,4" markerEnd="url(#arr-EHMobile)" />
+        <line x1="140" y1="555" x2="140" y2="365" stroke={C.arrow} strokeWidth="1.5" strokeDasharray="6,4" markerEnd="url(#arr-EHMobile)" />
 
         {/* ══ Logic App 2 (client) ══ */}
-        <text x="140" y="416" textAnchor="middle" fontSize="12" fontWeight="600" fill={c.clientLabel} style={{ fontFamily: HEADING_FONT }}>
+        <text x="140" y="416" textAnchor="middle" fontSize="12" fontWeight="600" fill={C.clientLabel} style={{ fontFamily: HEADING_FONT }}>
           Logic App
         </text>
-        <rect x="20" y="422" width="240" height="144" rx="4" fill={c.clientBoxBg} stroke={c.clientBoxStroke} strokeWidth="1.5" />
-        <text x="140" y="442" textAnchor="middle" fontSize="11" fontWeight="700" fill={c.scopeTitle} style={{ fontFamily: HEADING_FONT }}>
+        <rect x="20" y="422" width="240" height="144" rx="4" fill={C.clientBoxBg} stroke={C.clientBoxStroke} strokeWidth="1.5" />
+        <text x="140" y="442" textAnchor="middle" fontSize="11" fontWeight="700" fill={C.scopeTitle} style={{ fontFamily: HEADING_FONT }}>
           Scope
         </text>
-        <line x1="20" y1="452" x2="260" y2="452" stroke={c.scopeSep} strokeWidth="1" />
-        <rect x="30" y="462" width="220" height="34" rx="3" fill={c.actionBg} stroke={c.actionStroke} strokeWidth="1" />
-        <text x="140" y="483" textAnchor="middle" fontSize="11" fill={c.actionText} style={{ fontFamily: BODY_FONT }}>
+        <line x1="20" y1="452" x2="260" y2="452" stroke={C.scopeSep} strokeWidth="1" />
+        <rect x="30" y="462" width="220" height="34" rx="3" fill={C.actionBg} stroke={C.actionStroke} strokeWidth="1" />
+        <text x="140" y="483" textAnchor="middle" fontSize="11" fill={C.actionText} style={{ fontFamily: BODY_FONT }}>
           Resolve
         </text>
-        <rect x="30" y="506" width="220" height="34" rx="3" fill={c.actionBg} stroke={c.actionStroke} strokeWidth="1" />
-        <text x="140" y="527" textAnchor="middle" fontSize="11" fill={c.actionText} style={{ fontFamily: BODY_FONT }}>
+        <rect x="30" y="506" width="220" height="34" rx="3" fill={C.actionBg} stroke={C.actionStroke} strokeWidth="1" />
+        <text x="140" y="527" textAnchor="middle" fontSize="11" fill={C.actionText} style={{ fontFamily: BODY_FONT }}>
           Terminate
         </text>
       </svg>

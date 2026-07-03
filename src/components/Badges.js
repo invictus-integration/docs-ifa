@@ -31,8 +31,8 @@ export function NewSinceBadge({ version, style }) {
   return Badge({
     title: `New since ${version}`,
     tooltip: `Feature included since **Invictus ${version}**.`,
-    backgroundColor: '#059669',
-    color: 'white',
+    backgroundColor: 'var(--inv-badge-new-bg)',
+    color: 'var(--inv-badge-new-text)',
     style,
   });
 }
@@ -41,10 +41,9 @@ export function DeprecatedSinceBadge({ version, note, style }) {
   return Badge({
     title: `Deprecated since ${version}`,
     tooltip: `Feature deprecated since **Invictus ${version}**. ${note}`,
-    backgroundColor: '#b55d00',
-    color: 'white',
+    backgroundColor: 'var(--inv-badge-deprecated-bg)',
+    color: 'var(--inv-badge-deprecated-text)',
     style,
-
   });
 }
 
@@ -123,7 +122,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
   );
 }
 
-const ACCENT = '#0b6369';
+const ACCENT = 'var(--inv-badge-shared-accent)';
 export function SharedNote() {
   useTooltipStyles();
 
@@ -180,8 +179,8 @@ export function SharedNote() {
           onClick={onClick}
           className="invictus-badge"
           style={{
-            backgroundColor: '#e0f7f7',
-            color: ACCENT,
+            backgroundColor: 'var(--inv-badge-shared-bg)',
+            color: 'var(--inv-badge-shared-text)',
             padding: '2px 6px',
             borderRadius: '4px',
             fontSize: '0.9rem',

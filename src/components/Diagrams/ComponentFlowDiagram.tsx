@@ -1,9 +1,76 @@
-import React from "react";
-import { useColorMode } from "@docusaurus/theme-common";
+import React, { useRef, useCallback } from "react";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
+// Colors are driven by CSS custom properties (--inv-diagram-*) defined in
+// custom.css, so dark mode is handled automatically without useColorMode.
+const C = {
+  // Base keys (ComponentFlowDiagram-style)
+  header:          "var(--inv-diagram-header-bg)",
+  accent:          "var(--inv-diagram-header-accent)",
+  fill:            "var(--inv-diagram-surface)",
+  stroke:          "var(--inv-diagram-surface-stroke)",
+  text:            "var(--inv-diagram-text)",
+  arrow:           "var(--inv-diagram-arrow)",
+  rowTitle:        "var(--inv-diagram-header-text)",
+  rowSubtitle:     "var(--inv-diagram-header-subtitle)",
+  headerSubtitle:  "var(--inv-diagram-header-subtitle)",
+  separator:       "var(--inv-diagram-separator)",
+  // Invictus teal component blocks
+  invBox:          "var(--inv-diagram-header-bg)",
+  invAccent:       "var(--inv-diagram-header-accent)",
+  invStroke:       "var(--inv-diagram-header-accent)",
+  invTitle:        "var(--inv-diagram-header-text)",
+  invSubtitle:     "var(--inv-diagram-header-subtitle)",
+  badge:           "var(--inv-diagram-header-bg)",
+  // Regular action/container boxes
+  boxBg:           "var(--inv-diagram-surface)",
+  boxStroke:       "var(--inv-diagram-surface-stroke)",
+  bodyText:        "var(--inv-diagram-text)",
+  bodyAccent:      "var(--inv-diagram-surface-stroke)",
+  labelText:       "var(--inv-diagram-text)",
+  containerStroke: "var(--inv-diagram-surface-stroke)",
+  // ExceptionHandler-specific
+  clientBoxBg:     "var(--inv-diagram-surface)",
+  clientBoxStroke: "var(--inv-diagram-surface-stroke)",
+  clientLabel:     "var(--inv-diagram-text)",
+  ehBox:           "var(--inv-diagram-header-bg)",
+  ehStroke:        "var(--inv-diagram-header-accent)",
+  ehTitle:         "var(--inv-diagram-header-text)",
+  childStroke:     "var(--inv-diagram-header-accent)",
+  actionBg:        "var(--inv-diagram-surface)",
+  actionText:      "var(--inv-diagram-text)",
+  actionStroke:    "var(--inv-diagram-surface-stroke)",
+  scopeTitle:      "var(--inv-diagram-text)",
+  scopeSep:        "var(--inv-diagram-surface-stroke)",
+  // Customer step/task boxes (non-Invictus)
+  stepBox:         "var(--inv-diagram-step-bg)",
+  stepTitle:       "var(--inv-diagram-step-text)",
+  termBox:         "var(--inv-diagram-header-bg)",
+  controlTask:     "var(--inv-diagram-header-bg)",
+  groupBorder:     "var(--inv-diagram-surface-stroke)",
+  // Sort/sequence illustration boxes
+  aBox:            "var(--inv-sort-a-bg)",
+  aText:           "var(--inv-sort-text)",
+  bBox:            "var(--inv-sort-b-bg)",
+  bText:           "var(--inv-sort-text)",
+  cBox:            "var(--inv-sort-c-bg)",
+  cText:           "var(--inv-sort-text)",
+  dBox:            "var(--inv-sort-d-bg)",
+  dText:           "var(--inv-sort-text)",
+  separatorFill:   "var(--inv-sort-separator)",
+  slot1Box:        "var(--inv-sort-slot-active-bg)",
+  slot1Accent:     "var(--inv-sort-slot-active-accent)",
+  slot1Text:       "var(--inv-diagram-header-text)",
+  slot2Box:        "var(--inv-sort-slot-default-bg)",
+  slot2Text:       "var(--inv-sort-slot-default-text)",
+  slot3Box:        "var(--inv-sort-slot-default-bg)",
+  slot3Text:       "var(--inv-sort-slot-default-text)",
+  slot4Box:        "var(--inv-sort-slot-pending-bg)",
+  slot4Stroke:     "var(--inv-sort-slot-pending-stroke)",
+  slot4Text:       "var(--inv-sort-slot-pending-text)",
+};
+
 export interface FlowRow {
-  input: string;
   opTitle: string;
   opSubtitle: string;
   output: string;
@@ -23,30 +90,6 @@ export interface ComponentFlowDiagramProps {
   /** One entry per flow row rendered below the header */
   rows: FlowRow[];
 }
-
-const LIGHT = {
-  header: "#065b68",
-  accent: "#014550",
-  fill: "#ffffff",
-  stroke: "#b8c0c2",
-  text: "#1c1e21",
-  arrow: "#065b68",
-  rowTitle: "#ffffff",
-  rowSubtitle: "#a0dde5",
-  headerSubtitle: "#a0dde5",
-};
-
-const DARK = {
-  header: "#1a5f68",
-  accent: "#2a8f9c",
-  fill: "#374151",
-  stroke: "#6B7280",
-  text: "#D1D5DB",
-  arrow: "#2a8f9c",
-  rowTitle: "#ffffff",
-  rowSubtitle: "#a0dde5",
-  headerSubtitle: "#a0dde5",
-};
 
 const HEADING_FONT = "var(--ifm-heading-font-family, 'Bitter', Georgia, serif)";
 const BODY_FONT =
@@ -73,9 +116,7 @@ export default function ComponentFlowDiagram({
   iconEvenOdd = false,
   rows,
 }: ComponentFlowDiagramProps) {
-  const { colorMode } = useColorMode();
-  const c = colorMode === "dark" ? DARK : LIGHT;
-
+  const svgRef = useRef<SVGSVGElement>(null);
   const totalH =
     FIRST_ROW_Y + rows.length * ROW_H + (rows.length - 1) * ROW_GAP + 8;
 
@@ -112,7 +153,7 @@ export default function ComponentFlowDiagram({
             orient="auto"
             markerUnits="userSpaceOnUse"
           >
-            <polygon points="0 0, 5 2, 0 4" fill={c.arrow} />
+            <polygon points="0 0, 5 2, 0 4" fill={C.arrow} />
           </marker>
 
           {/* Header clip — keeps icon badge inside the rounded header */}
@@ -145,7 +186,7 @@ export default function ComponentFlowDiagram({
           y={HEADER_Y}
           width="364"
           height={HEADER_H}
-          fill={c.header}
+          fill={C.header}
           rx={RX}
         />
         {/* Icon badge — clipped to the header rounded shape */}
@@ -154,12 +195,12 @@ export default function ComponentFlowDiagram({
           y={HEADER_Y}
           width={ICON_BADGE_W}
           height={HEADER_H}
-          fill={c.accent}
+          fill={C.accent}
           clipPath={`url(#hdr-${uid})`}
         />
         <path
           d={iconPathData}
-          fill="white"
+          fill={C.rowTitle}
           fillRule={iconEvenOdd ? "evenodd" : undefined}
           transform={`translate(${iconTx.toFixed(2)},${iconTy.toFixed(2)}) scale(${iconScale.toFixed(6)})`}
         />
@@ -170,7 +211,7 @@ export default function ComponentFlowDiagram({
           dominantBaseline="middle"
           fontSize="14"
           fontWeight="700"
-          fill="#ffffff"
+          fill={C.rowTitle}
           style={{ fontFamily: HEADING_FONT }}
         >
           {name}
@@ -181,7 +222,7 @@ export default function ComponentFlowDiagram({
           textAnchor="middle"
           dominantBaseline="middle"
           fontSize="10"
-          fill={c.headerSubtitle}
+          fill={C.headerSubtitle}
           style={{ fontFamily: BODY_FONT }}
         >
           {tagline}
@@ -200,8 +241,8 @@ export default function ComponentFlowDiagram({
                 y={rowY}
                 width="96"
                 height={ROW_H}
-                fill={c.fill}
-                stroke={c.stroke}
+                fill={C.fill}
+                stroke={C.stroke}
                 strokeWidth="1.5"
                 rx={RX}
               />
@@ -210,7 +251,7 @@ export default function ComponentFlowDiagram({
                 y={rowY}
                 width={ACCENT_W}
                 height={ROW_H}
-                fill={c.stroke}
+                fill={C.stroke}
                 clipPath={`url(#in-${uid}-${i})`}
               />
               <text
@@ -219,7 +260,7 @@ export default function ComponentFlowDiagram({
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="12"
-                fill={c.text}
+                fill={C.text}
                 style={{ fontFamily: BODY_FONT }}
               >
                 {row.input}
@@ -231,7 +272,7 @@ export default function ComponentFlowDiagram({
                 y1={midY}
                 x2="113"
                 y2={midY}
-                stroke={c.arrow}
+                stroke={C.arrow}
                 strokeWidth="1.5"
                 markerEnd={`url(#arr-${uid})`}
               />
@@ -242,8 +283,8 @@ export default function ComponentFlowDiagram({
                 y={rowY}
                 width="140"
                 height={ROW_H}
-                fill={c.header}
-                stroke={c.accent}
+                fill={C.header}
+                stroke={C.accent}
                 strokeWidth="1"
                 rx={RX}
               />
@@ -252,7 +293,7 @@ export default function ComponentFlowDiagram({
                 y={rowY}
                 width={ACCENT_W}
                 height={ROW_H}
-                fill={c.accent}
+                fill={C.accent}
                 clipPath={`url(#op-${uid}-${i})`}
               />
               {/* Op title — shifted up when a storage footer is present */}
@@ -263,7 +304,7 @@ export default function ComponentFlowDiagram({
                 dominantBaseline="middle"
                 fontSize="13"
                 fontWeight="600"
-                fill={c.rowTitle}
+                fill={C.rowTitle}
                 style={{ fontFamily: HEADING_FONT }}
               >
                 {row.opTitle}
@@ -274,7 +315,7 @@ export default function ComponentFlowDiagram({
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="9"
-                fill={c.rowSubtitle}
+                fill={C.rowSubtitle}
                 style={{ fontFamily: BODY_FONT }}
               >
                 {row.opSubtitle}
@@ -287,7 +328,7 @@ export default function ComponentFlowDiagram({
                     y1={rowY + 45}
                     x2={254 - 3}
                     y2={rowY + 45}
-                    stroke="rgba(255,255,255,0.18)"
+                    stroke={C.separator}
                     strokeWidth="0.75"
                   />
                   <text
@@ -296,7 +337,7 @@ export default function ComponentFlowDiagram({
                     textAnchor="middle"
                     dominantBaseline="middle"
                     fontSize="8"
-                    fill={c.rowSubtitle}
+                    fill={C.rowSubtitle}
                     style={{ fontFamily: BODY_FONT, opacity: 0.8 }}
                   >
                     {row.storageLabel}
@@ -310,7 +351,7 @@ export default function ComponentFlowDiagram({
                 y1={midY}
                 x2="263"
                 y2={midY}
-                stroke={c.arrow}
+                stroke={C.arrow}
                 strokeWidth="1.5"
                 markerEnd={`url(#arr-${uid})`}
               />
@@ -321,8 +362,8 @@ export default function ComponentFlowDiagram({
                 y={rowY}
                 width="108"
                 height={ROW_H}
-                fill={c.fill}
-                stroke={c.stroke}
+                fill={C.fill}
+                stroke={C.stroke}
                 strokeWidth="1.5"
                 rx={RX}
               />
@@ -331,7 +372,7 @@ export default function ComponentFlowDiagram({
                 y={rowY}
                 width={ACCENT_W}
                 height={ROW_H}
-                fill={c.stroke}
+                fill={C.stroke}
                 clipPath={`url(#out-${uid}-${i})`}
               />
               <text
@@ -340,7 +381,7 @@ export default function ComponentFlowDiagram({
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="12"
-                fill={c.text}
+                fill={C.text}
                 style={{ fontFamily: BODY_FONT }}
               >
                 {row.output}

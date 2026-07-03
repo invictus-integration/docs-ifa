@@ -1,108 +1,108 @@
-('use strict');
-
-// Original: https://github.com/sdras/night-owl-vscode-theme
+// Night Owl dark -- token colors replaced with the Invictus site palette.
+// CSS variable source noted next to each color for traceability.
+// Background matches --ifm-color-gray-900 (#171923) for seamless page blending.
+// All colors verified >= 4.5:1 contrast on #171923 (WCAG AA).
 
 const theme = {
   plain: {
-    color: '#e9edfa',
-    backgroundColor: '#19203d',
+    color: "#d6deeb",           // Night Owl near-white
+    backgroundColor: "#171923", // --ifm-color-gray-900 (actual dark page bg)
   },
   styles: [
     {
-      types: ['changed'],
+      types: ["changed"],
       style: {
-        color: 'rgb(162, 191, 252)',
-        fontStyle: 'italic',
+        color: "#93c5fd",        // light blue -- 9.7:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['deleted'],
+      types: ["deleted"],
       style: {
-        color: 'hsl(5, 74%, 69%)',
-        fontStyle: 'italic',
+        color: "#f87171",        // soft red -- 6.3:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['inserted', 'attr-name'],
+      types: ["inserted", "attr-name"],
       style: {
-        color: 'hsl(119, 34%, 67%)',
-        fontStyle: 'italic',
+        color: "rgb(173, 219, 103)", // Night Owl lime green -- 10.6:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['comment'],
+      types: ["comment"],
       style: {
-        color: 'hsl(230, 4%, 74%)',
-        fontStyle: 'italic',
+        color: "#7f94a0",        // muted teal-gray -- 5.5:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['string', 'url'],
+      types: ["string", "url"],
       style: {
-        color: 'hsl(119, 34%, 67%)',
+        color: "rgb(173, 219, 103)", // Night Owl lime green -- 10.6:1
       },
     },
     {
-      types: ['variable'],
+      types: ["variable"],
       style: {
-        color: '#47acff',
+        color: "#d6deeb",        // plain near-white
       },
     },
     {
-      types: ['number'],
+      types: ["number"],
       style: {
-        color: 'hsl(35, 99%, 66%)',
+        color: "#ffb84b",        // --ifm-color-warning-light -- 9.9:1
       },
     },
     {
-      types: ['builtin', 'char', 'constant', 'function', 'operator'],
+      types: ["builtin", "char", "constant", "function"],
       style: {
-        color: '#47acff',
+        color: "#36b1c5",        // --ifm-link-color (dark) -- 6.6:1
       },
     },
     {
-      // This was manually added after the auto-generation
-      // so that punctuations are not italicised
-      types: ['punctuation'],
+      // manually added so punctuations are not italicised
+      types: ["punctuation"],
       style: {
-        color: '#e9edfa',
+        color: "rgb(199, 146, 234)", // Night Owl purple -- 7.3:1
       },
     },
     {
-      types: ['selector', 'doctype'],
+      types: ["selector", "doctype"],
       style: {
-        color: '#e9edfa',
-        fontStyle: 'italic',
+        color: "rgb(199, 146, 234)", // Night Owl purple -- 7.3:1
+        fontStyle: "italic",
       },
     },
     {
-      types: ['class-name'],
+      types: ["class-name"],
       style: {
-        color: 'hsl(35, 99%, 66%)',
+        color: "#ffb84b",        // --ifm-color-warning-light -- 9.9:1
       },
     },
     {
-      types: ['tag', 'keyword'],
+      types: ["tag", "operator", "keyword"],
       style: {
-        color: 'hsl(301, 63%, 80%)',
+        color: "#4fcadf",        // --ifm-link-hover-color (dark) -- 8.5:1
       },
     },
     {
-      types: ['boolean'],
+      types: ["boolean"],
       style: {
-        color: 'hsl(35, 99%, 66%)',
+        color: "#ffb84b",        // --ifm-color-warning-light -- 9.9:1
       },
     },
     {
-      types: ['property'],
+      types: ["property"],
       style: {
-        color: 'hsl(5, 74%, 69%)',
+        color: "#36b1c5",        // --ifm-link-color (dark) -- 6.6:1
       },
     },
     {
-      types: ['namespace'],
+      types: ["namespace"],
       style: {
-        opacity: 0.8,
+        color: "#a0dde5",        // --inv-diagram-header-subtitle -- 11.3:1
       },
     },
   ],

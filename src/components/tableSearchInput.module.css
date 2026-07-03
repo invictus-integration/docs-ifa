@@ -25,7 +25,7 @@
 }
 
 .input::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--ifm-color-secondary-darkest);
   opacity: 1;
   font-style: normal;
 }
@@ -170,6 +170,7 @@
 }
 
 @media (max-width: 640px) {
+
   /* Esc is a keyboard shortcut — hide on touch */
   .escBadge {
     display: none;

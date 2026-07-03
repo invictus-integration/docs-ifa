@@ -41,7 +41,7 @@
 }
 
 .methodGET {
-  background-color: #16a34a;
+  background-color: #15803d; /* green-700: white text 5.02:1, passes WCAG AA */
 }
 
 .methodPOST {
@@ -49,7 +49,7 @@
 }
 
 .methodPUT {
-  background-color: #d97706;
+  background-color: #b45309; /* amber-700: white text 5.02:1, passes WCAG AA */
 }
 
 .methodPATCH {
@@ -82,7 +82,7 @@
   padding: 2px 8px;
   border-radius: 6px;
   border: 1px solid var(--ifm-color-emphasis-300);
-  color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-color-emphasis-600);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: help;
@@ -136,7 +136,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-color-emphasis-600);
   margin: 0 0 0.75rem;
   padding: 0;
 }
@@ -154,7 +154,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-color-emphasis-600);
   margin: 0 0 0.4rem;
   padding: 0;
 }
@@ -276,13 +276,15 @@
 
 /* Status group: sets CSS custom properties consumed by .statusTabActive and .statusCode */
 .statusSuccess {
-  --tab-accent: #16a34a;
-  --tab-accent-bg: rgba(22, 163, 74, 0.08);
+  /* #15803d = green-700: 5.02:1 on white, passes WCAG AA (was #16a34a at 3.30:1) */
+  --tab-accent: #15803d;
+  --tab-accent-bg: rgba(21, 128, 61, 0.08);
 }
 
 .statusWarning {
-  --tab-accent: #d97706;
-  --tab-accent-bg: rgba(217, 119, 6, 0.08);
+  /* #b45309 = amber-700: 5.02:1 on white, passes WCAG AA (was #d97706 at 3.19:1) */
+  --tab-accent: #b45309;
+  --tab-accent-bg: rgba(180, 83, 9, 0.08);
 }
 
 .statusError {
@@ -426,7 +428,7 @@
 }
 
 .methodGET {
-  background-color: #16a34a;
+  background-color: #15803d; /* green-700: white text 5.02:1, passes WCAG AA */
 }
 
 .methodPOST {
@@ -434,7 +436,7 @@
 }
 
 .methodPUT {
-  background-color: #d97706;
+  background-color: #b45309; /* amber-700: white text 5.02:1, passes WCAG AA */
 }
 
 .methodPATCH {
@@ -466,7 +468,7 @@
   padding: 2px 8px;
   border-radius: 4px;
   border: 1px solid var(--ifm-toc-border-color);
-  color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-color-emphasis-600);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: help;
@@ -567,7 +569,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-color-emphasis-600);
   margin: 0 0 0.75rem;
   padding: 0;
 }
@@ -585,7 +587,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--ifm-color-emphasis-600);
   margin: 0 0 0.4rem;
   padding: 0;
 }
@@ -737,13 +739,15 @@
 
 /* Status group CSS custom properties — used by .statusTabActive */
 .statusSuccess {
-  --tab-accent: #16a34a;
-  --tab-accent-bg: rgba(22, 163, 74, 0.08);
+  /* #15803d = green-700: 5.02:1 on white, passes WCAG AA (was #16a34a at 3.30:1) */
+  --tab-accent: #15803d;
+  --tab-accent-bg: rgba(21, 128, 61, 0.08);
 }
 
 .statusWarning {
-  --tab-accent: #d97706;
-  --tab-accent-bg: rgba(217, 119, 6, 0.08);
+  /* #b45309 = amber-700: 5.02:1 on white, passes WCAG AA (was #d97706 at 3.19:1) */
+  --tab-accent: #b45309;
+  --tab-accent-bg: rgba(180, 83, 9, 0.08);
 }
 
 .statusError {
