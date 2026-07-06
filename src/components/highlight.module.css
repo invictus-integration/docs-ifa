@@ -14,3 +14,115 @@
   border-radius: 2px;
   padding: 0 2px;
 }
+
+/* ── On-page search highlights (injected by SearchHighlighter in Root.js) ── */
+
+:global(mark[data-search-highlight]) {
+  background: rgba(255, 196, 0, 0.28);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+:global([data-theme='dark'] mark[data-search-highlight]) {
+  background: rgba(255, 196, 0, 0.18);
+}
+
+/* First match — slightly stronger emphasis + scroll-margin for the sticky navbar */
+:global(mark[data-search-highlight-first]) {
+  background: rgba(255, 196, 0, 0.55);
+  outline: 2px solid rgba(255, 172, 0, 0.55);
+  outline-offset: 1px;
+  border-radius: 2px;
+  scroll-margin-top: 80px;
+}
+
+/* ── Dismiss chip (fixed, visible while highlights are active) ──────────────
+   Same shape as the FAQ "Filtered by:" chip, coloured with the amber
+   highlight palette to visually connect it to the marks on the page.      */
+
+:global(#search-highlight-chip) {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 999;
+
+  align-items: center;
+  gap: 0;
+  border-radius: 6px;
+  background: rgba(255, 248, 210, 0.97);
+  border: 2px solid rgba(200, 130, 0, 0.6);
+  font-size: 0.82rem;
+  font-family: inherit;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+:global([data-theme='dark'] #search-highlight-chip) {
+  background: rgba(55, 38, 0, 0.95);
+  border-color: rgba(255, 196, 0, 0.45);
+}
+
+:global(#search-highlight-chip-label) {
+  padding: 4px 10px;
+  color: rgba(80, 45, 0, 1);
+}
+
+:global([data-theme='dark'] #search-highlight-chip-label) {
+  color: rgba(255, 220, 130, 1);
+}
+
+:global(#search-highlight-dismiss) {
+  display: inline-flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 5px;
+  background: rgba(200, 130, 0, 0.85);
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #fff;
+  font-family: inherit;
+  padding: 0 0.6rem;
+  white-space: nowrap;
+}
+
+:global(#search-highlight-dismiss:hover) {
+  background: rgba(160, 100, 0, 0.95);
+}
+
+:global([data-theme='dark'] #search-highlight-dismiss) {
+  background: rgba(200, 130, 0, 0.75);
+}
+
+:global([data-theme='dark'] #search-highlight-dismiss:hover) {
+  background: rgba(200, 130, 0, 0.95);
+}
+
+:global(#search-highlight-dismiss:focus-visible) {
+  outline: 3px solid rgba(160, 100, 0, 0.9);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(#search-highlight-dismiss) {
+    transition: background 0.15s;
+  }
+}
+
+/* Keyboard / programmatic focus ring on the first mark */
+:global(mark[data-search-highlight-first]:focus-visible) {
+  outline: 3px solid rgba(200, 130, 0, 0.9);
+  outline-offset: 2px;
+}
+
+:global([data-theme='dark'] mark[data-search-highlight-first]) {
+  background: rgba(255, 196, 0, 0.3);
+  outline-color: rgba(255, 172, 0, 0.4);
+}
+
+:global([data-theme='dark'] mark[data-search-highlight-first]:focus-visible) {
+  outline-color: rgba(255, 196, 0, 0.9);
+}
