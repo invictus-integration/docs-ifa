@@ -1,0 +1,29 @@
+.tableOfContents {
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+}
+
+.tocLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ifm-color-secondary-darkest);
+  margin: 0 0 2px 0;
+  padding: 0 var(--ifm-toc-padding-horizontal, 0.5rem) 0.5rem;
+  border-left: 1px solid var(--ifm-toc-border-color);
+  border-bottom: 1px solid var(--ifm-color-secondary-lighter);
+}
+
+html[data-theme='dark'] .tocLabel {
+  color: var(--ifm-color-secondary);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 996px) {
+  .tableOfContents {
+    display: none;
+  }
+}
