@@ -6,8 +6,8 @@ sidebar_position: 1
 hide_table_of_contents: true
 ---
 
-![Better control and overview your integrations with the Invictus, designed by Codit](/img/invictus.index.dark.png#dark-mode-only)
-![Better control and overview your integrations with the Invictus, designed by Codit](/img/invictus.index.light.png#light-mode-only)
+<img src="/img/invictus-logo_negative_white.png#dark-mode-only" alt="Better control and overview integrations with Invictus, designed by Codit" height="200" />
+<img src="/img/invictus-logo_positive_black.png#light-mode-only" alt="Better control and overview integrations with Invictus, designed by Codit" height="200" />
 ___
 
 {/* vale Microsoft.Contractions = NO */}
