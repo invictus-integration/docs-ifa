@@ -10,7 +10,7 @@ describe('FAQ — Help Center', () => {
   const PAGE = '/support/help-center-technical';
 
   beforeEach(() => {
-    cy.visit(PAGE);
+    cy.visit(PAGE, { onBeforeLoad: bypassSplash });
   });
 
   // ── Initial state ─────────────────────────────────────────────────────────

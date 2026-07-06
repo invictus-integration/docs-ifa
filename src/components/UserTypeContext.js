@@ -4,6 +4,7 @@ import { usePluginData } from '@docusaurus/useGlobalData';
 import versions from '../../versions.json';
 
 const STORAGE_KEY = 'invictus-user-type';
+export { STORAGE_KEY };
 const BUSINESS_ROOT = '/';
 const TECHNICAL_ROOT = '/technical';
 
@@ -79,6 +80,10 @@ export function UserTypeProvider({ children }) {
 
   useEffect(() => {
     if (!sidebar) return;
+    // Only auto-detect if the user has already made a choice (key exists).
+    // On first visit the key is absent — let WelcomeSplash handle the initial choice
+    // so path detection doesn't silently pre-fill localStorage and skip the splash.
+    try { if (localStorage.getItem(STORAGE_KEY) === null) return; } catch { }
     const path = location.pathname.replace(/^\/|\/$/g, '');
     const detected = detectUserTypeFromPath(path, businessIds, technicalIds);
     if (detected) setUserType(detected);

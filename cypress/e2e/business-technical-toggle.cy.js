@@ -59,7 +59,7 @@ describe('Business/Technical user toggle', () => {
       beforeEach(() => {
         cy.clearLocalStorage();
         cy.viewport(width, height);
-        cy.visit('/');
+        cy.visit('/', { onBeforeLoad: bypassSplash });
         cy.openSidebar(deviceName, Audience.BUSINESS);
       });
 
@@ -132,7 +132,7 @@ describe('Business/Technical user toggle', () => {
     beforeEach(() => {
       cy.clearLocalStorage();
       cy.viewport(375, 667);
-      cy.visit('/');
+      cy.visit('/', { onBeforeLoad: bypassSplash });
     });
 
     it('toggle is not present in the top navbar', () => {

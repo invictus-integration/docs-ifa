@@ -10,7 +10,7 @@ describe('Bicep parameter search', () => {
     describe(route, () => {
 
       beforeEach(() => {
-        cy.visit(route);
+        cy.visit(route, { onBeforeLoad: bypassSplash });
         cy.get('[data-cy=search-input]').scrollIntoView().as('searchInput');
         // Table is collapsed on initial load — click the disclosure button to expand it.
         cy.get('[data-cy=disclosure-button]').click();

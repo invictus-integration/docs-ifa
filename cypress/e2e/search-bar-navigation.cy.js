@@ -10,7 +10,7 @@ describe('SearchBar navigation (local search)', () => {
   beforeEach(() => {
     // Block all Azure Search requests so local fallback always activates.
     cy.intercept('GET', '**/indexes/*/docs*', { forceNetworkError: true }).as('azureSearch');
-    cy.visit('/');
+    cy.visit('/', { onBeforeLoad: bypassSplash });
   });
 
   /**

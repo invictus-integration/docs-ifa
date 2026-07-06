@@ -74,6 +74,10 @@ const config = {
       process.env.AZURE_OPENAI_ENDPOINT &&
       process.env.AZURE_OPENAI_DEPLOYMENT
     ),
+    // Netlify sets CONTEXT='deploy-preview' for PR previews and 'branch-deploy'
+    // for branch deploys. Skip the welcome splash in both so reviewers land
+    // directly on the content without needing to choose a user type.
+    isPreviewDeploy: ['deploy-preview', 'branch-deploy'].includes(process.env.CONTEXT),
   },
 
   themeConfig: {

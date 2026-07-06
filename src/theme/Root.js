@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from '@docusaurus/router';
 import { UserTypeProvider } from '../components/UserTypeContext';
+import WelcomeSplash from '../components/WelcomeSplash';
 
 // ── SearchHighlighter ──────────────────────────────────────────────────────
 // Reads ?highlight=<term> from the URL after a search-result navigation,
@@ -288,8 +289,8 @@ function SearchHighlighter() {
       clearTimeout(debounceTimer);
       clearTimeout(stableTimer);
     };
-  // location.href is undefined in React Router's location object — use the
-  // individual parts that actually change on navigation as dependencies.
+    // location.href is undefined in React Router's location object — use the
+    // individual parts that actually change on navigation as dependencies.
   }, [location.pathname, location.search, location.hash]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
@@ -332,6 +333,7 @@ export default function Root({ children }) {
     <UserTypeProvider>
       <HashScrollHandler />
       <SearchHighlighter />
+      <WelcomeSplash />
       {children}
     </UserTypeProvider>
   );

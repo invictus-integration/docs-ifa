@@ -11,7 +11,7 @@ describe('Release notes', () => {
   const url = '/support/release-notes';
 
   beforeEach(() => {
-    cy.visit(url);
+    cy.visit(url, { onBeforeLoad: bypassSplash });
   });
 
   describe('initial state', () => {
