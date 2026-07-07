@@ -36,7 +36,7 @@ const config = {
           routeBasePath: '/',
           path: 'preview',
           sidebarCollapsible: false,
-          includeCurrentVersion: true,
+          includeCurrentVersion: process.env.CONTEXT !== 'production',
           breadcrumbs: false,
           admonitions: {
             keywords: ['praise'],
@@ -79,11 +79,11 @@ const config = {
   themeConfig: {
     image: 'img/invictus.jpg',
     navbar: {
-      title: 'Invictus for Azure',
+      title: 'Documentation',
       logo: {
         alt: 'Invictus for Azure logo',
-        src: 'img/logo.dark.png',
-        srcDark: 'img/logo.dark.png',
+        src: 'img/invictus-logo_negative_white.png',
+        srcDark: 'img/invictus-logo_negative_white.png',
       },
       items: [
         {

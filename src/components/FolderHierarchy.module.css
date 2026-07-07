@@ -1,7 +1,7 @@
 .panel {
   display: inline-flex;
   flex-direction: column;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--inv-surface-row-border);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
@@ -19,13 +19,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--inv-surface-row-border);
   padding: 1rem;
 }
 
 .headerTitle {
   font-weight: bold;
-  color: #0f172a;
+  color: var(--inv-surface-row-text);
 }
 
 .headerActions {
@@ -43,7 +43,7 @@
   align-items: center;
   gap: 8px;
   padding: 1rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--inv-surface-row);
   line-height: 1.4;
 }
 

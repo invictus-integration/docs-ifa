@@ -25,10 +25,13 @@ export default function Breadcrumb({ paths, items, activeLast = true }: Breadcru
 
   return (
     <nav className={styles.nav} aria-label="Breadcrumb">
-      <span className={styles.logo}>
-        <img src="/img/favicon.ico" alt="" />
-      </span>
       <ol className={styles.list}>
+        <li className={styles.listItem}>
+          <span className={styles.logo}>
+            <img src="/img/favicon.ico" alt="" />
+          </span>
+          <Chevron />
+        </li>
         {segments.map((segment, i) => {
           const isLast = i === segments.length - 1;
           const isActive = activeLast && isLast;

@@ -1,9 +1,15 @@
 /* stylelint-disable docusaurus/copyright-header */
 /**
  * Custom global CSS for Docusaurus site using a deep greenish-blue primary color.
+ *
  */
 
+
+/* ─── 1. CSS Custom Properties (Light Mode) ──────────────────────────────── */
+
 :root {
+
+  /* 1a. Brand colors */
   --ifm-color-primary: #014550;
   --ifm-color-primary-dark: #013c46;
   --ifm-color-primary-darker: #01363f;
@@ -28,8 +34,7 @@
   --ifm-color-warning-lighter: #ffcd6f;
   --ifm-color-warning-lightest: #ffe29f;
 
-  --ifm-code-font-size: 95%;
-
+  /* 1b. Gray scale */
   --ifm-color-gray-100: #eef1f1;
   --ifm-color-gray-200: #d9dddd;
   --ifm-color-gray-300: #c4c8c8;
@@ -37,41 +42,105 @@
   --ifm-color-gray-500: #7e8282;
   --ifm-color-gray-600: #5b5f5f;
   --ifm-color-gray-700: #404343;
-  --ifm-color-gray-800: #1A202C;
+  --ifm-color-gray-800: #1a202c;
   --ifm-color-gray-900: #171923;
 
+  /* 1c. Layout & spacing */
+  --ifm-global-spacing: 1.5rem;
+  --ifm-toc-border-color: var(--ifm-color-gray-200);
+
+  /* 1d. Navbar tokens */
   --ifm-navbar-shadow: 0 1px 2px 0 var(--ifm-color-primary);
   --ifm-navbar-background-color: var(--ifm-color-primary);
   --ifm-navbar-link-color: var(--ifm-color-secondary-lightest);
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary-darkest);
+  --ifm-navbar-link-hover-color: var(--ifm-color-secondary-dark);
   --ifm-navbar-search-input-background-color: var(--ifm-color-secondary-lighter);
   --ifm-navbar-search-input-color: var(--ifm-color-gray-800);
-  --ifm-toc-border-color: var(--ifm-color-gray-200);
-  --ifm-global-spacing: 1.5rem;
+
+  /* 1e. Typography tokens — also consumed by inline SVG diagrams via var() */
+  --ifm-font-family-base: 'Inter', sans-serif;
+  --ifm-heading-font-family: 'Bitter', sans-serif;
+  --ifm-code-font-size: 95%;
   --docusaurus-details-decoration-color: var(--ifm-color-primary);
   --ifm-table-stripe-background: var(--ifm-color-secondary-lighter);
-  --ifm-menu-color-background-active: var(--ifm-color-secondary-lighter);
+  --ifm-menu-color-background-active: var(--ifm-color-secondary-lighter) !important;
+
+  /* 1f. Invictus component design tokens
+   *
+   *  Use these in custom components instead of hardcoded hex values.
+   *  --inv-tint-*       Translucent teal overlays for hover/active/focus
+   *  --inv-diagram-*    Colors for SVG flow diagram components
+   *  --inv-surface-*    Card and row backgrounds / borders
+   *  --inv-badge-*      Badge / pill colors
+   */
+
+  /* Tint overlays — teal-based transparency layers */
+  --inv-tint-subtle: rgba(1, 69, 80, 0.06);
+  /* barely-there, hover */
+  --inv-tint-soft: rgba(1, 69, 80, 0.08);
+  /* open/active state */
+  --inv-tint-active: rgba(1, 69, 80, 0.20);
+  /* stronger hover, badge surfaces */
+  --inv-tint-medium: rgba(1, 69, 80, 0.18);
+  /* focus rings, step connectors */
+  --inv-tint-strong: rgba(1, 69, 80, 0.28);
+  /* step ring halos */
+
+  /* Sidebar surface */
+  --inv-sidebar-bg: var(--ifm-color-gray-800);
+
+  /* Diagram — flow diagram header bar */
+  --inv-diagram-header-bg: #065b68;
+  --inv-diagram-header-accent: #014550;
+  --inv-diagram-header-text: #ffffff;
+  --inv-diagram-header-subtitle: #a0dde5;
+
+  /* Diagram — row/node surfaces */
+  --inv-diagram-surface: #ffffff;
+  --inv-diagram-surface-stroke: #b8c0c2;
+  --inv-diagram-text: #1c1e21;
+  --inv-diagram-arrow: #065b68;
+  --inv-diagram-separator: rgba(255, 255, 255, 0.18);
+
+  /* Diagram — customer step/task boxes (non-Invictus) */
+  --inv-diagram-step-bg: #e8edee;
+  --inv-diagram-step-text: #1c1e21;
+
+  /* Diagram — sort/sequence illustration boxes */
+  --inv-sort-a-bg: #065b68;
+  --inv-sort-b-bg: #b75b07;
+  --inv-sort-c-bg: #4e5354;
+  --inv-sort-d-bg: #8a9293;
+  --inv-sort-text: #ffffff;
+  --inv-sort-separator: #b8c0c2;
+  --inv-sort-slot-active-bg: #065b68;
+  --inv-sort-slot-active-accent: #014550;
+  --inv-sort-slot-default-bg: #f3f6f7;
+  --inv-sort-slot-default-text: #1c1e21;
+  --inv-sort-slot-pending-bg: #ffffff;
+  --inv-sort-slot-pending-stroke: #b8c0c2;
+  --inv-sort-slot-pending-text: #8a9293;
+
+  /* Surface — card/row backgrounds used in ResultRow, FolderHierarchy, etc. */
+  --inv-surface-row: #f1f5f9;
+  --inv-surface-row-border: #e2e8f0;
+  --inv-surface-row-text: #0f172a;
+
+  /* Badge — semantic pill colors */
+  --inv-badge-new-bg: #059669;
+  --inv-badge-new-text: #ffffff;
+  --inv-badge-deprecated-bg: #b55d00;
+  --inv-badge-deprecated-text: #ffffff;
+  --inv-badge-shared-bg: #e0f7f7;
+  --inv-badge-shared-text: #0b6369;
+  --inv-badge-shared-accent: #0b6369;
 }
 
-.navbar {
-  box-shadow: none;
-}
 
-.navbar button svg {
-  color: #ffffff;
-}
+/* ─── 2. Dark Mode ───────────────────────────────────────────────────────── */
 
-.navbar button:hover svg {
-  color: var(--ifm-color-primary-light);
-}
-
-html[data-theme='dark'] .navbar button:hover svg {
-  color: var(--ifm-color-primary-light);
-}
-
-
+/* 2a. Token overrides */
 html[data-theme='dark'] {
-  /* Dark background and greenish-blue primary */
   --ifm-background-color: var(--ifm-color-gray-900);
   --ifm-navbar-background-color: #014550;
   --ifm-color-primary: #2a8f9c;
@@ -82,30 +151,63 @@ html[data-theme='dark'] {
   --ifm-breadcrumb-color-active: var(--ifm-link-color);
   --ifm-dropdown-background-color: var(--ifm-color-gray-800);
   --ifm-table-stripe-background: var(--ifm-color-gray-800);
-  --ifm-menu-color-background-active: var(--ifm-color-gray-800);
+  --ifm-menu-color-background-active: var(--ifm-color-gray-800) !important;
   --ifm-menu-color-active: var(--ifm-color-primary-lightest);
+
+  /* Invictus tint overlays */
+  --inv-tint-subtle: rgba(42, 143, 156, 0.07);
+  --inv-tint-soft: rgba(42, 143, 156, 0.10);
+  --inv-tint-active: rgba(42, 143, 156, 0.20);
+  --inv-tint-medium: rgba(255, 255, 255, 0.12);
+  --inv-tint-strong: rgba(42, 143, 156, 0.40);
+
+  /* Diagram — flow diagram header bar */
+  --inv-diagram-header-bg: #1a5f68;
+  --inv-diagram-header-accent: #2a8f9c;
+
+  /* Diagram — row/node surfaces */
+  --inv-diagram-surface: #374151;
+  --inv-diagram-surface-stroke: #6B7280;
+  --inv-diagram-text: #D1D5DB;
+  --inv-diagram-arrow: #2a8f9c;
+
+  /* Diagram — customer step/task boxes (non-Invictus) */
+  --inv-diagram-step-bg: #2d3748;
+  --inv-diagram-step-text: #D1D5DB;
+
+  /* Diagram — sort/sequence illustration boxes */
+  --inv-sort-a-bg: #1a5f68;
+  --inv-sort-b-bg: #92400e;
+  --inv-sort-c-bg: #374151;
+  --inv-sort-d-bg: #4B5563;
+  --inv-sort-separator: #6B7280;
+  --inv-sort-slot-active-bg: #1a5f68;
+  --inv-sort-slot-active-accent: #2a8f9c;
+  --inv-sort-slot-default-bg: #374151;
+  --inv-sort-slot-default-text: #D1D5DB;
+  --inv-sort-slot-pending-bg: #1f2937;
+  --inv-sort-slot-pending-stroke: #6B7280;
+  --inv-sort-slot-pending-text: #9CA3AF;
+
+  /* Surface */
+  --inv-surface-row: #1A202C;
+  --inv-surface-row-border: #404343;
+  --inv-surface-row-text: #D1D5DB;
+
+  /* Badge */
+  --inv-badge-shared-bg: rgba(42, 143, 156, 0.15);
+  --inv-badge-shared-text: #4fcadf;
+  --inv-badge-shared-accent: #4fcadf;
 }
 
+/* 2b. Component styles */
 html[data-theme='dark'] .footer--dark {
   background-color: var(--ifm-color-gray-800);
   border-top: 1px solid black;
 }
 
-details.alert {
-  background-color: var(--ifm-color-secondary-lightest);
-  border-color: var(--ifm-color-primary);
-}
-
 html[data-theme='dark'] details.alert {
-  /* background-color: var(--ifm-alert-background-color-highlight); */
   background-color: var(--ifm-color-gray-800);
-}
-
-.alert--praise {
-  --ifm-alert-background-color: #f3e8ff;
-  --ifm-alert-background-color-highlight: #e1d5fa;
-  --ifm-alert-foreground-color: #6a1b9a;
-  --ifm-alert-border-color: #ab47bc;
 }
 
 html[data-theme='dark'] .alert--praise {
@@ -115,39 +217,25 @@ html[data-theme='dark'] .alert--praise {
   --ifm-alert-border-color: #ce93d8;
 }
 
-/* Highlighting code lines */
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
-}
-
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: var(--ifm-color-gray-800);
-}
-
-code {
-  background-color: var(--ifm-color-gray-100);
 }
 
 html[data-theme='dark'] code {
   background-color: var(--ifm-color-gray-800);
 }
 
-/* Footer */
-.footer--dark {
-  background-color: var(--ifm-color-gray-800);
+html[data-theme='dark'] .navbar button:hover svg {
+  color: var(--ifm-color-secondary-dark);
 }
 
-/* Branding tweaks */
-.navbar__brand img {
-  height: auto;
-  margin-right: 10px;
-  margin-bottom: 5px;
+html[data-theme='dark'] .navbar-sidebar__back {
+  background-color: var(--ifm-menu-color-background);
 }
 
-/* Typography */
+/* ─── 3. Base / Global ───────────────────────────────────────────────────── */
+
+/* 3a. Typography */
 html {
   font-family: 'Inter', sans-serif;
   font-weight: normal;
@@ -171,29 +259,16 @@ p {
   line-height: 150%;
 }
 
-.theme-doc-markdown a {
-  text-decoration: underline;
-}
-
 strong,
 .navbar__title {
   font-family: 'Bitter', sans-serif;
 }
 
-.navbar__title {
-  font-size: 1rem;
-  align-self: baseline;
-  margin-top: 8px;
+.theme-doc-markdown a {
+  text-decoration: underline;
 }
 
-nav.menu {
-  padding: 1rem;
-}
-
-.hidden {
-  display: none !important;
-}
-
+/* 3b. Images */
 [data-theme="light"] img[src$="#dark-mode-only"],
 [data-theme="dark"] img[src$="#light-mode-only"] {
   display: none;
@@ -204,50 +279,44 @@ nav.menu {
   display: block;
   margin-left: auto;
   margin-right: auto;
-
 }
 
-.flow-trace-text {
-  color: #734dc4;
+
+/* ─── 4. Components ──────────────────────────────────────────────────────── */
+
+/* 4a. Navbar */
+.navbar {
+  box-shadow: none;
 }
 
-.flow-text {
-  color: #406369;
+.navbar__brand img {
+  height: 40px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-top: -5px;
 }
 
-.flow-add-number {
-  display: inline-block;
-  background-color: #d6955c;
-  color: white;
-  font-family: 'Bitter', sans-serif;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  line-height: 24px;
-  font-weight: bold;
-  font-size: 14px;
+.navbar__title {
+  font-size: 1rem;
+  align-self: baseline;
+  margin-top: 8px;
 }
 
-.no-wrap {
-  white-space: nowrap;
+.navbar button svg {
+  color: #ffffff;
 }
 
-.footer-link {
-  color: var(--ifm-footer-link-color) !important;
-  transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+.navbar button:hover svg {
+  color: var(--ifm-color-secondary-dark);
 }
 
-.footer-link::hover,
-.footer-link::focus {
-  color: var(--ifm-color-primary-dark);
-}
-
-/* Mobile sidebar: the sidebar background inherits --ifm-navbar-background-color
+/* 4b. Mobile sidebar
+   The sidebar background inherits --ifm-navbar-background-color
    (our primary dark teal), so menu text must be light to stay readable. */
 .navbar-sidebar {
   --ifm-menu-color: var(--ifm-color-secondary-lightest);
   --ifm-menu-color-active: #ffffff;
+  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
 }
 
 .navbar-sidebar .menu__link:hover,
@@ -272,8 +341,303 @@ nav.menu {
   stroke: var(--ifm-color-secondary-lightest);
 }
 
-html[data-theme='dark'] .navbar-sidebar__back {
-  background-color: var(--ifm-menu-color-background);
+nav.menu {
+  padding: 1rem;
 }
 
-/* User type switcher styles live in UserTypeSwitcher.module.css */
+/* 4b-i. Desktop sidebar — contrasting surface + stronger divider.
+ *
+ *  Light: --ifm-color-secondary-lightest (#f3f6f7) — a very light teal-gray,
+ *         clearly distinct from the pure-white page background without
+ *         being heavy. The right border is stepped up to the primary color
+ *         so the boundary reads as intentional structure, not an accident.
+ *
+ *  Dark:  --ifm-color-gray-800 (#1a202c) — one step darker than the page
+ *         background (#171923), giving a subtle but legible separation.
+ *         Border matches the dark primary.
+ *
+ *  The menu link colors are also lifted slightly so they have enough contrast
+ *  against the new tinted surface (WCAG AA on both backgrounds).
+ */
+.docSidebarContainer,
+.theme-doc-sidebar-container {
+  background-color: var(--inv-sidebar-bg);
+  border-right: 2px solid black !important;
+
+  /* Override menu token colors for the dark sidebar surface.
+   * Scoped here so mobile sidebar (navbar-sidebar) is unaffected. */
+  --ifm-menu-color: var(--ifm-color-gray-300);
+  /* muted gray — clearly inactive */
+  --ifm-menu-color-active: #ffffff;
+  /* bright white — clearly active; #f3f6f7 inactive is too close */
+  --ifm-menu-color-background-active: black !important;
+  --ifm-menu-color-background-hover: var(--ifm-color-gray-700) !important;
+  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+}
+
+/* Infima defaults collapsible--active to hover bg; align it with active bg instead */
+.theme-doc-sidebar-container .menu__list-item-collapsible--active {
+  background: var(--ifm-menu-color-background-active) !important;
+}
+
+/* Root-level categories use menu__link--sublist-caret with a ::after caret.
+ * flex-direction: row-reverse on the parent doesn't help here because the caret
+ * lives inside the <a> itself. Suppress ::after and move it to ::before so it
+ * appears before the label text. Applies to both desktop and mobile sidebars. */
+:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__link--sublist-caret::after {
+  display: none;
+}
+
+:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__link--sublist-caret::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 2rem;
+  filter: var(--ifm-menu-link-sublist-icon-filter);
+  transform: rotate(180deg);
+  transition: transform var(--ifm-transition-fast) linear;
+  margin-right: var(--ifm-menu-link-padding-horizontal);
+}
+
+:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__list-item--collapsed .menu__link--sublist-caret::before {
+  transform: rotateZ(90deg);
+}
+
+:is(.theme-doc-sidebar-menu, .theme-doc-sidebar-item-category, .navbar-sidebar) .menu__list-item-collapsible {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-left: 0;
+}
+
+/* When caret button leads (row-reverse), strip its right padding to avoid
+ * double gap: button-padding-right + link-padding-left would be too wide */
+:is(.theme-doc-sidebar-menu, .theme-doc-sidebar-item-category, .navbar-sidebar) .menu__list-item-collapsible .menu__caret {
+  padding-right: 0;
+}
+
+.theme-doc-sidebar-menu .menu__list .menu__list>.menu__list-item>.menu__link {
+  padding-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.theme-doc-sidebar-menu .menu__list .menu__list,
+.theme-doc-sidebar-item-category .menu__list {
+  border-left: 1px dashed var(--ifm-color-gray-300) !important;
+  padding-left: 0.5rem;
+  margin-left: 1.3rem;
+
+}
+
+html[data-theme='dark'] .docSidebarContainer,
+html[data-theme='dark'] .theme-doc-sidebar-container {
+  background-color: var(--ifm-color-gray-800);
+  border-right-color: black !important;
+
+  /* Dark mode sidebar already has light text via global dark tokens — reset overrides */
+  --ifm-menu-color: var(--ifm-color-gray-300);
+  --ifm-menu-color-active: #ffffff;
+}
+
+/* 4c. Footer */
+.footer--dark {
+  background-color: var(--ifm-color-gray-800);
+  border-top: 1px solid black;
+}
+
+.footer-link {
+  color: var(--ifm-footer-link-color) !important;
+  transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  color: var(--ifm-color-primary-dark);
+}
+
+/* 4d. Alerts & details */
+details.alert {
+  background-color: var(--ifm-color-secondary-lightest);
+  border-color: var(--ifm-color-primary);
+}
+
+.alert--praise {
+  --ifm-alert-background-color: #f3e8ff;
+  --ifm-alert-background-color-highlight: #e1d5fa;
+  --ifm-alert-foreground-color: #6a1b9a;
+  --ifm-alert-border-color: #ab47bc;
+}
+
+/* 4e. Code blocks */
+code {
+  background-color: var(--ifm-color-gray-100);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+/* 4f. Flow / diagram utilities */
+.flow-trace-text {
+  color: #734dc4;
+}
+
+.flow-text {
+  color: #406369;
+}
+
+.flow-add-number {
+  display: inline-block;
+  background-color: #d6955c;
+  color: white;
+  font-family: 'Bitter', sans-serif;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+
+/* ─── 5. Tabs ────────────────────────────────────────────────────────────── */
+
+/*
+ * Design intent:
+ *  - Inactive tabs → tag style: subtle filled background, rounded corners,
+ *    muted text. Signals "clickable option" without dominating the page.
+ *  - Active tab   → open folder tab: no fill, strong primary text + weight,
+ *    three-sided border that visually merges with the panel below.
+ *  - Panel        → bordered container that continues from the active tab,
+ *    creating one unified "card" feel.
+ *
+ * Technique: the active tab sits margin-bottom: -1px so its bottom border
+ * (page-background colour) "erases" the strip's bottom border at that point,
+ * making the tab look like it opens into the panel.
+ */
+
+.tabs-container {
+  margin-top: 1.5rem;
+}
+
+/* 5a. Tab strip */
+.tabs-container ul.tabs {
+  border-bottom: 1px solid var(--ifm-color-primary);
+  gap: 4px;
+  padding: 0;
+  margin-bottom: 0;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+/* 5b. Inactive tab — tag/pill style */
+.tabs-container ul.tabs .tabs__item {
+  border-radius: 6px 6px 0 0;
+  background: var(--ifm-color-secondary-lighter);
+  color: var(--ifm-color-gray-600);
+  font-weight: 500;
+  font-size: inherit;
+  padding: 6px 14px;
+  border: 1px solid var(--ifm-color-gray-200);
+  border-bottom: 1px solid var(--ifm-color-primary);
+  margin-bottom: -1px;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.tabs-container ul.tabs .tabs__item:hover:not(.tabs__item--active) {
+  background: var(--ifm-color-gray-200);
+  color: var(--ifm-color-gray-700);
+  border-color: var(--ifm-color-primary);
+}
+
+/* 5c. Active tab — no fill, strong text, open bottom = visual continuity */
+.tabs-container ul.tabs .tabs__item--active {
+  background: transparent;
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+  border: 1px solid var(--ifm-color-primary);
+  border-bottom-color: #ffffff;
+  /* --ifm-background-color is 'transparent' in infima light mode; hardcode to erase the strip border */
+}
+
+/* 5c-i. Focus indicator — explicit :focus-visible so the keyboard ring is
+ *        always visible on top of both the filled and borderless tab states.
+ *        2px offset keeps the ring outside the border — WCAG 2.4.13 compliant. */
+.tabs-container ul.tabs .tabs__item:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 6px 6px 0 0;
+}
+
+/* 5d. Tab panel — bordered container that continues from the active tab.
+ *     Child combinator (>) scopes this to Docusaurus's own direct tabpanel
+ *     only, so nested components with role="tabpanel" (e.g. ApiPlayground)
+ *     are not affected. */
+.tabs-container>[role="tabpanel"] {
+  border: 1px solid var(--ifm-color-primary);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 1.25rem 1rem;
+  margin-top: 0;
+}
+
+/* 5e. Dark mode */
+html[data-theme='dark'] .tabs-container ul.tabs {
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .tabs-container ul.tabs .tabs__item {
+  background: var(--ifm-color-gray-800);
+  color: var(--ifm-color-gray-400);
+  border-color: var(--ifm-color-gray-700);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .tabs-container ul.tabs .tabs__item:hover:not(.tabs__item--active) {
+  background: var(--ifm-color-gray-700);
+  color: var(--ifm-color-gray-300);
+  border-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .tabs-container ul.tabs .tabs__item--active {
+  background: transparent;
+  color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-background-color, #171923);
+}
+
+html[data-theme='dark'] .tabs-container>[role="tabpanel"] {
+  border-color: var(--ifm-color-primary);
+}
+
+/* ─── 6. Utilities ───────────────────────────────────────────────────────── */
+
+.hidden {
+  display: none !important;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+
+/* ─── 7. Responsive ──────────────────────────────────────────────────────── */
+
+/* 7a. Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --ifm-menu-color-background-active: var(--ifm-color-primary-darker) !important;
+  }
+
+  [data-theme="dark"] {
+    --ifm-menu-color-background-active: var(--ifm-color-primary-darker) !important;
+  }
+}
+
+/* 7b. Mobile (≤ 640px) — covered by 7a; no additional overrides needed */

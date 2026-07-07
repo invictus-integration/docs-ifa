@@ -355,9 +355,22 @@ export default function SearchBar() {
 
   function navigate(result) {
     recentSearches.add({ query, title: result.title, filepath: result.filepath });
-    // Knowledge results store their original URL directly to avoid filepath-to-URL conversion
-    const dest = result.url ?? (filepathToUrl(result.filepath) + (result.anchor ?? ''));
-    history.push(dest);
+    const raw = result.url ?? (filepathToUrl(result.filepath) + (result.anchor ?? ''));
+
+    // Append ?highlight=<term> so SearchHighlighter can highlight on arrival.
+    // Insert before the hash so anchors still work correctly.
+    // Fall back to result.query so replaying a recent search also highlights.
+    const term = query.trim() || (result.query ?? '').trim();
+    if (term) {
+      const hashIdx = raw.indexOf('#');
+      const base = hashIdx >= 0 ? raw.slice(0, hashIdx) : raw;
+      const hash = hashIdx >= 0 ? raw.slice(hashIdx) : '';
+      const sep = base.includes('?') ? '&' : '?';
+      history.push(`${base}${sep}highlight=${encodeURIComponent(term)}${hash}`);
+    } else {
+      history.push(raw);
+    }
+
     setQuery('');
     setIsOpen(false);
   }
@@ -708,6 +721,7 @@ export default function SearchBar() {
                     <div key={r.filepath} className={styles.recentItemRow} onMouseEnter={() => setActiveIndex(i)}>
                       <div
                         id={`search-opt-${i}`}
+                        data-cy="recent-result"
                         className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
                         role="option"
                         aria-selected={i === activeIndex}

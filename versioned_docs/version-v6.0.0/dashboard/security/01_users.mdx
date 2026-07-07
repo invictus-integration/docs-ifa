@@ -4,10 +4,14 @@ sidebar_label: Add new users
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Admonition from '@theme/Admonition';
 import { OnlyAdminsBadge, NewSinceBadge } from '@site/src/components/Badges';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faLock, faSlidersH,faUser,faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faLock, faSlidersH,faUser,faMagnifyingGlass, faPlus, faPencil} from '@fortawesome/free-solid-svg-icons';
+import {faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import {faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import Breadcrumb from '@site/src/components/Breadcrumb';
+import { Tab, SignInWithMicrosoftButton, TextInput, DropDownInput, Button, ToggleInput, NumberInput } from '@site/src/components/InputControls';
 
 # Manage Users in the Dashboard
 <Breadcrumb paths={["Users"]} />
@@ -30,23 +34,22 @@ You can configure the Invictus Dashboard to [use existing users in Microsoft Ent
 <details>
 <summary><span id="add-an-entra-id-user">**Add an Entra ID user to the Dashboard**</span></summary>
 
-Microsoft Entra ID users can sign in automatically into the Invictus Dashboard if that user is part of a [synced group into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
+Microsoft Entra ID users can sign in automatically into the Invictus Dashboard with the [<SignInWithMicrosoftButton />](../installation/01_give_ad_access.mdx) button if that user is part of a [synced group into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
 :::warning[requires role]
 Make sure that the group has a [role assigned](./03_roles.mdx), otherwise the Dashboard will be unusable for the user.
 :::
 
-![Entra ID user sign in](/images/dashboard/AdminAccount/adminAccount-4.jpg)
 </details>
 
 <details>
 <summary>**Delete an Entra ID user from the Dashboard** <OnlyAdminsBadge/></summary>
 
-Click the delete icon to delete a user in the user list.
+Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard.
 
-![delete azure user](/images/delete-azure-user.PNG)
-    > <FontAwesomeIcon icon={faMagnifyingGlass} /> You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
-
+<Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish Entra ID users">
+You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
+</Admonition>
 </details>
 
 <details>
@@ -62,13 +65,11 @@ Entra ID users don't have personalized roles that allow them to access certain f
 
 Before you can use the forgot password feature, you need to create an Microsoft Entra ID app registration and [set it up with the `Mail.Send` API permissions](../installation/01_give_ad_access.mdx). The OAuth 2.0 flow requires this to send emails securely.
 
+Navigate to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} /> and add the backup email address where to send the 'Forgot password' emails. 
+
 :::warning
 Please note that the permission granted allows any email address within the organization to be used as the sender.
 :::
-
-<Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} />
-
-![Global settings page as system administrator](/images/dashboard/settings-page-as-admin.png)
 
 </details>
 
@@ -80,47 +81,43 @@ Local users are entirely managed by the Invictus Dashboard. You can assign perso
 <details>
 <summary>**Add a local user to the Dashboard** <OnlyAdminsBadge/></summary>
 
-Local users can have a [role assigned](./03_roles.mdx).
+Navigate to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
+* Fill in the required <TextInput label="Username" />, <TextInput label="Email" /> and <TextInput label="Password" /> fields.
+* Local users can have a personal [<DropDownInput label="Role" />](./03_roles.mdx) assigned to them to allow them to access certain flows in the Dashboard.
 
-<Breadcrumb paths={[`Users`, `Add a new user`]} />
-
-![add user details](/images/v2_users2.png)
 </details>
 
 <details>
 <summary>**Delete a local user from the Dashboard** <OnlyAdminsBadge/></summary>
 
-You can distinguish local users as they have a personal role assigned.
+Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard.
 
-![delete local user](/images/delete-local-user.PNG)
+<Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish local users">
+You can distinguish local users as they have a personal role assigned.
+</Admonition>
+
 </details>
 
 <details>
 <summary>**Edit a local user's role in the Dashboard** <OnlyAdminsBadge/></summary>
 
-Local users can have a [role assigned](./03_roles.mdx).
-
-![edit local user](/images/edit-local-user.PNG)
-
-![edit user role](/images/v2_users3.png)
+Click on the <FontAwesomeIcon icon={faPencil} /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx) in the Dashboard.
 </details>
 
 <details>
 <summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
 
-For local users to allow them to run the 'Forgot password' procedure, configure the following details to use to correct email server.
+For local users to allow them to run the 'Forgot password' procedure, configure the correct email server.
 
-<Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
-
-![forgot password](/images/dashboard/ForgotPassword/ForgotPassword_7.jpg)
+Navigate to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
 
 | Forgot password setting  | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Host`                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be `"smtp.gmail.com"`. |
-| `Port number`            | The port number for the email server from which the sender accounts originates, default is `587`.                                                                |
-| `Email key vault key`    | The Azure Key Vault secret name where you stored the sender email address (points to the Key Vault resource accompanied with the Invictus installation).         |
-| `Password key vault key` | The Azure Key Vault secret name where you stored the sender email password (points to the Key Vault resource accompanied with the Invictus installation).        |
-| `SSL Enabled`            | It's recommended to enable SSL, as major email providers often require this setting.                                                                             |
+| <TextInput label="Host" />                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be `"smtp.gmail.com"`. |
+| <NumberInput label="Port number" />            | The port number for the email server from which the sender accounts originates, default is `587`.                                                                |
+| <TextInput label="Email key vault key" />    | The Azure Key Vault secret name where you stored the sender email address (points to the Key Vault resource accompanied with the Invictus installation).         |
+| <TextInput label="Password key vault key" /> | The Azure Key Vault secret name where you stored the sender email password (points to the Key Vault resource accompanied with the Invictus installation).        |
+| <ToggleInput label="Enable SSL" />            | It's recommended to enable SSL, as major email providers often require this setting.                                                                             |
   
 </details>
 

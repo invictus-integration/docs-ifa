@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="535" height="470" viewBox="0 0 535 470"
+     font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+    <marker id="arr-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#065F46"/>
+    </marker>
+  </defs>
+
+  <rect x="10" y="10" width="515" height="450" rx="8" fill="white" stroke="#E5E7EB" stroke-width="1.5"/>
+  <text x="267" y="37" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">After Resume</text>
+
+  <!-- Flow (success) -->
+  <rect x="87" y="56" width="360" height="38" rx="4" fill="#ECFDF5" stroke="#065F46" stroke-width="2"/>
+  <text x="267" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#065F46">Flow</text>
+
+  <!-- Flow → Node 1 (active) -->
+  <line x1="267" y1="94" x2="267" y2="136" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 1 (active / success) -->
+  <rect x="127" y="136" width="280" height="68" rx="4" fill="#ECFDF5" stroke="#065F46" stroke-width="2"/>
+  <text x="267" y="156" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">1</text>
+  <text x="267" y="173" text-anchor="middle" font-size="11" fill="#065F46">WorkFlowRunId: 111</text>
+  <text x="267" y="190" text-anchor="middle" font-size="10" fill="#065F46">x-iv-parent-workflow-run-id: null</text>
+
+  <!-- Node 1 → Node 3 (gray dashed — draw before solid so solid renders on top in shared segment) -->
+  <path d="M 267,204 L 267,229 L 377,229 L 377,244"
+        stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-gray)"/>
+  <!-- Node 1 → Node 2 (active solid — drawn on top) -->
+  <path d="M 267,204 L 267,229 L 157,229 L 157,244"
+        stroke="#4B5563" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+
+  <!-- Node 2 (active / success) -->
+  <rect x="62" y="244" width="190" height="68" rx="4" fill="#ECFDF5" stroke="#065F46" stroke-width="2"/>
+  <text x="157" y="264" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">2</text>
+  <text x="157" y="281" text-anchor="middle" font-size="11" fill="#065F46">WorkFlowRunId: 222</text>
+  <text x="157" y="298" text-anchor="middle" font-size="10" fill="#065F46">x-iv-parent-workflow-run-id: 111</text>
+
+  <!-- Node 3 (ignored / grayed) -->
+  <rect x="282" y="244" width="190" height="68" rx="4" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1.5"/>
+  <text x="377" y="264" text-anchor="middle" font-size="12" font-weight="700" fill="#6B7280">3</text>
+  <text x="377" y="281" text-anchor="middle" font-size="11" fill="#6B7280">WorkFlowRunId: 333</text>
+  <text x="377" y="298" text-anchor="middle" font-size="10" fill="#9CA3AF">x-iv-parent-workflow-run-id: 111</text>
+
+  <!-- Node 3 → Node 4 (OriginWorkFlowRunId link — green dashed) -->
+  <line x1="377" y1="312" x2="377" y2="356"
+        stroke="#065F46" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-green)"/>
+
+  <!-- Node 4 (success — resumed run) -->
+  <rect x="282" y="356" width="190" height="80" rx="4" fill="#ECFDF5" stroke="#065F46" stroke-width="2"/>
+  <text x="377" y="377" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">4</text>
+  <text x="377" y="394" text-anchor="middle" font-size="11" fill="#065F46">WorkFlowRunId: 444</text>
+  <text x="377" y="411" text-anchor="middle" font-size="10" fill="#065F46">x-iv-parent-workflow-run-id: 111</text>
+  <text x="377" y="427" text-anchor="middle" font-size="10" font-style="italic" fill="#065F46">OriginWorkFlowRunId: 333</text>
+
+</svg>

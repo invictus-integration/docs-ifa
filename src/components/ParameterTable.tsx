@@ -2,15 +2,16 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faChevronRight, faChevronDown, faGripLines, faXmark, faFileCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faChevronRight, faChevronDown, faXmark, faFileCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useHistory } from "@docusaurus/router";
 import highlightStyles from "./highlight.module.css";
 import inputStyles from "./tableSearchInput.module.css";
 import rowStyles from "./resultRow.module.css";
-import { NewSinceBadge, DeprecatedSinceBadge, DefaultValueBadge } from "./Badges";
+import { NewSinceBadge, DeprecatedSinceBadge } from "./Badges";
 
 export type Parameter = {
   name: string;
+  type?: string;
   tags: string[];
   description?: string;
   properties?: Parameter[];
@@ -33,6 +34,10 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     () => rawParameters.filter((p) => fixedTags.every((tag: string) => p.tags.includes(tag))).sort((p1, p2) => p1.name.localeCompare(p2.name)),
     [rawParameters, fixedTags]
   );
+
+  // Stable instance ID for aria-controls / aria-describedby relationships.
+  // useRef ensures it never changes across re-renders.
+  const panelId = useRef(`param-table-${Math.random().toString(36).slice(2)}`).current;
 
   const location = useLocation();
   const history = useHistory();
@@ -63,6 +68,7 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     }
   }, [activeTags]);
 
+  const [showAll, setShowAll] = useState(false);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const toggleRow = (name: string) => {
     setExpandedRows((prev: Set<string>): Set<string> => {
@@ -72,6 +78,20 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     });
   };
 
+  // Focus management: when the disclosure button is clicked it unmounts, so we
+  // explicitly move focus to the first tag button (or the search input as fallback)
+  // to prevent focus from dropping to <body>.
+  const tagGroupRef = useRef<HTMLDivElement>(null);
+  const prevShowAllRef = useRef(false);
+  useEffect(() => {
+    if (showAll && !prevShowAllRef.current) {
+      const firstBtn = tagGroupRef.current?.querySelector<HTMLElement>("button");
+      if (firstBtn) firstBtn.focus();
+      else searchInputRef.current?.focus();
+    }
+    prevShowAllRef.current = showAll;
+  }, [showAll]);
+
   const [activeIndex, setActiveIndex] = useState(-1);
   const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map());
 
@@ -80,7 +100,7 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     const collectTags = (params: Parameter[]) => {
       params.forEach((p) => {
         p.tags?.forEach((tag) => tagSet.add(tag));
-        if (p.properties) collectTags(p.properties);
+        if (Array.isArray(p.properties)) collectTags(p.properties);
       });
     };
     collectTags(parameters);
@@ -119,13 +139,26 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     }
   }, [search]);
   const normalizedSearch = search.toLowerCase();
+
+  // Tags whose names include the current search text — used to visually suggest
+  // the user could activate them as a filter instead of (or in addition to) text search.
+  const suggestedTags = useMemo(() => {
+    if (!normalizedSearch) return [];
+    return allTags.filter(
+      (tag) =>
+        tag.toLowerCase().includes(normalizedSearch) &&
+        !activeTags.includes(tag) &&
+        !fixedTags.includes(tag)
+    );
+  }, [normalizedSearch, allTags, activeTags, fixedTags]);
+
   const matchesSearchRecursive = (p: Parameter): boolean => {
     if (!normalizedSearch) return true;
 
     const selfMatch = p.name.toLowerCase().includes(normalizedSearch);
 
     const childMatch =
-      p.properties?.some((sub) => matchesSearchRecursive(sub)) ?? false;
+      (Array.isArray(p.properties) ? p.properties : []).some((sub) => matchesSearchRecursive(sub));
 
     return selfMatch || childMatch;
   };
@@ -227,6 +260,22 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     );
   };
 
+  // Maps a Bicep parameter type string to its CSS module class for the pill badge.
+  const typeBadgeClass = (type: string): string => {
+    switch (type.toLowerCase()) {
+      case "string": return rowStyles.typeBadgeString;
+      case "int":
+      case "integer": return rowStyles.typeBadgeInt;
+      case "bool":
+      case "boolean": return rowStyles.typeBadgeBool;
+      case "object": return rowStyles.typeBadgeObject;
+      case "array": return rowStyles.typeBadgeArray;
+      case "securestring": return rowStyles.typeBadgeSecureString;
+      case "secureobject": return rowStyles.typeBadgeSecureObject;
+      default: return rowStyles.typeBadgeDefault;
+    }
+  };
+
   const renderRow = (p: Parameter, depth = 0, posInSet = 1, setSize = 1) => {
     const isExpanded = expandedRows.has(p.name);
     const hasChildren = (p.properties?.length ?? 0) > 0;
@@ -241,7 +290,13 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
           role="row"
           tabIndex={isTabStop ? 0 : -1}
           ref={el => { if (el) rowRefs.current.set(rowKey, el); else rowRefs.current.delete(rowKey); }}
-          className={`${rowStyles.tableRow} ${isExpanded ? rowStyles.rowActive : ""} ${isFocused ? rowStyles.rowFocused : ""}`}
+          className={[
+            rowStyles.tableRow,
+            isExpanded ? rowStyles.rowActive : "",
+            isFocused ? rowStyles.rowFocused : "",
+            p.deprecatedSince ? rowStyles.rowDeprecated : "",
+            p.newSince ? rowStyles.rowNew : "",
+          ].filter(Boolean).join(" ")}
           style={{ cursor: hasChildren ? "pointer" : "default" }}
           data-tags={p.tags?.join(',') ?? ''}
           aria-level={depth + 1}
@@ -262,28 +317,29 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
             else if (e.key === "ArrowLeft" && hasChildren && isExpanded) { e.preventDefault(); toggleRow(p.name); }
           }}
         >
-          {/* Icon column — chevron for models, grip lines for direct params */}
-          <td role="gridcell" className={rowStyles.iconCell}>
-            <span className={rowStyles.iconWrap} aria-hidden={true}>
-              <FontAwesomeIcon icon={hasChildren ? (isExpanded ? faChevronDown : faChevronRight) : faGripLines} />
-            </span>
-          </td>
-
           {/* Name + badges column */}
-          <td role="gridcell" className={rowStyles.nameCell} style={{ paddingLeft: `calc(${depth} * var(--param-indent, 1.5rem))` }}>
+          <td role="gridcell" className={rowStyles.nameCell} style={{ paddingLeft: `calc(${depth} * var(--param-indent, 1.5rem) + 14px)` }}>
             <div className={rowStyles.rowTitle}>
-              <code id={p.name} style={codeStyle}>
+              {/* id only on depth-0 to avoid duplicate IDs when the same property name
+                  appears under multiple parent objects. Depth-0 names are unique top-level
+                  anchors; nested ones have no safe stable anchor to offer. */}
+              <code id={depth === 0 ? p.name : undefined} style={codeStyle}>
                 {highlightText(p.name, search)}
               </code>
+              {p.newSince && <NewSinceBadge version={p.newSince} style={{ fontSize: '0.72rem', marginLeft: '0px', padding: '4px 6px' }} />}
+              {p.deprecatedSince && <DeprecatedSinceBadge version={p.deprecatedSince.version} note={p.deprecatedSince.note} style={{ fontSize: '0.72rem', marginLeft: '0px', padding: '4px 6px' }} />}
             </div>
-            {(p.required || p.default !== undefined || p.newSince || p.deprecatedSince) && (
+            {(p.type || p.required || p.default !== undefined || p.newSince || p.deprecatedSince) && (
               <div className={rowStyles.badgeRow}>
+                {p.type && (
+                  <span className={`${rowStyles.typeBadge} ${typeBadgeClass(p.type)}`}>
+                    {p.type}
+                  </span>
+                )}
                 {p.required && <span className={rowStyles.badgeRequired}>required</span>}
                 {p.default !== undefined && (
                   <span className={rowStyles.badgeDefault}>default: <code>{p.default.toString()}</code></span>
                 )}
-                {p.newSince && <NewSinceBadge version={p.newSince} style={{ fontSize: '0.875rem', marginLeft: '0px' }} />}
-                {p.deprecatedSince && <DeprecatedSinceBadge version={p.deprecatedSince.version} note={p.deprecatedSince.note} style={{ fontSize: '0.875rem', marginLeft: '0px' }} />}
               </div>
             )}
           </td>
@@ -296,21 +352,57 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
                 remarkPlugins={[remarkGfm]}
                 components={{
                   a: ({ node, ...props }) => (
-                    <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle} />
+                    <a {...props} target="_blank" rel="noopener noreferrer" style={linkStyle}>
+                      {props.children}
+                      <span className={rowStyles.srOnly}> (opens in new tab)</span>
+                    </a>
                   ),
                 }}
               />
             )}
           </td>
+
+          {/* Chevron column — far-right end of row, mirrors the FAQ/help-center pattern */}
+          <td role="gridcell" className={rowStyles.chevronCell}>
+            {hasChildren && (
+              <span className={rowStyles.expandChevron} aria-hidden="true">
+                <FontAwesomeIcon icon={isExpanded ? faChevronDown : faChevronRight} />
+              </span>
+            )}
+          </td>
         </tr>
 
-        {isExpanded && p.properties?.map((sub, i) => renderRow(sub, depth + 1, i + 1, p.properties!.length))}
+        {isExpanded && Array.isArray(p.properties) && p.properties.map((sub, i) => renderRow(sub, depth + 1, i + 1, p.properties!.length))}
       </React.Fragment>
     );
   };
 
   return (
     <div style={containerStyle}>
+      {/* Always-mounted live region: ensures SRs have registered it before any
+          content changes, so announcements are reliable on both initial reveal
+          and subsequent filter updates. Hidden visually; exposed only to AT. */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-relevant="text"
+        className={rowStyles.srOnly}
+      >
+        {(() => {
+          const showResults = search !== "" || activeTags.length > 0 || showAll;
+          if (!showResults) return null;
+          if (filtered.length === 0) return `No parameters match ${search ? `"${search}"` : "the selected filters"}`;
+          return `Showing ${filtered.length} parameter${filtered.length !== 1 ? "s" : ""}`;
+        })()}
+      </div>
+
+      {/* Visually-hidden description for the treegrid: tells keyboard users how to
+          navigate rows without relying on visual hints in the footer. */}
+      <p id={`${panelId}-table-hint`} className={rowStyles.srOnly}>
+        Use arrow keys to navigate rows. Press Enter or Space to expand a row with sub-properties. Press / to focus the search field.
+      </p>
+
       <div className={inputStyles.wrapper}>
         <span className={inputStyles.icon}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -351,75 +443,111 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
         )}
       </div>
 
-      <div className={rowStyles.tagWrapper} role="group" aria-label="Filter by tag">
-        {allTags
-          .filter((tag) => !fixedTags.includes(tag))
-          .map((tag) => {
-            const isActive = activeTags.includes(tag);
-            return (
-              <button
-                key={tag}
-                data-cy={tag}
-                onClick={() => toggleTag(tag)}
-                aria-pressed={isActive}
-                className={`${rowStyles.tagButton} ${isActive ? rowStyles.tagButtonActive : ""}`}
+      {(() => {
+        const showResults = search !== "" || activeTags.length > 0 || showAll;
+
+        if (!showResults) {
+          return (
+            <button
+              data-cy="disclosure-button"
+              className={rowStyles.disclosureRow}
+              onClick={() => setShowAll(true)}
+              aria-expanded={false}
+              aria-controls={panelId}
+              aria-label={`Show all ${parameters.length} parameters`}
+            >
+              <FontAwesomeIcon icon={faChevronRight} className={rowStyles.disclosureChevron} aria-hidden="true" />
+              <span className={rowStyles.disclosureCount}>
+                {parameters.length} parameter{parameters.length !== 1 ? "s" : ""}
+              </span>
+            </button>
+          );
+        }
+
+        return (
+          <div id={panelId}>
+            <div ref={tagGroupRef} className={rowStyles.tagWrapper} role="group" aria-label="Filter by tag">
+              {allTags
+                .filter((tag) => !fixedTags.includes(tag))
+                .map((tag) => {
+                  const tagActive = activeTags.includes(tag);
+                  const tagSuggested = !tagActive && suggestedTags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      data-cy={tag}
+                      onClick={() => toggleTag(tag)}
+                      aria-pressed={tagActive}
+                      className={`${rowStyles.tagButton} ${tagActive ? rowStyles.tagButtonActive : ""} ${tagSuggested ? rowStyles.tagButtonSuggested : ""}`}
+                    >
+                      {tag}
+                      {/* Visually-hidden hint replaces the unreliable `title` attribute.
+                          Screen readers will announce this as part of the button's label. */}
+                      {tagSuggested && (
+                        <span className={rowStyles.srOnly}> (matches your search)</span>
+                      )}
+                    </button>
+                  );
+                })}
+            </div>
+
+            {filtered.length > 0 && (
+              <div
+                data-cy="search-results-summary"
+                aria-hidden="true"
+                style={resultCountStyle}
               >
-                {tag}
-              </button>
-            );
-          })}
-      </div>
+                Showing {filtered.length} parameter{filtered.length !== 1 ? "s" : ""}
+              </div>
+            )}
 
-      {filtered.length > 0 && (
-        <div
-          data-cy="search-results-summary"
-          aria-live="polite"
-          aria-atomic="true"
-          style={resultCountStyle}
-        >
-          Showing {filtered.length} parameter{filtered.length !== 1 ? "s" : ""}
-        </div>
-      )}
+            {filtered.length === 0 ? (
+              <div aria-hidden="true" className={rowStyles.empty}>
+                <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
+                <div className={rowStyles.emptyText}>
+                  <span className={rowStyles.emptyTitle}>
+                    No parameters match {search ? `"${search}"` : "the selected filters"}
+                  </span>
+                  <span className={rowStyles.emptyHint}>
+                    Try a different search term or adjust your filters
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div
+                data-cy="search-results"
+                className={rowStyles.tableWrapper}
+                style={{ maxHeight, overflowY: "auto" }}
+              >
+                <table
+                  role="treegrid"
+                  aria-label="Parameters"
+                  aria-describedby={`${panelId}-table-hint`}
+                  className={rowStyles.table}
+                >
+                  <thead className={rowStyles.srOnly}>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Expand</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((p, i) => renderRow(p, 0, i + 1, filtered.length))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
-      {filtered.length === 0 ? (
-        <div role="status" aria-live="polite" className={rowStyles.empty}>
-          <FontAwesomeIcon icon={faFileCircleXmark} aria-hidden="true" />
-          <div className={rowStyles.emptyText}>
-            <span className={rowStyles.emptyTitle}>
-              No parameters match {search ? `"${search}"` : "the selected filters"}
-            </span>
-            <span className={rowStyles.emptyHint}>
-              Try a different search term or adjust your filters
-            </span>
+            <div className={rowStyles.faqFooter} aria-hidden="true">
+              <span className={rowStyles.footerHint}><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+              <span className={rowStyles.footerHint}><kbd><span className={rowStyles.kbdRotateLeft}>↑</span></kbd><kbd><span className={rowStyles.kbdRotateRight}>↑</span></kbd> expand</span>
+              <span className={rowStyles.footerHint}><kbd>/</kbd> filter</span>
+              <span className={rowStyles.footerHint}><kbd>Esc</kbd> clear</span>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div
-          data-cy="search-results"
-          className={rowStyles.tableWrapper}
-          style={{ maxHeight, overflowY: "auto" }}
-        >
-          <table role="treegrid" aria-label="Parameters" className={rowStyles.table}>
-            <thead className={rowStyles.srOnly}>
-              <tr>
-                <th scope="col">Type</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((p, i) => renderRow(p, 0, i + 1, filtered.length))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      <div className={rowStyles.faqFooter}>
-        <span className={rowStyles.footerHint}><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-        <span className={rowStyles.footerHint}><kbd><span className={rowStyles.kbdRotateLeft}>↑</span></kbd><kbd><span className={rowStyles.kbdRotateRight}>↑</span></kbd> expand</span>
-        <span className={rowStyles.footerHint}><kbd>/</kbd> filter</span>
-        <span className={rowStyles.footerHint}><kbd>Esc</kbd> clear</span>
-      </div>
+        );
+      })()}
     </div>
   );
 }

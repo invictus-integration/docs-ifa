@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="535" height="640" viewBox="0 0 535 640"
+     font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+    </marker>
+    <marker id="arr-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34D399"/>
+    </marker>
+  </defs>
+
+  <rect x="10" y="10" width="515" height="620" rx="8" fill="#1F2937" stroke="#374151" stroke-width="1.5"/>
+  <text x="267" y="37" text-anchor="middle" font-size="14" font-weight="600" fill="#F9FAFB">After Resume</text>
+
+  <!-- Flow (success) -->
+  <rect x="87" y="56" width="360" height="38" rx="4" fill="#064E3B" stroke="#34D399" stroke-width="2"/>
+  <text x="267" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#6EE7B7">Flow</text>
+
+  <!-- Flow → Node 1 (active) -->
+  <line x1="267" y1="94" x2="267" y2="136" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 1 (active / success) -->
+  <rect x="127" y="136" width="280" height="68" rx="4" fill="#064E3B" stroke="#34D399" stroke-width="2"/>
+  <text x="267" y="156" text-anchor="middle" font-size="12" font-weight="700" fill="#6EE7B7">1</text>
+  <text x="267" y="173" text-anchor="middle" font-size="11" fill="#6EE7B7">WorkFlowRunId: 111</text>
+  <text x="267" y="190" text-anchor="middle" font-size="10" fill="#A7F3D0">x-iv-parent-workflow-run-id: null</text>
+
+  <!-- Node 1 → Node 2 & 3 (both gray dashed — all branches ignored) -->
+  <path d="M 267,204 L 267,229 L 157,229 L 157,244"
+        stroke="#6B7280" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-gray)"/>
+  <path d="M 267,204 L 267,229 L 377,229 L 377,244"
+        stroke="#6B7280" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-gray)"/>
+
+  <!-- ── LEFT BRANCH ── -->
+
+  <!-- Node 2 (ignored / grayed) -->
+  <rect x="62" y="244" width="190" height="68" rx="4" fill="#374151" stroke="#6B7280" stroke-width="1.5"/>
+  <text x="157" y="264" text-anchor="middle" font-size="12" font-weight="700" fill="#D1D5DB">2</text>
+  <text x="157" y="281" text-anchor="middle" font-size="11" fill="#D1D5DB">WorkFlowRunId: 222</text>
+  <text x="157" y="298" text-anchor="middle" font-size="10" fill="#9CA3AF">x-iv-parent-workflow-run-id: 111</text>
+
+  <!-- Node 2 → Node 7 (OriginWorkFlowRunId link — green dashed, straight down) -->
+  <line x1="157" y1="312" x2="157" y2="356"
+        stroke="#34D399" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-green)"/>
+
+  <!-- Node 7 (success — resumed run replacing Node 2) -->
+  <rect x="62" y="356" width="190" height="80" rx="4" fill="#064E3B" stroke="#34D399" stroke-width="2"/>
+  <text x="157" y="377" text-anchor="middle" font-size="12" font-weight="700" fill="#6EE7B7">7</text>
+  <text x="157" y="394" text-anchor="middle" font-size="11" fill="#6EE7B7">WorkFlowRunId: 777</text>
+  <text x="157" y="411" text-anchor="middle" font-size="10" fill="#A7F3D0">x-iv-parent-workflow-run-id: 111</text>
+  <text x="157" y="427" text-anchor="middle" font-size="10" font-style="italic" fill="#A7F3D0">OriginWorkFlowRunId: 222</text>
+
+  <!-- ── RIGHT BRANCH ── -->
+
+  <!-- Node 3 (ignored / grayed) -->
+  <rect x="282" y="244" width="190" height="68" rx="4" fill="#374151" stroke="#6B7280" stroke-width="1.5"/>
+  <text x="377" y="264" text-anchor="middle" font-size="12" font-weight="700" fill="#D1D5DB">3</text>
+  <text x="377" y="281" text-anchor="middle" font-size="11" fill="#D1D5DB">WorkFlowRunId: 333</text>
+  <text x="377" y="298" text-anchor="middle" font-size="10" fill="#9CA3AF">x-iv-parent-workflow-run-id: 111</text>
+
+  <!-- Node 3 → Node 5 via OriginWorkFlowRunId (green dashed, routes right of Node 4) -->
+  <path d="M 377,312 L 490,312 L 490,440 L 377,440 L 377,450"
+        stroke="#34D399" stroke-width="1.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arr-green)"/>
+
+  <!-- Node 3 → Node 4 (gray dashed, straight down — drawn after green so it renders on top at origin) -->
+  <line x1="377" y1="312" x2="377" y2="334"
+        stroke="#6B7280" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-gray)"/>
+
+  <!-- Node 4 (ignored / grayed — child of Node 3, also ignored) -->
+  <rect x="282" y="334" width="190" height="68" rx="4" fill="#374151" stroke="#6B7280" stroke-width="1.5"/>
+  <text x="377" y="354" text-anchor="middle" font-size="12" font-weight="700" fill="#D1D5DB">4</text>
+  <text x="377" y="371" text-anchor="middle" font-size="11" fill="#D1D5DB">WorkFlowRunId: 444</text>
+  <text x="377" y="388" text-anchor="middle" font-size="10" fill="#9CA3AF">x-iv-parent-workflow-run-id: 333</text>
+
+  <!-- Node 5 (success — resumed run replacing Node 3) -->
+  <rect x="282" y="450" width="190" height="80" rx="4" fill="#064E3B" stroke="#34D399" stroke-width="2"/>
+  <text x="377" y="471" text-anchor="middle" font-size="12" font-weight="700" fill="#6EE7B7">5</text>
+  <text x="377" y="488" text-anchor="middle" font-size="11" fill="#6EE7B7">WorkFlowRunId: 555</text>
+  <text x="377" y="505" text-anchor="middle" font-size="10" fill="#A7F3D0">x-iv-parent-workflow-run-id: 111</text>
+  <text x="377" y="521" text-anchor="middle" font-size="10" font-style="italic" fill="#A7F3D0">OriginWorkFlowRunId: 333</text>
+
+  <!-- Node 5 → Node 6 -->
+  <line x1="377" y1="530" x2="377" y2="554"
+        stroke="#34D399" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+  <!-- Node 6 (success) -->
+  <rect x="282" y="554" width="190" height="68" rx="4" fill="#064E3B" stroke="#34D399" stroke-width="2"/>
+  <text x="377" y="574" text-anchor="middle" font-size="12" font-weight="700" fill="#6EE7B7">6</text>
+  <text x="377" y="591" text-anchor="middle" font-size="11" fill="#6EE7B7">WorkFlowRunId: 666</text>
+  <text x="377" y="608" text-anchor="middle" font-size="10" fill="#A7F3D0">x-iv-parent-workflow-run-id: 555</text>
+
+</svg>

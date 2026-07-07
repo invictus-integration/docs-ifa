@@ -7,6 +7,11 @@ hide_title: true
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import { faLanguage, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ComponentFlowDiagram from "@site/src/components/Diagrams/ComponentFlowDiagram";
+import ApiPlayground from "@site/src/components/ApiPlayground";
+import {Walkthrough, Collapsible} from "@site/src/components/Walkthrough";
 
 <ComponentHeader
   icon="/img/icons/regex-translator.png"
@@ -17,50 +22,99 @@ import ComponentHeader from "@site/src/components/ComponentHeader";
 At the time of writing, there is no built-in Logic App functionality available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component fills this missing link. It provides a HTTP-endpoint to run regular expression replacements. All available translations are available in an Azure Table Storage.
 :::
 
-## Regex translate user content
-The **Regex Translation** component has a single endpoint available: `/api/RegexTranslation`. Given an user content and matched stored (Azure Table Storage, default: `RegexTranslator` table) regular expression translation, the endpoint responds with the translated content.
+## Component usage
+The **Regex Translator** component has a single endpoint available.
+Given an user content and matched stored (Azure Table Storage, default: `RegexTranslator` table) regular expression translation, the endpoint responds with the translated content.
 
-| JSON property | Required | Description                                                                                                                                                                                           |
-| ------------- | :------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Content`     |   yes    | User content to translate.                                                                                                                                                                  |
-| `MatchKey`    |   yes    | Set of 'keys' that translates to [Azure Table Storage partition keys](https://learn.microsoft.com/en-us/rest/api/storageservices/designing-a-scalable-partitioning-strategy-for-azure-table-storage). |
+{/* vale off */}
+<ComponentFlowDiagram
+  name="Regex Translator"
+  tagline="Pattern-based content translation"
+  icon={faLanguage}
+  rows={[
+    {
+      input: "Content+Keys",
+      opTitle: "Regex Translator",
+      opSubtitle: "Pattern lookup & replace",
+      output: "Translated",
+      storageLabel: "Azure Table Storage",
+    },
+  ]}
+/>
+{/* vale on */}
 
-<details>
-<summary>**Full request example**</summary>
+<Walkthrough>
+<Collapsible number={<FontAwesomeIcon icon={faLanguage} />} title="Translate user content via regular expression replacement">
 
-```json
-// POST /api/RegexTranslation
-{
-  "Content": "The provided host name 'website.com' could not be resolved",
-  "MatchKey": ["OrderService", "InvoiceService"]
-}
-```
-</details>
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/RegexTranslation"
+  description="Translates user content via regular expression replacement, using stored translations in Azure Table Storage."
+  request={{
+    content: "The provided host name 'website.com' could not be resolved",
+    matchKey: ["OrderService", "InvoiceService"]
+  }}
+  parameters={[
+    {
+      name: "content",
+      type: "string",
+      required: true,
+      description: "User content to translate."
+    },
+    {
+      name: "matchKey",
+      type: "array",
+      required: true,
+      description: "Set of 'keys' that translates to Azure Table Storage partition keys."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      label: "Translated",
+      description: "The user content was translated via a stored regular expression translation.",
+      body: {
+        content: "System could not reach endpoint 'website.com' as it is not available, please contact John to follow-up.",
+        isTranslated: true,
+        rowKey: "2f71ec69-1fff-4b80-9ae1-947a58e4a039"
+      }
+    },
+    {
+      status: 200,
+      label: "Not Translated",
+      description: "The user content was not translated, no stored regular expression translation was found.",
+      body: {
+        content: "The provided host name 'website.com' could not be resolved",
+        isTranslated: false,
+        rowKey: ""
+      }
+    },
+    {
+      status: 400,
+      label: "Bad Request",
+      description: "The request was malformed or missing required properties.",
+      body: "Failed to translate user content via regular expression replacement, request was malformed or missing required properties."
+    },
+    {
+      status: 404,
+      label: "Not Found",
+      description: "No stored regular expression translations were found.",
+      body: "Failed to translate user content via regular expression replacement, no stored translations were found."
+    },
+    {
+      status: 500,
+      label: "Internal Server Error",
+      description: "An unexpected error occurred during the translation process.",
+      body: "An unexpected error occurred during the translation process."
+    }
+  ]}/>
+{/* vale off */}
 
-<details>
-<summary>**Full response example**</summary>
+</Collapsible>
 
-```json
-// Found stored translation:
-// 200 OK <- /api/RegexTranslation
-{
-  "Content": "System could not reach endpoint 'website.com' as it is not available, please contact John to follow-up.",
-  "IsTranslated": true,
-  "RowKey": "2f71ec69-1fff-4b80-9ae1-947a58e4a039"
-}
+<Collapsible number={<FontAwesomeIcon icon={faFloppyDisk} />} title="Store regular expression translations">
 
-// Did not found stored translation:
-// 200 OK <- /api/RegexTranslation
-{
-  "Content": "The provided host name 'website.com' could not be resolved",
-  "IsTranslated": false,
-  "RowKey": ""
-}
-```
-
-</details>
-
-## Stored regular expression translations
 Store available regular expression translations in the Azure Table Storage table called `RegexTranslator` (Invictus creates this table automatically). Each stored entity should have following custom properties:
 
 [named groups]: https://learn.microsoft.com/en-us/dotnet/standard/base-types/grouping-constructs-in-regular-expressions#named-matched-subexpressions
@@ -86,5 +140,9 @@ Store available regular expression translations in the Azure Table Storage table
 * **Single match**: the user `Content` can only match a single stored translation - the component picks the first match.
 * **No pastes**: the `OutputPattern` doesn't necessarily *have* to contain `{group-name}` occurrences, it can only contain text.
 
-## Related Bicep template parameters
+
+</Collapsible>
+</Walkthrough>
+
+### Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={["comp:regex-translator"]} />

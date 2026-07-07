@@ -36,8 +36,8 @@ export function Step({ title, children, number, headingLevel = 2 }: StepProps) {
 }
 
 /** Compact collapsible step. Use in feature walkthroughs. */
-export function Collapsible({ title, children, number, id }: TaskProps) {
-  const [open, setOpen] = useState(false);
+export function Collapsible({ title, children, number, id, open: initialOpen = false }: TaskProps) {
+  const [open, setOpen] = useState(initialOpen);
   const contentId = `walkthrough-task-${number}-content`;
 
   return (

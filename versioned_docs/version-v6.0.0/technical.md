@@ -7,8 +7,8 @@ hide_table_of_contents: true
 slug: technical
 ---
 
-![Invictus logo](/img/invictus.index.dark.png#dark-mode-only)
-![Invictus logo](/img/invictus.index.light.png#light-mode-only)
+<img src="/img/invictus-logo_negative_white.png#dark-mode-only" alt="Better control and overview integrations with Invictus, designed by Codit" height="200" />
+<img src="/img/invictus-logo_positive_black.png#light-mode-only" alt="Better control and overview integrations with Invictus, designed by Codit" height="200" />
 ___
 
 {/* vale Microsoft.Contractions = NO */}

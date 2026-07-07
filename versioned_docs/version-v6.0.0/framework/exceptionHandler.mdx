@@ -8,9 +8,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
-import {faLightbulb} from "@fortawesome/free-solid-svg-icons";
+import {faLightbulb, faFloppyDisk, faLanguage} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ComponentHeader from "@site/src/components/ComponentHeader";
+import ExceptionHandlerFlowDiagram from "@site/src/components/Diagrams/ExceptionHandlerFlowDiagram";
+import ExceptionHandlerFlowMobileDiagram from "@site/src/components/Diagrams/ExceptionHandlerFlowMobileDiagram";
+import {Walkthrough, Collapsible} from "@site/src/components/Walkthrough";
+import ApiPlayground from "@site/src/components/ApiPlayground";
 
 <ComponentHeader
 	icon="/img/icons/exception-handler.png"
@@ -23,94 +27,224 @@ Most who have worked with Logic Apps is familiar with the error `An action faile
 Invictus provides an **Exception Handler** Framework component that retrieves the actual error message from an Azure Logic App and optionally translate this to a human readable text.
 :::
 
+## Component usage
+To centralize exception handling, create a Logic App that acts as a 'fallback handler'. This Logic App calls the Exception Handler component and returns the response. 
+All the other Logic Apps can call this fallback Logic App.
+
+:::tip
+* Use a [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook) to call the fallback Logic App so that if anything fails in the fallback Logic App, you can resubmit this and return the response asynchronously.
+* Interact with the component in a scope block and use the **Terminate** action to return the response from the Exception Handler component to the Logic App dashboard.
+:::
+
+<style>{`.eh-wide{display:block}.eh-narrow{display:none}@media(max-width:640px){.eh-wide{display:none}.eh-narrow{display:block}}`}</style>
+
+<div className="eh-wide">
+  <ExceptionHandlerFlowDiagram />
+</div>
+<div className="eh-narrow">
+  <ExceptionHandlerFlowMobileDiagram />
+</div>
+
+<Walkthrough>
+	<Collapsible number={<FontAwesomeIcon icon={faLanguage} />} title="Resolve Azure Logic App exceptions">
+
 :::info[Access Rights]
 The Exception Handler component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. Assign these to the Exception Handler component to allow the component access to the client's Logic Apps.
 :::
 
-## Resolve Azure Logic App exceptions
-The **Exception Handler** component has as single `/api/ResolveException` endpoint to request inspection of failed Azure Logic App workflow runs. It differs based on the Logic App type.
+The **Exception Handler** component has as single endpoint to request inspection of failed Azure Logic App workflow runs.
+By default it uses the [Regex Translator](./regextranslation.mdx) component for translating the error, but it can also use Azure AI Foundry if you set the <a href="?q=useAIExceptionHandlerInterpreter#related-bicep-template-parameters">useAIExceptionHandlerInterpreter</a> parameter to `true`.
 
 <Tabs groupId="la-type">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
-If you want to resolve the exception of a Logic App Consumption use the following body:
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/ResolveException"
+  description="Resolves the exception of a failed Azure Logic App Consumption workflow run. Returns the actual error message and optionally translates this to a human readable text."
+  parameters={[
+    {
+      name: "workflowRunId",
+      type: "string",
+      required: true,
+      description: "The ID of the failed Azure Logic App workflow run."
+    },
+    {
+      name: "workflowName",
+      type: "string",
+      required: true,
+      description: "The name of the Azure Logic App to inspect."
+    },
+    {
+      name: "subscriptionId",
+      type: "string",
+      required: true,
+      description: "The ID of the Azure subscription where the client hosts their Logic App."
+    },
+    {
+      name: "resourceGroupName",
+      type: "string",
+      required: true,
+      description: "The ID of the Azure resource group within the subscription where the client hosts their Logic App."
+    }
+  ]}
+  request={{
+    workflowRunId: "08584773878007282344320782622CU00",
+    workflowName: "cdt-dev-we-somelogicapp",
+    subscriptionId: "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
+    resourceGroupName: "some-resource-group",
+    type: "Consumption"
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Resolved exception",
+      description: "The exception of the failed Azure Logic App workflow run has been resolved and returned.",
+      body: {
+        status: "Failed",
+        code: "InvalidURL",
+        description: "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
+        errors: [
+          {
+            code: "InvalidURL",
+            description: "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
+            successfulAiTranslation: true
+          }
+        ]
+      }
+    },
+    {
+        status: 400,
+        label: "Bad Request",
+        description: "The request body could not be parsed. Ensure the request body is a valid JSON with the required fields.",
+        body: "Failed to resolve the exception of a failed Azure Logic App workflow run because the request body was not a JSON with the required fields."
+    },
+    {
+        status: 404,
+        label: "Workflow run not found",
+        description: "No failed workflow run with the given ID was found in the Logic App.",
+        body: "Failed to resolve the exception of a failed Azure Logic App workflow run because the workflow run with ID '08584773878007282344320782622CU00' was not found in the Logic App 'dev-we-somelogicapp'."
+    },
+    {
+        status: 424,
+        label: "Failed interaction",
+        description: "Failed to interact with the interpreters to resolve the exception of a failed Azure Logic App workflow run.",
+        body: "Failed to regex translate the action of workflow, responded with status code 503. Please see logs for more information."
+    },
+    {
+        status: 500,
+        label: "Server Error",
+        description: "An unexpected error occurred inside the Exception Handler component. See the logs for more details.",
+        body: "Failed to resolve the exception of a failed Azure Logic App workflow run because an unexpected error occurred while processing the request, please see the logs for more details."
+    }
+  ]}
+/>
+{/* vale on */}
 
-| JSON property       | Required | Description                                                                                        |
-| ------------------- | :------: | -------------------------------------------------------------------------------------------------- |
-| `WorkflowRunId`     |   yes    | The ID of the failed Azure Logic App workflow run.                                                 |
-| `WorkflowName`      |   yes    | The name of the Azure Logic App to inspect.                                                        |
-| `SubscriptionId`    |   yes    | The ID of the Azure subscription where the client hosts their Logic App.                           |
-| `ResourceGroupName` |   yes    | The ID of the Azure resource group within the subscription where the client hosts their Logic App. |
-
-<details>
-<summary>**Request example**</summary>
-
-``` json
-// POST -> /api/ResolveException
-{
-  "WorkflowRunId": "08584773878007282344320782622CU00",
-  "WorkflowName": "cdt-dev-we-somelogicapp",
-  "SubscriptionId": "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
-  "ResourceGroupName": "some-resource-group",
-  "Type": "Consumption"
-}
-```
-</details>
 </TabItem>
 <TabItem value="standard" label="Logic App Standard">
-If you want to resolve the exception of a Logic App Standard workflow use the following body:
 
+{/* vale off */}
+<ApiPlayground
+  method="POST"
+  path="/api/ResolveException"
+  description="Resolves the exception of a failed Azure Logic App Standard workflow run. Returns the actual error message and optionally translates this to a human readable text."
+  parameters={[
+    {
+      name: "workflowRunId",
+      type: "string",
+      required: true,
+      description: "The ID of the failed Azure Logic App workflow run."
+    },
+    {
+      name: "workflowName",
+      type: "string",
+      required: true,
+      description: "The name of the Azure Logic App to inspect."
+    },
+    {
+      name: "siteName",
+      type: "string",
+      required: true,
+      description: "The site name of the Azure Logic App to inspect."
+    },
+    {
+      name: "subscriptionId",
+      type: "string",
+      required: true,
+      description: "The ID of the Azure subscription where the client hosts their Logic App."
+    },
+    {
+      name: "resourceGroupName",
+      type: "string",
+      required: true,
+      description: "The ID of the Azure resource group within the subscription where the client hosts their Logic App."
+    }
+  ]}
+  request={{
+    workflowRunId: "08584773878007282344320782622CU00",
+    workflowName: "ProcessMessage",
+    siteName: "cdt-dev-we-somelogicapp",
+    subscriptionId: "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
+    resourceGroupName: "some-resource-group",
+    type: "Standard"
+  }}
+  responses={[
+    {
+      status: 200,
+      label: "Resolved exception",
+      description: "The exception of the failed Azure Logic App workflow run has been resolved and returned.",
+      body: {
+        status: "Failed",
+        code: "InvalidURL",
+        description: "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
+        errors: [
+          {
+            code: "InvalidURL",
+            description: "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
+            successfulAiTranslation: true
+          }
+        ]
+      }
+    },
+    {
+        status: 400,
+        label: "Bad Request",
+        description: "The request body could not be parsed. Ensure the request body is a valid JSON with the required fields.",
+        body: "Failed to resolve the exception of a failed Azure Logic App workflow run because the request body was not a JSON with the required fields."
+    },
+    {
+        status: 404,
+        label: "Workflow run not found",
+        description: "No failed workflow run with the given ID was found in the Logic App.",
+        body: "Failed to resolve the exception of a failed Azure Logic App workflow run because the workflow run with ID '08584773878007282344320782622CU00' was not found in the Logic App 'ProcessMessage'."
+    },
+    {
+        status: 424,
+        label: "Failed interaction",
+        description: "Failed to interact with the interpreters to resolve the exception of a failed Azure Logic App workflow run.",
+        body: "Failed to regex translate the action of workflow, responded with status code 503. Please see logs for more information."
+    },
+    {
+        status: 500,
+        label: "Server Error",
+        description: "An unexpected error occurred inside the Exception Handler component. See the logs for more details.",
+        body: "Failed to resolve the exception of a failed Azure Logic App workflow run because an unexpected error occurred while processing the request, please see the logs for more details."
+    }
+  ]}
+/>
+{/* vale on */}
 
-| JSON property       | Required | Description                                                                                        |
-| ------------------- | :------: | -------------------------------------------------------------------------------------------------- |
-| `WorkflowRunId`     |   yes    | The ID of the failed Azure Logic App workflow run.                                                 |
-| `WorkflowName`      |   yes    | The name of the Azure Logic App to inspect.                                                        |
-| `SiteName`          |   yes    | The site name of the Azure Logic App to inspect.                                                   |
-| `SubscriptionId`    |   yes    | The ID of the Azure subscription where the client hosts their Logic App.                           |
-| `ResourceGroupName` |   yes    | The ID of the Azure resource group within the subscription where the client hosts their Logic App. |
-
-<details>
-<summary>**Request example**</summary>
-
-``` json
-// POST -> /api/ResolveException
-{
-  "WorkflowRunId": "08584773878007282344320782622CU00",
-  "WorkflowName": "ProcessMessage",
-  "SubscriptionId": "fb0519a2-b69f-4cdf-97ff-19735685b5b9",
-  "ResourceGroupName": "some-resource-group",
-  "Type": "Standard",
-  "SiteName": "cdt-dev-we-somelogicapp"
-}
-```
-</details>
 </TabItem>
 </Tabs>
 
-<details>
-<summary>**Response example**</summary>
+</Collapsible>
 
-The function responds with a list of errors for the failed actions, for example:
-``` json
-// 200 OK <- /api/ResolveException
-{
-    "Status": "Failed",
-    "Code": "InvalidURL",
-    "Description": "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.",
-    "Errors": [
-        {
-            "Code": "InvalidURL",
-            "Description": "Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'."
-        }
-    ]
-}
-```
-</details>
-
-## Stored Azure Logic App exceptions translations
+<Collapsible number={<FontAwesomeIcon icon={faFloppyDisk} />} title="Store Azure Logic App exception translations">
 
 :::note
-The ExceptionHandler function makes use of the [RegexTranslator](https://github.com/invictus-integration/docs-ifa/blob/master/framework/components/regextranslation.md) component to translate the original error from the Logic App.
+The ExceptionHandler function makes use of the [RegexTranslator](./regextranslation.mdx) component to translate the original error from the Logic App.
 :::
 
 A solution has an Azure Logic App that used to return the generic `An action failed. No dependent actions succeeded` error. By using the Exception Handler, you can improve this to the actual error which is `Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.`.
@@ -202,78 +336,9 @@ This gives the following response:
 ```
 </details>
 
-{/* vale Microsoft.HeadingPunctuation = NO */}
-## How to use in your Azure Logic Apps?
-{/* vale Microsoft.HeadingPunctuation = YES */}
+	</Collapsible>
 
-Use the Exception Handler as a common exception handler Logic App that calls the Exception Handler component and return the response. 
-All the other Logic Apps can call this common Logic App. This centralizes your exception handling.
+</Walkthrough>
 
-:::tip
-use a webhook to call the common exception handler Logic App so that if anything fails in the common Logic App you can resubmit this and return the response asynchronously.
-:::
-
-![Logic Apps setup with Exception Handler](/images/framework/logic-app-setup-w-exception-handler.png)
-
-<details>
-<summary>**Logic Apps Exception Handling example**</summary>
-
-![logic-app](/images/exceptionhandler-logic-app.png)
-
-Take a look at the code for the `Scope Exception Handling` below. Pay attention to the `Terminate` action as this uses the information from the Exception Handler component and shows it in the Dashboard.
-
-![dashboard](/images/exceptionhandler-logic-app-dashboard.png)
-
-
-``` json
-"Scope_ExceptionHandling": {
-  "actions": {
-	"ResolveException": {
-	  "inputs": {
-		"subscribe": {
-		  "body": {
-			"callbackurl": "@{listCallbackUrl()}",
-			"logicApp": "@{workflow().name}",
-			"resourceGroup": "@{parameters('resourceGroupName')}",
-			"run": "@{workflow()['run']['name']}",
-			"subscription": "@{parameters('subscriptionId')}",
-			"correlationId": "@trigger().clientTrackingId"
-		  },
-		  "method": "POST",
-		  "uri": "[listCallbackUrl(resourceId(variables('exceptionHandlerResourceGroupName'), 'Microsoft.Logic/workflows/triggers', variables('exceptionHandlerLogicAppName'), 'manual'), providers('Microsoft.Logic', 'workflows').apiVersions[0]).value]"
-		},
-		"unsubscribe": {}
-	  },
-	  "runAfter": {},
-	  "type": "HttpWebhook"
-	},
-	"Terminate": {
-	  "inputs": {
-		"runError": {
-		  "code": "@{if(equals(body('ResolveException').Status, 'Failed'), body('ResolveException').code, null)}",
-		  "message": "@{if(equals(body('ResolveException').Status, 'Failed'), body('ResolveException').description, null)}"
-		},
-		"runStatus": "@{body('ResolveException').Status}"
-	  },
-	  "runAfter": {
-		"ResolveException": [
-		  "Succeeded"
-		]
-	  },
-	  "type": "Terminate"
-	}
-  },
-  "runAfter": {
-	"Scope": [
-	  "Failed",
-	  "Skipped",
-	  "TimedOut"
-	]
-  },
-  "type": "Scope"
-}
-```
-</details>
-
-## Related Bicep template parameters
+### Related Bicep template parameters
 <ParameterTable parameters={parameters} fixedTags={["comp:exception-handler"]} />
