@@ -113,6 +113,7 @@ export default function WelcomeSplash() {
               ref={i === 0 ? firstCardRef : undefined}
               className={styles.card}
               onClick={() => choose(role)}
+              onKeyDown={(e) => { if (e.key === 'Enter') choose(role); }}
             >
               <span className={styles.cardIcon} aria-hidden="true">{role.icon}</span>
               <span className={styles.cardTitle}>{role.title}</span>

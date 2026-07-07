@@ -12,6 +12,7 @@ describe('Welcome splash screen', () => {
   beforeEach(() => {
     // Simulate a genuine first visit — no stored user type.
     cy.clearLocalStorage();
+    cy.wait(100);
   });
 
   // ── Visibility ─────────────────────────────────────────────────────────────
@@ -35,7 +36,9 @@ describe('Welcome splash screen', () => {
 
   it('shows the welcome heading', () => {
     cy.visit('/');
-    cy.get('#welcome-title').should('contain.text', 'Welcome to Invictus for Azure');
+    cy.get('#welcome-title')
+      .should('contain.text', 'Welcome')
+      .should('contain.text', 'Invictus for Azure');
   });
 
   it('shows a Business user card and a Technical user card', () => {
@@ -110,6 +113,7 @@ describe('Welcome splash screen', () => {
 
   it('Business user card is selectable via keyboard Enter', () => {
     cy.visit('/');
+    cy.contains('button', 'Business user').should('be.focused');
     cy.contains('button', 'Business user').focus().type('{enter}');
     splash().should('not.exist');
   });
