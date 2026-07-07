@@ -568,7 +568,7 @@ export default function SearchBar() {
           {highlightTerm ? (
             <span className={styles.triggerHighlightLabel}>
               <span className={styles.triggerHighlightPrefix}>Highlighted:</span>
-              <strong className={styles.triggerHighlightTerm}>{highlightTerm}</strong>
+              <strong className={styles.triggerHighlightTerm} data-cy="search-highlight-chip-label">{highlightTerm}</strong>
             </span>
           ) : (
             <>
@@ -585,6 +585,7 @@ export default function SearchBar() {
         {highlightTerm && (
           <button
             className={styles.highlightClearButton}
+            data-cy="search-highlight-chip"
             onClick={clearHighlight}
             aria-label={`Clear search highlights for "${highlightTerm}". Press Escape to dismiss.`}
           >
