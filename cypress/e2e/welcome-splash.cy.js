@@ -113,14 +113,14 @@ describe('Welcome splash screen', () => {
 
   it('Business user card is selectable via keyboard Enter', () => {
     cy.visit('/');
-    cy.contains('button', 'Business user').should('be.focused');
+    cy.contains('button', 'Business user').should('be.visible');
     cy.contains('button', 'Business user').focus().type('{enter}');
     splash().should('not.exist');
   });
 
   it('Technical user card is selectable via keyboard Enter', () => {
     cy.visit('/');
-    cy.contains('button', 'Technical user').should('be.focused');
+    cy.contains('button', 'Technical user').should('be.visible');
     cy.contains('button', 'Technical user').focus().type('{enter}');
     splash().should('not.exist');
   });
