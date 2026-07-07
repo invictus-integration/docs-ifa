@@ -120,6 +120,7 @@ describe('Welcome splash screen', () => {
 
   it('Technical user card is selectable via keyboard Enter', () => {
     cy.visit('/');
+    cy.contains('button', 'Technical user').should('be.focused');
     cy.contains('button', 'Technical user').focus().type('{enter}');
     splash().should('not.exist');
   });
