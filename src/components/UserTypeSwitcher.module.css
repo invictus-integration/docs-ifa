@@ -68,3 +68,22 @@
 :global(.navbar-sidebar) .tab:focus-visible {
   outline-color: rgba(255, 255, 255, 0.7);
 }
+
+/* ── Desktop sidebar with dark background (light mode) ── */
+:global(.theme-doc-sidebar-container) .switcher {
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(.theme-doc-sidebar-container) .tab {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+:global(.theme-doc-sidebar-container) .tab:hover,
+:global(.theme-doc-sidebar-container) .tab[aria-selected='true'] {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+:global(.theme-doc-sidebar-container) .tab:focus-visible {
+  outline-color: rgba(255, 255, 255, 0.7);
+}
