@@ -191,6 +191,28 @@ export default function SearchBar() {
   // Mobile two-column tab: 'pages' | 'knowledge' — pages always default
   const [mobileKnowledgeTab, setMobileKnowledgeTab] = useState('pages');
 
+  // Highlight state — driven by Root.js via custom events
+  const [highlightTerm, setHighlightTerm] = useState('');
+  useEffect(() => {
+    const handler = (e) => setHighlightTerm(e.detail.term);
+    window.addEventListener('searchhighlight', handler);
+    return () => window.removeEventListener('searchhighlight', handler);
+  }, []);
+
+  function clearHighlight() {
+    // Remove marks from the page (Root.js also dispatches searchhighlight with term:'')
+    for (const mark of document.querySelectorAll('mark[data-search-highlight]')) {
+      const parent = mark.parentNode;
+      if (parent) {
+        parent.replaceChild(document.createTextNode(mark.textContent), mark);
+        parent.normalize();
+      }
+    }
+    setHighlightTerm('');
+    const lr = document.getElementById('search-highlight-live');
+    if (lr) lr.textContent = '';
+  }
+
   // Platform-aware shortcut label (SSR-safe)
   const [shortcutLabel, setShortcutLabel] = useState('Ctrl K');
   useEffect(() => {
@@ -529,25 +551,48 @@ export default function SearchBar() {
 
   return (
     <>
-      {/* ── Navbar trigger button ── */}
-      <button
-        ref={triggerRef}
-        className={styles.triggerButton}
-        onClick={() => setIsOpen(true)}
-        data-cy="search-trigger"
-        aria-label={`Search or ask AI, press ${shortcutLabel} to open`}
-        aria-keyshortcuts={shortcutLabel.includes('⌘') ? 'Meta+k' : 'Control+k'}
-        aria-haspopup="dialog"
-      >
-        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} aria-hidden="true" />
-        <span className={styles.triggerText}>Search or ask…</span>
-        <span className={styles.shortcutBadge} aria-hidden="true">
-          {shortcutLabel.includes('⌘')
-            ? <kbd>⌘K</kbd>
-            : <><kbd>Ctrl</kbd><kbd>K</kbd></>
-          }
-        </span>
-      </button>
+      {/* ── Navbar trigger — search button + optional highlight clear, as one unit ── */}
+      <div className={`${styles.triggerWrapper}${highlightTerm ? ` ${styles.triggerWrapperActive}` : ''}`}>
+        <button
+          ref={triggerRef}
+          className={styles.triggerButton}
+          onClick={() => setIsOpen(true)}
+          data-cy="search-trigger"
+          aria-label={highlightTerm
+            ? `Highlighted: ${highlightTerm}. Press Enter to search again.`
+            : `Search or ask AI, press ${shortcutLabel} to open`}
+          aria-keyshortcuts={shortcutLabel.includes('⌘') ? 'Meta+k' : 'Control+k'}
+          aria-haspopup="dialog"
+        >
+          <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} aria-hidden="true" />
+          {highlightTerm ? (
+            <span className={styles.triggerHighlightLabel}>
+              <span className={styles.triggerHighlightPrefix}>Highlighted:</span>
+              <strong className={styles.triggerHighlightTerm}>{highlightTerm}</strong>
+            </span>
+          ) : (
+            <>
+              <span className={styles.triggerText}>Search or ask…</span>
+              <span className={styles.shortcutBadge} aria-hidden="true">
+                {shortcutLabel.includes('⌘')
+                  ? <kbd>⌘K</kbd>
+                  : <><kbd>Ctrl</kbd><kbd>K</kbd></>
+                }
+              </span>
+            </>
+          )}
+        </button>
+        {highlightTerm && (
+          <button
+            className={styles.highlightClearButton}
+            onClick={clearHighlight}
+            aria-label={`Clear search highlights for "${highlightTerm}". Press Escape to dismiss.`}
+          >
+            <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
+            <span className={styles.highlightClearText}>Clear</span>
+          </button>
+        )}
+      </div>
 
       {/* ── Modal overlay ── */}
       {isOpen && (
@@ -1104,7 +1149,7 @@ export default function SearchBar() {
               )}
             </div>
           </div>
-        </div>
+          </div>
       )}
     </>
   );
