@@ -86,6 +86,9 @@
   --inv-tint-strong: rgba(1, 69, 80, 0.28);
   /* step ring halos */
 
+  /* Sidebar surface */
+  --inv-sidebar-bg: var(--ifm-color-gray-800);
+
   /* Diagram — flow diagram header bar */
   --inv-diagram-header-bg: #065b68;
   --inv-diagram-header-accent: #014550;
@@ -230,7 +233,6 @@ html[data-theme='dark'] .navbar-sidebar__back {
   background-color: var(--ifm-menu-color-background);
 }
 
-
 /* ─── 3. Base / Global ───────────────────────────────────────────────────── */
 
 /* 3a. Typography */
@@ -314,6 +316,7 @@ strong,
 .navbar-sidebar {
   --ifm-menu-color: var(--ifm-color-secondary-lightest);
   --ifm-menu-color-active: #ffffff;
+  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
 }
 
 .navbar-sidebar .menu__link:hover,
@@ -342,9 +345,105 @@ nav.menu {
   padding: 1rem;
 }
 
+/* 4b-i. Desktop sidebar — contrasting surface + stronger divider.
+ *
+ *  Light: --ifm-color-secondary-lightest (#f3f6f7) — a very light teal-gray,
+ *         clearly distinct from the pure-white page background without
+ *         being heavy. The right border is stepped up to the primary color
+ *         so the boundary reads as intentional structure, not an accident.
+ *
+ *  Dark:  --ifm-color-gray-800 (#1a202c) — one step darker than the page
+ *         background (#171923), giving a subtle but legible separation.
+ *         Border matches the dark primary.
+ *
+ *  The menu link colors are also lifted slightly so they have enough contrast
+ *  against the new tinted surface (WCAG AA on both backgrounds).
+ */
+.docSidebarContainer,
+.theme-doc-sidebar-container {
+  background-color: var(--inv-sidebar-bg);
+  border-right: 2px solid black !important;
+
+  /* Override menu token colors for the dark sidebar surface.
+   * Scoped here so mobile sidebar (navbar-sidebar) is unaffected. */
+  --ifm-menu-color: var(--ifm-color-gray-300);
+  /* muted gray — clearly inactive */
+  --ifm-menu-color-active: #ffffff;
+  /* bright white — clearly active; #f3f6f7 inactive is too close */
+  --ifm-menu-color-background-active: black !important;
+  --ifm-menu-color-background-hover: var(--ifm-color-gray-700) !important;
+  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+}
+
+/* Infima defaults collapsible--active to hover bg; align it with active bg instead */
+.theme-doc-sidebar-container .menu__list-item-collapsible--active {
+  background: var(--ifm-menu-color-background-active) !important;
+}
+
+/* Root-level categories use menu__link--sublist-caret with a ::after caret.
+ * flex-direction: row-reverse on the parent doesn't help here because the caret
+ * lives inside the <a> itself. Suppress ::after and move it to ::before so it
+ * appears before the label text. Applies to both desktop and mobile sidebars. */
+:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__link--sublist-caret::after {
+  display: none;
+}
+
+:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__link--sublist-caret::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--ifm-menu-link-sublist-icon) 50% / 2rem 2rem;
+  filter: var(--ifm-menu-link-sublist-icon-filter);
+  transform: rotate(180deg);
+  transition: transform var(--ifm-transition-fast) linear;
+  margin-right: var(--ifm-menu-link-padding-horizontal);
+}
+
+:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__list-item--collapsed .menu__link--sublist-caret::before {
+  transform: rotateZ(90deg);
+}
+
+:is(.theme-doc-sidebar-menu, .theme-doc-sidebar-item-category, .navbar-sidebar) .menu__list-item-collapsible {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-left: 0;
+}
+
+/* When caret button leads (row-reverse), strip its right padding to avoid
+ * double gap: button-padding-right + link-padding-left would be too wide */
+:is(.theme-doc-sidebar-menu, .theme-doc-sidebar-item-category, .navbar-sidebar) .menu__list-item-collapsible .menu__caret {
+  padding-right: 0;
+}
+
+.theme-doc-sidebar-menu .menu__list .menu__list>.menu__list-item>.menu__link {
+  padding-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.theme-doc-sidebar-menu .menu__list .menu__list,
+.theme-doc-sidebar-item-category .menu__list {
+  border-left: 1px dashed var(--ifm-color-gray-300) !important;
+  padding-left: 0.5rem;
+  margin-left: 1.3rem;
+
+}
+
+html[data-theme='dark'] .docSidebarContainer,
+html[data-theme='dark'] .theme-doc-sidebar-container {
+  background-color: var(--ifm-color-gray-800);
+  border-right-color: black !important;
+
+  /* Dark mode sidebar already has light text via global dark tokens — reset overrides */
+  --ifm-menu-color: var(--ifm-color-gray-300);
+  --ifm-menu-color-active: #ffffff;
+}
+
 /* 4c. Footer */
 .footer--dark {
   background-color: var(--ifm-color-gray-800);
+  border-top: 1px solid black;
 }
 
 .footer-link {
@@ -406,7 +505,118 @@ code {
 }
 
 
-/* ─── 5. Utilities ───────────────────────────────────────────────────────── */
+/* ─── 5. Tabs ────────────────────────────────────────────────────────────── */
+
+/*
+ * Design intent:
+ *  - Inactive tabs → tag style: subtle filled background, rounded corners,
+ *    muted text. Signals "clickable option" without dominating the page.
+ *  - Active tab   → open folder tab: no fill, strong primary text + weight,
+ *    three-sided border that visually merges with the panel below.
+ *  - Panel        → bordered container that continues from the active tab,
+ *    creating one unified "card" feel.
+ *
+ * Technique: the active tab sits margin-bottom: -1px so its bottom border
+ * (page-background colour) "erases" the strip's bottom border at that point,
+ * making the tab look like it opens into the panel.
+ */
+
+.tabs-container {
+  margin-top: 1.5rem;
+}
+
+/* 5a. Tab strip */
+.tabs-container ul.tabs {
+  border-bottom: 1px solid var(--ifm-color-primary);
+  gap: 4px;
+  padding: 0;
+  margin-bottom: 0;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+/* 5b. Inactive tab — tag/pill style */
+.tabs-container ul.tabs .tabs__item {
+  border-radius: 6px 6px 0 0;
+  background: var(--ifm-color-secondary-lighter);
+  color: var(--ifm-color-gray-600);
+  font-weight: 500;
+  font-size: inherit;
+  padding: 6px 14px;
+  border: 1px solid var(--ifm-color-gray-200);
+  border-bottom: 1px solid var(--ifm-color-primary);
+  margin-bottom: -1px;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.tabs-container ul.tabs .tabs__item:hover:not(.tabs__item--active) {
+  background: var(--ifm-color-gray-200);
+  color: var(--ifm-color-gray-700);
+  border-color: var(--ifm-color-primary);
+}
+
+/* 5c. Active tab — no fill, strong text, open bottom = visual continuity */
+.tabs-container ul.tabs .tabs__item--active {
+  background: transparent;
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+  border: 1px solid var(--ifm-color-primary);
+  border-bottom-color: #ffffff;
+  /* --ifm-background-color is 'transparent' in infima light mode; hardcode to erase the strip border */
+}
+
+/* 5c-i. Focus indicator — explicit :focus-visible so the keyboard ring is
+ *        always visible on top of both the filled and borderless tab states.
+ *        2px offset keeps the ring outside the border — WCAG 2.4.13 compliant. */
+.tabs-container ul.tabs .tabs__item:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 6px 6px 0 0;
+}
+
+/* 5d. Tab panel — bordered container that continues from the active tab.
+ *     Child combinator (>) scopes this to Docusaurus's own direct tabpanel
+ *     only, so nested components with role="tabpanel" (e.g. ApiPlayground)
+ *     are not affected. */
+.tabs-container>[role="tabpanel"] {
+  border: 1px solid var(--ifm-color-primary);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 1.25rem 1rem;
+  margin-top: 0;
+}
+
+/* 5e. Dark mode */
+html[data-theme='dark'] .tabs-container ul.tabs {
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .tabs-container ul.tabs .tabs__item {
+  background: var(--ifm-color-gray-800);
+  color: var(--ifm-color-gray-400);
+  border-color: var(--ifm-color-gray-700);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .tabs-container ul.tabs .tabs__item:hover:not(.tabs__item--active) {
+  background: var(--ifm-color-gray-700);
+  color: var(--ifm-color-gray-300);
+  border-color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .tabs-container ul.tabs .tabs__item--active {
+  background: transparent;
+  color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-background-color, #171923);
+}
+
+html[data-theme='dark'] .tabs-container>[role="tabpanel"] {
+  border-color: var(--ifm-color-primary);
+}
+
+/* ─── 6. Utilities ───────────────────────────────────────────────────────── */
 
 .hidden {
   display: none !important;
@@ -417,9 +627,9 @@ code {
 }
 
 
-/* ─── 6. Responsive ──────────────────────────────────────────────────────── */
+/* ─── 7. Responsive ──────────────────────────────────────────────────────── */
 
-/* 6a. Tablet (≤ 1024px) */
+/* 7a. Tablet (≤ 1024px) */
 @media (max-width: 1024px) {
   :root {
     --ifm-menu-color-background-active: var(--ifm-color-primary-darker) !important;
@@ -430,4 +640,4 @@ code {
   }
 }
 
-/* 6b. Mobile (≤ 640px) — covered by 6a; no additional overrides needed */
+/* 7b. Mobile (≤ 640px) — covered by 7a; no additional overrides needed */
