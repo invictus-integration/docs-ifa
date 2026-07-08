@@ -21,7 +21,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <TechChanges>
     - **Framework upgrade to latest SDK:** all Framework components now run on the most recent version of their respective SDK.
     - **Transco property name consistency:** Transco V2 property names now follow the naming convention consistently.
-    - **Application Gateway support:** Invictus now supports placing an Application Gateway in front of the Dashboard. <a href="../dashboard/installation/?step=deploy&q=applicationgateway#bicep-template-parameters">Two new BICEP parameters enable this</a>.
+    - **Application Gateway support:** Invictus now supports placing an Application Gateway in front of the Dashboard. <a href="../dashboard/installation/?step=deploy&q=applicationgateway#bicep-template-parameters">Two new Bicep parameters enable this</a>.
   </TechChanges>
   <Fixes>
     - **Tables not created on installation:** Invictus now correctly creates all required tables during installation.
@@ -40,12 +40,12 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Resubmit / Resume toggle:** operators can now turn on/off the resubmit and resume buttons from the Advanced Settings section.
   </Features>
   <TechChanges>
-    - **[Breaking] VNET parameter renames:** these BICEP parameters have new names. Update existing deployments accordingly:
+    - **[Breaking] VNET parameter renames:** these Bicep parameters have new names. Update existing deployments accordingly:
       - `containerAppEnvironmentSubnetName` → `delegatedContainerAppEnvironmentSubnetName`
       - `disableStorageAccountPublicNetworkAccess` → `enableStorageAccountPublicNetworkAccess`
       - `vnetResourceGroupName` → `virtualNetworkResourceGroupName`
     - **Standard Service Bus SKU with VNET integration:** Invictus no longer requires a Premium Service Bus SKU when using VNET integration. Teams can now configure a Standard SKU, reducing costs for non-production environments like DEV and TEST.
-    - **Resource locks are now optional:** a new `useResourceLocks` BICEP parameter lets teams {/* vale Google.WordList = NO */}disable{/* vale Google.WordList = YES */} resource locks during installation. See the documentation for details.
+    - **Resource locks are now optional:** a new `useResourceLocks` Bicep parameter lets teams {/* vale Google.WordList = NO */}disable{/* vale Google.WordList = YES */} resource locks during installation. See the documentation for details.
     - **Post-deployment script to clean up container revisions:** a post-deployment script now cleans up older Container App revisions. See the "Migrating to v6" topic in the documentation.
     - **Private endpoint naming change:** private endpoint names now use the `pep-` prefix instead of `conn-`.
   </TechChanges>
@@ -66,14 +66,14 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Transco supports `strip-space`:** Transco now supports the `strip-space` option, which removes empty nodes from an XML input before processing.
   </Features>
   <TechChanges>
-    - **Azure Key Vault URL in BICEP:** BICEP templates now use the URL output by the Key Vault resource itself, replacing hard-coded values.
+    - **Azure Key Vault URL in Bicep:** Bicep templates now use the URL output by the Key Vault resource itself, replacing hard-coded values.
     - **Specify Azure Container Registry name:** a new deployment parameter lets teams override the Azure Container Registry name.
     - **Logic App details link updated:** the Logic App detail link in the Dashboard now opens the new Logic App designer.
   </TechChanges>
   <Fixes>
     - **Expanded flow steps persisting across pages:** the Dashboard no longer incorrectly expands a row on a new results page because the same row was open on the previous page.
     - **Logic App run error not always visible:** the Logic App details page now consistently shows the actual error for a failed run.
-    - **Missing Scaling Rules parameters:** all Scaling Rules are now available as BICEP parameters.
+    - **Missing Scaling Rules parameters:** all Scaling Rules are now available as Bicep parameters.
     - **Login issues for users in many groups:** users belonging to a large number of Microsoft Entra ID groups can now log in to the Dashboard without errors.
     - **RegexTranslation with Managed Identity:** the RegexTranslation component now works correctly with Managed Identity.
     - **PubSub messages getting stuck:** PubSub no longer lets messages get stuck in the queue.
