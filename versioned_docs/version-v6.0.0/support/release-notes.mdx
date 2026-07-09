@@ -47,7 +47,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
       - `containerAppEnvironmentSubnetName` → `delegatedContainerAppEnvironmentSubnetName`
       - `disableStorageAccountPublicNetworkAccess` → `enableStorageAccountPublicNetworkAccess`
       - `vnetResourceGroupName` → `virtualNetworkResourceGroupName`
-    - **Standard Service Bus SKU works with VNET:** Invictus no longer requires a Premium Service Bus SKU when deployed with VNET. A Standard SKU is sufficient. This lowers infrastructure costs for development and test environments.
+    - **Standard Service Bus SKU works with VNET:** Invictus no longer requires a Premium Service Bus SKU when deployed with VNET. A Standard SKU is enough. This lowers infrastructure costs for development and test environments.
     - **Optional resource locks:** a new `useResourceLocks` Bicep flag lets teams {/* vale Google.WordList = NO */}disable{/* vale Google.WordList = YES */} Azure resource locks at install time.
     - **Script to remove old Container App revisions:** a [new script](../../scripts/Invictus-RemoveOldRevisions.ps1) removes stale Azure Container App revisions. Run it after each install to keep your environment clean.
     - **Private endpoint naming follows conventions:** private endpoint names now use the `pep-` prefix instead of `conn-`, aligning with Azure naming conventions for private endpoints.
