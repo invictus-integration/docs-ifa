@@ -38,54 +38,6 @@ function getLiveRegion() {
   return el;
 }
 
-/** Singleton floating filter chip — shown while highlights are active.
- *  Structure mirrors Glossary.tsx's filterChip / filterChipClear pattern:
- *  <div id="search-highlight-chip">
- *    <span id="search-highlight-chip-label">Highlighted: <strong>…</strong></span>
- *    <button id="search-highlight-dismiss">✕ Clear</button>
- *  </div>
- */
-function getDismissChip() {
-  let chip = document.getElementById('search-highlight-chip');
-  if (!chip) {
-    chip = document.createElement('div');
-    chip.id = 'search-highlight-chip';
-    chip.setAttribute('role', 'status');
-    chip.setAttribute('aria-live', 'polite');
-
-    const label = document.createElement('span');
-    label.id = 'search-highlight-chip-label';
-    chip.appendChild(label);
-
-    const btn = document.createElement('button');
-    btn.id = 'search-highlight-dismiss';
-    btn.type = 'button';
-
-    // ✕ icon (inline SVG — FA xmark path, avoids a FA import in plain JS)
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('aria-hidden', 'true');
-    svg.setAttribute('width', '10');
-    svg.setAttribute('height', '10');
-    svg.setAttribute('viewBox', '0 0 384 512');
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('fill', 'currentColor');
-    // FA xmark (solid) path data
-    path.setAttribute('d', 'M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256l105.3-105.4z');
-    svg.appendChild(path);
-    btn.appendChild(svg);
-    btn.appendChild(document.createTextNode('\u2002Clear'));
-
-    btn.addEventListener('click', () => {
-      removeSearchHighlights();
-      document.getElementById('search-trigger')?.focus();
-    });
-    chip.appendChild(btn);
-    chip.style.display = 'none'; // use style, not hidden attr — immune to React re-renders
-    document.body.appendChild(chip);
-  }
-  return chip;
-}
-
 /** Module-level Escape listener ref so it can be reliably removed. */
 let escapeListener = null;
 
@@ -98,9 +50,8 @@ function removeSearchHighlights() {
     }
   }
 
-  // Hide dismiss chip.
-  const chip = document.getElementById('search-highlight-chip');
-  if (chip) chip.style.display = 'none';
+  // Notify SearchBar to clear its highlight state.
+  window.dispatchEvent(new CustomEvent('searchhighlight', { detail: { term: '' } }));
 
   // Remove Escape listener.
   if (escapeListener) {
@@ -196,31 +147,17 @@ function applySearchHighlights(highlight, hash) {
     getLiveRegion().textContent =
       `${totalMarks} match${totalMarks === 1 ? '' : 'es'} found for "${highlight.trim()}"`;
 
-    // Show the filter chip — "Highlighted: <strong>term</strong>" + Clear button.
-    const chip = getDismissChip();
-    const label = document.getElementById('search-highlight-chip-label');
-    if (label) {
-      label.innerHTML = '';
-      label.appendChild(document.createTextNode('Highlighted: '));
-      const strong = document.createElement('strong');
-      strong.textContent = highlight.trim();
-      label.appendChild(strong);
-    }
-    const dismissBtn = document.getElementById('search-highlight-dismiss');
-    if (dismissBtn) {
-      dismissBtn.setAttribute(
-        'aria-label',
-        `Clear ${totalMarks} search highlight${totalMarks === 1 ? '' : 's'}. Press Escape to dismiss.`,
-      );
-    }
-    chip.style.display = 'inline-flex';
+    // Notify SearchBar to show the highlight state inside its trigger button.
+    window.dispatchEvent(new CustomEvent('searchhighlight', {
+      detail: { term: highlight.trim(), count: totalMarks },
+    }));
 
     // Register Escape to dismiss (re-register on every highlight application).
     if (escapeListener) document.removeEventListener('keydown', escapeListener);
     escapeListener = (e) => {
       if (e.key === 'Escape') {
         removeSearchHighlights();
-        document.getElementById('search-trigger')?.focus();
+        document.querySelector('[data-cy="search-trigger"]')?.focus();
       }
     };
     document.addEventListener('keydown', escapeListener);
