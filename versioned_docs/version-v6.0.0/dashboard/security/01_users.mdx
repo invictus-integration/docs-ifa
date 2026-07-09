@@ -16,10 +16,10 @@ import { Tab, SignInWithMicrosoftButton, TextInput, DropDownInput, Button, Toggl
 # Manage Users in the Dashboard
 <Breadcrumb paths={["Users"]} />
 
-The Invictus Dashboard allows you to access with many user accounts. These can be **local** users, managed by Invictus itself; or **Entra ID** users, managed by your Azure tenant.
+Two user types can access the Dashboard. Invictus manages **Local** users. Your tenant manages **Microsoft Entra ID** users.
 
 :::praise[recommended]
-Use **Entra ID** users over local users for security reasons.
+Prefer **Entra ID** users for security.
 :::
 
 ![users overview](/images/v2_users1.png)
@@ -27,48 +27,49 @@ Use **Entra ID** users over local users for security reasons.
 <Tabs groupId="user-type" queryString>
 <TabItem value="entra-id" label="Entra ID" default>
 
-> <FontAwesomeIcon icon={faUser} /> Requires membership of a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
+> <FontAwesomeIcon icon={faUser} /> Requires a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
-You can configure the Invictus Dashboard to [use existing users in Microsoft Entra ID groups](../installation/01_give_ad_access.mdx). This removes the need to work with local Dashboard users.
+The Dashboard works with users in Entra ID groups.
+See [syncing groups](../installation/01_give_ad_access.mdx) to set them up.
 
 <details>
-<summary><span id="add-an-entra-id-user">**Add an Entra ID user to the Dashboard**</span></summary>
+<summary><span id="add-an-entra-id-user">**Add an Entra ID user**</span></summary>
 
-Microsoft Entra ID users can sign in automatically into the Invictus Dashboard with the [<SignInWithMicrosoftButton />](../installation/01_give_ad_access.mdx) button if that user is part of a [synced group into the Dashboard](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
+Entra ID users sign in with the [<SignInWithMicrosoftButton />](../installation/01_give_ad_access.mdx) button. They must be part of a [synced group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
 
 :::warning[requires role]
-Make sure that the group has a [role assigned](./03_roles.mdx), otherwise the Dashboard will be unusable for the user.
+Make sure the group has a [role assigned](./03_roles.mdx). Without one, the Dashboard won't work.
 :::
 
 </details>
 
 <details>
-<summary>**Delete an Entra ID user from the Dashboard** <OnlyAdminsBadge/></summary>
+<summary>**Delete an Entra ID user** <OnlyAdminsBadge/></summary>
 
-Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard.
+Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard. This action doesn't remove them from Entra ID.
 
 <Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish Entra ID users">
-You can distinguish linked Entra ID users as they don't have a personal role assigned. The Dashboard determines the role by the group the user is a member of.
+Entra ID users have no direct role. They get their role from their group.
 </Admonition>
 </details>
 
 <details>
-<summary>**Edit an Entra ID user's role in the Dashboard** <OnlyAdminsBadge/></summary>
+<summary>**Edit an Entra ID user's role** <OnlyAdminsBadge/></summary>
 
-Entra ID users don't have personalized roles that allow them to access certain flows in the Dashboard. The Dashboard determines the user role by the Entra ID groups where the user is a member of. 
-[If the groups has access to the flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so has the user.
+Entra ID users have no direct role. They get their role from their group.
+[If the group can access a flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so can the user.
 
 </details>
 
 <details>
 <summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
 
-Before you can use the forgot password feature, you need to create an Microsoft Entra ID app registration and [set it up with the `Mail.Send` API permissions](../installation/01_give_ad_access.mdx). The OAuth 2.0 flow requires this to send emails securely.
+To use forgot password, create an Entra ID app. Add the [`Mail.Send` permission](../installation/01_give_ad_access.mdx). OAuth 2.0 uses it to send emails.
 
-Navigate to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} /> and add the backup email address where to send the 'Forgot password' emails. 
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} /> to add the backup email address for 'Forgot password' emails.
 
 :::warning
-Please note that the permission granted allows any email address within the organization to be used as the sender.
+The Dashboard may use any email in the tenant as the sender.
 :::
 
 </details>
@@ -76,48 +77,48 @@ Please note that the permission granted allows any email address within the orga
 </TabItem>
 <TabItem value="local" label="Local">
 
-Local users are entirely managed by the Invictus Dashboard. You can assign personal permissions and delete them at anytime.
+The Dashboard manages local users. You can assign roles and delete them at any time.
 
 <details>
-<summary>**Add a local user to the Dashboard** <OnlyAdminsBadge/></summary>
+<summary>**Add a local user** <OnlyAdminsBadge/></summary>
 
-Navigate to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
-* Fill in the required <TextInput label="Username" />, <TextInput label="Email" /> and <TextInput label="Password" /> fields.
-* Local users can have a personal [<DropDownInput label="Role" />](./03_roles.mdx) assigned to them to allow them to access certain flows in the Dashboard.
+Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
+* Fill in the <TextInput label="Username" />, <TextInput label="Email" /> and <TextInput label="Password" /> fields.
+* Assign a [<DropDownInput label="Role" />](./03_roles.mdx) to set flow access.
 
 </details>
 
 <details>
-<summary>**Delete a local user from the Dashboard** <OnlyAdminsBadge/></summary>
+<summary>**Delete a local user** <OnlyAdminsBadge/></summary>
 
-Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard.
+Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user.
 
 <Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish local users">
-You can distinguish local users as they have a personal role assigned.
+Local users have a direct role assigned.
 </Admonition>
 
 </details>
 
 <details>
-<summary>**Edit a local user's role in the Dashboard** <OnlyAdminsBadge/></summary>
+<summary>**Edit a local user's role** <OnlyAdminsBadge/></summary>
 
-Click on the <FontAwesomeIcon icon={faPencil} /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx) in the Dashboard.
+Click the <FontAwesomeIcon icon={faPencil} /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx).
 </details>
 
 <details>
 <summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
 
-For local users to allow them to run the 'Forgot password' procedure, configure the correct email server.
+Set up the email server for password resets.
 
-Navigate to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
 
 | Forgot password setting  | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <TextInput label="Host" />                   | The host address of the email server from which the sender account originates. For instance, if it's a Gmail email account, the host should be `"smtp.gmail.com"`. |
-| <NumberInput label="Port number" />            | The port number for the email server from which the sender accounts originates, default is `587`.                                                                |
-| <TextInput label="Email key vault key" />    | The Azure Key Vault secret name where you stored the sender email address (points to the Key Vault resource accompanied with the Invictus installation).         |
-| <TextInput label="Password key vault key" /> | The Azure Key Vault secret name where you stored the sender email password (points to the Key Vault resource accompanied with the Invictus installation).        |
-| <ToggleInput label="Enable SSL" />            | It's recommended to enable SSL, as major email providers often require this setting.                                                                             |
+| <TextInput label="Host" />                   | The host address of the email server. For example: `"smtp.gmail.com"` for Gmail. |
+| <NumberInput label="Port number" />            | The email server port. Default is `587`.                                                                |
+| <TextInput label="Email key vault key" />    | The Key Vault secret name for the sender email address (bundled with Invictus).         |
+| <TextInput label="Password key vault key" /> | The Key Vault secret name for the sender email password (bundled with Invictus).        |
+| <ToggleInput label="Enable SSL" />            | Enable SSL. Most email providers require it.                                                                             |
   
 </details>
 
@@ -125,9 +126,9 @@ Navigate to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon ic
 </Tabs>
 
 <details>
-<summary>**Unlocking a user in the Dashboard** <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></summary>
+<summary>**Unlocking a user** <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></summary>
 
 <Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} /></>]} activeLast={false} />
 
-Users gets locked out if they try to sign in too many times with wrong credentials. System admins can unlock these users by clicking on the <FontAwesomeIcon icon={faLock} /> button of the user in the list.
+Too many failed sign-in attempts lock a user out. System admins can unlock them via the <FontAwesomeIcon icon={faLock} /> button.
 </details>
