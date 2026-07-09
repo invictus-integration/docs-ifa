@@ -279,8 +279,8 @@ describe('SearchBar navigation (local search)', () => {
 
   // ── Dismiss chip ──────────────────────────────────────────────────────────
   //
-  // Verifies the amber filter chip that appears while highlights are active
-  // and the two ways to dismiss it: clicking the Clear button and pressing Escape.
+  // Verifies the highlight state that appears in the search trigger while
+  // highlights are active and the two ways to dismiss it: clicking Clear and pressing Escape.
 
   describe('dismiss chip', () => {
 
@@ -289,8 +289,8 @@ describe('SearchBar navigation (local search)', () => {
       cy.get('[data-cy=search-result]').first().click();
       cy.get('mark[data-search-highlight]', { timeout: 4000 }).should('have.length.greaterThan', 0);
 
-      cy.get('#search-highlight-chip').should('be.visible');
-      cy.get('#search-highlight-chip-label').should('contain', 'installation');
+      cy.get('[data-cy=search-highlight-chip]').should('be.visible');
+      cy.get('[data-cy=search-highlight-chip-label]').should('contain', 'installation');
     });
 
     it('clicking the Clear button removes all marks and hides the chip', () => {
@@ -298,10 +298,10 @@ describe('SearchBar navigation (local search)', () => {
       cy.get('[data-cy=search-result]').first().click();
       cy.get('mark[data-search-highlight]', { timeout: 4000 }).should('have.length.greaterThan', 0);
 
-      cy.get('#search-highlight-dismiss').click();
+      cy.get('[data-cy=search-highlight-chip]').click();
 
       cy.get('mark[data-search-highlight]').should('not.exist');
-      cy.get('#search-highlight-chip').should('not.be.visible');
+      cy.get('[data-cy=search-highlight-chip]').should('not.exist');
     });
 
     it('pressing Escape removes all marks and hides the chip', () => {
@@ -312,17 +312,17 @@ describe('SearchBar navigation (local search)', () => {
       cy.get('body').type('{esc}');
 
       cy.get('mark[data-search-highlight]').should('not.exist');
-      cy.get('#search-highlight-chip').should('not.be.visible');
+      cy.get('[data-cy=search-highlight-chip]').should('not.exist');
     });
 
     it('hides the chip when navigating to a page without highlights', () => {
       openSearchAndType('installation');
       cy.get('[data-cy=search-result]').first().click();
-      cy.get('#search-highlight-chip', { timeout: 4000 }).should('be.visible');
+      cy.get('[data-cy=search-highlight-chip]', { timeout: 4000 }).should('be.visible');
 
       // cy.visit() is a full page reload — chip element is gone from the DOM entirely.
       cy.visit('/');
-      cy.get('#search-highlight-chip').should('not.exist');
+      cy.get('[data-cy=search-highlight-chip]').should('not.exist');
     });
 
   });
