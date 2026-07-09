@@ -11,6 +11,46 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
 <ReleaseNotes>
 
+<ReleaseVersion version="6.4" date="July 2026">
+  <Features>
+    - **Simplified Flow Status Filtering:** The flow status filtering in the Dashboard Advanced Search has been streamlined to make it easier to find the flows you're looking for, while still maintaining detailed status information behind the scenes. Existing statuses such as Resubmitted, Resumed, Resubmit Failed, and Resume Failed are still tracked internally, but are now grouped into broader categories in the user interface. 
+    
+      The 'Active' filter now includes:
+        - Active
+        - Resubmitted
+        - Resumed
+
+      The 'Error' filter now includes:
+        - Failed
+        - Resubmit Failed
+        - Resume Failed
+
+
+    - **Improved Handling of Missing Configuration References in Transco V2:** We've improved the way the Transco component handles configuration references that point to data that isn't available. Previously, these missing references would cause Transco to stop processing and return an error. This caused issues in scenarios where Transco was used as part of conditional logic that intentionally checks whether certain data exists before performing additional actions. With this enhancement, Transco will no longer fail when a referenced location is missing. Instead, it will continue processing and log a warning, making it easier to identify configuration issues while preserving existing conditional processing behavior.
+    - **TranscoV2: Configurable Default Values for Missing Data:** The Transco component now provides more flexibility when working with optional or unavailable data. In situations where a configured value cannot be retrieved from the expected location, a configurable default value can now be used instead.
+
+      This enhancement helps prevent processing failures caused by missing data and makes it easier to support scenarios where certain inputs are optional. The default value capability is available for both data lookups and context promotion operations, providing greater consistency and flexibility when configuring Transco behavior.
+    - **Dedicated Resource Groups for Private Endpoints:** Invictus now provides additional flexibility when deploying environments that use Virtual Network (VNET) integration. Private Endpoints can now be deployed into a dedicated resource group, allowing organizations to align deployments more easily with their networking, governance, and resource management standards.
+  </Features>
+  <TechChanges>
+    - **Enhanced Private Network Deployment Support:** Invictus now offers an improved deployment model for environments that require private network connectivity. Deployments can be configured to use Private Endpoints, ensuring that communication with underlying platform services remains within the private network boundary.
+    In addition, deployment validation has been expanded with automated connectivity checks to verify that services remain reachable from within the network while remaining inaccessible from external environments where appropriate.
+    The update also simplifies the configuration of network-related deployment settings and improves support for managing private connectivity across the various platform services used by Invictus.
+    - **Upgrade to .NET 10:** All Dashboard and Framework functions from Invictus have been upgraded to .NET 10.
+  </TechChanges>
+  <Fixes>
+    - **ErrorHandler: Improved Error Details for Failed ForEach Iterations:** We've improved the way errors are reported when a failure occurs inside a ForEach loop.
+Previously, if one or more iterations inside a ForEach action failed, the Dashboard would often display a generic error message such as "Unable to obtain error message" instead of the actual cause of the failure. This made troubleshooting more difficult and required users to inspect the Logic App run details directly.
+
+      With this enhancement, Invictus now retrieves and displays the underlying error from the failed iteration whenever possible, providing clearer and more actionable information in the Dashboard. This helps users identify the root cause of failures faster and reduces the need to switch to Azure for additional investigation.
+    - **Improved automatic recovery of deferred messages:** We have enhanced the automatic recovery mechanism for messages that remain in a deferred state for an extended period due to intermittent platform-related issues outside of Invictus' control.
+
+      Previously, when a deferred message was automatically resubmitted, environments with multiple subscribers could receive the message more broadly than intended. The subscription filtering logic has now been improved to ensure that automatically resubmitted messages are routed only to the appropriate subscriber.
+
+    - **Improved CosmosDB reliability during high-volume processing:** We've improved the way Invictus handles large numbers of background operations running at the same time. In certain scenarios, especially during initial setup or periods of high activity, this could result in database connection limitations that caused processing failures. The processing logic has been optimized to better manage concurrent operations, improving stability and reducing the likelihood of these errors occurring.
+  </Fixes>
+</ReleaseVersion>
+
 <ReleaseVersion version="6.3" date="March 2026">
   <Features>
     - **Dashboard Gateway as proxy for workflow actions results:** accessing the results of workflow actions now routes through the Dashboard Gateway instead of linking directly to the Azure Portal. Installations where Azure Logic Apps live in a separate VNET from Invictus can access action results through the Dashboard.
