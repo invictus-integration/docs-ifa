@@ -31,7 +31,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
       Previously, when a deferred message was automatically resubmitted, environments with multiple subscribers could receive the message more broadly than intended. The subscription filtering logic has now been improved to ensure that automatically resubmitted messages are routed only to the appropriate subscriber.
 
-    - **Improved CosmosDB reliability during high-volume processing:** We've improved the way Invictus handles large numbers of background operations running at the same time. In certain scenarios, especially during initial setup or periods of high activity, this could result in database connection limitations that caused processing failures. The processing logic has been optimized to better manage concurrent operations, improving stability and reducing the likelihood of these errors occurring.
+    - **Reliable Cosmos DB during high-volume processing:** the database interactions better handles concurrent tasks. This reduces the connection errors during high activity or initial setup.
   </Fixes>
 </ReleaseVersion>
 
