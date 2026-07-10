@@ -26,10 +26,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Upgrade to .NET 10:** the Dashboard and Framework components run on .NET 10.
   </TechChanges>
   <Fixes>
-    - **ErrorHandler: Improved Error Details for failed ForEach Iterations:** We have improved the way errors are reported when a failure occurs inside a ForEach loop.
-    Previously, if one or more iterations inside a ForEach action failed, the Dashboard would often display a generic error message such as "Unable to obtain error message" instead of the actual cause of the failure. This made troubleshooting more difficult and required users to inspect the Logic App run details directly.
-
-      With this enhancement, Invictus now retrieves and displays the underlying error from the failed iteration whenever possible, providing clearer and more actionable information in the Dashboard. This helps users identify the root cause of failures faster and reduces the need to switch to Azure for additional investigation.
+    - **[ExceptionHandler] report error details in failed `ForEach` loops:** the component captures inner errors inside `ForEach` loops in Logic Apps workflows instead of displaying general error user messages. Users no longer have to switch to Azure to find the root cause for failures.
     - **Improved automatic recovery of deferred messages:** We have enhanced the automatic recovery mechanism for messages that remain in a deferred state for an extended period due to intermittent platform-related issues outside of Invictus' control.
 
       Previously, when a deferred message was automatically resubmitted, environments with multiple subscribers could receive the message more broadly than intended. The subscription filtering logic has now been improved to ensure that automatically resubmitted messages are routed only to the appropriate subscriber.
