@@ -19,7 +19,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **[Transco] missing references no longer cause failures:** scenarios with conditional actions failed due to possible missing data references during instructions. The Transco no longer fails when `scopePath` or `destination` points to unavailable locations. The component logs a warning in case that happens to help spotting configuration issues.
     - **[Transco] fall back on default parameter values:** the component better handles optional or unavailable data. In situations where the component can't retrieve a parameter value from a path, you can fall back on a `defaultValue`.
 
-    - **Dedicated Resource Groups for Private Endpoints:** Invictus now provides additional flexibility when deploying environments that use Virtual Network (VNET) integration. Private Endpoints can now be deployed into a dedicated resource group, allowing organizations to align deployments more easily with their networking, governance, and resource management standards.
+    - **Enhanced private network support:** deployments within a virtual network (VNET) offers private endpoints. This helps organizations to align their governance and standards in the deployment.
   </Features>
   <TechChanges>
     - **Enhanced Private Network Deployment Support:** Invictus now offers an improved deployment model for environments that require private network connectivity. Deployments can now be configured to use Private Endpoints, ensuring that communication with underlying platform services stays within the private network boundary.
