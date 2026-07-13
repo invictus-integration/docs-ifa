@@ -55,8 +55,8 @@ const TECH_FILE_PATTERNS = [
 ];
 
 const THRESHOLDS = {
-  business: { fkMax: 8,  freMin: 70 },
-  tech:     { fkMax: 14, freMin: 30 },
+  business: { fkMax: 8,  freMin: 70, clMax: 9,  lixMax: 35 },
+  tech:     { fkMax: 14, freMin: 30, clMax: 16, lixMax: 55 },
 };
 
 function getThresholds(filePath) {
@@ -180,7 +180,7 @@ function toPlainText(raw) {
     .replace(/import\s[^;]+;/g, '')                                     // import statements
     .replace(/:::[\w-]*[^\n]*/g, '')                                    // admonition markers (opening :::note and closing :::)
     .replace(/`{3}[^\n]*\n[\s\S]*?`{3}/g, '')                          // fenced code blocks
-    .replace(/`[^`\n]+`/g, 'code')                                      // inline code → neutral word
+    .replace(/`[^`\n]+`/g, ' ')                                        // inline code → remove (don't score code tokens)
     .replace(/\{\{[^}]*\}\}/g, ' ')                                     // double-brace JSX expressions {{ }}
     .replace(/\{[^}]+\}/g, ' ')                                         // single-brace JSX expressions { }
     .replace(/<[A-Z][A-Za-z]*[^>]*\/>/g, ' ')                          // self-closing JSX components <Badge />
@@ -193,7 +193,7 @@ function toPlainText(raw) {
     .replace(/^\|[-:\s|]+\|$/gm, '')                                    // table separator rows
     .replace(/\|/g, ' ')                                                // table pipe characters
     .replace(/^[-_*]{3,}\s*$/gm, '')                                    // thematic breaks (--- ___ ***)
-    .replace(/^#{1,6}\s+/gm, '')                                        // heading markers
+    .replace(/^#{1,6}\s+(.+)$/gm, '$1. ')                              // headings → sentence (prevents merging with next paragraph)
     .replace(/\*{1,2}([^*\n]*)\*{1,2}/g, '$1')                         // bold/italic markers (balanced)
     .replace(/\*/g, '')                                                 // remaining unbalanced asterisks
     .replace(/^[-*+]\s+(.+?)\.?\s*$/gm, '$1. ')                         // unordered list items → each becomes a sentence
@@ -244,36 +244,101 @@ function analyzeText(text) {
 
   if (sentences.length < 2 || words.length < 15) return null;
 
-  const syllables = words.reduce((n, w) => n + countSyllables(w), 0);
+  const syllables  = words.reduce((n, w) => n + countSyllables(w), 0);
+  const chars      = words.reduce((n, w) => n + w.replace(/[^a-zA-Z]/g, '').length, 0);
+  const longWords  = words.filter(w => w.length >= 7).length;
   const avgWords     = words.length / sentences.length;
   const avgSyllables = syllables / words.length;
+  const L = (chars / words.length) * 100;       // avg letters per 100 words
+  const S = (sentences.length / words.length) * 100; // avg sentences per 100 words
+
+  const sentenceWordCounts = sentences.map(s => wordCount(s));
+  const maxSentenceWords   = Math.max(...sentenceWordCounts);
+  const longestSentence    = sentences[sentenceWordCounts.indexOf(maxSentenceWords)] ?? '';
 
   return {
-    fk:           Math.round((0.39 * avgWords + 11.8 * avgSyllables - 15.59) * 10) / 10,
-    fre:          Math.round((206.835 - 1.015 * avgWords - 84.6 * avgSyllables) * 10) / 10,
-    wordCount:    words.length,
-    sentenceCount: sentences.length,
-    avgWords:     Math.round(avgWords * 10) / 10,
+    fk:              Math.round((0.39 * avgWords + 11.8 * avgSyllables - 15.59) * 10) / 10,
+    fre:             Math.round((206.835 - 1.015 * avgWords - 84.6 * avgSyllables) * 10) / 10,
+    cl:              Math.round((0.0588 * L - 0.296 * S - 15.8) * 10) / 10,
+    lix:             Math.round((avgWords + (longWords * 100 / words.length)) * 10) / 10,
+    wordCount:       words.length,
+    sentenceCount:   sentences.length,
+    avgWords:        Math.round(avgWords * 10) / 10,
+    longWordCount:   longWords,
+    maxSentenceWords,
+    longestSentence,
     sentences,
   };
 }
 
-// ── Reporting ────────────────────────────────────────────────────────────────
+// ── Suggestion builders ──────────────────────────────────────────────────────
 
-const SUGGESTIONS = {
-  fk:  'Split long sentences at conjunctions (and, but, which, that), or replace multi-syllable words with shorter alternatives.',
-  fre: 'Use shorter, more common words. Aim for 1–2 syllable words in most sentences.',
-  len: 'Look for "which", "that", "and", "but", "because" as natural split points to break this into two sentences.',
+const SPLIT_CONJUNCTIONS = [', which', ', that', ', and', ', but', ', because', ', however', ', although', ', while', ', whereas'];
+const SPLIT_CONJUNCTIONS_SOFT = [' because ', ' however ', ' although ', ' while ', ' which ', ' whereas '];
+
+function buildLenSuggestion(longest) {
+  for (const conj of SPLIT_CONJUNCTIONS) {
+    const idx = longest.toLowerCase().indexOf(conj);
+    if (idx > 15 && idx < longest.length - 10) {
+      const before = longest.slice(0, idx).trim().replace(/,\s*$/, '');
+      const after  = longest.slice(idx + conj.length).trim();
+      const cap    = after.charAt(0).toUpperCase() + after.slice(1);
+      const b = before.length > 55 ? '…' + before.slice(-52) : before;
+      const a = cap.length    > 55 ? cap.slice(0, 52) + '…'  : cap;
+      return [`Split at "${conj.trim()}":`, `Before: "${b}."`, `After:  "${a}."`].join('\n     ');
+    }
+  }
+  for (const conj of SPLIT_CONJUNCTIONS_SOFT) {
+    const idx = longest.toLowerCase().indexOf(conj);
+    if (idx > 20 && idx < longest.length - 15) {
+      const before = longest.slice(0, idx).trim().replace(/,\s*$/, '');
+      const after  = longest.slice(idx + conj.length).trim();
+      const cap    = after.charAt(0).toUpperCase() + after.slice(1);
+      const b = before.length > 55 ? '…' + before.slice(-52) : before;
+      const a = cap.length    > 55 ? cap.slice(0, 52) + '…'  : cap;
+      return [`Split at "${conj.trim()}":`, `Before: "${b}."`, `After:  "${a}."`].join('\n     ');
+    }
+  }
+  const colonCount = (longest.match(/:/g)     ?? []).length;
+  const codeCount  = (longest.match(/\bcode\b/g) ?? []).length;
+  if (colonCount >= 3 || codeCount >= 3) {
+    return 'This looks like multiple items in one sentence. Use a bullet list or table so each item is its own line.';
+  }
+  return 'Look for "which", "that", "and", "but", "because" as natural split points to break this into two sentences.';
+}
+
+const STATIC_SUGGESTIONS = {
+  fk:  'Rewrite with shorter sentences and simpler word choices. Aim for words your audience uses in everyday conversation.',
+  fre: 'Simplify by using shorter sentences and more common words. Avoid unnecessary multi-syllable vocabulary.',
+  cl:  'Reduce average word length. Where two words mean the same thing, prefer the shorter one.',
+  lix: 'Too many long words (7+ characters). Where possible, replace them with shorter alternatives.',
+  para:'Split at a natural topic boundary. Each paragraph should cover one idea. Aim for 3–5 sentences.',
 };
+
+
+function buildSuggestion(checkName, sentences) {
+  if (checkName === 'len' || checkName === 'max') {
+    const longest = sentences.slice().sort((a, b) => wordCount(b) - wordCount(a))[0] ?? '';
+    return buildLenSuggestion(longest);
+  }
+  return STATIC_SUGGESTIONS[checkName] ?? '';
+}
+
+// ── Warning factory ──────────────────────────────────────────────────────────
 
 function createWarning(filePath, startLine, startCol, label, checkName, stats, preview) {
   const messages = {
     fk:  `Flesch-Kincaid grade ${stats.fk} exceeds target of ≤${stats.fkMax} ` +
          `(${stats.wordCount} words, ${stats.sentenceCount} sentences, avg ${stats.avgWords} words/sentence)`,
     fre: `Flesch Reading Ease ${stats.fre} is below target of ≥${stats.freMin}`,
-    len: `Average sentence length is ${stats.avgWords} words (target: ≤20)`,
+    cl:  `Coleman-Liau index ${stats.cl} exceeds target of ≤${stats.clMax} (character density too high)`,
+    lix: `LIX score ${stats.lix} exceeds target of ≤${stats.lixMax} (${stats.longWordCount} long words of ${stats.wordCount} total)`,
+    len: `Average sentence length is ${stats.avgWords} words (target: ≤25)`,
+    max: `Longest sentence is ${stats.maxSentenceWords} words (target: ≤40) — breaks reading flow`,
+    para:`Paragraph has ${stats.sentenceCount} sentences (target: ≤5) — may overwhelm working memory`,
   };
-  return { filePath, startLine, startCol, label, checkName, message: messages[checkName], preview, suggestion: SUGGESTIONS[checkName] };
+  const suggestion = buildSuggestion(checkName, stats.sentences);
+  return { filePath, startLine, startCol, label, checkName, message: messages[checkName], preview, suggestion };
 }
 
 // ── Output rendering ─────────────────────────────────────────────────────────
@@ -282,7 +347,7 @@ function renderCI(w) {
   const parts = [
     `[${w.label}] ${w.message}.`,
     w.preview ? `Longest sentence: "${w.preview}"` : null,
-    `Suggestion: ${w.suggestion}`,
+    `Suggestion: ${w.suggestion.replace(/\n\s*/g, ' // ')}`,
   ].filter(Boolean).join(' | ');
   return `::warning file=${w.filePath},line=${w.startLine},col=${w.startCol}::${parts}`;
 }
@@ -308,7 +373,11 @@ function printFileWarningsLocal(relPath, warnings) {
     if (w.preview) {
       console.log(`${c.cyan}│${c.reset}     ${c.dim}${c.italic}"${w.preview}"${c.reset}`);
     }
-    console.log(`${c.cyan}│${c.reset}     ${c.green}→ ${w.suggestion}${c.reset}`);
+    const suggLines = w.suggestion.split('\n');
+    console.log(`${c.cyan}│${c.reset}     ${c.green}→ ${suggLines[0]}${c.reset}`);
+    for (const line of suggLines.slice(1)) {
+      console.log(`${c.cyan}│${c.reset}       ${c.green}${line}${c.reset}`);
+    }
   }
 
   console.log(`${c.cyan}│${c.reset}`);
@@ -335,9 +404,9 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
   const stats = analyzeText(plain);
   if (!stats) return true;
 
-  const { fk, fre, avgWords, sentences } = stats;
+  const { fk, fre, cl, lix, avgWords, maxSentenceWords, longestSentence, sentences } = stats;
   const preview = longestSentencePreview(sentences);
-  const enriched = { ...stats, fkMax: thresholds.fkMax, freMin: thresholds.freMin };
+  const enriched = { ...stats, fkMax: thresholds.fkMax, freMin: thresholds.freMin, clMax: thresholds.clMax, lixMax: thresholds.lixMax };
   let passed = true;
 
   if (fk > thresholds.fkMax) {
@@ -352,10 +421,47 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
     passed = false;
   }
 
-  if (avgWords > 20) {
+  if (cl > thresholds.clMax) {
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'cl', enriched, preview));
+    recordIssue(filePath, label, 'cl', startLine);
+    passed = false;
+  }
+
+  if (lix > thresholds.lixMax) {
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'lix', enriched, preview));
+    recordIssue(filePath, label, 'lix', startLine);
+    passed = false;
+  }
+
+  if (avgWords > 25) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'len', enriched, preview));
     recordIssue(filePath, label, 'len', startLine);
     passed = false;
+  }
+
+  if (maxSentenceWords > 40) {
+    const maxPreview = longestSentence.length > 120 ? longestSentence.slice(0, 119) + '…' : longestSentence;
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'max', enriched, maxPreview));
+    recordIssue(filePath, label, 'max', startLine);
+    passed = false;
+  }
+
+  // Paragraph density — uses raw text to preserve paragraph boundaries
+  let lineOffset = 0;
+  for (const para of text.split(/\n{2,}/)) {
+    const paraSentences = getSentences(toPlainText(para));
+    if (paraSentences.length > 5) {
+      const paraPreview = paraSentences.slice(0, 2).join(' ');
+      const truncated = paraPreview.length > 120 ? paraPreview.slice(0, 119) + '…' : paraPreview;
+      fileWarnings.push(createWarning(
+        filePath, startLine + lineOffset, 1, label, 'para',
+        { ...enriched, sentenceCount: paraSentences.length, sentences: paraSentences },
+        truncated,
+      ));
+      recordIssue(filePath, label, 'para', startLine + lineOffset);
+      passed = false;
+    }
+    lineOffset += (para.match(/\n/g) ?? []).length + 2;
   }
 
   return passed;
@@ -382,15 +488,19 @@ function findMdxFiles(dir) {
 // ── Summary report ───────────────────────────────────────────────────────────
 
 const CHECK_LABELS = {
-  fk:  'Flesch-Kincaid grade too high',
-  fre: 'Flesch Reading Ease too low  ',
-  len: 'Avg sentence length > 20 words',
+  fk:  'Flesch-Kincaid grade too high  ',
+  fre: 'Flesch Reading Ease too low    ',
+  cl:  'Coleman-Liau index too high    ',
+  lix: 'LIX score too high (long words)',
+  len: 'Avg sentence length > 25 words ',
+  max: 'Single sentence > 40 words     ',
+  para:'Paragraph density > 5 sentences',
 };
 
 function printSummary(totalFiles, allPassed) {
   const LINE = '─'.repeat(COL_WIDTH);
   const filesWithIssues = [...new Set(issueLog.map(i => i.filePath))];
-  const countByType = { fk: 0, fre: 0, len: 0 };
+  const countByType = { fk: 0, fre: 0, cl: 0, lix: 0, len: 0, max: 0, para: 0 };
   for (const issue of issueLog) countByType[issue.checkName]++;
 
   const issuesByFile = {};
@@ -413,9 +523,13 @@ function printSummary(totalFiles, allPassed) {
   console.log('  By check type:');
 
   const CHECK_LABELS = {
-    fk:  'Flesch-Kincaid grade too high ',
-    fre: 'Flesch Reading Ease too low   ',
-    len: 'Avg sentence length > 20 words',
+    fk:  'Flesch-Kincaid grade too high  ',
+    fre: 'Flesch Reading Ease too low    ',
+    cl:  'Coleman-Liau index too high    ',
+    lix: 'LIX score too high (long words)',
+    len: 'Avg sentence length > 25 words ',
+    max: 'Single sentence > 40 words     ',
+    para:'Paragraph density > 5 sentences',
   };
   for (const [key, label] of Object.entries(CHECK_LABELS)) {
     const n = countByType[key];
