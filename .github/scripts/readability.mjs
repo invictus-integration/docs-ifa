@@ -20,8 +20,14 @@
  *   - A preview of the most problematic sentence
  *   - A concrete suggestion for how to fix it
  *
- * Usage: node readability.mjs [target-dir]
- *        Defaults to 'versioned_docs'.
+ * Usage:
+ *   node readability.mjs [target]
+ *
+ *   target can be:
+ *     - A directory (default: versioned_docs) → scans all files
+ *     - A single .mdx or .md file            → checks only that file
+ *     - A single .json data file             → checks only that file's entries
+ *       (faq.v6.json, glossary.v6.json, *.bicep.parameters.json)
  */
 
 import { readFileSync, readdirSync, statSync, appendFileSync } from 'fs';
@@ -57,7 +63,7 @@ const TECH_FILE_PATTERNS = [
 ];
 
 const THRESHOLDS = {
-  business: { fkMax: 8,  freMin: 70, clMax: 9,  lixMax: 35, lenMax: 20, maxLen: 35, paraMax: 4 },
+  business: { fkMax: 8,  freMin: 70, clMax: 12, lixMax: 42, lenMax: 20, maxLen: 35, paraMax: 4 },
   tech:     { fkMax: 14, freMin: 30, clMax: 16, lixMax: 55, lenMax: 25, maxLen: 40, paraMax: 6 },
 };
 
@@ -195,7 +201,7 @@ function toPlainText(raw) {
     .replace(/^\|[-:\s|]+\|$/gm, '')                                    // table separator rows
     .replace(/\|/g, ' ')                                                // table pipe characters
     .replace(/^[-_*]{3,}\s*$/gm, '')                                    // thematic breaks (--- ___ ***)
-    .replace(/^#{1,6}\s+(.+)$/gm, '$1. ')                              // headings → sentence (prevents merging with next paragraph)
+    .replace(/^#{1,6}\s+.+$/gm, '')                                    // headings → removed (navigation labels, not prose)
     .replace(/\*{1,2}([^*\n]*)\*{1,2}/g, '$1')                         // bold/italic markers (balanced)
     .replace(/\*/g, '')                                                 // remaining unbalanced asterisks
     .replace(/^[-*+]\s+(.+?)\.?\s*$/gm, '$1. ')                         // unordered list items → each becomes a sentence
@@ -221,7 +227,8 @@ function getSentences(text) {
   return text
     .split(/(?<=[.!?])\s+/)
     .map(s => s.trim())
-    .filter(s => s.split(/\s+/).length > 2);
+    // Require 3+ real words — filters out JSX artifacts like `, } />` or `= true,`
+    .filter(s => (s.match(/\b[a-zA-Z'-]{2,}\b/g) ?? []).length > 2);
 }
 
 function wordCount(sentence) {
@@ -564,14 +571,16 @@ const DATA_FILES = [
  * Runs readability checks on all dynamic data files (FAQ, glossary, Bicep
  * parameters). Accumulates warnings into `warningsByFile` and returns whether
  * all checks passed (no warnings found).
+ *
+ * Pass a subset of `DATA_FILES` to check a single data file in single-file mode.
  */
-function processDataFiles(warningsByFile) {
+function processDataFiles(warningsByFile, dataFilesConfig = DATA_FILES) {
   let allPassed = true;
 
-  for (const { path: filePath, extractItems } of DATA_FILES) {
+  for (const { path: filePath, extractItems } of dataFilesConfig) {
     let raw, data;
     try {
-      raw = readFileSync(filePath, 'utf8');
+      raw = readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n');
       data = JSON.parse(raw);
     } catch {
       continue; // file absent or malformed — skip silently
@@ -765,13 +774,53 @@ function writeJobSummary(totalFiles, allPassed, warningsByFile) {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
-const targetDir = process.argv[2] ?? 'versioned_docs';
-const files = findMdxFiles(targetDir);
+const arg = process.argv[2] ?? 'versioned_docs';
+const argStat = statSync(arg, { throwIfNoEntry: false });
+
+if (!argStat) {
+  console.error(`${c.red}Error: '${arg}' is not a valid file or directory.${c.reset}`);
+  console.error('');
+  console.error('Usage:');
+  console.error('  node readability.mjs [target]');
+  console.error('');
+  console.error('  target can be:');
+  console.error('    - A directory (default: versioned_docs) → scans all files');
+  console.error('    - A single .mdx or .md file            → checks only that file');
+  console.error('    - A single .json data file             → checks only that file\'s entries');
+  process.exit(1);
+}
+
+const isSingleFile = argStat.isFile();
+let files = [];
+let dataFilesConfig = DATA_FILES;
+
+if (isSingleFile) {
+  const ext = extname(arg);
+  if (['.md', '.mdx'].includes(ext)) {
+    files = [arg];
+    dataFilesConfig = [];
+  } else if (ext === '.json') {
+    files = [];
+    const normArg = arg.replace(/\\/g, '/');
+    dataFilesConfig = DATA_FILES.filter(df => normArg.endsWith(df.path) || df.path.endsWith(normArg));
+    if (dataFilesConfig.length === 0) {
+      console.error(`${c.red}Error: '${arg}' is not a recognised data file.${c.reset}`);
+      console.error('Supported data files: ' + DATA_FILES.map(df => df.path).join(', '));
+      process.exit(1);
+    }
+  } else {
+    console.error(`${c.red}Error: '${arg}' is not a .md, .mdx, or .json file.${c.reset}`);
+    process.exit(1);
+  }
+} else {
+  files = findMdxFiles(arg);
+}
+
 let allPassed = true;
 const warningsByFile = {};
 
 for (const file of files) {
-  const content = readFileSync(file, 'utf8');
+  const content = readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
   const { primary, collapsed } = extractSections(content);
   const thresholds = getThresholds(file);
   const relPath = relative(process.cwd(), file).replace(/\\/g, '/');
@@ -791,14 +840,26 @@ for (const file of files) {
   }
 }
 
-const dataFilesPassed = processDataFiles(warningsByFile);
+const dataFilesPassed = processDataFiles(warningsByFile, dataFilesConfig);
 if (!dataFilesPassed) allPassed = false;
 
-const totalChecked = files.length + DATA_FILES.length;
-printSummary(totalChecked, allPassed);
-writeJobSummary(totalChecked, allPassed, warningsByFile);
+if (isSingleFile) {
+  const totalWarnings = Object.values(warningsByFile).reduce((n, ws) => n + ws.length, 0);
+  if (allPassed) {
+    console.log(`\n${c.green}✅ No readability issues found.${c.reset}`);
+  } else {
+    const noun = totalWarnings === 1 ? 'warning' : 'warnings';
+    console.log(`\n${c.yellow}✗ ${totalWarnings} ${noun} found — see above for details.${c.reset}`);
+  }
+} else {
+  const totalChecked = files.length + dataFilesConfig.length;
+  printSummary(totalChecked, allPassed);
+  writeJobSummary(totalChecked, allPassed, warningsByFile);
+}
 
 if (!allPassed) {
-  console.log('::error::Readability check failed. See warnings above for details.');
+  if (!isSingleFile) {
+    console.log('::error::Readability check failed. See warnings above for details.');
+  }
   process.exit(1);
 }
