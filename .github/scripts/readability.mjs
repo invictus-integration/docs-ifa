@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 /**
- * Readability checker for MDX documentation.
+ * Readability checker for MDX documentation and dynamic data files.
  *
  * Validates readability separately for:
  *   - Primary content  (always visible to the reader)
  *   - Collapsed content (<details>, <Collapsible>) per section
+ *   - Dynamic data files: FAQ (faq.v6.json), Glossary (glossary.v6.json),
+ *     and Bicep parameters (framework/dashboard .v6.bicep.parameters.json)
  *
  * Thresholds mirror vale.ini audience segments:
  *   Business docs  → FK ≤ 8,  FRE ≥ 70
@@ -503,6 +505,97 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
   return passed;
 }
 
+// ── Dynamic data file checking ───────────────────────────────────────────────
+
+/**
+ * Returns the 1-based line number of the first occurrence of `searchText`
+ * within `rawText`. Searches by the first 60 characters of the text to avoid
+ * long-string mismatches. Falls back to 1 if not found.
+ */
+function findLineNumber(rawText, searchText) {
+  if (!searchText) return 1;
+  const needle = searchText.slice(0, 60);
+  const idx = rawText.indexOf(needle);
+  if (idx === -1) return 1;
+  return rawText.slice(0, idx).split('\n').length;
+}
+
+const DATA_FILES = [
+  {
+    path: 'src/data/faq.v6.json',
+    extractItems: (data) => data.map(item => ({
+      label: `FAQ: "${item.question?.length > 60 ? item.question.slice(0, 59) + '…' : item.question}"`,
+      // Combine question + answer so the full reader-facing unit is scored
+      text: [item.question, item.answer].filter(Boolean).join('\n\n'),
+      audience: item.userType === 'technical' ? 'tech' : 'business',
+      searchText: item.answer ?? item.question,
+    })),
+  },
+  {
+    path: 'src/data/glossary.v6.json',
+    extractItems: (data) => data.map(item => ({
+      label: `Glossary: "${item.term}"`,
+      text: item.definition ?? '',
+      audience: item.userType === 'technical' ? 'tech' : 'business',
+      searchText: item.definition,
+    })),
+  },
+  {
+    path: 'src/data/framework.v6.bicep.parameters.json',
+    extractItems: (data) => data.map(item => ({
+      label: `Parameter: ${item.name}`,
+      text: item.description ?? '',
+      audience: 'tech',
+      searchText: item.description,
+    })),
+  },
+  {
+    path: 'src/data/dashboard.v6.bicep.parameters.json',
+    extractItems: (data) => data.map(item => ({
+      label: `Parameter: ${item.name}`,
+      text: item.description ?? '',
+      audience: 'tech',
+      searchText: item.description,
+    })),
+  },
+];
+
+/**
+ * Runs readability checks on all dynamic data files (FAQ, glossary, Bicep
+ * parameters). Accumulates warnings into `warningsByFile` and returns whether
+ * all checks passed (no warnings found).
+ */
+function processDataFiles(warningsByFile) {
+  let allPassed = true;
+
+  for (const { path: filePath, extractItems } of DATA_FILES) {
+    let raw, data;
+    try {
+      raw = readFileSync(filePath, 'utf8');
+      data = JSON.parse(raw);
+    } catch {
+      continue; // file absent or malformed — skip silently
+    }
+
+    const fileWarnings = [];
+
+    for (const { label, text, audience, searchText } of extractItems(data)) {
+      if (!text || text.trim().length < 20) continue;
+      const thresholds = THRESHOLDS[audience] ?? THRESHOLDS.tech;
+      const lineNum = findLineNumber(raw, searchText);
+      checkSection(label, text, filePath, lineNum, 1, thresholds, fileWarnings);
+    }
+
+    if (fileWarnings.length > 0) {
+      allPassed = false;
+      warningsByFile[filePath] = fileWarnings;
+      printFileWarnings(filePath, fileWarnings);
+    }
+  }
+
+  return allPassed;
+}
+
 // ── File discovery ───────────────────────────────────────────────────────────
 
 const EXCLUDED_DIRS  = new Set(['deprecated']);
@@ -698,8 +791,12 @@ for (const file of files) {
   }
 }
 
-printSummary(files.length, allPassed);
-writeJobSummary(files.length, allPassed, warningsByFile);
+const dataFilesPassed = processDataFiles(warningsByFile);
+if (!dataFilesPassed) allPassed = false;
+
+const totalChecked = files.length + DATA_FILES.length;
+printSummary(totalChecked, allPassed);
+writeJobSummary(totalChecked, allPassed, warningsByFile);
 
 if (!allPassed) {
   console.log('::error::Readability check failed. See warnings above for details.');
