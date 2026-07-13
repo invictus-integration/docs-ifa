@@ -341,24 +341,59 @@ function createWarning(filePath, startLine, startCol, label, checkName, stats, p
   return { filePath, startLine, startCol, label, checkName, message: messages[checkName], preview, suggestion };
 }
 
+// ── Check explanations (CI "why" context) ───────────────────────────────────
+
+const CHECK_WHY = {
+  fk:  'Flesch-Kincaid grade level estimates the years of education needed to read this text comfortably. ' +
+       'A lower grade means more readers can understand it without effort.',
+  fre: 'Flesch Reading Ease scores text from 0 (very hard) to 100 (very easy). ' +
+       'Business docs should score ≥70; technical docs ≥30. Below the target, readers have to work harder to follow the text.',
+  cl:  'Coleman-Liau measures character density — the average length of words. ' +
+       'Longer words increase cognitive load even when sentences are short. Prefer shorter words where meaning is the same.',
+  lix: 'LIX measures the proportion of long words (7+ characters). ' +
+       'A high ratio signals dense vocabulary that slows readers down, particularly non-native speakers and neurodiverse readers.',
+  len: 'Long average sentence length forces readers to hold more information in working memory before reaching the end of a thought. ' +
+       'This is especially taxing for readers with ADHD or working memory differences.',
+  max: 'A single very long sentence disrupts reading flow even when the rest of the text is concise. ' +
+       'Readers must hold the entire sentence in memory to understand its structure and meaning.',
+  para:'Dense paragraphs without visual breaks overwhelm working memory. ' +
+       'Paragraph breaks act as cognitive rest points — particularly important for neurodiverse readers who benefit from chunked information.',
+};
+
 // ── Output rendering ─────────────────────────────────────────────────────────
 
-function renderCI(w) {
-  const parts = [
-    `[${w.label}] ${w.message}.`,
-    w.preview ? `Longest sentence: "${w.preview}"` : null,
-    `Suggestion: ${w.suggestion.replace(/\n\s*/g, ' // ')}`,
-  ].filter(Boolean).join(' | ');
-  return `::warning file=${w.filePath},line=${w.startLine},col=${w.startCol}::${parts}`;
-}
+const SEP = '  ' + '─'.repeat(66);
 
-const COL_WIDTH = 68;
+function renderCIAnnotation(w) {
+  // Concise single-line annotation for the PR diff view
+  const fix = w.suggestion.replace(/\n\s*/g, ' // ');
+  return `::warning file=${w.filePath},line=${w.startLine},col=${w.startCol}::` +
+    `[${w.label}] ${w.message}. Fix: ${fix}`;
+}
 
 function printFileWarningsCI(relPath, warnings) {
   console.log(`\n::group::${relPath}`);
-  warnings.forEach(w => console.log(renderCI(w)));
+  for (const w of warnings) {
+    console.log('');
+    console.log(`  ⚠  ${w.label}  ·  line ${w.startLine}, col ${w.startCol}`);
+    console.log(SEP);
+    console.log(`  Why    ${CHECK_WHY[w.checkName]}`);
+    console.log(`  Score  ${w.message}`);
+    if (w.preview) {
+      console.log(`  Quote  "${w.preview}"`);
+    }
+    const suggLines = w.suggestion.split('\n');
+    console.log(`  Fix    ${suggLines[0]}`);
+    for (const line of suggLines.slice(1)) {
+      console.log(`         ${line}`);
+    }
+    console.log('');
+    console.log(renderCIAnnotation(w));
+  }
   console.log('::endgroup::');
 }
+
+const COL_WIDTH = 68;
 
 function printFileWarningsLocal(relPath, warnings) {
   const shortPath = relPath.replace(/^versioned_docs\/[^/]+\//, '');
@@ -369,6 +404,7 @@ function printFileWarningsLocal(relPath, warnings) {
     const location = `${c.gray}line ${w.startLine}, col ${w.startCol}${c.reset}`;
     console.log(`${c.cyan}│${c.reset}`);
     console.log(`${c.cyan}│${c.reset}  ${c.yellow}⚠${c.reset}  ${c.bold}${w.label}${c.reset}  ${c.gray}·${c.reset}  ${location}`);
+    console.log(`${c.cyan}│${c.reset}     ${c.dim}${CHECK_WHY[w.checkName]}${c.reset}`);
     console.log(`${c.cyan}│${c.reset}     ${c.yellow}${w.message}${c.reset}`);
     if (w.preview) {
       console.log(`${c.cyan}│${c.reset}     ${c.dim}${c.italic}"${w.preview}"${c.reset}`);
