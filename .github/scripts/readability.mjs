@@ -54,8 +54,8 @@ function getThresholds(filePath) {
  * <summary> content inside <details> is treated as primary — it's always shown.
  *
  * Returns:
- *   primary:  { text: string, startLine: number }
- *   collapsed: Array<{ text: string, startLine: number }>
+ *   primary:  { text: string, startLine: number, startCol: number }
+ *   collapsed: Array<{ text: string, startLine: number, startCol: number }>
  */
 function extractSections(content) {
   const lines = content.split('\n');
@@ -68,8 +68,10 @@ function extractSections(content) {
   let collapsibleDepth = 0;
   let currentCollapsed = null;
   let currentCollapsedStartLine = 1;
+  let currentCollapsedStartCol = 1;
   let inSummary = false;
   let primaryStartLine = 1;
+  let primaryStartCol = 1;
   let firstPrimaryLine = true;
 
   for (let i = 0; i < lines.length; i++) {
@@ -92,13 +94,15 @@ function extractSections(content) {
     }
     if (inCodeBlock) continue;
 
-    const opensCollapsible = /<(details|Collapsible)[\s>]/.test(line);
+    const collapsibleMatch = line.match(/<(details|Collapsible)[\s>]/);
+    const opensCollapsible = collapsibleMatch !== null;
     const closesCollapsible = /<\/(details|Collapsible)>/.test(line);
 
     if (currentCollapsed === null) {
       if (opensCollapsible) {
         currentCollapsed = [];
         currentCollapsedStartLine = lineNumber;
+        currentCollapsedStartCol = line.indexOf(collapsibleMatch[0]) + 1;
         collapsibleDepth = 1;
         // A <summary> opening on the same line as <details> is visible
         if (/<summary/.test(line)) {
@@ -110,6 +114,7 @@ function extractSections(content) {
       }
       if (firstPrimaryLine && line.trim()) {
         primaryStartLine = lineNumber;
+        primaryStartCol = line.search(/\S/) + 1;
         firstPrimaryLine = false;
       }
       primaryLines.push(line);
@@ -120,7 +125,7 @@ function extractSections(content) {
       if (closesCollapsible) {
         collapsibleDepth--;
         if (collapsibleDepth === 0) {
-          collapsedSections.push({ text: currentCollapsed.join('\n'), startLine: currentCollapsedStartLine });
+          collapsedSections.push({ text: currentCollapsed.join('\n'), startLine: currentCollapsedStartLine, startCol: currentCollapsedStartCol });
           currentCollapsed = null;
           continue;
         }
@@ -142,7 +147,7 @@ function extractSections(content) {
   if (currentCollapsed !== null) primaryLines.push(...currentCollapsed);
 
   return {
-    primary: { text: primaryLines.join('\n'), startLine: primaryStartLine },
+    primary: { text: primaryLines.join('\n'), startLine: primaryStartLine, startCol: primaryStartCol },
     collapsed: collapsedSections,
   };
 }
@@ -151,20 +156,31 @@ function extractSections(content) {
 
 function toPlainText(raw) {
   return raw
-    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')            // JSX comments {/* ... */}
-    .replace(/import\s[^;]+;/g, '')                  // import statements
-    .replace(/:::[\w-]+[^\n]*/g, '')                 // admonition type markers
-    .replace(/`{3}[^\n]*\n[\s\S]*?`{3}/g, '')        // fenced code blocks
-    .replace(/`[^`\n]+`/g, 'code')                   // inline code → neutral word
-    .replace(/<[^>]+>/g, ' ')                        // HTML/JSX tags
-    .replace(/\{[^}]+\}/g, ' ')                      // JSX expressions
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')            // images
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')         // links → label text only
-    .replace(/^#{1,6}\s+/gm, '')                     // heading markers
-    .replace(/\*{1,2}([^*\n]+)\*{1,2}/g, '$1')      // bold/italic markers
-    .replace(/^[-*+]\s+/gm, '')                      // unordered list markers
-    .replace(/^\d+\.\s+/gm, '')                      // ordered list markers
+    .replace(/^\uFEFF/, '')                                              // BOM character
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')                               // JSX comments {/* ... */}
+    .replace(/import\s[^;]+;/g, '')                                     // import statements
+    .replace(/:::[\w-]*[^\n]*/g, '')                                    // admonition markers (opening :::note and closing :::)
+    .replace(/`{3}[^\n]*\n[\s\S]*?`{3}/g, '')                          // fenced code blocks
+    .replace(/`[^`\n]+`/g, 'code')                                      // inline code → neutral word
+    .replace(/\{\{[^}]*\}\}/g, ' ')                                     // double-brace JSX expressions {{ }}
+    .replace(/\{[^}]+\}/g, ' ')                                         // single-brace JSX expressions { }
+    .replace(/<[A-Z][A-Za-z]*[^>]*\/>/g, ' ')                          // self-closing JSX components <Badge />
+    .replace(/<[A-Z][A-Za-z]*[^>]*>[\s\S]*?<\/[A-Z][A-Za-z]*>/g, ' ') // JSX component pairs <Foo>...</Foo>
+    .replace(/<[^>]+>/g, ' ')                                           // remaining HTML tags
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')                               // images
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')                            // inline links → label text only
+    .replace(/\[[^\]]+\]:\s*\S+[^\n]*/gm, '')                          // reference-style link definitions
+    .replace(/https?:\/\/\S+/g, '')                                     // bare URLs
+    .replace(/^\|[-:\s|]+\|$/gm, '')                                    // table separator rows
+    .replace(/\|/g, ' ')                                                // table pipe characters
+    .replace(/^[-_*]{3,}\s*$/gm, '')                                    // thematic breaks (--- ___ ***)
+    .replace(/^#{1,6}\s+/gm, '')                                        // heading markers
+    .replace(/\*{1,2}([^*\n]*)\*{1,2}/g, '$1')                         // bold/italic markers (balanced)
+    .replace(/\*/g, '')                                                 // remaining unbalanced asterisks
+    .replace(/^[-*+]\s+(.+?)\.?\s*$/gm, '$1. ')                         // unordered list items → each becomes a sentence
+    .replace(/^\d+\.\s+(.+?)\.?\s*$/gm, '$1. ')                         // ordered list items → each becomes a sentence
     .replace(/\s+/g, ' ')
+    .replace(/[`\[\]]/g, '')                                            // remaining bare backticks and brackets
     .trim();
 }
 
@@ -231,7 +247,7 @@ const SUGGESTIONS = {
   len: 'Look for "which", "that", "and", "but", "because" as natural split points to break this into two sentences.',
 };
 
-function annotate(filePath, startLine, label, checkName, stats, preview) {
+function annotate(filePath, startLine, startCol, label, checkName, stats, preview) {
   const messages = {
     fk:  `[${label}] Flesch-Kincaid grade ${stats.fk} exceeds target of ≤${stats.fkMax} ` +
          `(${stats.wordCount} words, ${stats.sentenceCount} sentences, avg ${stats.avgWords} words/sentence).`,
@@ -245,7 +261,7 @@ function annotate(filePath, startLine, label, checkName, stats, preview) {
     `Suggestion: ${SUGGESTIONS[checkName]}`,
   ].filter(Boolean).join(' | ');
 
-  console.log(`::warning file=${filePath},line=${startLine}::${parts}`);
+  console.log(`::warning file=${filePath},line=${startLine},col=${startCol}::${parts}`);
 }
 
 // ── Issue tracking (for summary) ─────────────────────────────────────────────
@@ -258,7 +274,7 @@ function recordIssue(filePath, label, checkName, startLine) {
 
 // ── Section checker ──────────────────────────────────────────────────────────
 
-function checkSection(label, text, filePath, startLine, thresholds) {
+function checkSection(label, text, filePath, startLine, startCol, thresholds) {
   const plain = toPlainText(text);
   const stats = analyzeText(plain);
   if (!stats) return true;
@@ -269,19 +285,19 @@ function checkSection(label, text, filePath, startLine, thresholds) {
   let passed = true;
 
   if (fk > thresholds.fkMax) {
-    annotate(filePath, startLine, label, 'fk', enriched, preview);
+    annotate(filePath, startLine, startCol, label, 'fk', enriched, preview);
     recordIssue(filePath, label, 'fk', startLine);
     passed = false;
   }
 
   if (fre < thresholds.freMin) {
-    annotate(filePath, startLine, label, 'fre', enriched, preview);
+    annotate(filePath, startLine, startCol, label, 'fre', enriched, preview);
     recordIssue(filePath, label, 'fre', startLine);
     passed = false;
   }
 
   if (avgWords > 20) {
-    annotate(filePath, startLine, label, 'len', enriched, preview);
+    annotate(filePath, startLine, startCol, label, 'len', enriched, preview);
     recordIssue(filePath, label, 'len', startLine);
     passed = false;
   }
@@ -371,13 +387,13 @@ for (const file of files) {
   const thresholds = getThresholds(file);
   const relPath = relative(process.cwd(), file).replace(/\\/g, '/');
 
-  if (!checkSection('Primary content', primary.text, relPath, primary.startLine, thresholds)) {
+  if (!checkSection('Primary content', primary.text, relPath, primary.startLine, primary.startCol, thresholds)) {
     allPassed = false;
   }
 
   for (let i = 0; i < collapsed.length; i++) {
-    const { text, startLine } = collapsed[i];
-    if (!checkSection(`Collapsed section ${i + 1}`, text, relPath, startLine, thresholds)) {
+    const { text, startLine, startCol } = collapsed[i];
+    if (!checkSection(`Collapsed section ${i + 1}`, text, relPath, startLine, startCol, thresholds)) {
       allPassed = false;
     }
   }
