@@ -55,8 +55,8 @@ const TECH_FILE_PATTERNS = [
 ];
 
 const THRESHOLDS = {
-  business: { fkMax: 8,  freMin: 70, clMax: 9,  lixMax: 35 },
-  tech:     { fkMax: 14, freMin: 30, clMax: 16, lixMax: 55 },
+  business: { fkMax: 8,  freMin: 70, clMax: 9,  lixMax: 35, lenMax: 20, maxLen: 35, paraMax: 4 },
+  tech:     { fkMax: 14, freMin: 30, clMax: 16, lixMax: 55, lenMax: 25, maxLen: 40, paraMax: 6 },
 };
 
 function getThresholds(filePath) {
@@ -333,9 +333,9 @@ function createWarning(filePath, startLine, startCol, label, checkName, stats, p
     fre: `Flesch Reading Ease ${stats.fre} is below target of ≥${stats.freMin}`,
     cl:  `Coleman-Liau index ${stats.cl} exceeds target of ≤${stats.clMax} (character density too high)`,
     lix: `LIX score ${stats.lix} exceeds target of ≤${stats.lixMax} (${stats.longWordCount} long words of ${stats.wordCount} total)`,
-    len: `Average sentence length is ${stats.avgWords} words (target: ≤25)`,
-    max: `Longest sentence is ${stats.maxSentenceWords} words (target: ≤40) — breaks reading flow`,
-    para:`Paragraph has ${stats.sentenceCount} sentences (target: ≤5) — may overwhelm working memory`,
+    len: `Average sentence length is ${stats.avgWords} words (target: ≤${stats.lenMax})`,
+    max: `Longest sentence is ${stats.maxSentenceWords} words (target: ≤${stats.maxLen}) — breaks reading flow`,
+    para:`Paragraph has ${stats.sentenceCount} sentences (target: ≤${stats.paraMax}) — may overwhelm working memory`,
   };
   const suggestion = buildSuggestion(checkName, stats.sentences);
   return { filePath, startLine, startCol, label, checkName, message: messages[checkName], preview, suggestion };
@@ -406,7 +406,7 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
 
   const { fk, fre, cl, lix, avgWords, maxSentenceWords, longestSentence, sentences } = stats;
   const preview = longestSentencePreview(sentences);
-  const enriched = { ...stats, fkMax: thresholds.fkMax, freMin: thresholds.freMin, clMax: thresholds.clMax, lixMax: thresholds.lixMax };
+  const enriched = { ...stats, ...thresholds };
   let passed = true;
 
   if (fk > thresholds.fkMax) {
@@ -433,13 +433,13 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
     passed = false;
   }
 
-  if (avgWords > 25) {
+  if (avgWords > thresholds.lenMax) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'len', enriched, preview));
     recordIssue(filePath, label, 'len', startLine);
     passed = false;
   }
 
-  if (maxSentenceWords > 40) {
+  if (maxSentenceWords > thresholds.maxLen) {
     const maxPreview = longestSentence.length > 120 ? longestSentence.slice(0, 119) + '…' : longestSentence;
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'max', enriched, maxPreview));
     recordIssue(filePath, label, 'max', startLine);
@@ -450,7 +450,7 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
   let lineOffset = 0;
   for (const para of text.split(/\n{2,}/)) {
     const paraSentences = getSentences(toPlainText(para));
-    if (paraSentences.length > 5) {
+    if (paraSentences.length > thresholds.paraMax) {
       const paraPreview = paraSentences.slice(0, 2).join(' ');
       const truncated = paraPreview.length > 120 ? paraPreview.slice(0, 119) + '…' : paraPreview;
       fileWarnings.push(createWarning(
