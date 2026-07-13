@@ -22,7 +22,7 @@
  *        Defaults to 'versioned_docs'.
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
+import { readFileSync, readdirSync, statSync, appendFileSync } from 'fs';
 import { join, relative, extname, basename } from 'path';
 import process from 'process';
 
@@ -600,11 +600,82 @@ function printSummary(totalFiles, allPassed) {
   if (IS_GH_ACTIONS) console.log('::endgroup::');
 }
 
+// ── Job summary (GitHub Actions step summary) ────────────────────────────────
+
+function writeJobSummary(totalFiles, allPassed, warningsByFile) {
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  if (!summaryPath) return;
+
+  const totalWarnings = Object.values(warningsByFile).reduce((n, ws) => n + ws.length, 0);
+  const filesWithIssues = Object.keys(warningsByFile).length;
+  const countByType = { fk: 0, fre: 0, cl: 0, lix: 0, len: 0, max: 0, para: 0 };
+  for (const ws of Object.values(warningsByFile)) {
+    for (const w of ws) countByType[w.checkName] = (countByType[w.checkName] ?? 0) + 1;
+  }
+
+  const status = allPassed ? '✅ All checks passed' : '❌ Readability issues found';
+  const lines = [];
+
+  lines.push(`## 📖 Readability Check — ${status}`);
+  lines.push('');
+  lines.push('| | |');
+  lines.push('|---|---|');
+  lines.push(`| Files checked | ${totalFiles} |`);
+  lines.push(`| Files with issues | ${filesWithIssues} |`);
+  lines.push(`| Total warnings | ${totalWarnings} |`);
+  lines.push('');
+
+  if (totalWarnings > 0) {
+    lines.push('### By check type');
+    lines.push('');
+    lines.push('| Check | Count |');
+    lines.push('|---|---|');
+    const checkLabels = {
+      fk:  'Flesch-Kincaid grade too high',
+      fre: 'Flesch Reading Ease too low',
+      cl:  'Coleman-Liau index too high',
+      lix: 'LIX score too high (long words)',
+      len: 'Avg sentence length exceeded',
+      max: 'Single sentence too long',
+      para:'Paragraph density too high',
+    };
+    for (const [key, label] of Object.entries(checkLabels)) {
+      if (countByType[key] > 0) lines.push(`| ${label} | ${countByType[key]} |`);
+    }
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    for (const [filePath, warnings] of Object.entries(warningsByFile)) {
+      const shortPath = filePath.replace(/^versioned_docs\/[^/]+\//, '');
+      lines.push(`### ⚠ \`${shortPath}\` — ${warnings.length} warning${warnings.length > 1 ? 's' : ''}`);
+      lines.push('');
+      for (const w of warnings) {
+        const title = `${w.label} · line ${w.startLine} — ${w.message}`;
+        lines.push(`<details><summary>${title}</summary>`);
+        lines.push('');
+        lines.push(`**Why:** ${CHECK_WHY[w.checkName]}`);
+        lines.push('');
+        if (w.preview) lines.push(`**Quote:** *"${w.preview}"*`);
+        lines.push('');
+        const fix = w.suggestion.replace(/\n\s*/g, '<br>');
+        lines.push(`**Fix:** ${fix}`);
+        lines.push('');
+        lines.push('</details>');
+        lines.push('');
+      }
+    }
+  }
+
+  appendFileSync(summaryPath, lines.join('\n') + '\n');
+}
+
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 const targetDir = process.argv[2] ?? 'versioned_docs';
 const files = findMdxFiles(targetDir);
 let allPassed = true;
+const warningsByFile = {};
 
 for (const file of files) {
   const content = readFileSync(file, 'utf8');
@@ -622,11 +693,13 @@ for (const file of files) {
 
   if (fileWarnings.length > 0) {
     allPassed = false;
+    warningsByFile[relPath] = fileWarnings;
     printFileWarnings(relPath, fileWarnings);
   }
 }
 
 printSummary(files.length, allPassed);
+writeJobSummary(files.length, allPassed, warningsByFile);
 
 if (!allPassed) {
   console.log('::error::Readability check failed. See warnings above for details.');
