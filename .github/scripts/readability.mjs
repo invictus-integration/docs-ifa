@@ -26,6 +26,25 @@ import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, relative, extname, basename } from 'path';
 import process from 'process';
 
+// ── Environment ──────────────────────────────────────────────────────────────
+
+const IS_GH_ACTIONS = !!process.env.GITHUB_ACTIONS;
+
+// ANSI codes — all no-ops in CI so annotations stay plain text
+const c = IS_GH_ACTIONS ? Object.fromEntries(
+  ['reset','bold','dim','italic','cyan','yellow','green','gray','red'].map(k => [k, ''])
+) : {
+  reset:  '\x1b[0m',
+  bold:   '\x1b[1m',
+  dim:    '\x1b[2m',
+  italic: '\x1b[3m',
+  cyan:   '\x1b[36m',
+  yellow: '\x1b[33m',
+  green:  '\x1b[32m',
+  gray:   '\x1b[90m',
+  red:    '\x1b[31m',
+};
+
 // ── Thresholds ───────────────────────────────────────────────────────────────
 
 const TECH_FILE_PATTERNS = [
@@ -247,21 +266,58 @@ const SUGGESTIONS = {
   len: 'Look for "which", "that", "and", "but", "because" as natural split points to break this into two sentences.',
 };
 
-function annotate(filePath, startLine, startCol, label, checkName, stats, preview) {
+function createWarning(filePath, startLine, startCol, label, checkName, stats, preview) {
   const messages = {
-    fk:  `[${label}] Flesch-Kincaid grade ${stats.fk} exceeds target of ≤${stats.fkMax} ` +
-         `(${stats.wordCount} words, ${stats.sentenceCount} sentences, avg ${stats.avgWords} words/sentence).`,
-    fre: `[${label}] Flesch Reading Ease ${stats.fre} is below target of ≥${stats.freMin}.`,
-    len: `[${label}] Average sentence length is ${stats.avgWords} words (target: ≤20).`,
+    fk:  `Flesch-Kincaid grade ${stats.fk} exceeds target of ≤${stats.fkMax} ` +
+         `(${stats.wordCount} words, ${stats.sentenceCount} sentences, avg ${stats.avgWords} words/sentence)`,
+    fre: `Flesch Reading Ease ${stats.fre} is below target of ≥${stats.freMin}`,
+    len: `Average sentence length is ${stats.avgWords} words (target: ≤20)`,
   };
+  return { filePath, startLine, startCol, label, checkName, message: messages[checkName], preview, suggestion: SUGGESTIONS[checkName] };
+}
 
+// ── Output rendering ─────────────────────────────────────────────────────────
+
+function renderCI(w) {
   const parts = [
-    messages[checkName],
-    preview ? `Longest sentence: "${preview}"` : null,
-    `Suggestion: ${SUGGESTIONS[checkName]}`,
+    `[${w.label}] ${w.message}.`,
+    w.preview ? `Longest sentence: "${w.preview}"` : null,
+    `Suggestion: ${w.suggestion}`,
   ].filter(Boolean).join(' | ');
+  return `::warning file=${w.filePath},line=${w.startLine},col=${w.startCol}::${parts}`;
+}
 
-  console.log(`::warning file=${filePath},line=${startLine},col=${startCol}::${parts}`);
+const COL_WIDTH = 68;
+
+function printFileWarningsCI(relPath, warnings) {
+  console.log(`\n::group::${relPath}`);
+  warnings.forEach(w => console.log(renderCI(w)));
+  console.log('::endgroup::');
+}
+
+function printFileWarningsLocal(relPath, warnings) {
+  const shortPath = relPath.replace(/^versioned_docs\/[^/]+\//, '');
+  const titlePad = Math.max(2, COL_WIDTH - shortPath.length - 5);
+  console.log(`\n${c.bold}${c.cyan}┌─ ${shortPath} ${'─'.repeat(titlePad)}${c.reset}`);
+
+  for (const w of warnings) {
+    const location = `${c.gray}line ${w.startLine}, col ${w.startCol}${c.reset}`;
+    console.log(`${c.cyan}│${c.reset}`);
+    console.log(`${c.cyan}│${c.reset}  ${c.yellow}⚠${c.reset}  ${c.bold}${w.label}${c.reset}  ${c.gray}·${c.reset}  ${location}`);
+    console.log(`${c.cyan}│${c.reset}     ${c.yellow}${w.message}${c.reset}`);
+    if (w.preview) {
+      console.log(`${c.cyan}│${c.reset}     ${c.dim}${c.italic}"${w.preview}"${c.reset}`);
+    }
+    console.log(`${c.cyan}│${c.reset}     ${c.green}→ ${w.suggestion}${c.reset}`);
+  }
+
+  console.log(`${c.cyan}│${c.reset}`);
+  console.log(`${c.bold}${c.cyan}└${'─'.repeat(COL_WIDTH)}${c.reset}`);
+}
+
+function printFileWarnings(relPath, warnings) {
+  if (IS_GH_ACTIONS) printFileWarningsCI(relPath, warnings);
+  else printFileWarningsLocal(relPath, warnings);
 }
 
 // ── Issue tracking (for summary) ─────────────────────────────────────────────
@@ -274,7 +330,7 @@ function recordIssue(filePath, label, checkName, startLine) {
 
 // ── Section checker ──────────────────────────────────────────────────────────
 
-function checkSection(label, text, filePath, startLine, startCol, thresholds) {
+function checkSection(label, text, filePath, startLine, startCol, thresholds, fileWarnings) {
   const plain = toPlainText(text);
   const stats = analyzeText(plain);
   if (!stats) return true;
@@ -285,19 +341,19 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds) {
   let passed = true;
 
   if (fk > thresholds.fkMax) {
-    annotate(filePath, startLine, startCol, label, 'fk', enriched, preview);
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fk', enriched, preview));
     recordIssue(filePath, label, 'fk', startLine);
     passed = false;
   }
 
   if (fre < thresholds.freMin) {
-    annotate(filePath, startLine, startCol, label, 'fre', enriched, preview);
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fre', enriched, preview));
     recordIssue(filePath, label, 'fre', startLine);
     passed = false;
   }
 
   if (avgWords > 20) {
-    annotate(filePath, startLine, startCol, label, 'len', enriched, preview);
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'len', enriched, preview));
     recordIssue(filePath, label, 'len', startLine);
     passed = false;
   }
@@ -332,7 +388,7 @@ const CHECK_LABELS = {
 };
 
 function printSummary(totalFiles, allPassed) {
-  const LINE = '─'.repeat(62);
+  const LINE = '─'.repeat(COL_WIDTH);
   const filesWithIssues = [...new Set(issueLog.map(i => i.filePath))];
   const countByType = { fk: 0, fre: 0, len: 0 };
   for (const issue of issueLog) countByType[issue.checkName]++;
@@ -342,37 +398,56 @@ function printSummary(totalFiles, allPassed) {
     (issuesByFile[issue.filePath] ??= []).push(issue);
   }
 
-  console.log('\n::group::Readability Check — Summary');
-  console.log(LINE);
-  console.log(`  Files checked       : ${totalFiles}`);
-  console.log(`  Files with issues   : ${filesWithIssues.length}`);
-  console.log(`  Total warnings      : ${issueLog.length}`);
-  console.log(LINE);
+  const header = `${c.bold}Readability Check — Summary${c.reset}`;
+
+  if (IS_GH_ACTIONS) console.log('\n::group::Readability Check — Summary');
+  else console.log(`\n${c.bold}${c.cyan}${LINE}${c.reset}`);
+
+  console.log(IS_GH_ACTIONS ? LINE : `  ${header}`);
+  if (!IS_GH_ACTIONS) console.log(`${c.bold}${c.cyan}${LINE}${c.reset}`);
+
+  console.log(`  Files checked       : ${c.bold}${totalFiles}${c.reset}`);
+  console.log(`  Files with issues   : ${filesWithIssues.length > 0 ? c.yellow : c.green}${c.bold}${filesWithIssues.length}${c.reset}`);
+  console.log(`  Total warnings      : ${issueLog.length > 0 ? c.yellow : c.green}${c.bold}${issueLog.length}${c.reset}`);
+  console.log(IS_GH_ACTIONS ? LINE : `${c.bold}${c.cyan}${LINE}${c.reset}`);
   console.log('  By check type:');
+
+  const CHECK_LABELS = {
+    fk:  'Flesch-Kincaid grade too high ',
+    fre: 'Flesch Reading Ease too low   ',
+    len: 'Avg sentence length > 20 words',
+  };
   for (const [key, label] of Object.entries(CHECK_LABELS)) {
     const n = countByType[key];
-    if (n > 0) console.log(`    ${label} : ${n}`);
+    if (n > 0) console.log(`    ${c.yellow}${label}${c.reset} : ${c.bold}${n}${c.reset}`);
   }
 
   if (filesWithIssues.length > 0) {
-    console.log(LINE);
+    console.log(IS_GH_ACTIONS ? LINE : `${c.bold}${c.cyan}${LINE}${c.reset}`);
     console.log('  Files needing attention (sorted by issue count):');
+
     const sorted = filesWithIssues
       .map(f => ({ f, n: issuesByFile[f].length }))
       .sort((a, b) => b.n - a.n);
 
     for (const { f, n } of sorted) {
+      const shortPath = f.replace(/^versioned_docs\/[^/]+\//, '');
       const sections = [...new Set(issuesByFile[f].map(i => i.label))].join(', ');
-      const flag = n >= 3 ? '✗✗' : '✗ ';
-      console.log(`    ${flag} ${f}`);
-      console.log(`       ${n} warning${n > 1 ? 's' : ''} in: ${sections}`);
+      const flag = n >= 3 ? `${c.red}✗✗${c.reset}` : `${c.yellow}✗ ${c.reset}`;
+      console.log(`    ${flag} ${c.bold}${shortPath}${c.reset}`);
+      console.log(`       ${c.gray}${n} warning${n > 1 ? 's' : ''} in: ${sections}${c.reset}`);
     }
   }
 
-  console.log(LINE);
-  console.log(allPassed ? '  ✓ All checks passed.' : '  ✗ Readability check failed. See warnings above.');
-  console.log(LINE);
-  console.log('::endgroup::');
+  console.log(IS_GH_ACTIONS ? LINE : `${c.bold}${c.cyan}${LINE}${c.reset}`);
+  if (allPassed) {
+    console.log(`  ${c.green}${c.bold}✓ All checks passed.${c.reset}`);
+  } else {
+    console.log(`  ${c.red}${c.bold}✗ Readability check failed. See warnings above.${c.reset}`);
+  }
+  console.log(IS_GH_ACTIONS ? LINE : `${c.bold}${c.cyan}${LINE}${c.reset}`);
+
+  if (IS_GH_ACTIONS) console.log('::endgroup::');
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -386,16 +461,18 @@ for (const file of files) {
   const { primary, collapsed } = extractSections(content);
   const thresholds = getThresholds(file);
   const relPath = relative(process.cwd(), file).replace(/\\/g, '/');
+  const fileWarnings = [];
 
-  if (!checkSection('Primary content', primary.text, relPath, primary.startLine, primary.startCol, thresholds)) {
-    allPassed = false;
-  }
+  checkSection('Primary content', primary.text, relPath, primary.startLine, primary.startCol, thresholds, fileWarnings);
 
   for (let i = 0; i < collapsed.length; i++) {
     const { text, startLine, startCol } = collapsed[i];
-    if (!checkSection(`Collapsed section ${i + 1}`, text, relPath, startLine, startCol, thresholds)) {
-      allPassed = false;
-    }
+    checkSection(`Collapsed section ${i + 1}`, text, relPath, startLine, startCol, thresholds, fileWarnings);
+  }
+
+  if (fileWarnings.length > 0) {
+    allPassed = false;
+    printFileWarnings(relPath, fileWarnings);
   }
 }
 
