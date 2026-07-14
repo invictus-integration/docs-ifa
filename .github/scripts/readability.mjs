@@ -181,16 +181,41 @@ function extractSections(content) {
 
 // ── Text cleaning ────────────────────────────────────────────────────────────
 
+/**
+ * Strips all brace-delimited JSX expressions {…} with full nesting support.
+ * Each top-level {…} becomes a single space regardless of nesting depth.
+ *
+ * Must run BEFORE JSX tag removal: attributes like `icon={<Foo />}` contain
+ * a `>` inside the braces which confuses `[^>]*` tag-matching regexes.
+ * Removing brace content first leaves clean attribute-free tags that the
+ * JSX self-closing and pair regexes can then reliably match.
+ */
+function removeBraceExpressions(text) {
+  let result = '';
+  let depth = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '{') {
+      depth++;
+    } else if (ch === '}') {
+      if (depth > 0) depth--;
+      else result += ch; // stray `}` not opened — pass through unchanged
+    } else if (depth === 0) {
+      result += ch;
+    }
+  }
+  return result;
+}
+
 function toPlainText(raw) {
-  return raw
+  return removeBraceExpressions(raw
     .replace(/^\uFEFF/, '')                                              // BOM character
-    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')                               // JSX comments {/* ... */}
     .replace(/import\s[^;]+;/g, '')                                     // import statements
     .replace(/:::[\w-]*[^\n]*/g, '')                                    // admonition markers (opening :::note and closing :::)
     .replace(/`{3}[^\n]*\n[\s\S]*?`{3}/g, '')                          // fenced code blocks
+    .replace(/<table[\s\S]*?<\/table>/gi, '')                           // HTML tables (structured data, not prose)
     .replace(/`[^`\n]+`/g, ' ')                                        // inline code → remove (don't score code tokens)
-    .replace(/\{\{[^}]*\}\}/g, ' ')                                     // double-brace JSX expressions {{ }}
-    .replace(/\{[^}]+\}/g, ' ')                                         // single-brace JSX expressions { }
+  )                                                                     // remove all {…} JSX expressions (balanced-brace, any depth)
     .replace(/<[A-Z][A-Za-z]*[^>]*\/>/g, ' ')                          // self-closing JSX components <Badge />
     .replace(/<[A-Z][A-Za-z]*[^>]*>[\s\S]*?<\/[A-Z][A-Za-z]*>/g, ' ') // JSX component pairs <Foo>...</Foo>
     .replace(/<[^>]+>/g, ' ')                                           // remaining HTML tags
@@ -198,8 +223,7 @@ function toPlainText(raw) {
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')                            // inline links → label text only
     .replace(/\[[^\]]+\]:\s*\S+[^\n]*/gm, '')                          // reference-style link definitions
     .replace(/https?:\/\/\S+/g, '')                                     // bare URLs
-    .replace(/^\|[-:\s|]+\|$/gm, '')                                    // table separator rows
-    .replace(/\|/g, ' ')                                                // table pipe characters
+    .replace(/^\|.+$/gm, '')                                            // table rows (data + separator) — structured data, not prose
     .replace(/^[-_*]{3,}\s*$/gm, '')                                    // thematic breaks (--- ___ ***)
     .replace(/^#{1,6}\s+.+$/gm, '')                                    // headings → removed (navigation labels, not prose)
     .replace(/\*{1,2}([^*\n]*)\*{1,2}/g, '$1')                         // bold/italic markers (balanced)
@@ -253,6 +277,11 @@ function analyzeText(text) {
 
   if (sentences.length < 2 || words.length < 15) return null;
 
+  // Below 50 words, corpus-wide metrics (FK, FRE, CL, LIX) are unreliable —
+  // a single multi-syllable product name shifts the score by a full grade level.
+  // Sentence-length and paragraph density checks still run (they work per-sentence).
+  const tooSmallForCorpusMetrics = words.length < 50;
+
   const syllables  = words.reduce((n, w) => n + countSyllables(w), 0);
   const chars      = words.reduce((n, w) => n + w.replace(/[^a-zA-Z]/g, '').length, 0);
   const longWords  = words.filter(w => w.length >= 7).length;
@@ -266,10 +295,10 @@ function analyzeText(text) {
   const longestSentence    = sentences[sentenceWordCounts.indexOf(maxSentenceWords)] ?? '';
 
   return {
-    fk:              Math.round((0.39 * avgWords + 11.8 * avgSyllables - 15.59) * 10) / 10,
-    fre:             Math.round((206.835 - 1.015 * avgWords - 84.6 * avgSyllables) * 10) / 10,
-    cl:              Math.round((0.0588 * L - 0.296 * S - 15.8) * 10) / 10,
-    lix:             Math.round((avgWords + (longWords * 100 / words.length)) * 10) / 10,
+    fk:              tooSmallForCorpusMetrics ? null : Math.round((0.39 * avgWords + 11.8 * avgSyllables - 15.59) * 10) / 10,
+    fre:             tooSmallForCorpusMetrics ? null : Math.round((206.835 - 1.015 * avgWords - 84.6 * avgSyllables) * 10) / 10,
+    cl:              tooSmallForCorpusMetrics ? null : Math.round((0.0588 * L - 0.296 * S - 15.8) * 10) / 10,
+    lix:             tooSmallForCorpusMetrics ? null : Math.round((avgWords + (longWords * 100 / words.length)) * 10) / 10,
     wordCount:       words.length,
     sentenceCount:   sentences.length,
     avgWords:        Math.round(avgWords * 10) / 10,
@@ -454,25 +483,25 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
   const enriched = { ...stats, ...thresholds };
   let passed = true;
 
-  if (fk > thresholds.fkMax) {
+  if (fk !== null && fk > thresholds.fkMax) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fk', enriched, preview));
     recordIssue(filePath, label, 'fk', startLine);
     passed = false;
   }
 
-  if (fre < thresholds.freMin) {
+  if (fre !== null && fre < thresholds.freMin) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fre', enriched, preview));
     recordIssue(filePath, label, 'fre', startLine);
     passed = false;
   }
 
-  if (cl > thresholds.clMax) {
+  if (cl !== null && cl > thresholds.clMax) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'cl', enriched, preview));
     recordIssue(filePath, label, 'cl', startLine);
     passed = false;
   }
 
-  if (lix > thresholds.lixMax) {
+  if (lix !== null && lix > thresholds.lixMax) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'lix', enriched, preview));
     recordIssue(filePath, label, 'lix', startLine);
     passed = false;
