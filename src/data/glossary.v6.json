@@ -55,7 +55,7 @@
   },
   {
     "term": "Flow status",
-    "definition": "The state of a **flow trace** as shown in the Dashboard. There are four possible states:\n\n- **Active** — the message is currently being processed.\n- **Completed** — the message finished successfully.\n- **Error** — the message was suspended, dehydrated, or terminated with a failure.\n- **Ignored** — an operator manually dismissed the message (typically after reviewing a failure).\n- **Cancelled** — an operator manually cancelled the run and halted the message processing.",
+    "definition": "The state of a **flow trace** in the Dashboard. Each flow has one of five states.\n\n- **Active** — the flow is running now.\n\n- **Completed** — the flow finished with no errors.\n\n- **Error** — the flow stopped due to a failure.\n\n- **Ignored** — a user closed it after reviewing the failure.\n\n- **Cancelled** — a user stopped the flow before it could finish.",
     "userType": "business"
   },
   {
@@ -104,12 +104,12 @@
   },
   {
     "term": "PubSub",
-    "definition": "An **Invictus Framework** component that enables publish/subscribe messaging between Azure Logic App workflows using Azure Service Bus as a message broker. Workflows interact with it via three HTTP endpoints: Publish, Subscribe, and Acknowledge.\n\nFor messages exceeding the configured size limit, PubSub automatically applies the **claim-check pattern** — offloading the content to Azure Blob Storage and restoring it on Subscribe.",
+    "definition": "An **Invictus Framework** component that enables publish/subscribe messaging between Azure Logic App workflows. It uses Azure Service Bus as a message broker. For messages exceeding a size limit, PubSub offloads the body to Azure Blob Storage. See also **claim-check pattern**.",
     "userType": "technical"
   },
   {
     "term": "Sequence Controller",
-    "definition": "An **Invictus Framework** component that ensures Azure Logic App workflows execute in a defined order without relying on concurrency throttling. Workflows take a numbered position in a named sequence, wait their turn, perform their work, then signal completion so the next workflow can proceed.\n\nThis allows parallel-triggered workflows to process messages in order without blocking the entire Logic App.",
+    "definition": "An **Invictus Framework** component that runs Azure Logic App workflows in a fixed order. It does not use concurrency throttling to enforce this.\n\nEach workflow claims a spot in a named sequence. It waits its turn, does its work, then signals the next one to start.\n\nThis keeps workflows in order even when they start at the same time. It does not block the whole Logic App.",
     "userType": "technical"
   },
   {
@@ -122,7 +122,7 @@
     "aliases": [
       "claim check"
     ],
-    "definition": "An **Invictus Framework** behavior implemented in **PubSub**: when a published message body exceeds the configured size limit (default 20,000 bytes), the content is automatically stored in Azure Blob Storage and the message is sent with an empty body.\n\nThe Subscribe action transparently retrieves the content from storage, so consumers receive the full payload without needing to handle the offload themselves.\n\n*See also the [claim-check integration pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check).*",
+    "definition": "An **Invictus Framework** behavior used in **PubSub**. When a published message has a body that exceeds a size limit (default 20,000 bytes), the Publish action offloads the body in Azure Blob Storage instead and adds a reference in the message.\n\nThe Subscribe action gets the body from storage by the reference.\n\n*See also the [claim-check integration pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/claim-check).*",
     "userType": "technical"
   }
 ]
