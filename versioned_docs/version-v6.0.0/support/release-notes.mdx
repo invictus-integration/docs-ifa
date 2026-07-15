@@ -26,7 +26,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   </TechChanges>
   <Fixes>
     - **[ExceptionHandler] report error details in failed `ForEach` loops:** the component captures inner errors inside `ForEach` loops in Logic Apps workflows instead of displaying general error user messages. Users no longer have to switch to Azure to find the root cause for failures.
-    - **Improved automatic recovery of deferred messages:** We have enhanced the automatic recovery mechanism for messages that remain in a deferred state for an extended period due to intermittent platform-related issues outside of Invictus' control.
+    - **[PubSub] Improved recovery of deferred messages:** the component recovers more reliably messages stuck in a deferred state, caused by external intermittent platform issues.
 
       Previously, when a deferred message was automatically resubmitted, environments with multiple subscribers could receive the message more broadly than intended. The subscription filtering logic has now been improved to ensure that automatically resubmitted messages are routed only to the appropriate subscriber.
 
