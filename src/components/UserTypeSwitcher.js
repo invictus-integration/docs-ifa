@@ -4,8 +4,8 @@ import { useUserType } from './UserTypeContext';
 import styles from './UserTypeSwitcher.module.css';
 
 const TABS = [
-  { key: 'business',  label: 'Business users',  path: '/' },
-  { key: 'technical', label: 'Technical users', path: '/technical' },
+  { key: 'business', label: 'User guides', path: '/' },
+  { key: 'technical', label: 'Setup & maintenance', path: '/technical' },
 ];
 
 export default function UserTypeSwitcher() {
