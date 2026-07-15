@@ -13,6 +13,27 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
 <ReleaseNotes>
 
+<ReleaseVersion version="6.4" date="July 2026">
+  <Features>
+    - **Simplify flow status filters into groups:** the flow status filters in the advanced search pane group statuses into broader categories instead of too detailed levels. 'Active' (= `Active`, `Resubmitted`, `Resumed` statuses). 'Error' (= `Failed`, `Resubmit Failed`, and `Resume Failed` statuses).
+    - **[Transco] missing references no longer cause failures:** scenarios with conditional actions failed due to possible missing data references during instructions. The Transco no longer fails when `scopePath` or `destination` points to unavailable locations. The component logs a warning in case that happens to help spotting configuration issues.
+    - **[Transco] fall back on default parameter values:** the component better handles optional or unavailable data. In situations where the component can't retrieve a parameter value from a path, you can fall back on a `defaultValue`.
+
+    - **Enhanced private network support:** deployments within a virtual network (VNET) offers private endpoints. This helps organizations to align their governance and standards in the deployment.
+  </Features>
+  <TechChanges>
+    - **Upgrade to .NET 10:** the Dashboard and Framework components run on .NET 10.
+  </TechChanges>
+  <Fixes>
+    - **[ExceptionHandler] report error details in failed `ForEach` loops:** the component captures inner errors inside `ForEach` loops in Logic Apps workflows instead of displaying general error user messages. Users no longer have to switch to Azure to find the root cause for failures.
+    - **[PubSub] Improved recovery of deferred messages:** the component recovers more reliably messages stuck in a deferred state, caused by external intermittent platform issues.
+
+      Previously, when a deferred message was automatically resubmitted, environments with multiple subscribers could receive the message more broadly than intended. The subscription filtering logic has now been improved to ensure that automatically resubmitted messages are routed only to the appropriate subscriber.
+
+    - **Reliable Cosmos DB during high-volume processing:** the database interactions better handles concurrent tasks. This reduces the connection errors during high activity or initial setup.
+  </Fixes>
+</ReleaseVersion>
+
 <ReleaseVersion version="6.3" date="March 2026">
 
   <Features>
