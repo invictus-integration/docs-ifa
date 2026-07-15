@@ -81,16 +81,16 @@ describe('FAQ — Help Center', () => {
     });
 
     it('auto-opens items where only the answer matches', () => {
-      cy.visit(`${PAGE}?q=cosmosdb`);
+      cy.visit(`${PAGE}?q=cosmos`);
       cy.get('[data-cy=faq-answer]').should('be.visible').invoke('text').then((text) => {
-        expect(text.toLowerCase()).to.contain('cosmosdb');
+        expect(text.toLowerCase()).to.contain('cosmos');
       });
     });
 
     it('highlights the search term inside the answer', () => {
-      cy.visit(`${PAGE}?q=cosmosdb`);
+      cy.visit(`${PAGE}?q=cosmos`);
       cy.get('[data-cy=faq-answer]').find('mark').should('exist').and(($marks) => {
-        expect($marks.text().toLowerCase()).to.contain('cosmosdb');
+        expect($marks.text().toLowerCase()).to.contain('cosmos');
       });
     });
 

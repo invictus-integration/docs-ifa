@@ -3,7 +3,7 @@
     "question": "Why does Entra ID sign in fail with HTTP 431 Request Header Fields Too Large error on some environments?",
     "answer": "This issue occurs when the Entra ID sign-in process generates a large number of cookies, which can exceed the header size limit of some browsers or environments. To resolve this issue, you can try to disable the `Session Affinity`/`Cookie-based Affinity` option.",
     "version": ">= v6.3",
-    "userType": "business",
+    "userType": "technical",
     "tags": [
       "migration",
       "entra-id"
@@ -92,19 +92,19 @@
     ]
   },
   {
-    "question": "Can a flow that was accidentally deleted from the Dashboard be recovered?",
-    "answer": "Yes. The flow data is not permanently removed. In CosmosDB, open the `FolderFlows` collection and locate the deleted flow — it will have an `-Archived` suffix on its name. Remove the suffix and set `isVisible` to `true`. If the flow was recreated in the meantime, remove that duplicate document first to avoid conflicts.",
+    "question": "Can I recover a flow that I deleted from the Dashboard by accident?",
+    "answer": "Yes. The flow data is not permanently removed. In Cosmos DB, open the `FolderFlows` collection and locate the deleted flow — it will have an `-Archived` suffix on its name. Remove the suffix and set `isVisible` to `true`. If the flow was recreated in the meantime, remove that duplicate document first to avoid conflicts.",
     "version": ">= v6.0",
-    "userType": "business",
+    "userType": "technical",
     "tags": [
       "dashboard"
     ]
   },
   {
-    "question": "How can a locked non-SSO Dashboard user account be unlocked?",
+    "question": "How can I unlock a locked non-SSO Dashboard user account?",
     "answer": "In MongoDB, query the `Users` collection and find the user's document. Set `IsBlocked` to `false` and reset `AccessFailedCount` to `0`.",
     "version": ">= v6.0",
-    "userType": "business",
+    "userType": "technical",
     "tags": [
       "dashboard"
     ]
