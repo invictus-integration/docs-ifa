@@ -87,7 +87,7 @@
   /* step ring halos */
 
   /* Sidebar surface */
-  --inv-sidebar-bg: var(--ifm-color-gray-800);
+  --inv-sidebar-bg: var(--ifm-color-gray-100);
 
   /* Diagram — flow diagram header bar */
   --inv-diagram-header-bg: #065b68;
@@ -362,17 +362,15 @@ nav.menu {
 .docSidebarContainer,
 .theme-doc-sidebar-container {
   background-color: var(--inv-sidebar-bg);
-  border-right: 2px solid black !important;
+  border-right: 1px solid var(--ifm-color-emphasis-300) !important;
 
-  /* Override menu token colors for the dark sidebar surface.
+  /* Menu token overrides for the light sidebar surface.
    * Scoped here so mobile sidebar (navbar-sidebar) is unaffected. */
-  --ifm-menu-color: var(--ifm-color-gray-300);
-  /* muted gray — clearly inactive */
-  --ifm-menu-color-active: #ffffff;
-  /* bright white — clearly active; #f3f6f7 inactive is too close */
-  --ifm-menu-color-background-active: black !important;
-  --ifm-menu-color-background-hover: var(--ifm-color-gray-700) !important;
-  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+  --ifm-menu-color: var(--ifm-color-gray-700);
+  --ifm-menu-color-active: var(--ifm-color-primary);
+  --ifm-menu-color-background-active: var(--inv-tint-active) !important;
+  --ifm-menu-color-background-hover: var(--inv-tint-subtle) !important;
+  --ifm-menu-link-sublist-icon-filter: none;
 }
 
 /* Infima defaults collapsible--active to hover bg; align it with active bg instead */
@@ -435,9 +433,12 @@ html[data-theme='dark'] .theme-doc-sidebar-container {
   background-color: var(--ifm-color-gray-800);
   border-right-color: black !important;
 
-  /* Dark mode sidebar already has light text via global dark tokens — reset overrides */
+  /* Restore dark-surface menu tokens overridden by the light-mode rule above */
   --ifm-menu-color: var(--ifm-color-gray-300);
   --ifm-menu-color-active: #ffffff;
+  --ifm-menu-color-background-active: black !important;
+  --ifm-menu-color-background-hover: var(--ifm-color-gray-700) !important;
+  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
 }
 
 /* 4c. Footer */
