@@ -425,7 +425,6 @@ nav.menu {
   border-left: 1px dashed var(--ifm-color-gray-500) !important;
   padding-left: 0.5rem;
   margin-left: 1.3rem;
-
 }
 
 html[data-theme='dark'] .docSidebarContainer,
@@ -638,6 +637,17 @@ html[data-theme='dark'] .tabs-container>[role="tabpanel"] {
 
   [data-theme="dark"] {
     --ifm-menu-color-background-active: var(--ifm-color-primary-darker) !important;
+  }
+
+  /* The mobile TOC collapsible uses --ifm-menu-color-background-active for its
+   * background, but it should not inherit the dark primary-darker colour set
+   * above. Override it back to the light/dark surface colours here. */
+  .theme-doc-toc-mobile {
+    --ifm-menu-color-background-active: var(--ifm-color-gray-100) !important;
+  }
+
+  [data-theme="dark"] .theme-doc-toc-mobile {
+    --ifm-menu-color-background-active: var(--ifm-color-gray-800) !important;
   }
 }
 
