@@ -422,7 +422,7 @@ nav.menu {
 
 .theme-doc-sidebar-menu .menu__list .menu__list,
 .theme-doc-sidebar-item-category .menu__list {
-  border-left: 1px dashed var(--ifm-color-gray-300) !important;
+  border-left: 1px dashed var(--ifm-color-gray-500) !important;
   padding-left: 0.5rem;
   margin-left: 1.3rem;
 
