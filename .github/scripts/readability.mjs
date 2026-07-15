@@ -58,6 +58,7 @@ const c = IS_GH_ACTIONS ? Object.fromEntries(
 const TECH_FILE_PATTERNS = [
   /versioned_docs\/.*\/framework\//,
   /versioned_docs\/.*\/dashboard\/installation\//,
+  /versioned_docs\/.*\/dashboard\/flows\/04_import-flow-traces\//,
   /versioned_docs\/.*\/(technical|architecture-diagram)\.mdx?$/,
   /versioned_docs\/.*\/support\/(migrate|release-notes)/,
 ];
@@ -223,13 +224,13 @@ function toPlainText(raw) {
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')                            // inline links → label text only
     .replace(/\[[^\]]+\]:\s*\S+[^\n]*/gm, '')                          // reference-style link definitions
     .replace(/https?:\/\/\S+/g, '')                                     // bare URLs
-    .replace(/^\|.+$/gm, '')                                            // table rows (data + separator) — structured data, not prose
+    .replace(/^\s*\|.+$/gm, '')                                            // table rows (data + separator) — structured data, not prose
     .replace(/^[-_*]{3,}\s*$/gm, '')                                    // thematic breaks (--- ___ ***)
     .replace(/^#{1,6}\s+.+$/gm, '')                                    // headings → removed (navigation labels, not prose)
     .replace(/\*{1,2}([^*\n]*)\*{1,2}/g, '$1')                         // bold/italic markers (balanced)
-    .replace(/\*/g, '')                                                 // remaining unbalanced asterisks
-    .replace(/^[-*+]\s+(.+?)\.?\s*$/gm, '$1. ')                         // unordered list items → each becomes a sentence
-    .replace(/^\d+\.\s+(.+?)\.?\s*$/gm, '$1. ')                         // ordered list items → each becomes a sentence
+    .replace(/^\s*[-*+]\s+(.+?)\.?\s*$/gm, '$1. ')                     // unordered list items (any indent, before * cleanup) → each becomes a sentence
+    .replace(/^\s*\d+\.\s+(.+?)\.?\s*$/gm, '$1. ')                     // ordered list items (any indent) → each becomes a sentence
+    .replace(/\*/g, '')                                                 // remaining unbalanced asterisks (after list processing)
     .replace(/\s+/g, ' ')
     .replace(/[`\[\]]/g, '')                                            // remaining bare backticks and brackets
     .trim();
