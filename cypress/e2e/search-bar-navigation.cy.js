@@ -102,30 +102,30 @@ describe('SearchBar navigation (local search)', () => {
   describe('knowledge FAQ result navigation', () => {
 
     it('shows FAQ matches in the knowledge column', () => {
-      openSearchAndType('cosmosdb');
+      openSearchAndType('cosmos');
       cy.get('[data-cy=knowledge-faq-result]').should('have.length.greaterThan', 0);
     });
 
     it('navigates to the help center when clicking a FAQ result', () => {
-      openSearchAndType('cosmosdb');
+      openSearchAndType('cosmos');
       cy.get('[data-cy=knowledge-faq-result]').first().click();
       cy.location('pathname').should('match', /\/support\/help-center-(technical|business)/);
     });
 
     it('appends ?q= so the help center pre-filters to the matching question', () => {
-      openSearchAndType('cosmosdb');
+      openSearchAndType('cosmos');
       cy.get('[data-cy=knowledge-faq-result]').first().click();
       cy.location('search').should('match', /[?&]q=.+/);
     });
 
     it('appends #faq hash to land on the FAQ section', () => {
-      openSearchAndType('cosmosdb');
+      openSearchAndType('cosmos');
       cy.get('[data-cy=knowledge-faq-result]').first().click();
       cy.location('hash').should('eq', '#faq');
     });
 
     it('auto-opens the first matching answer after navigating', () => {
-      openSearchAndType('cosmosdb');
+      openSearchAndType('cosmos');
       cy.get('[data-cy=knowledge-faq-result]').first().click();
       cy.get('[data-cy=faq-answer]').should('be.visible');
     });
