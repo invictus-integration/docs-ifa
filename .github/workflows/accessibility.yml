@@ -23,11 +23,11 @@ jobs:
         run: npm install
       - name: Run accessibility tests
         run: |
-          npx start-server-and-test start http://localhost:3000 "cypress run --spec cypress/e2e/accessibility.cy.js"
+          npx start-server-and-test start http://localhost:3000 "cypress run --spec cypress/e2e/accessibility/accessibility.cy.js"
       - name: Upload failure screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: accessibility-failure-screenshots
-          path: cypress/screenshots/accessibility.cy.js
+          path: cypress/screenshots/accessibility/accessibility.cy.js
           if-no-files-found: ignore
