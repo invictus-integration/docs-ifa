@@ -80,16 +80,19 @@ async function signJwt(key, payload) {
 }
 
 async function getGitHubToken() {
-  const appId          = Deno.env.get('GITHUB_APP_ID');
-  const installationId = Deno.env.get('GITHUB_APP_INSTALLATION_ID');
+  const appId          = Deno.env.get('GITHUB_APP_ID')?.trim();
+  const installationId = Deno.env.get('GITHUB_APP_INSTALLATION_ID')?.trim();
   const rawKey         = Deno.env.get('GITHUB_APP_PRIVATE_KEY');
-  const pat            = Deno.env.get('GITHUB_FEEDBACK_TOKEN');
+  const pat            = Deno.env.get('GITHUB_FEEDBACK_TOKEN')?.trim();
 
   if (appId && installationId && rawKey) {
     const privateKeyPem = rawKey.replace(/^['\"]+|['\"]+$/g, '').trim();
     const key = await importPrivateKey(privateKeyPem);
     const now = Math.floor(Date.now() / 1000);
-    const jwt = await signJwt(key, { iat: now - 60, exp: now + 600, iss: appId });
+    // GitHub allows a max 10-minute (600s) JWT lifetime and validates exp/iat
+    // against its own clock. Trim the buffer below the hard limit so minor
+    // clock drift on the edge runtime doesn't push exp past GitHub's tolerance.
+    const jwt = await signJwt(key, { iat: now - 60, exp: now + 540, iss: appId });
 
     const res = await fetch(
       `https://api.github.com/app/installations/${installationId}/access_tokens`,
@@ -103,7 +106,10 @@ async function getGitHubToken() {
         },
       },
     );
-    if (!res.ok) throw new Error(`GitHub App token exchange failed: ${res.status}`);
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '');
+      throw new Error(`GitHub App token exchange failed: ${res.status} ${detail}`);
+    }
     const { token } = await res.json();
     return `token ${token}`;
   }
