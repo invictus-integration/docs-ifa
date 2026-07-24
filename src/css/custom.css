@@ -229,10 +229,6 @@ html[data-theme='dark'] .navbar button:hover svg {
   color: var(--ifm-color-secondary-dark);
 }
 
-html[data-theme='dark'] .navbar-sidebar__back {
-  background-color: var(--ifm-menu-color-background);
-}
-
 /* ─── 3. Base / Global ───────────────────────────────────────────────────── */
 
 /* 3a. Typography */
@@ -310,37 +306,38 @@ strong,
   color: var(--ifm-color-secondary-dark);
 }
 
-/* 4b. Mobile sidebar
-   The sidebar background inherits --ifm-navbar-background-color
-   (our primary dark teal), so menu text must be light to stay readable. */
-.navbar-sidebar {
-  --ifm-menu-color: var(--ifm-color-secondary-lightest);
-  --ifm-menu-color-active: #ffffff;
-  --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+/* 4a-i. Mobile navbar: keep toggle + search always visible in the right group.
+   - flex-wrap: nowrap keeps both groups on one row
+   - right group gets flex-shrink:0 so it never gets squeezed
+   - left group uses min-width:0 so flexbox can shrink it; only the brand
+     (logo + title) clips its text, leaving the version dropdown unclipped */
+@media (max-width: 996px) {
+  .navbar__inner {
+    flex-wrap: nowrap;
+  }
+
+  .navbar__items--right {
+    flex-shrink: 0;
+  }
+
+  .navbar__items:not(.navbar__items--right) {
+    min-width: 0;
+  }
+
+  .navbar__brand {
+    overflow: hidden;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .navbar__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
-.navbar-sidebar .menu__link:hover,
-.navbar-sidebar .menu__list-item-collapsible:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-.navbar-sidebar .menu__caret::before {
-  border-color: var(--ifm-color-secondary-lightest);
-}
-
-.navbar-sidebar__back {
-  color: var(--ifm-color-secondary-lightest);
-}
-
-.navbar-sidebar__close svg {
-  color: var(--ifm-color-secondary-lightest);
-}
-
-.navbar-sidebar__close svg g {
-  stroke: var(--ifm-color-secondary-lightest);
-}
-
+/* 4b. Docs sidebar menu spacing (shared by desktop sidebar) */
 nav.menu {
   padding: 1rem;
 }
@@ -364,8 +361,7 @@ nav.menu {
   background-color: var(--inv-sidebar-bg);
   border-right: 1px solid var(--ifm-color-emphasis-300) !important;
 
-  /* Menu token overrides for the light sidebar surface.
-   * Scoped here so mobile sidebar (navbar-sidebar) is unaffected. */
+  /* Menu token overrides for the light sidebar surface. */
   --ifm-menu-color: var(--ifm-color-gray-700);
   --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-menu-color-background-active: var(--inv-tint-active) !important;
@@ -381,12 +377,12 @@ nav.menu {
 /* Root-level categories use menu__link--sublist-caret with a ::after caret.
  * flex-direction: row-reverse on the parent doesn't help here because the caret
  * lives inside the <a> itself. Suppress ::after and move it to ::before so it
- * appears before the label text. Applies to both desktop and mobile sidebars. */
-:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__link--sublist-caret::after {
+ * appears before the label text. */
+.theme-doc-sidebar-container .menu__link--sublist-caret::after {
   display: none;
 }
 
-:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__link--sublist-caret::before {
+.theme-doc-sidebar-container .menu__link--sublist-caret::before {
   content: '';
   flex-shrink: 0;
   width: 1.25rem;
@@ -398,11 +394,12 @@ nav.menu {
   margin-right: var(--ifm-menu-link-padding-horizontal);
 }
 
-:is(.theme-doc-sidebar-container, .navbar-sidebar) .menu__list-item--collapsed .menu__link--sublist-caret::before {
+.theme-doc-sidebar-container .menu__list-item--collapsed .menu__link--sublist-caret::before {
   transform: rotateZ(90deg);
 }
 
-:is(.theme-doc-sidebar-menu, .theme-doc-sidebar-item-category, .navbar-sidebar) .menu__list-item-collapsible {
+.theme-doc-sidebar-menu .menu__list-item-collapsible,
+.theme-doc-sidebar-item-category .menu__list-item-collapsible {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -411,7 +408,8 @@ nav.menu {
 
 /* When caret button leads (row-reverse), strip its right padding to avoid
  * double gap: button-padding-right + link-padding-left would be too wide */
-:is(.theme-doc-sidebar-menu, .theme-doc-sidebar-item-category, .navbar-sidebar) .menu__list-item-collapsible .menu__caret {
+.theme-doc-sidebar-menu .menu__list-item-collapsible .menu__caret,
+.theme-doc-sidebar-item-category .menu__list-item-collapsible .menu__caret {
   padding-right: 0;
 }
 
@@ -440,6 +438,7 @@ html[data-theme='dark'] .theme-doc-sidebar-container {
   --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
 }
 
+
 /* 4c. Footer */
 .footer--dark {
   background-color: var(--ifm-color-gray-800);
@@ -451,9 +450,15 @@ html[data-theme='dark'] .theme-doc-sidebar-container {
   transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
 }
 
-.footer-link:hover,
-.footer-link:focus {
+.footer-link:hover {
   color: var(--ifm-color-primary-dark);
+}
+
+.footer-link:focus-visible {
+  color: var(--ifm-color-primary-dark);
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* 4d. Alerts & details */
