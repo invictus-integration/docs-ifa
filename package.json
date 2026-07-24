@@ -51,7 +51,9 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.0",
     "@docusaurus/types": "3.10.0",
+    "axe-core": "^4.12.1",
     "cypress": "^15.13.1",
+    "cypress-axe": "^1.7.0",
     "dotenv": "^17.4.2",
     "start-server-and-test": "^2.1.5"
   },

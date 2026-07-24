@@ -1,0 +1,33 @@
+name: Accessibility check
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  axe:
+    name: axe-core (WCAG 2.x A/AA)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the latest commit
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Install dependencies
+        run: npm install
+      - name: Run accessibility tests
+        run: |
+          npx start-server-and-test start http://localhost:3000 "cypress run --spec cypress/e2e/accessibility.cy.js"
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-failure-screenshots
+          path: cypress/screenshots/accessibility.cy.js
+          if-no-files-found: ignore
