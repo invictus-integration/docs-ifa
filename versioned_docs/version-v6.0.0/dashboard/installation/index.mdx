@@ -379,29 +379,19 @@ stages:
 </Step>
 <Step title="First-time sign-in">
 
-The Invictus installation generates an administrator account for your initial login to the Dashboard.
+The Invictus installation generates an administrator account for your first-time sign-in into the Dashboard. Use these credentials to sign in into the Dashboard for the first time. The Dashboard prompts you to reset your password after signing in.
+- **Username**: `admin`
+- **Password**: (`tempAdminPassword` secret value in the bundled Azure Key vault)
 
-:::praise[recommended]
-Create a new `System Admin` user with your own email address after signing in for the first time. This will help during the [Forgot Password](../security/01_users.mdx?user-type=local) procedure.
+<br/>
+:::praise[recommended for local users]
+Create a new `System Admin` user with your own email address after signing in for the first time. This will help during the [Forgot Password](../security/01_users.mdx?user-type=local) procedure for local users.
 :::
 
-Follow the steps below to sign in to the Dashboard:
+<hr/>
 
-1. Navigate to the Dashboard by visiting `https://{yourdashboardurl}` in your web browser.
-
-2. Enter the following credentials:
-   - **Username**: `admin`
-   - **Password**: (the `tempAdminPassword` available as an [Azure Key vault secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the accompanied deployed vault)
-
-   ![Dashboard login page](/images/dashboard/AdminAccount/adminAccount-4.jpg)
-
-3. After successfully signing in, the Dashboard prompts you to reset your password to one of your choice.
-
-   ![Dashboard reset password](/images/dashboard/AdminAccount/adminAccount-5.png)
-
-4. You have now signed in to the Invictus Dashboard for the first time.
-
-Further customer-specific setups related to authentication and authorization:
+### Next steps
+Follow these setup guides for customer-specific authentication and authorization:
 * [Give access to your Microsoft Entra ID](./01_give_ad_access.mdx)
 * [Give access to your Logic Apps](./03_give_la_access.md)
 
