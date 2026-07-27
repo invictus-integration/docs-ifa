@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Breadcrumb.module.css';
+import styles from './styles.module.css';
 
 type BreadcrumbProps = {
   /** Array of segments (strings or React nodes, e.g. <FontAwesomeIcon />); the last is active */
