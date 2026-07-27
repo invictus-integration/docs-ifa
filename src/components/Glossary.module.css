@@ -7,7 +7,10 @@
   overflow-y: auto;
   padding: 0 1rem;
   /* Smooth scroll when navigating via cross-reference buttons */
-  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .list { scroll-behavior: smooth; }
 }
 
 .list:focus {
@@ -183,11 +186,16 @@
   border-color: var(--inv-tint-medium);
 }
 
-.alphaBtnActive:hover,
+.alphaBtnActive:hover {
+  background: var(--inv-tint-medium);
+  border-color: var(--ifm-color-primary);
+}
+
 .alphaBtnActive:focus-visible {
   background: var(--inv-tint-medium);
   border-color: var(--ifm-color-primary);
-  outline: none;
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
 }
 
 [data-theme='dark'] .alphaBtnActive {
@@ -281,5 +289,6 @@
   font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
-  outline: none;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }

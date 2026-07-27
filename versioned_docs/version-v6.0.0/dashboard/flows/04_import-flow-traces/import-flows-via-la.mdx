@@ -7,7 +7,7 @@ hide_title: true
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
-import { OnlyFolderAdminsBadge, OnlyOperatorsBadge } from '@site/src/components/Badges';
+import { OnlyFolderAdminsBadge, OnlyOperatorsBadge, BadgedText } from '@site/src/components/Badges';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faLink, faSquareCheck, faShield, faAt, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons';
 import {faSquare, faCirclePlay, faEyeSlash} from '@fortawesome/free-regular-svg-icons';
@@ -85,7 +85,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     </details>
   </Collapsible>
 
-  <Collapsible title={ <> Map Dashboard flows to Azure Logic App workflow runs <OnlyFolderAdminsBadge /></> }>
+  <Collapsible title={ <><BadgedText badge={<OnlyFolderAdminsBadge/>}> Map Dashboard flows to Azure Logic App workflow runs </BadgedText></> }>
     
     Make sure that any [tracked property](#tracked-properties-of-workflows) in the workflow matches these values in the [flow created via the Dashboard](../01_add.mdx):
     * WorkflowName (if present)
@@ -153,7 +153,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
   </Collapsible>
 </Walkthrough>
 
-## Workflow operations via Dashboard <OnlyOperatorsBadge/>
+## <BadgedText badge={<OnlyOperatorsBadge />}>Workflow operations via Dashboard</BadgedText>
 :::warning
 Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run properly.
 Flows linked to Azure Logic Apps workflows can be resubmitted and resumed via the Dashboard both separately (via the flow actions button) and in batch (via selecting multiple flows).
