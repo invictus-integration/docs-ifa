@@ -6,7 +6,7 @@ pagination_next: null
 
 import React from 'react';
 
-import { SharedNote, NewSinceBadge, DeprecatedSinceBadge } from '@site/src/components/Badges';
+import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, BadgedText, RowTint } from '@site/src/components/Badges';
 import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 
 import ParameterTable from "@site/src/components/ParameterTable";
@@ -28,7 +28,7 @@ We use Multiple Revision mode in our Container App deployments, which means that
 :::
 
 <details>
-<summary>**Include VNET support <SharedNote/>**</summary>
+<summary>Include VNET support <SharedNote/></summary>
 
 Invictus includes network infrastructure which allows all its resources to run within an Azure Virtual Network (VNET).
 
@@ -74,7 +74,8 @@ If the Invictus resources and the VNET are on different resource groups, then yo
 
 Include the Dashboard in your release package to deploy the Invictus Dashboard together with your customer solution.
 
-## Save installation script to your repository <SharedNote/>
+<BadgedText badge={<SharedNote/>}>
+## Save installation script to your repository
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pulls the latest Invictus resources needed to deploy the Dashboard.
 
 ## Add variables to variable group <SharedNote/>
@@ -86,6 +87,8 @@ Invictus installation requires secrets for authentication. **Codit Software** pr
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software (if you're also deploying the Framework)
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
   * `Infra.Environment.ACRPassword`: value provided by Codit Software
+
+</BadgedText>
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
 ## Add YAML build pipeline
@@ -235,7 +238,7 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">Bicep
 {/* vale Microsoft.Terms = NO */}
 | Argument name                  | Default value   | Description                                                                                                           |
 | ------------------------------ | --------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `acrEnvironment`               | `prod`          | The environment from where the script pulls the Invictus artifacts. (`prod`, `beta` or `staging`). <NewSinceBadge version="v6.3" />                   |
+| `acrEnvironment` <NewSinceBadge version="v6.3" /><RowTint variant="new"/>               | `prod`          | The environment from where the script pulls the Invictus artifacts. (`prod`, `beta` or `staging`).                    |
 | `additionalTemplateParameters` | []              | Optional named parameters for the Bicep template you wish to override. More on this below.                            |
 | `artifactsPath`                | `$PSScriptRoot` | Path on the DevOps agent where you downloaded the Invictus artifacts <br/> ([publish and download build artifacts])   |
 | `enableVnetSupport`            | `False`         | Deploys Invictus into a VNET. |
@@ -247,7 +250,7 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">Bicep
 | `translateBicepOutput`         | `False`         | If set to `True`, translates the Bicep outputs  (`_` becomes `.`) before placing them in an Azure DevOps variable group. |
 | `validateOnly`                 | `False`         | If set to `True`, the Bicep deployment only validates the template and doesn't deploy any resources.                |     
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment. |
-| `useBeta`                      | `$null`         | Indicates the environment of the Azure Container App registry where the deployment gets its container images. <DeprecatedSinceBadge version="v6.3" label="Use the `acrEnvironment` parameter instead." />  |
+| `useBeta` <DeprecatedSinceBadge version="v6.3" note="Use the `acrEnvironment` parameter instead." /><RowTint variant="deprecated" />                     | `$null`         | Indicates the environment of the Azure Container App registry where the deployment gets its container images.   |
 {/* vale Microsoft.Terms = YES */}
 
 <details>
