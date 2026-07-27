@@ -6,7 +6,7 @@ pagination_next: null
 ---
 
 import React from 'react';
-import { SharedNote, NewSinceBadge, DeprecatedSinceBadge } from '@site/src/components/Badges';
+import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, RowTint } from '@site/src/components/Badges';
 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
@@ -212,7 +212,7 @@ The identity running the Bicep deployment (the service principal used by your Az
 {/* vale Microsoft.Terms = NO */}
 | Argument name                  | Default value   | Description                                                                                                                                |
 | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `acrEnvironment`               | `prod`          | The environment from where the script pulls the Invictus artifacts. (`prod`, `beta` or `staging`). <NewSinceBadge version="v6.3" />                   |
+| `acrEnvironment` <NewSinceBadge version="v6.3" /><RowTint variant="new" />               | `prod`          | The environment from where the script pulls the Invictus artifacts. (`prod`, `beta` or `staging`).                    |
 | `additionalTemplateParameters` | `[]`            | Custom named parameters for the Bicep template you wish to override. More on this below.                                                   |
 | `artifactsPath`                | `$PSScriptRoot` | Path on the Azure DevOps agent that stores the downloaded Invictus artifacts ([publish and download build artifacts])                      |
 | `enableVnetSupport`            | `False`         | Deploys Invictus into a VNET. |
@@ -220,7 +220,7 @@ The identity running the Bicep deployment (the service principal used by your Az
 | `translateBicepOutput`         | `False`         | If set to `True`, translates the Bicep outputs  (`_` becomes `.`) before placing them in an Azure DevOps variable group. |
 | `validateOnly`                 | `False`         | If set to `True`, the Bicep deployment only validates the template and doesn't deploy any resources.                |     
 | `version`                      | `latest`        | Version of the published Invictus artifacts that the deployment should download and deploy on the client environment.                      |
-| `useBeta`                      | `$null`         | Indicates the environment of the Azure Container App registry where the deployment gets its container images. <DeprecatedSinceBadge version="v6.3" label="Use the `acrEnvironment` parameter instead." />  |
+| `useBeta` <DeprecatedSinceBadge version="v6.3" label="Use the `acrEnvironment` parameter instead." /><RowTint variant="deprecated" />                      | `$null`         | Indicates the environment of the Azure Container App registry where the deployment gets its container images.   |
 {/* Microsoft.Terms = YES */}
 
 <details>
