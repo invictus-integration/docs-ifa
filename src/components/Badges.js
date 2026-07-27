@@ -248,7 +248,6 @@ export function SharedNote() {
             fontFamily: 'Inter',
             cursor: 'help',
             userSelect: 'none',
-            outline: 'none',
             borderBottom: '1.5px dotted currentColor',
             '--badge-accent': ACCENT,
           }}
