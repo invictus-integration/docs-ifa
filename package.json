@@ -15,7 +15,10 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "start-server-and-test start http://localhost:3000 cy:run",
-    "index:push": "pwsh scripts/refresh-search-index.ps1"
+    "index:push": "pwsh scripts/refresh-search-index.ps1",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.0",
@@ -23,9 +26,9 @@
     "@docusaurus/preset-classic": "3.10.0",
     "@docusaurus/theme-common": "3.10.0",
     "@easyops-cn/docusaurus-search-local": "^0.55.1",
-    "@fortawesome/free-solid-svg-icons": "^7.0.0",
-    "@fortawesome/free-regular-svg-icons": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^7.0.0",
+    "@fortawesome/free-regular-svg-icons": "^7.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^3.3.0",
     "@mdx-js/react": "^3.0.0",
     "@svgr/webpack": "^8.1.0",
@@ -50,10 +53,20 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.0",
+    "@docusaurus/theme-classic": "3.10.0",
+    "@docusaurus/tsconfig": "^3.10.2",
     "@docusaurus/types": "3.10.0",
+    "@eslint/js": "^9.39.5",
     "cypress": "^15.13.1",
     "dotenv": "^17.4.2",
-    "start-server-and-test": "^2.1.5"
+    "eslint": "^9.39.5",
+    "eslint-plugin-cypress": "^6.4.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.8.0",
+    "start-server-and-test": "^2.1.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0"
   },
   "engines": {
     "node": ">=20.0"
