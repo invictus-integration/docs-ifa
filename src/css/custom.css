@@ -133,7 +133,6 @@
   --inv-badge-deprecated-text: #ffffff;
   --inv-badge-shared-bg: #e0f7f7;
   --inv-badge-shared-text: #0b6369;
-  --inv-badge-shared-accent: #0b6369;
 }
 
 
@@ -197,7 +196,6 @@ html[data-theme='dark'] {
   /* Badge */
   --inv-badge-shared-bg: rgba(42, 143, 156, 0.15);
   --inv-badge-shared-text: #4fcadf;
-  --inv-badge-shared-accent: #4fcadf;
 }
 
 /* 2b. Component styles */

@@ -74,11 +74,10 @@ If the Invictus resources and the VNET are on different resource groups, then yo
 
 Include the Dashboard in your release package to deploy the Invictus Dashboard together with your customer solution.
 
-<BadgedText badge={<SharedNote/>}>
-## Save installation script to your repository
+## <BadgedText badge={<SharedNote/>}>Save installation script to your repository</BadgedText>
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pulls the latest Invictus resources needed to deploy the Dashboard.
 
-## Add variables to variable group <SharedNote/>
+## <BadgedText badge={<SharedNote/>}>Add variables to variable group</BadgedText>
 Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
 * `{'{prefix}'}.Invictus.Installation`
@@ -87,8 +86,6 @@ Invictus installation requires secrets for authentication. **Codit Software** pr
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software (if you're also deploying the Framework)
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
   * `Infra.Environment.ACRPassword`: value provided by Codit Software
-
-</BadgedText>
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
 ## Add YAML build pipeline
@@ -167,7 +164,7 @@ stages:
 </Step>
 <Step title="Deploy">
 
-## Create variable group <SharedNote/>
+## <BadgedText badge={<SharedNote/>}>Create variable group</BadgedText>
 Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. 
 The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
