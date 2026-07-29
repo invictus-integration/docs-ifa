@@ -61,3 +61,8 @@ YAML_YAMLLINT_CONFIG_FILE: .yamllint.yml
 
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
+
+# Write a summary table (per-linter pass/fail + error counts) to the GitHub
+# Actions job summary, visible directly on the workflow run without opening
+# individual logs. GITHUB_STEP_SUMMARY is set automatically by Actions.
+MARKDOWN_SUMMARY_REPORTER: true
