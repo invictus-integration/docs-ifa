@@ -46,12 +46,18 @@ TYPESCRIPT_ES_PRE_COMMANDS:
     cwd: workspace
     continue_if_failed: false
 
-FILTER_REGEX_EXCLUDE: '(node_modules|\.docusaurus|build|preview|versioned_docs|versioned_sidebars|static|cypress/screenshots|\.netlify|\.lighthouseci)'
+FILTER_REGEX_EXCLUDE: '(node_modules|\.docusaurus|build|preview|versioned_docs|versioned_sidebars|static|cypress/screenshots|\.netlify|\.lighthouseci|pnpm-lock\.yaml|deno\.lock)'
 
 # jscpd's default language support would otherwise also scan the large
-# generated knowledge.json/v6-knowledge.json data dumps; restrict it to
-# actual source code where duplication is meaningful to flag.
+# generated knowledge.json/v6-knowledge.json data dumps and the Bicep
+# parameter reference JSON in src/data — structured data, not code, where
+# repeated shapes are inherent to the schema rather than a duplication smell.
 COPYPASTE_JSCPD_FILTER_REGEX_INCLUDE: '(^src/|^cypress/|^netlify/|^scripts/)'
+COPYPASTE_JSCPD_FILTER_REGEX_EXCLUDE: '^src/data/'
+
+# GitHub Actions workflow conventions trip up yamllint's defaults; use our
+# relaxed ruleset (see .yamllint.yml).
+YAML_YAMLLINT_CONFIG_FILE: .yamllint.yml
 
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
