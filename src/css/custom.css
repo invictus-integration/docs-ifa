@@ -325,6 +325,19 @@ strong,
   border-bottom-width: 2px;
 }
 
+/* Inline code (e.g. [`someLink`](...)) has its own full box — background,
+   4-sided border, padding — that visually detaches it from the anchor's
+   border-bottom underline below, making the dotted/solid link cue look
+   broken or missing entirely. Strip the code chip's own chrome when it's
+   a link's text so the link's color + underline show through directly;
+   the monospace font alone still signals "this is code". */
+.theme-doc-markdown a code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
 /* 3b. Images */
 [data-theme="light"] img[src$="#dark-mode-only"],
 [data-theme="dark"] img[src$="#light-mode-only"] {
