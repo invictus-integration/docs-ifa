@@ -13,6 +13,7 @@ import {faCirclePause, faUser} from '@fortawesome/free-regular-svg-icons';
 # <BadgedText badge={<OnlyAdminsBadge/>}>Give Invictus access to your Microsoft Entra ID</BadgedText>
 To use your Microsoft Entra ID groups as a way of authentication and flow authorization, follow these steps.
 
+{/* vale Google.WordListCase = NO */}
 <Walkthrough>
   <Collapsible title="Register an Application for Invictus">
     <em>[ <FontAwesomeIcon icon={faLink} /> Microsoft Docs: register an app](https://learn.microsoft.com/Entra/identity-platform/quickstart-register-app?tabs=certificate%2Cexpose-a-web-api)</em>
@@ -51,14 +52,15 @@ To use your Microsoft Entra ID groups as a way of authentication and flow author
       * The `access_as_user` scope you created earlier: **Delegated**
   </Collapsible>
 
+
   <Collapsible title="Pass App Registration values to Invictus deployment">
     * `azureActiveDirectoryClientId` <FontAwesomeIcon icon={faArrowRight} /> from **App Registration <FontAwesomeIcon icon={faChevronRight} /> Overview**
     * `azureActiveDirectoryTenantId` <FontAwesomeIcon icon={faArrowRight} /> from **App Registration <FontAwesomeIcon icon={faChevronRight} /> Overview**
     * `azureActiveDirectoryClientSecret` <FontAwesomeIcon icon={faArrowRight} /> the one you copied earlier
-    * `azureActiveDirectoryAudience` <FontAwesomeIcon icon={faArrowRight} /> the default <strong>Application ID URI</strong>
+    * `azureActiveDirectoryAudience` <FontAwesomeIcon icon={faArrowRight} /> the default **Application ID URI**
   </Collapsible>
-
 </Walkthrough>
+{/* vale Google.WordListCase = YES */}
 
 ## Sync your Microsoft Entra ID groups to Invictus
 <Breadcrumb paths={[`Groups`, `Sync all groups`]} />
@@ -75,10 +77,10 @@ The Dashboard only syncs groups of active users (Entra ID users that already hav
 ## Enable only required groups
 <Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faCirclePause} aria-label='pause' />]} />
 
-For security reasons, only enable the groups that you want to use for [flow permissions](../flows/01_add.mdx#flow-permissions). 'Enabled' is the default state. Disable groups by clicking the <FontAwesomeIcon icon={faCirclePause} /> icon next to the group name.
+For security reasons, only enable the groups that you want to use for [flow permissions](../flows/01_add.mdx#flow-permissions). 'Enabled' is the default state. Deactivate groups by selecting the <FontAwesomeIcon icon={faCirclePause} aria-label='pause' /> icon next to the group name.
 
 ## Assign user role to required groups
 <Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faUser} aria-label='user' />]} />
 
 The user role permission describes what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../security/03_roles.mdx).
-Assign a user role by clicking the <FontAwesomeIcon icon={faUser} /> icon next to the group name and picking the desired <DropDownInput label="User role" />.
+Assign a user role by selecting the <FontAwesomeIcon icon={faUser} aria-label='user' /> icon next to the group name and picking the desired <DropDownInput label="User role" />.
