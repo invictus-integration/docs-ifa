@@ -179,6 +179,11 @@ Migrating to v5 includes changes in the authentication, endpoint, and removal th
 ```
 </details>
 
+:::warning[PubSub strict acknowledgement]
+Acknowledging a message via the new PubSub component removes the message from the Azure Service Bus topic subscription. This differs from the previous behavior.
+When migrating to the new behavior, ensure that the workflow only acknowledges a message after successful processing.
+:::
+
 <details>
 <summary>**Acknowledge message example**</summary>
 
