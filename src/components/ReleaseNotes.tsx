@@ -92,10 +92,23 @@ function SeriesDropdown({
 }) {
   const [open, setOpen] = useState(false);
   const [focused, setFocused] = useState(false);
+  // Index of the option the keyboard/AT cursor is currently "on" while the
+  // listbox is open. Kept separate from the committed `value` so arrowing
+  // through options previews focus without changing the selection until
+  // the user confirms with Enter/Space (matches native <select> behaviour).
+  const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
-  const selected =
-    options.find(o => o.value === value) ?? options[0];
+  const listboxId = `${id}-listbox`;
+  const optionId = (index: number) => `${id}-option-${index}`;
+
+  const selectedIndex = Math.max(
+    options.findIndex(o => o.value === value),
+    0,
+  );
+  const selected = options[selectedIndex] ?? options[0];
 
   useEffect(() => {
     const onOutsideClick = (e: MouseEvent) => {
@@ -116,40 +129,69 @@ function SeriesDropdown({
       );
   }, []);
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent,
-  ) => {
-    if (e.key === 'Escape') setOpen(false);
-
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      setOpen(o => !o);
+  // When the listbox opens, move real DOM focus onto it (not just the
+  // visual state) so screen readers announce it and start tracking
+  // aria-activedescendant, then restore focus to the trigger on close.
+  useEffect(() => {
+    if (open) {
+      setActiveIndex(selectedIndex);
+      listRef.current?.focus();
+    } else {
+      buttonRef.current?.focus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
-    if (e.key === 'ArrowDown') {
+  const commitAndClose = (index: number) => {
+    onChange(options[index].value);
+    setOpen(false);
+  };
+
+  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (
+      e.key === 'Enter' ||
+      e.key === ' ' ||
+      e.key === 'ArrowDown' ||
+      e.key === 'ArrowUp'
+    ) {
       e.preventDefault();
-
-      const idx = options.findIndex(
-        o => o.value === value,
-      );
-
-      onChange(
-        options[
-          Math.min(idx + 1, options.length - 1)
-        ].value,
-      );
+      setOpen(true);
     }
+  };
 
-    if (e.key === 'ArrowUp') {
-      e.preventDefault();
-
-      const idx = options.findIndex(
-        o => o.value === value,
-      );
-
-      onChange(
-        options[Math.max(idx - 1, 0)].value,
-      );
+  const handleListKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActiveIndex(i => Math.min(i + 1, options.length - 1));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActiveIndex(i => Math.max(i - 1, 0));
+        break;
+      case 'Home':
+        e.preventDefault();
+        setActiveIndex(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        setActiveIndex(options.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        commitAndClose(activeIndex);
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setOpen(false);
+        break;
+      case 'Tab':
+        // Don't trap focus; just close and let Tab proceed normally.
+        setOpen(false);
+        break;
+      default:
+        break;
     }
   };
 
@@ -163,11 +205,13 @@ function SeriesDropdown({
     >
       <button
         id={id}
-        role="combobox"
+        ref={buttonRef}
+        type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={listboxId}
         onClick={() => setOpen(o => !o)}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleTriggerKeyDown}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onMouseEnter={() => setFocused(true)}
@@ -196,23 +240,28 @@ function SeriesDropdown({
       </button>
 
       {open && (
-        <ul role="listbox" style={listStyle} className="rn-dropdown">
-          {options.map(option => {
-            const isActive =
-              option.value === value;
-
-            return (
-              <DropdownOption
-                key={option.value}
-                label={option.label}
-                active={isActive}
-                onSelect={() => {
-                  onChange(option.value);
-                  setOpen(false);
-                }}
-              />
-            );
-          })}
+        <ul
+          id={listboxId}
+          ref={listRef}
+          role="listbox"
+          aria-label="Version"
+          aria-activedescendant={optionId(activeIndex)}
+          tabIndex={-1}
+          onKeyDown={handleListKeyDown}
+          style={listStyle}
+          className="rn-dropdown"
+        >
+          {options.map((option, index) => (
+            <DropdownOption
+              key={option.value}
+              id={optionId(index)}
+              label={option.label}
+              selected={option.value === value}
+              active={index === activeIndex}
+              onSelect={() => commitAndClose(index)}
+              onHover={() => setActiveIndex(index)}
+            />
+          ))}
         </ul>
       )}
     </div>
@@ -220,28 +269,32 @@ function SeriesDropdown({
 }
 
 function DropdownOption({
+  id,
   label,
+  selected,
   active,
   onSelect,
+  onHover,
 }: {
+  id: string;
   label: string;
+  selected: boolean;
   active: boolean;
   onSelect: () => void;
+  onHover: () => void;
 }) {
-  const [hover, setHover] = useState(false);
-
   return (
     <li
+      id={id}
       role="option"
-      aria-selected={active}
+      aria-selected={selected}
       onClick={onSelect}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={onHover}
       style={{
         ...optionStyle,
-        ...(active
+        ...(selected
           ? optionActiveStyle
-          : hover
+          : active
             ? optionHoverStyle
             : {}),
       }}

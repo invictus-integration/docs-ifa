@@ -35,7 +35,7 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
       * `invictus-{env}-we-sft-evhb-v2` (Logic Apps Standard)
 
 
-    <Tabs groupId="la">
+    <Tabs groupId="la" aria-label="Logic App type for enabling workflow diagnostics">
       <TabItem value="consumption" label="Consumption">
         :::warning
         Make sure that the `Workflow runtime` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs.
@@ -159,7 +159,7 @@ Requires the `x-iv-parent-workflow-run-id` to be set on the workflows to run pro
 Flows linked to Azure Logic Apps workflows can be resubmitted and resumed via the Dashboard both separately (via the flow actions button) and in batch (via selecting multiple flows).
 :::
 
-<Tabs groupId="flow-operations">
+<Tabs groupId="flow-operations" aria-label="Workflow operation type">
 <TabItem value="default-resubmit" label="Resubmit">
 
 The resubmit behavior always triggers an "Azure Resubmit" for the first Azure Logic App in the chain. Resubmit triggers the execution of any corresponding flow, even completed ones. During resubmit, the first Logic App in the chain (execution tree) resubmits on Azure thus retriggering the whole workflow.
