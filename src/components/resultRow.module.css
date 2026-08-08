@@ -408,6 +408,7 @@
   background: rgba(184, 192, 194, 0.25);
   color: var(--ifm-color-secondary-darkest);
 }
+
 :global([data-theme='dark']) .typeBadgeString {
   background: rgba(184, 192, 194, 0.15);
   color: var(--ifm-color-secondary);
@@ -418,6 +419,7 @@
   background: rgba(255, 151, 15, 0.12);
   color: var(--ifm-color-warning-darkest);
 }
+
 :global([data-theme='dark']) .typeBadgeInt {
   background: rgba(255, 151, 15, 0.18);
   color: var(--ifm-color-warning-light);
@@ -428,6 +430,7 @@
   background: rgba(115, 77, 196, 0.1);
   color: #5a3ba8;
 }
+
 :global([data-theme='dark']) .typeBadgeBool {
   background: rgba(115, 77, 196, 0.18);
   color: #c4aff0;
@@ -438,6 +441,7 @@
   background: rgba(1, 69, 80, 0.1);
   color: var(--ifm-color-primary-dark);
 }
+
 :global([data-theme='dark']) .typeBadgeObject {
   background: var(--inv-tint-active);
   color: var(--ifm-color-primary-lightest);
@@ -448,6 +452,7 @@
   background: rgba(214, 149, 92, 0.15);
   color: #7a3c00;
 }
+
 :global([data-theme='dark']) .typeBadgeArray {
   background: rgba(214, 149, 92, 0.2);
   color: #e8b07a;
@@ -458,6 +463,7 @@
   background: rgba(220, 38, 38, 0.09);
   color: #991b1b;
 }
+
 :global([data-theme='dark']) .typeBadgeSecureString {
   background: rgba(220, 38, 38, 0.15);
   color: #fca5a5;
@@ -468,6 +474,7 @@
   background: rgba(220, 38, 38, 0.06);
   color: #7f1d1d;
 }
+
 :global([data-theme='dark']) .typeBadgeSecureObject {
   background: rgba(220, 38, 38, 0.1);
   color: #f87171;
@@ -774,11 +781,11 @@
   align-items: center;
   gap: 3px;
   font-size: 0.7rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
 }
 
 :global([data-theme='dark']) .footerHint {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .footerHint kbd {
