@@ -3,10 +3,11 @@ sidebar_label: View audits
 title: View audits
 ---
 
-import { OnlyAdminsBadge } from '@site/src/components/Badges';
+import { OnlyAdminsBadge, BadgedText } from '@site/src/components/Badges';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 
-# View audited actions <OnlyAdminsBadge/>
+# <BadgedText badge={<OnlyAdminsBadge/>}>View audited actions</BadgedText>
+
 <Breadcrumb paths={["Audits"]} />
 
 The audits page provides a list of notable actions happened.

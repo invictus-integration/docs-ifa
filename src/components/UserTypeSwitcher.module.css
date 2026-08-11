@@ -18,16 +18,21 @@
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
+  text-decoration: none;
   transition: color 0.15s ease, border-color 0.15s ease;
   /* Overlap the switcher's own bottom border so the active underline sits flush */
   margin-bottom: -1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab { transition: none; }
 }
 
 .tab:hover {
   color: var(--ifm-color-primary);
 }
 
-.tab[aria-selected='true'] {
+.tab[aria-current='page'] {
   color: var(--ifm-color-primary);
   border-bottom-color: var(--ifm-color-primary);
   font-weight: 600;
@@ -45,45 +50,7 @@
 }
 
 :global([data-theme='dark']) .tab:hover,
-:global([data-theme='dark']) .tab[aria-selected='true'] {
+:global([data-theme='dark']) .tab[aria-current='page'] {
   color: var(--ifm-color-primary);
   border-bottom-color: var(--ifm-color-primary);
-}
-
-/* ── Mobile hamburger sidebar (always dark) ── */
-:global(.navbar-sidebar) .switcher {
-  border-bottom-color: rgba(255, 255, 255, 0.15);
-}
-
-:global(.navbar-sidebar) .tab {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-:global(.navbar-sidebar) .tab:hover,
-:global(.navbar-sidebar) .tab[aria-selected='true'] {
-  color: #fff;
-  border-bottom-color: #fff;
-}
-
-:global(.navbar-sidebar) .tab:focus-visible {
-  outline-color: rgba(255, 255, 255, 0.7);
-}
-
-/* ── Desktop sidebar with dark background (light mode) ── */
-:global(.theme-doc-sidebar-container) .switcher {
-  border-bottom-color: rgba(255, 255, 255, 0.15);
-}
-
-:global(.theme-doc-sidebar-container) .tab {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-:global(.theme-doc-sidebar-container) .tab:hover,
-:global(.theme-doc-sidebar-container) .tab[aria-selected='true'] {
-  color: #fff;
-  border-bottom-color: #fff;
-}
-
-:global(.theme-doc-sidebar-container) .tab:focus-visible {
-  outline-color: rgba(255, 255, 255, 0.7);
 }

@@ -1,5 +1,6 @@
 ---
 sidebar_label: Release notes
+title: Release notes
 hide_table_of_contents: true
 pagination_prev: null
 pagination_next: null
@@ -34,12 +35,13 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   </Fixes>
 </ReleaseVersion>
 
+{/* vale Google.WordListCase = NO */}
 <ReleaseVersion version="6.3" date="March 2026">
 
   <Features>
     - **Dashboard Gateway as proxy:** the Dashboard Gateway routes all workflow results through a central proxy. You can view them even when Logic Apps run in a private VNET.
     - **Admins can unlock accounts:** users with a *System admin* role can now unlock accounts directly in the Dashboard. Before this, it required a direct storage change.
-    - **Swagger/OpenAPI spec restored:** the OpenAPI spec for the Invictus HTTP API's is active again. Set the `useOpenApi` Bicep flag to `true` during install to enable it. It's off by default.
+    - **Swagger/OpenAPI specification restored:** the OpenAPI specification for the Invictus HTTP API's is active again. Set the `useOpenApi` Bicep flag to `true` during install to enable it. It's off by default.
     - **Search by property:** you can search for a message by one or more custom properties using the new advanced search pane.
   </Features>
   <TechChanges>
@@ -55,13 +57,14 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Wrong tooltip for Function App messages:** the tooltip for Azure Function messages incorrectly read 'Logic Apps'. It now reads 'Function Apps'.
   </Fixes>
 </ReleaseVersion>
+{/* vale Google.WordListCase = YES */}
 
 <ReleaseVersion version="6.2" date="February 2026">
   <Features>
     - **Dashboard shows 'Cancelled' Logic App runs:** the Dashboard now shows cancelled Logic App runs as 'Cancelled' instead of 'Succeeded'. This makes them quick to identify.
     - **Azure Function App traces in Dashboard:** the Dashboard now shows Azure Function App runs alongside Logic App traces. Startup and custom logs appear in a shared tree view. A new icon distinguishes Function App runs.
     - **Faster and clearer property filters:** the filters on the search page load faster and have a clearer layout.
-    - **Toggle for resubmit and resume buttons:** you can enable or disable the resubmit and resume buttons in the advanced settings pane. They're off by default.
+    - **Toggle for resubmit and resume buttons:** you can toggle the resubmit and resume buttons in the advanced settings pane. They're off by default.
   </Features>
   <TechChanges>
     - **[Accident breaking] VNET renames:** these Bicep parameters have new names. This breaks installs by accident. Update your deploy file to use the new names:
