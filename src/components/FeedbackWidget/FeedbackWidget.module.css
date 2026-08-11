@@ -1,0 +1,596 @@
+/* ── Root — pre-footer band at the end of the article ── */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.root {
+  position: static;
+  margin-top: 2rem;
+  padding: 2rem 1.5rem;
+  /* background: var(--ifm-color-gray-100); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Embedded variant — no padding/margin when inside DocPaginator ── */
+
+.rootEmbedded {
+  margin-top: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rootEmbedded .triggerWrap {
+  height: 100%;
+}
+
+.embeddedTrigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 100%;
+  height: 100%;
+  padding: var(--ifm-global-spacing);
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  cursor: pointer;
+  color: var(--ifm-font-color-base);
+  transition: border-color 0.15s;
+  text-align: center;
+}
+
+.embeddedTrigger:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.embeddedTrigger:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 3px;
+}
+
+.embeddedTriggerOpen {
+  border-color: var(--ifm-color-primary);
+}
+
+.embeddedIcon {
+  font-size: 1.1rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.embeddedLabel {
+  font-size: var(--ifm-h4-font-size);
+  font-weight: var(--ifm-heading-font-weight);
+  line-height: var(--ifm-heading-line-height);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── HR separator between page content and feedback band ── */
+
+.divider {
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* ── Pre-footer label ─────────────────────────────────── */
+
+.preFooterLabel {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* ── Trigger button — muted, non-distracting ──────────── */
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: transparent;
+  color: var(--ifm-color-emphasis-700);
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.trigger:hover {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-500);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--ifm-color-emphasis-600);
+  outline-offset: 3px;
+}
+
+.triggerOpen {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-500);
+}
+
+.triggerOpen:hover {
+  background: var(--ifm-color-emphasis-300);
+}
+
+/* ── Keyboard shortcut badge ────────────────────── */
+
+.shortcut {
+  font-family: monospace;
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  padding: 0 4px;
+  line-height: 1.5;
+  margin-left: 2px;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.triggerIcon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ── Trigger wrapper — positions the panel without shifting layout ── */
+
+.triggerWrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Panel — floats above the trigger, out of document flow ─────── */
+
+.panel {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 460px;
+  max-width: calc(100vw - 2rem);
+  background: var(--ifm-color-secondary-lightest);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-top: 3px solid var(--ifm-color-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  text-align: left;
+}
+
+/* ── Panel header ───────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.title {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-800);
+  font-family: var(--ifm-heading-font-family);
+}
+
+.formNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.typeLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ifm-color-primary);
+}
+
+.close {
+  background: none;
+  border: none;
+  color: var(--ifm-color-secondary-dark);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.35rem;
+  margin: -0.35rem;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.1s;
+}
+
+.close:hover {
+  color: var(--ifm-color-emphasis-800);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--ifm-color-emphasis-600);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Type selection ─────────────────────────────── */
+
+.typeSelect {
+  padding: 0.6rem 0.75rem 0.75rem;
+}
+
+.prompt {
+  font-size: 0.8rem;
+  color: var(--ifm-color-secondary-dark);
+  margin: 0 0 0.4rem;
+}
+
+.typeList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.typeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+  text-align: left;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.typeBtn:hover {
+  background: var(--inv-tint-subtle);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+.typeBtn:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.typeIcon {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+}
+
+/* ── Form ───────────────────────────────────────── */
+
+.form {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  background: none;
+  border: 1px solid var(--ifm-color-secondary-light);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--ifm-font-color-base);
+  padding: 4px 10px;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+
+.back:hover {
+  color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary-lightest);
+  background: var(--ifm-color-secondary-lightest);
+}
+
+.back:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.textareaLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ifm-font-color-base);
+}
+
+.required {
+  color: var(--ifm-color-danger);
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  resize: vertical;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-base);
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.hint {
+  font-size: 0.78rem;
+  color: var(--ifm-color-secondary-darkest);
+  margin: 0;
+}
+
+[data-theme='dark'] .hint {
+  color: var(--ifm-color-secondary-dark);
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.submit {
+  padding: 0.4rem 1rem;
+  background: var(--ifm-color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--ifm-color-primary-light);
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 3px;
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skip {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  color: var(--ifm-color-secondary-dark);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.1s;
+}
+
+.skip:hover:not(:disabled) {
+  color: var(--ifm-color-primary);
+}
+
+.skip:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.skip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Done state ─────────────────────────────────── */
+
+.done {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.done p {
+  margin: 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.thankYouHeart {
+  color: #e05252;
+}
+
+.trackLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+/* ── Error ──────────────────────────────────────── */
+
+.error {
+  font-size: 0.8rem;
+  color: var(--ifm-color-danger);
+  margin: 0;
+}
+
+/* ── Dark mode ──────────────────────────────────── */
+
+:global([data-theme='dark']) .root {
+  background: var(--ifm-footer-background-color);
+}
+
+:global([data-theme='dark']) .divider {
+  border-top-color: var(--ifm-color-emphasis-200);
+}
+
+:global([data-theme='dark']) .preFooterLabel {
+  color: var(--ifm-color-emphasis-500);
+}
+
+:global([data-theme='dark']) .trigger {
+  color: var(--ifm-color-emphasis-500);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+:global([data-theme='dark']) .trigger:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+:global([data-theme='dark']) .triggerOpen {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+:global([data-theme='dark']) .triggerOpen:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme='dark']) .shortcut {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--ifm-color-emphasis-400);
+  color: var(--ifm-color-emphasis-500);
+}
+
+:global([data-theme='dark']) .panel {
+  background: var(--ifm-color-gray-800);
+  border-color: var(--ifm-color-gray-700);
+  border-top-color: var(--ifm-color-primary);
+}
+
+:global([data-theme='dark']) .header {
+  border-bottom-color: var(--ifm-color-gray-700);
+}
+
+:global([data-theme='dark']) .title {
+  color: var(--ifm-color-emphasis-700);
+}
+
+:global([data-theme='dark']) .textarea {
+  background: var(--ifm-color-gray-900);
+  color: #D1D5DB;
+  border-color: var(--ifm-color-gray-600);
+}
+
+/* ── Responsive ─────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .shortcut {
+    display: none;
+  }
+
+  .trigger {
+    height: 3.2rem;
+  }
+
+  .typeBtn {
+    height: 2.8rem;
+  }
+
+  /* Close icon — larger touch target */
+  .close {
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    margin: -0.5rem;
+  }
+
+  /* Submit — full width, thumb-friendly height */
+  .submit {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  /* Send without comment — full width, clearly tappable */
+  .skip {
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+  }
+
+  /* Stack submit + skip vertically */
+  .formRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  /* Back button — taller touch target */
+  .back {
+    padding: 0.6rem 1rem;
+  }
+
+  /* More breathing room for the textarea on small screens */
+  .textarea {
+    min-height: 7rem;
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .trigger,
+  .typeBtn,
+  .submit,
+  .back,
+  .close,
+  .skip {
+    transition: none;
+  }
+}
