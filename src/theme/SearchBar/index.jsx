@@ -136,6 +136,11 @@ function buildSearchQuery(query) {
   return query.trim().split(/\s+/).map(w => `${w}~1`).join(' ');
 }
 
+/** True for any doc living under a `.../deprecated/...` folder. */
+function isDeprecatedFilepath(filepath) {
+  return /(^|\/)deprecated\//i.test(filepath ?? '');
+}
+
 function sortByUserType(results, userType) {
   const priority = (ut) => ut === userType ? 0 : (!ut || ut === 'both') ? 1 : 2;
   const groups = new Map();
@@ -145,9 +150,28 @@ function sortByUserType(results, userType) {
     groups.get(cat).push(r);
   }
   return [...groups.values()].flatMap(g =>
-    [...g].sort((a, b) => priority(a.user_type) - priority(b.user_type))
+    // Deprecated docs frequently out-score their replacement (same title,
+    // more legacy body text) even though they're never the "right" answer —
+    // push them below everything else in the group regardless of relevance
+    // score, then fall back to the existing user-type priority.
+    [...g].sort((a, b) => {
+      const depDiff = Number(isDeprecatedFilepath(a.filepath)) - Number(isDeprecatedFilepath(b.filepath));
+      if (depDiff !== 0) return depDiff;
+      return priority(a.user_type) - priority(b.user_type);
+    })
   );
 }
+
+/** Badge shown for results that live under a deprecated docs folder. */
+function DeprecatedBadge({ filepath }) {
+  if (!isDeprecatedFilepath(filepath)) return null;
+  return (
+    <span className={`${styles.audienceBadge} ${styles.deprecatedBadge}`} aria-label="Deprecated documentation">
+      Deprecated
+    </span>
+  );
+}
+
 
 export default function SearchBar() {
   const { siteConfig } = useDocusaurusContext();
@@ -348,7 +372,7 @@ export default function SearchBar() {
     if (!queryToAsk.trim() || !aiEnabled) return;
     skipSearchResetRef.current = true;
     setQuery(queryToAsk);
-    recentSearches.add({ query: queryToAsk, title: 'AI Answer', filepath: `__ai__:${queryToAsk}`, isAi: true });
+    recentSearches.add({ query: queryToAsk, title: 'AI Answer', filepath: `__ai__:${queryToAsk}`, isAi: true, type: 'ai' });
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -375,14 +399,36 @@ export default function SearchBar() {
     });
   }
 
+  // Legacy/stale search-index entries (from an older generator run, possibly
+  // still live in the Azure index) model glossary terms as fake doc pages
+  // with filepaths like support/glossary-technical.mdx — there's no such
+  // route, so following them 404s. Detect that pattern and redirect to the
+  // real help-center term view instead, exactly like a live knowledge-term
+  // result would.
+  const GLOSSARY_STUB_RE = /^support\/glossary-(technical|business)\.mdx$/;
+
   function navigate(result) {
-    recentSearches.add({ query, title: result.title, filepath: result.filepath });
+    const glossaryMatch = GLOSSARY_STUB_RE.exec(result.filepath ?? '');
+    if (glossaryMatch) {
+      const audience = glossaryMatch[1];
+      const qMatch = /\?q=([^#&]+)/.exec(result.anchor ?? '');
+      const term = qMatch ? decodeURIComponent(qMatch[1]) : result.title;
+      navigateKnowledge(`/support/help-center-${audience}?q=${encodeURIComponent(term)}`, term, 'term');
+      return;
+    }
+
+    // Resolve the term *before* re-adding to recents — falling back to
+    // result.query so replaying a recent search still knows what to highlight.
+    // (Re-adding must reuse this resolved term rather than the live `query`
+    // state, otherwise replaying a recent — where `query` is empty — would
+    // overwrite its stored term with '' and break highlighting on every
+    // subsequent replay.)
+    const term = query.trim() || (result.query ?? '').trim();
+    recentSearches.add({ query: term, title: result.title, filepath: result.filepath, anchor: result.anchor, type: 'page' });
     const raw = result.url ?? (filepathToUrl(result.filepath) + (result.anchor ?? ''));
 
     // Append ?highlight=<term> so SearchHighlighter can highlight on arrival.
     // Insert before the hash so anchors still work correctly.
-    // Fall back to result.query so replaying a recent search also highlights.
-    const term = query.trim() || (result.query ?? '').trim();
     if (term) {
       const hashIdx = raw.indexOf('#');
       const base = hashIdx >= 0 ? raw.slice(0, hashIdx) : raw;
@@ -397,15 +443,37 @@ export default function SearchBar() {
     setIsOpen(false);
   }
 
-  function navigateKnowledge(url, entryTitle) {
+  // `kind` distinguishes term/FAQ recents from regular page results so the
+  // recents list can label them correctly and — critically — so replaying
+  // them never runs them through the generic ?highlight= content-highlighter.
+  // Term/FAQ destinations (the help center) render their own React-driven
+  // ?q= match highlighting; wrapping their text nodes in <mark> externally
+  // fights React's reconciliation and can throw DOM-mutation errors.
+  function navigateKnowledge(url, entryTitle, kind = 'term') {
     if (query && entryTitle) {
       const urlPath = url.split('?')[0].split('#')[0].replace(/^\//, '');
       const syntheticFilepath = `${urlPath}.mdx#${encodeURIComponent(entryTitle)}`;
-      recentSearches.add({ query, title: entryTitle, filepath: syntheticFilepath, url });
+      recentSearches.add({ query, title: entryTitle, filepath: syntheticFilepath, url, type: kind });
     }
     history.push(url);
     setQuery('');
     setIsOpen(false);
+  }
+
+  /** Replay a recent search entry the same way it originally navigated. */
+  function replayRecent(r) {
+    if (r.isAi) { askAi(r.query); return; }
+    if (r.type === 'term' || r.type === 'faq') {
+      // Knowledge destinations manage their own highlighting via ?q= —
+      // navigate directly instead of routing through navigate()'s
+      // ?highlight= logic, which would fight React on that page.
+      recentSearches.add(r);
+      history.push(r.url);
+      setQuery('');
+      setIsOpen(false);
+      return;
+    }
+    navigate(r);
   }
 
   function getSnippet(result) {
@@ -522,18 +590,21 @@ export default function SearchBar() {
       case 'Enter':
         if (showingRecents && activeIndex >= 0) {
           const r = recentSearches.recents[activeIndex];
-          if (r) {
-            if (r.isAi) { askAi(r.query); }
-            else { setQuery(r.query); }
-          }
+          // Enter must replay the recent exactly like clicking it — term/faq
+          // entries navigate straight to their help-center destination, page
+          // entries navigate straight to their doc. Previously this only
+          // handled the AI case and fell back to re-populating the query for
+          // everything else, so pressing Enter on a term recent looked like
+          // it "searched a page" instead of jumping to the term.
+          if (r) replayRecent(r);
         } else if (activeIndex === askAiIndex && aiEnabled && query) {
           askAi();
         } else if (hasKnowledgeResults && activeIndex >= termStartIndex && activeIndex < faqStartIndex) {
           const t = termResults[activeIndex - termStartIndex];
-          if (t) navigateKnowledge(`/support/help-center-${userType}?q=${encodeURIComponent(t.term)}`, t.term);
+          if (t) navigateKnowledge(`/support/help-center-${userType}?q=${encodeURIComponent(t.term)}`, t.term, 'term');
         } else if (hasKnowledgeResults && activeIndex >= faqStartIndex) {
           const f = faqResults[activeIndex - faqStartIndex];
-          if (f) navigateKnowledge(`/support/help-center-${userType}?q=${encodeURIComponent(f.question)}#faq`, f.question);
+          if (f) navigateKnowledge(`/support/help-center-${userType}?q=${encodeURIComponent(f.question)}#faq`, f.question, 'faq');
         } else if (activeIndex >= 0 && results[activeIndex]) {
           navigate(results[activeIndex]);
         }
@@ -759,7 +830,18 @@ export default function SearchBar() {
                 <div className={styles.recentSection} role="group" aria-labelledby="search-recents-label">
                   <div className={styles.recentHeader}>
                     <span id="search-recents-label" className={styles.recentLabel}>Recent searches</span>
-                    <button className={styles.recentClearAll} onClick={recentSearches.clear}>
+                    <button
+                      className={styles.recentClearAll}
+                      data-cy="recent-clear-all"
+                      onClick={() => {
+                        recentSearches.clear();
+                        // The recents section (including this button) unmounts once
+                        // the list is empty, which drops focus to <body> for keyboard
+                        // users. Move focus back to the search input so typing keeps
+                        // working immediately after clearing.
+                        inputRef.current?.focus();
+                      }}
+                    >
                       Clear all
                     </button>
                   </div>
@@ -768,16 +850,16 @@ export default function SearchBar() {
                       <div
                         id={`search-opt-${i}`}
                         data-cy="recent-result"
-                        className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
+                        className={`${styles.result} ${i === activeIndex ? styles.active : ''} ${r.type === 'page' && isDeprecatedFilepath(r.filepath) ? styles.resultDeprecated : ''}`}
                         role="option"
                         aria-selected={i === activeIndex}
                         tabIndex={0}
                         onFocus={() => setActiveIndex(i)}
-                        onClick={() => r.isAi ? askAi(r.query) : navigate(r)}
+                        onClick={() => replayRecent(r)}
                         onKeyDown={e => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            r.isAi ? askAi(r.query) : navigate(r);
+                            replayRecent(r);
                           }
                         }}
                         style={{ cursor: 'pointer' }}
@@ -787,6 +869,10 @@ export default function SearchBar() {
                             <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
                               <path d="M15.98 1.804a1 1 0 0 0-1.96 0l-.24 1.192a1 1 0 0 1-.784.785l-1.192.238a1 1 0 0 0 0 1.962l1.192.238a1 1 0 0 1 .785.785l.238 1.192a1 1 0 0 0 1.962 0l.238-1.192a1 1 0 0 1 .785-.785l1.192-.238a1 1 0 0 0 0-1.962l-1.192-.238a1 1 0 0 1-.785-.785l-.238-1.192ZM6.949 5.684a1 1 0 0 0-1.898 0l-.683 2.051a1 1 0 0 1-.633.633l-2.051.683a1 1 0 0 0 0 1.898l2.051.684a1 1 0 0 1 .633.632l.683 2.051a1 1 0 0 0 1.898 0l.683-2.051a1 1 0 0 1 .633-.633l2.051-.683a1 1 0 0 0 0-1.898l-2.051-.683a1 1 0 0 1-.633-.633L6.95 5.684Z" />
                             </svg>
+                          ) : r.type === 'term' ? (
+                            <FontAwesomeIcon icon={faBook} />
+                          ) : r.type === 'faq' ? (
+                            <FontAwesomeIcon icon={faCircleQuestion} />
                           ) : (
                             <FontAwesomeIcon icon={faClock} />
                           )}
@@ -795,7 +881,14 @@ export default function SearchBar() {
                           <span className={styles.resultTitle}>{r.query}</span>
                           {r.isAi
                             ? <span className={styles.resultPath}>AI Answer</span>
-                            : <BreadcrumbPath path={r.title || filepathToBreadcrumb(r.filepath)} className={styles.resultPath} />
+                            : (
+                              <span className={styles.resultPath}>
+                                <span className={styles.recentTypeLabel} data-cy="recent-result-type">
+                                  {r.type === 'term' ? 'Term · ' : r.type === 'faq' ? 'FAQ · ' : 'Page · '}
+                                </span>
+                                <BreadcrumbPath path={r.title || filepathToBreadcrumb(r.filepath)} className={styles.resultPath} />
+                              </span>
+                            )
                           }
                         </span>
                       </div>
@@ -920,7 +1013,7 @@ export default function SearchBar() {
                                   role="option"
                                   aria-selected={i === activeIndex}
                                   aria-label={`${result.title}${breadcrumb ? `, ${breadcrumb}` : ''}`}
-                                  className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
+                                  className={`${styles.result} ${i === activeIndex ? styles.active : ''} ${isDeprecatedFilepath(result.filepath) ? styles.resultDeprecated : ''}`}
                                   data-cy="search-result"
                                   onMouseEnter={() => setActiveIndex(i)}
                                   onClick={() => navigate(result)}
@@ -931,6 +1024,7 @@ export default function SearchBar() {
                                   <span className={styles.resultContent}>
                                     <span className={styles.resultTitle}>
                                       {result.title}
+                                      <DeprecatedBadge filepath={result.filepath} />
                                     </span>
                                     {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
                                     {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
@@ -967,7 +1061,7 @@ export default function SearchBar() {
                                   className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
                                   data-cy="knowledge-term-result"
                                   onMouseEnter={() => setActiveIndex(itemIdx)}
-                                  onClick={() => navigateKnowledge(`/support/help-center-${t.userType}?q=${encodeURIComponent(t.term)}`, t.term)}
+                                  onClick={() => navigateKnowledge(`/support/help-center-${t.userType}?q=${encodeURIComponent(t.term)}`, t.term, 'term')}
                                 >
                                   <span className={styles.knowledgeItemTitle}>
                                     <span>{t.term}</span>
@@ -1004,7 +1098,7 @@ export default function SearchBar() {
                                   className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
                                   data-cy="knowledge-faq-result"
                                   onMouseEnter={() => setActiveIndex(itemIdx)}
-                                  onClick={() => navigateKnowledge(`/support/help-center-${f.userType}?q=${encodeURIComponent(f.question)}#faq`, f.question)}
+                                  onClick={() => navigateKnowledge(`/support/help-center-${f.userType}?q=${encodeURIComponent(f.question)}#faq`, f.question, 'faq')}
                                 >
                                   <span className={styles.knowledgeItemTitle}>
                                     <span>{f.question}</span>
@@ -1074,7 +1168,7 @@ export default function SearchBar() {
                                 role="option"
                                 aria-selected={i === activeIndex}
                                 aria-label={`${result.title}${breadcrumb ? `, ${breadcrumb}` : ''}`}
-                                className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
+                                className={`${styles.result} ${i === activeIndex ? styles.active : ''} ${isDeprecatedFilepath(result.filepath) ? styles.resultDeprecated : ''}`}
                                 data-cy="search-result"
                                 onMouseEnter={() => setActiveIndex(i)}
                                 onClick={() => navigate(result)}
@@ -1085,6 +1179,7 @@ export default function SearchBar() {
                                 <span className={styles.resultContent}>
                                   <span className={styles.resultTitle}>
                                     {result.title}
+                                    <DeprecatedBadge filepath={result.filepath} />
                                   </span>
                                   {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
                                   {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}

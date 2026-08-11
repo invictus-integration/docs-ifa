@@ -314,7 +314,7 @@
   font-family: inherit;
   font-size: 0.68rem;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
@@ -712,6 +712,30 @@
   color: var(--ifm-color-primary);
 }
 
+.deprecatedBadge {
+  background: var(--inv-badge-deprecated-bg);
+  color: var(--inv-badge-deprecated-text);
+}
+
+.resultDeprecated {
+  background: rgba(181, 93, 0, 0.05) !important;
+  border-left-color: rgba(181, 93, 0, 0.35);
+}
+
+.resultDeprecated:hover,
+.resultDeprecated.active {
+  background: rgba(181, 93, 0, 0.1) !important;
+}
+
+:global([data-theme='dark']) .resultDeprecated {
+  background: rgba(251, 146, 60, 0.07) !important;
+}
+
+:global([data-theme='dark']) .resultDeprecated:hover,
+:global([data-theme='dark']) .resultDeprecated.active {
+  background: rgba(251, 146, 60, 0.13) !important;
+}
+
 .result:hover .resultTitle,
 .result.active .resultTitle {
   color: var(--ifm-color-primary);
@@ -728,6 +752,13 @@
 
 :global([data-theme='dark']) .resultPath {
   color: rgba(255, 255, 255, 0.55);
+}
+
+.recentTypeLabel {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
 }
 
 .breadcrumbSeparator {
@@ -993,7 +1024,7 @@
   align-items: center;
   gap: 3px;
   font-size: 0.7rem;
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.8);
   white-space: nowrap;
 }
 
@@ -1070,7 +1101,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--ifm-color-secondary-dark);
+  color: var(--ifm-color-secondary-darkest);
 }
 
 .recentClearAll {
