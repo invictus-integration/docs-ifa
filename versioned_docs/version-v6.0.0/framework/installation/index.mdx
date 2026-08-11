@@ -28,39 +28,43 @@ We use Multiple Revision mode in our Container App deployments, which means that
 <details>
 <summary>**Include VNET support <SharedNote/>**</summary>
 
-Invictus includes network infrastructure which allows all its resources to run within an Azure Virtual Network (VNET).
+Invictus includes network infrastructure to run resources within an Azure Virtual Network (VNET). Add these required resources to your environment before you deploy Invictus for Azure:
 
-### Required deployment
-- An Azure Virtual Network
-  - Including two subnets, one each for
-    - Private Endpoints
-    - Container App Environment
-  - The subnets must have the following services enabled
-    - `Microsoft.AzureCosmosDB`
-    - `Microsoft.EventHub`
-    - `Microsoft.KeyVault`
-    - `Microsoft.ServiceBus`
-    - `Microsoft.Storage`
-  - The Container App [subnet must also have the delegation `Microsoft.App/environments`](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation)
+### An Azure Virtual Network
+* Including two subnets, one each for
+  * Private Endpoints
+  * Container App Environment
+* The subnets must have these services enabled
+  * `Microsoft.AzureCosmosDB`
+  * `Microsoft.EventHub`
+  * `Microsoft.KeyVault`
+  * `Microsoft.ServiceBus`
+  * `Microsoft.Storage`
+* The Container App [subnet must also have the delegation `Microsoft.App/environments`](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation)
         
-- Private DNS Zones ([Bicep template](../../scripts/invictusVnetDNSZones.bicep))
-  - `privatelink.azurecr.io`
-  - `privatelink.blob.core.windows.net`
-  - `privatelink.file.core.windows.net`
-  - `privatelink.mongo.cosmos.azure.com`
-  - `privatelink.queue.core.windows.net`
-  - `privatelink.servicebus.windows.net`
-  - `privatelink.table.core.windows.net`
-  - `privatelink.table.cosmos.azure.com`
-  - `privatelink.vaultcore.azure.net`
-  - `privatelink.{regionName}.azurecontainerapps.io`
+{/* vale Microsoft.HeadingAcronyms = NO */}
+### Private DNS Zones ([Bicep template](../../scripts/invictusVnetDNSZones.bicep))
+{/* vale Microsoft.HeadingAcronyms = YES */}
+* `privatelink.azurecr.io`
+* `privatelink.blob.core.windows.net`
+* `privatelink.file.core.windows.net`
+* `privatelink.mongo.cosmos.azure.com`
+* `privatelink.queue.core.windows.net`
+* `privatelink.servicebus.windows.net`
+* `privatelink.table.core.windows.net`
+* `privatelink.table.cosmos.azure.com`
+* `privatelink.vaultcore.azure.net`
+* `privatelink.{regionName}.azurecontainerapps.io`
     
 {/* vale Microsoft.Terms = NO */}
-- To be able to deploy the app code from an Azure DevOps pipeline you require a self hosted agent running on the same VNET with the following software installed:
+### Azure DevOps agent
+Install this software on the self-hosted agent that runs the deployment pipeline:
+* PowerShell
+* Azure PowerShell
+{/* vale Google.WordList = NO */}
+* Bicep CLI
+{/* vale Google.WordList = YES */}
 {/* vale Microsoft.Terms = YES */}
-    - PowerShell
-    - Azure PowerShell
-    - Bicep CLI
 
 ### Required role assignment
 If the Invictus resources and the VNET are on different resource groups, then you need to assign the role of `Network Contributor` to the Invictus resource group onto the VNET resource group.
