@@ -46,7 +46,7 @@ Make sure the group has a [role assigned](./03_roles.mdx). Without one, the Dash
 <details>
 <summary>**Delete an Entra ID user**</summary>
 
-Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard. This action doesn't remove them from Entra ID.
+Select the delete icon <FontAwesomeIcon icon={faTrashCan} aria-label='Delete user' /> to remove a user from the Dashboard. This action doesn't remove them from Entra ID.
 
 <Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish Entra ID users">
 Entra ID users have no direct role. They get their role from their group.
@@ -66,7 +66,7 @@ Entra ID users have no direct role. They get their role from their group.
 
 To use forgot password, create an Entra ID app. Add the [`Mail.Send` permission](../installation/01_give_ad_access.mdx). OAuth 2.0 uses it to send emails.
 
-Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} /> to add the backup email address for 'Forgot password' emails.
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, "Settings"]} /> to add the backup email address for 'Forgot password' emails.
 
 :::warning
 The Dashboard may use any email in the tenant as the sender.
@@ -82,7 +82,7 @@ The Dashboard manages local users. You can assign roles and delete them at any t
 <details>
 <summary>**Add a local user**</summary>
 
-Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
+Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} aria-label='Users' /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
 * Fill in the <TextInput label="Username" />, <TextInput label="Email" /> and <TextInput label="Password" /> fields.
 * Assign a [<DropDownInput label="Role" />](./03_roles.mdx) to set flow access.
 
@@ -91,7 +91,7 @@ Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} /> Users</>, <><Butto
 <details>
 <summary>**Delete a local user**</summary>
 
-Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user.
+Select the delete icon <FontAwesomeIcon icon={faTrashCan} aria-label='Delete user' /> to remove a user.
 
 <Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish local users">
 Local users have a direct role assigned.
@@ -102,7 +102,7 @@ Local users have a direct role assigned.
 <details>
 <summary>**Edit a local user's role**</summary>
 
-Click the <FontAwesomeIcon icon={faPencil} /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx).
+Select the <FontAwesomeIcon icon={faPencil} aria-label='Edit user role' /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx).
 </details>
 
 <details>
@@ -110,7 +110,7 @@ Click the <FontAwesomeIcon icon={faPencil} /> icon to edit a local user's [<Drop
 
 Set up the email server for password resets.
 
-Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, `Settings`]} />
 
 | Forgot password setting  | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -128,7 +128,7 @@ Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={fa
 <details>
 <summary>**Unlocking a user** <NewSinceBadge version="v6.3" /></summary>
 
-<Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} /></>]} activeLast={false} />
+<Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} aria-label='Locked user' /></>]} activeLast={false} />
 
 Too many failed sign-in attempts lock a user out. System admins can unlock them via the <FontAwesomeIcon icon={faLock} /> button.
 </details>
