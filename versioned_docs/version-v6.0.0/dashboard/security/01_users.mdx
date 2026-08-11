@@ -5,6 +5,7 @@ sidebar_label: Add new users
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Admonition from '@theme/Admonition';
+import DetailsReact from '@theme/Details';
 import { OnlyAdminsBadge, NewSinceBadge, BadgedText } from '@site/src/components/Badges';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faLock, faSlidersH,faUser,faMagnifyingGlass, faPlus, faPencil} from '@fortawesome/free-solid-svg-icons';
@@ -125,10 +126,8 @@ Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={fa
 </TabItem>
 </Tabs>
 
-<details>
-<summary>**Unlocking a user** <NewSinceBadge version="v6.3" /></summary>
-
+<DetailsReact summary={<><span><strong>Unlocking a user</strong></span> <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></>} style={{backgroundColor: 'rgba(74, 222, 128, 0.07)'}}>
 <Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} aria-label='Locked user' /></>]} activeLast={false} />
 
 Too many failed sign-in attempts lock a user out. System admins can unlock them via the <FontAwesomeIcon icon={faLock} /> button.
-</details>
+</DetailsReact>

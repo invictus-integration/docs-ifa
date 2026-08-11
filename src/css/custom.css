@@ -126,6 +126,18 @@
   --inv-surface-row-border: #e2e8f0;
   --inv-surface-row-text: #0f172a;
 
+  /* Details/summary — muted collapsible block, styled in
+     src/theme/Details/styles.module.css (swizzled) to match ParameterTable's
+     disclosure row instead of Infima's alert box. Kept as tokens here (not
+     hardcoded in the CSS module) so a future visual tweak (e.g. a different
+     muted background) is a single variable change. */
+  --inv-details-border: var(--ifm-color-emphasis-300);
+  --inv-details-border-hover: var(--ifm-color-primary);
+  --inv-details-bg: transparent;
+  --inv-details-bg-hover: var(--ifm-color-emphasis-100);
+  --inv-details-chevron: var(--ifm-color-emphasis-600);
+  --inv-details-chevron-hover: var(--ifm-color-primary);
+
   /* Badge — semantic pill colors */
   --inv-badge-new-bg: #059669;
   --inv-badge-new-text: #ffffff;
@@ -194,6 +206,11 @@ html[data-theme='dark'] {
   --inv-surface-row-border: #404343;
   --inv-surface-row-text: #D1D5DB;
 
+  /* Details/summary */
+  --inv-details-border: rgba(255, 255, 255, 0.15);
+  --inv-details-bg-hover: rgba(255, 255, 255, 0.05);
+  --inv-details-chevron: rgba(255, 255, 255, 0.4);
+
   /* Badge */
   --inv-badge-shared-bg: rgba(42, 143, 156, 0.15);
   --inv-badge-shared-text: #4fcadf;
@@ -206,9 +223,8 @@ html[data-theme='dark'] .footer--dark {
   border-top: 1px solid black;
 }
 
-html[data-theme='dark'] details.alert {
-  background-color: var(--ifm-color-gray-800);
-}
+/* <details>/<summary> styling now lives in the swizzled
+   src/theme/Details/styles.module.css — see --inv-details-* tokens above. */
 
 html[data-theme='dark'] .alert--praise {
   --ifm-alert-background-color: #3d2353;
