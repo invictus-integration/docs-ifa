@@ -1,37 +1,40 @@
 ---
 sidebar_label: Give access to your Microsoft Entra ID
+title: Give access to your Microsoft Entra ID
 ---
 
 import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
-import { OnlyAdminsBadge } from '@site/src/components/Badges';
+import { OnlyAdminsBadge, BadgedText } from '@site/src/components/Badges';
+import { DropDownInput } from '@site/src/components/InputControls';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faLink, faSquareCheck, faArrowRight, faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {faCirclePause, faUser} from '@fortawesome/free-regular-svg-icons';
 
-# Give Invictus access to your Microsoft Entra ID
-To use your Microsoft Entra ID groups as a way of authentication and flow authorization, you need to follow these steps.
+# <BadgedText badge={<OnlyAdminsBadge/>}>Give Invictus access to your Microsoft Entra ID</BadgedText>
+To use your Microsoft Entra ID groups as a way of authentication and flow authorization, follow these steps.
 
+{/* vale Google.WordListCase = NO */}
 <Walkthrough>
   <Collapsible title="Register an Application for Invictus">
     <em>[ <FontAwesomeIcon icon={faLink} /> Microsoft Docs: register an app](https://learn.microsoft.com/Entra/identity-platform/quickstart-register-app?tabs=certificate%2Cexpose-a-web-api)</em>
 
-    * Choose the <u>multi-tenant</u> account type option to let Invictus use the app registration.
-    * Add <u>Redirect URI's</u> to **your** Invictus pages:
+    * Choose the <strong>multi-tenant</strong> account type option to let Invictus use the app registration.
+    * Add <strong>Redirect URI's</strong> to your Invictus pages:
       * `https://your-invictusdashboard.azurewebsites.net/login`
       * `https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad`
     * Check the **<FontAwesomeIcon icon={faSquareCheck} /> Access tokens** box ([why?](https://learn.microsoft.com/entra/identity-platform/v2-oauth2-implicit-grant-flow?WT.mc_id=Portal-Microsoft_AAD_RegisteredApps))
-    * Add a new <u>client secret</u> (copy the value for later use).
+    * Add a new <strong>client secret</strong> (copy the value for later use).
     * Linked Enterprise Application:
-      * Assign <u>Owners</u> ([more info](https://learn.microsoft.com/entra/identity/enterprise-apps/assign-app-owners?pivots=portal))
-      * Grant <u>Admin consent</u> ([more info](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal))
+      * Assign <strong>Owners</strong> ([more info](https://learn.microsoft.com/entra/identity/enterprise-apps/assign-app-owners?pivots=portal))
+      * Grant <strong>Admin consent</strong> ([more info](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal))
   </Collapsible>
 
   <Collapsible title="Expose an API with scoped permissions">
     <em>[ <FontAwesomeIcon icon={faLink} /> Microsoft Docs: expose an API](https://learn.microsoft.com/Entra/identity-platform/quickstart-configure-app-expose-web-apis#add-a-scope)</em>
 
-    * Use the default <u>Application ID URI</u> (copy it).
-    * Add a scope with <u>Admin and users</u> consent.
+    * Use the default <strong>Application ID URI</strong> (copy it).
+    * Add a scope with <strong>Admin and users</strong> consent.
     * Use this name for the scope: `access_as_user`
   </Collapsible>
 
@@ -50,37 +53,35 @@ To use your Microsoft Entra ID groups as a way of authentication and flow author
       * The `access_as_user` scope you created earlier: **Delegated**
   </Collapsible>
 
+
   <Collapsible title="Pass App Registration values to Invictus deployment">
     * `azureActiveDirectoryClientId` <FontAwesomeIcon icon={faArrowRight} /> from **App Registration <FontAwesomeIcon icon={faChevronRight} /> Overview**
     * `azureActiveDirectoryTenantId` <FontAwesomeIcon icon={faArrowRight} /> from **App Registration <FontAwesomeIcon icon={faChevronRight} /> Overview**
     * `azureActiveDirectoryClientSecret` <FontAwesomeIcon icon={faArrowRight} /> the one you copied earlier
-    * `azureActiveDirectoryAudience` <FontAwesomeIcon icon={faArrowRight} /> the default <u>Application ID URI</u>
+    * `azureActiveDirectoryAudience` <FontAwesomeIcon icon={faArrowRight} /> the default **Application ID URI**
   </Collapsible>
-
 </Walkthrough>
+{/* vale Google.WordListCase = YES */}
 
-## Sync your Microsoft Entra ID groups to Invictus <OnlyAdminsBadge/>
+## Sync your Microsoft Entra ID groups to Invictus
 <Breadcrumb paths={[`Groups`, `Sync all groups`]} />
 
-The Dashboard uses groups available in your Microsoft Entra ID to determine whether users can access certain flows. (See [flow permissions](../flows/01_add.mdx#flow-permissions)).
+The Dashboard uses the groups in your Microsoft Entra ID to verify whether users can access flows. (See [flow permissions](../flows/01_add.mdx#flow-permissions)).
 
 * [Add Microsoft Entra ID group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
 * [Add Microsoft Entra ID user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
 
 :::warning
-Only groups of active users (Entra ID users that have already signed into the Dashboard) will be synced within the Dashboard.
+The Dashboard only syncs groups of active users (Entra ID users that already have signed in into the Dashboard).
 :::
 
-## Enable only required groups <OnlyAdminsBadge/>
-<Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faCirclePause} />]} />
+## Enable only required groups
+<Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faCirclePause} aria-label='pause' />]} />
 
-Once the Dashboard knows about the related Entra ID groups, you have to manually enable the required groups which you want to use for [flow permissions](../flows/01_add.mdx#flow-permissions).
+For security reasons, only enable the groups that you want to use for [flow permissions](../flows/01_add.mdx#flow-permissions). 'Enabled' is the default state. Deactivate groups by selecting the <FontAwesomeIcon icon={faCirclePause} aria-label='pause' /> icon next to the group name.
 
-![Enable Groups](/images/dashboard/Groups/groups-disable-action.png)
+## Assign user role to required groups
+<Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faUser} aria-label='user' />]} />
 
-## Assign user role to required groups <OnlyAdminsBadge/>
-<Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faUser} />]} />
-
-Each enabled group requires a user role permission. This describes what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../security/03_roles.mdx).
-
-![Add Global Roles](/images/dashboard/Groups/groups-permissions-action.png)
+The user role permission describes what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../security/03_roles.mdx).
+Assign a user role by selecting the <FontAwesomeIcon icon={faUser} aria-label='user' /> icon next to the group name and picking the desired <DropDownInput label="User role" />.
