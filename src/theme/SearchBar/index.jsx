@@ -149,18 +149,6 @@ function sortByUserType(results, userType) {
   );
 }
 
-/** Badge shown only when a result targets the *other* audience. */
-function AudienceBadge({ resultUserType, currentUserType }) {
-  const other = currentUserType === 'business' ? 'technical' : 'business';
-  if (resultUserType !== other) return null;
-  return (
-    <span className={`${styles.audienceBadge} ${styles[`audienceBadge_${resultUserType}`]}`} aria-label={`${resultUserType} documentation`}>
-      {resultUserType === 'business' ? 'Business' : 'Technical'}
-    </span>
-  );
-}
-
-
 export default function SearchBar() {
   const { siteConfig } = useDocusaurusContext();
   const { azureSearch } = siteConfig.customFields;
@@ -319,6 +307,18 @@ export default function SearchBar() {
     }
   }, [isOpen]);
 
+  // Sync body class so other sticky elements (e.g. audience bar) can lower
+  // their z-index while the search modal is open, ensuring the backdrop blur
+  // covers them correctly.
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('search-modal-open');
+    } else {
+      document.body.classList.remove('search-modal-open');
+    }
+    return () => document.body.classList.remove('search-modal-open');
+  }, [isOpen]);
+
   // Focus trap — keep Tab/Shift+Tab inside the modal
   useEffect(() => {
     if (!isOpen) return;
@@ -455,10 +455,10 @@ export default function SearchBar() {
 
   // Flat ordered list of all navigable items: page results → Ask AI → terms → FAQ.
   // Used to drive arrow-key navigation across both columns.
-  const pageItemCount  = results.length;
-  const askAiIndex     = pageItemCount; // virtual index for Ask AI row
+  const pageItemCount = results.length;
+  const askAiIndex = pageItemCount; // virtual index for Ask AI row
   const termStartIndex = pageItemCount + (aiEnabled && query ? 1 : 0);
-  const faqStartIndex  = termStartIndex + termResults.length;
+  const faqStartIndex = termStartIndex + termResults.length;
 
   const totalItems = showingRecents
     ? recentSearches.recents.length
@@ -931,7 +931,6 @@ export default function SearchBar() {
                                   <span className={styles.resultContent}>
                                     <span className={styles.resultTitle}>
                                       {result.title}
-                                      <AudienceBadge resultUserType={result.user_type} currentUserType={userType} />
                                     </span>
                                     {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
                                     {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
@@ -957,27 +956,26 @@ export default function SearchBar() {
                               <FontAwesomeIcon icon={faBook} aria-hidden="true" />
                               Terms
                             </div>
-                        {termResults.map((t, ki) => {
+                            {termResults.map((t, ki) => {
                               const itemIdx = termStartIndex + ki;
                               return (
-                              <button
-                                key={`${t.term}-${t.userType}`}
-                                id={`search-opt-${itemIdx}`}
-                                role="option"
-                                aria-selected={activeIndex === itemIdx}
-                                className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
-                                data-cy="knowledge-term-result"
-                                onMouseEnter={() => setActiveIndex(itemIdx)}
-                                onClick={() => navigateKnowledge(`/support/help-center-${t.userType}?q=${encodeURIComponent(t.term)}`, t.term)}
-                              >
-                                <span className={styles.knowledgeItemTitle}>
-                                  <span>{t.term}</span>
-                                  <AudienceBadge resultUserType={t.userType} currentUserType={userType} />
-                                </span>
-                                <span className={styles.knowledgeItemSnippet}>
-                                  {stripMarkdownSimple(t.definition).slice(0, 90)}{t.definition.length > 90 ? '…' : ''}
-                                </span>
-                              </button>
+                                <button
+                                  key={`${t.term}-${t.userType}`}
+                                  id={`search-opt-${itemIdx}`}
+                                  role="option"
+                                  aria-selected={activeIndex === itemIdx}
+                                  className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
+                                  data-cy="knowledge-term-result"
+                                  onMouseEnter={() => setActiveIndex(itemIdx)}
+                                  onClick={() => navigateKnowledge(`/support/help-center-${t.userType}?q=${encodeURIComponent(t.term)}`, t.term)}
+                                >
+                                  <span className={styles.knowledgeItemTitle}>
+                                    <span>{t.term}</span>
+                                  </span>
+                                  <span className={styles.knowledgeItemSnippet}>
+                                    {stripMarkdownSimple(t.definition).slice(0, 90)}{t.definition.length > 90 ? '…' : ''}
+                                  </span>
+                                </button>
                               );
                             })}
                             <button
@@ -998,24 +996,23 @@ export default function SearchBar() {
                             {faqResults.map((f, ki) => {
                               const itemIdx = faqStartIndex + ki;
                               return (
-                              <button
-                                key={ki}
-                                id={`search-opt-${itemIdx}`}
-                                role="option"
-                                aria-selected={activeIndex === itemIdx}
-                                className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
-                                data-cy="knowledge-faq-result"
-                                onMouseEnter={() => setActiveIndex(itemIdx)}
-                                onClick={() => navigateKnowledge(`/support/help-center-${f.userType}?q=${encodeURIComponent(f.question)}#faq`, f.question)}
-                              >
-                                <span className={styles.knowledgeItemTitle}>
-                                  <span>{f.question}</span>
-                                  <AudienceBadge resultUserType={f.userType} currentUserType={userType} />
-                                </span>
-                                <span className={styles.knowledgeItemSnippet}>
-                                  {stripMarkdownSimple(f.answer).slice(0, 90)}{f.answer.length > 90 ? '…' : ''}
-                                </span>
-                              </button>
+                                <button
+                                  key={ki}
+                                  id={`search-opt-${itemIdx}`}
+                                  role="option"
+                                  aria-selected={activeIndex === itemIdx}
+                                  className={`${styles.knowledgeItem} ${activeIndex === itemIdx ? styles.knowledgeItemActive : ''}`}
+                                  data-cy="knowledge-faq-result"
+                                  onMouseEnter={() => setActiveIndex(itemIdx)}
+                                  onClick={() => navigateKnowledge(`/support/help-center-${f.userType}?q=${encodeURIComponent(f.question)}#faq`, f.question)}
+                                >
+                                  <span className={styles.knowledgeItemTitle}>
+                                    <span>{f.question}</span>
+                                  </span>
+                                  <span className={styles.knowledgeItemSnippet}>
+                                    {stripMarkdownSimple(f.answer).slice(0, 90)}{f.answer.length > 90 ? '…' : ''}
+                                  </span>
+                                </button>
                               );
                             })}
                             <button
@@ -1088,7 +1085,6 @@ export default function SearchBar() {
                                 <span className={styles.resultContent}>
                                   <span className={styles.resultTitle}>
                                     {result.title}
-                                    <AudienceBadge resultUserType={result.user_type} currentUserType={userType} />
                                   </span>
                                   {(() => { const s = getSnippet(result); return s ? <span className={styles.resultSnippet} dangerouslySetInnerHTML={{ __html: s }} /> : null; })()}
                                   {breadcrumb && <BreadcrumbPath path={breadcrumb} className={styles.resultPath} />}
@@ -1150,7 +1146,7 @@ export default function SearchBar() {
               )}
             </div>
           </div>
-          </div>
+        </div>
       )}
     </>
   );
