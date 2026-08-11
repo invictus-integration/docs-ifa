@@ -1,0 +1,444 @@
+/* Hidden on desktop — section navigation lives in the page sidebar there */
+.audienceBar,
+.overlay,
+.backdrop {
+  display: none;
+}
+
+@media (max-width: 996px) {
+
+  /* When the search modal is open, drop below the backdrop (z-index 9999)
+     so the backdrop-filter blur covers the audience bar too. */
+  :global(.search-modal-open) .audienceBar {
+    z-index: 1;
+  }
+
+
+  /* ── Secondary audience bar ─────────────────────────────────── */
+  .audienceBar {
+    display: flex;
+    align-items: stretch;
+    height: 48px;
+    background-color: var(--ifm-navbar-background-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    position: sticky;
+    top: var(--ifm-navbar-height);
+    /* Higher z-index than the overlay so the overlay slides *behind* the bar
+       during the opening animation, creating the "emerges from below" effect. */
+    z-index: var(--ifm-z-index-fixed);
+  }
+
+  .audienceBlock {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    min-width: 0;
+  }
+
+  .audienceBlock+.audienceBlock {
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .audienceBlock:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.07);
+    text-decoration: none;
+  }
+
+  .audienceBlock:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 2px;
+  }
+
+  .audienceBlockActive {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.14);
+    /* Inset bottom border stays within the 48px height */
+    box-shadow: inset 0 -2px 0 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .blockLabel {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .blockArrow {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    display: inline-block;
+    /* Same chevron SVG as the TOC "On this page" toggle */
+    background: var(--ifm-menu-link-sublist-icon) 50% 50% / 2rem 2rem no-repeat;
+    /* Invert to white for the dark audience bar background */
+    filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+    /* Default: chevron points down (overlay closed) */
+    transform: rotate(180deg);
+    transition: transform var(--ifm-transition-fast);
+  }
+
+  /* Inactive tab chevron: always shown but dimmed so it doesn't compete
+     visually with the active tab while still communicating interactivity. */
+  .blockArrowDim {
+    opacity: 0.35;
+  }
+
+  .blockArrowOpen {
+    transform: rotate(0deg);
+  }
+
+  /* ── Navigation overlay (mega menu) ─────────────────────────── */
+
+  /* z-index 150: below the audience bar (200) so it slides out from behind it
+     during animation; above normal page content (auto/0). */
+  .overlay {
+    display: flex;
+    position: fixed;
+    top: calc(var(--ifm-navbar-height) + 48px);
+    left: 0;
+    right: 0;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(85vh - var(--ifm-navbar-height) - 48px);
+    /* dvh accounts for mobile browser chrome (e.g. iOS Safari's collapsing
+       address bar) so the cap tracks the *actual* visible viewport instead
+       of jumping as chrome shows/hides. Falls back silently to vh above
+       where unsupported. */
+    max-height: calc(85dvh - var(--ifm-navbar-height) - 48px);
+    background-color: var(--ifm-navbar-background-color);
+
+    /* Start fully above the secondary bar; slide down on open */
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0ms 0.28s;
+
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    /* Sidebar item color tokens — dark navbar background needs light text */
+    --ifm-menu-color: var(--ifm-color-secondary-lightest);
+    --ifm-menu-color-active: #ffffff;
+    --ifm-menu-color-background-active: rgba(255, 255, 255, 0.15);
+    --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.08);
+    --ifm-menu-link-sublist-icon-filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+  }
+
+  .overlayOpen {
+    transform: translateY(0);
+    visibility: visible;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0ms;
+  }
+
+  /* Short viewports (e.g. phones in landscape): the 85% cap above leaves too
+     little room to browse comfortably once the navbar and audience bar are
+     subtracted, so use nearly the full remaining height instead. Content
+     still scrolls internally past that via .overlayScroller. */
+  @media (max-height: 500px) {
+    .overlay {
+      max-height: calc(96vh - var(--ifm-navbar-height) - 48px);
+      max-height: calc(96dvh - var(--ifm-navbar-height) - 48px);
+    }
+  }
+
+  .overlayScroller {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.5rem 0 0.75rem;
+    /* Scroll-shadow at bottom: gradient fades content into the panel background,
+       hinting that more items are hidden below. */
+    background:
+      linear-gradient(var(--ifm-navbar-background-color) 30%, rgba(1, 69, 80, 0)) center top / 100% 20px no-repeat local,
+      linear-gradient(rgba(1, 69, 80, 0), var(--ifm-navbar-background-color)) center bottom / 100% 48px no-repeat local,
+      radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) center bottom / 100% 12px no-repeat scroll;
+    background-color: var(--ifm-navbar-background-color);
+  }
+
+  /* Downward arrow: appears when IntersectionObserver detects overflow */
+  .scrollIndicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+    flex-shrink: 0;
+    background: linear-gradient(transparent, var(--ifm-navbar-background-color));
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 1.25rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* Backdrop: dims page content below the overlay; click-to-close target */
+  .backdrop {
+    display: block;
+    position: fixed;
+    top: calc(var(--ifm-navbar-height) + 48px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 140;
+    background: rgba(0, 0, 0, 0.38);
+  }
+
+  .noSidebar {
+    padding: 1.25rem 1.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  /* ── Column mega-menu layout ─────────────────────────────────── */
+
+  /* Quick links: top-level doc items before categories (e.g. "Overview") */
+  .quickLinks {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0.75rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .quickLink {
+    padding: 0.6rem 0.75rem;
+  }
+
+  /* Two-column grid: each top-level category gets a column */
+  .columnGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0.5rem 0 0.75rem;
+  }
+
+  .column {
+    padding: 0.5rem 0.75rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .column:last-child {
+    border-right: none;
+  }
+
+  /* Category header — all caps label, not a link */
+  .columnTitle {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    /* Symmetric, ~40px tap target on the linked variant (was 0 top / 0.5rem bottom) */
+    padding: 0.6rem 0.25rem;
+    line-height: 1.3;
+  }
+
+  /* Category header when it links to a doc */
+  .columnTitleLink {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .columnTitleLink:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Visual-only affordance marking this header as clickable — no change to
+     click count or nesting, just a chevron hinting "opens a page". */
+  .columnTitleLink::after {
+    content: '\203a';
+    display: inline-block;
+    margin-left: 0.35rem;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  .columnList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Leaf link */
+  .overlayLink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* ~44px tap target (was 0.3rem/~30px) */
+    padding: 0.65rem 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    border-radius: 3px;
+    line-height: 1.4;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .overlayLink:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+  }
+
+  .overlayLinkActive {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.13);
+    font-weight: 600;
+  }
+
+  /* Circular icon badge, mirrors DocSidebarItem/Link */
+  .overlayLinkIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    background-color: var(--ifm-color-primary);
+    flex-shrink: 0;
+    font-size: 0.6rem;
+    color: #fff;
+  }
+
+  /* ── Version block (third slot in audience bar) ─────────────── */
+
+  .versionBlock {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .versionTrigger {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: var(--ifm-font-family-base);
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  .versionTrigger:hover {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .versionTrigger:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.7);
+    outline-offset: 2px;
+  }
+
+  .versionArrow {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    display: inline-block;
+    background: var(--ifm-menu-link-sublist-icon) 50% 50% / 2rem 2rem no-repeat;
+    filter: invert(90%) sepia(10%) saturate(200%) hue-rotate(150deg);
+    transform: rotate(180deg);
+    transition: transform var(--ifm-transition-fast);
+  }
+
+  .versionArrowOpen {
+    transform: rotate(0deg);
+  }
+
+  /* Dropdown opens below the audience bar, right-aligned to the block */
+  .versionDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0.375rem;
+    background-color: var(--ifm-navbar-background-color);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 250;
+  }
+
+  .versionOption {
+    display: block;
+    padding: 0.4rem 0.625rem;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
+
+  .versionOption:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .versionOptionActive {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* Sub-category header within a column */
+  .overlaySubHead {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.38);
+    /* Symmetric, ~38px tap target on the linked variant (was 0.55rem/0.15rem) */
+    padding: 0.6rem 0.25rem;
+    margin-top: 0.25rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .overlaySubHeadLink {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .overlaySubHeadLink:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Same visual-only "opens a page" marker as .columnTitleLink */
+  .overlaySubHeadLink::after {
+    content: '\203a';
+    display: inline-block;
+    margin-left: 0.35rem;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .audienceBlock,
+  .blockArrow,
+  .overlay,
+  .versionArrow {
+    transition: none;
+  }
+}

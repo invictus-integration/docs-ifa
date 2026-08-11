@@ -5,7 +5,8 @@ sidebar_label: Add new users
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Admonition from '@theme/Admonition';
-import { OnlyAdminsBadge, NewSinceBadge } from '@site/src/components/Badges';
+import DetailsReact from '@theme/Details';
+import { OnlyAdminsBadge, NewSinceBadge, BadgedText } from '@site/src/components/Badges';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faLock, faSlidersH,faUser,faMagnifyingGlass, faPlus, faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faMicrosoft } from '@fortawesome/free-brands-svg-icons';
@@ -13,7 +14,7 @@ import {faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { Tab, SignInWithMicrosoftButton, TextInput, DropDownInput, Button, ToggleInput, NumberInput } from '@site/src/components/InputControls';
 
-# Manage Users in the Dashboard
+# <BadgedText badge={<OnlyAdminsBadge/>}>Manage Users in the Dashboard</BadgedText>
 <Breadcrumb paths={["Users"]} />
 
 Two user types can access the Dashboard. Invictus manages **Local** users. Your tenant manages **Microsoft Entra ID** users.
@@ -27,7 +28,7 @@ Prefer **Entra ID** users for security.
 <Tabs groupId="user-type" queryString>
 <TabItem value="entra-id" label="Entra ID" default>
 
-> <FontAwesomeIcon icon={faUser} /> Requires a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
+> <FontAwesomeIcon icon={faUser} /> Requires a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus).
 
 The Dashboard works with users in Entra ID groups.
 See [syncing groups](../installation/01_give_ad_access.mdx) to set them up.
@@ -35,7 +36,7 @@ See [syncing groups](../installation/01_give_ad_access.mdx) to set them up.
 <details>
 <summary><span id="add-an-entra-id-user">**Add an Entra ID user**</span></summary>
 
-Entra ID users sign in with the [<SignInWithMicrosoftButton />](../installation/01_give_ad_access.mdx) button. They must be part of a [synced group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-).
+Entra ID users sign in with the [<SignInWithMicrosoftButton />](../installation/01_give_ad_access.mdx) button. They must be part of a [synced group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus).
 
 :::warning[requires role]
 Make sure the group has a [role assigned](./03_roles.mdx). Without one, the Dashboard won't work.
@@ -44,9 +45,9 @@ Make sure the group has a [role assigned](./03_roles.mdx). Without one, the Dash
 </details>
 
 <details>
-<summary>**Delete an Entra ID user** <OnlyAdminsBadge/></summary>
+<summary>**Delete an Entra ID user**</summary>
 
-Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user from the Dashboard. This action doesn't remove them from Entra ID.
+Select the delete icon <FontAwesomeIcon icon={faTrashCan} aria-label='Delete user' /> to remove a user from the Dashboard. This action doesn't remove them from Entra ID.
 
 <Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish Entra ID users">
 Entra ID users have no direct role. They get their role from their group.
@@ -54,19 +55,19 @@ Entra ID users have no direct role. They get their role from their group.
 </details>
 
 <details>
-<summary>**Edit an Entra ID user's role** <OnlyAdminsBadge/></summary>
+<summary>**Edit an Entra ID user's role**</summary>
 
 Entra ID users have no direct role. They get their role from their group.
-[If the group can access a flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus-), so can the user.
+[If the group can access a flow](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus), so can the user.
 
 </details>
 
 <details>
-<summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
+<summary>**Configure forgot password procedure**</summary>
 
 To use forgot password, create an Entra ID app. Add the [`Mail.Send` permission](../installation/01_give_ad_access.mdx). OAuth 2.0 uses it to send emails.
 
-Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, "Settings"]} /> to add the backup email address for 'Forgot password' emails.
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, "Settings"]} /> to add the backup email address for 'Forgot password' emails.
 
 :::warning
 The Dashboard may use any email in the tenant as the sender.
@@ -80,18 +81,18 @@ The Dashboard may use any email in the tenant as the sender.
 The Dashboard manages local users. You can assign roles and delete them at any time.
 
 <details>
-<summary>**Add a local user** <OnlyAdminsBadge/></summary>
+<summary>**Add a local user**</summary>
 
-Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
+Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} aria-label='Users' /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
 * Fill in the <TextInput label="Username" />, <TextInput label="Email" /> and <TextInput label="Password" /> fields.
 * Assign a [<DropDownInput label="Role" />](./03_roles.mdx) to set flow access.
 
 </details>
 
 <details>
-<summary>**Delete a local user** <OnlyAdminsBadge/></summary>
+<summary>**Delete a local user**</summary>
 
-Click the delete icon <FontAwesomeIcon icon={faTrashCan} /> to remove a user.
+Select the delete icon <FontAwesomeIcon icon={faTrashCan} aria-label='Delete user' /> to remove a user.
 
 <Admonition icon={<FontAwesomeIcon icon={faMagnifyingGlass} /> } type="tip" title="Distinguish local users">
 Local users have a direct role assigned.
@@ -100,17 +101,17 @@ Local users have a direct role assigned.
 </details>
 
 <details>
-<summary>**Edit a local user's role** <OnlyAdminsBadge/></summary>
+<summary>**Edit a local user's role**</summary>
 
-Click the <FontAwesomeIcon icon={faPencil} /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx).
+Select the <FontAwesomeIcon icon={faPencil} aria-label='Edit user role' /> icon to edit a local user's [<DropDownInput label="Role" />](./03_roles.mdx).
 </details>
 
 <details>
-<summary>**Configure forgot password procedure** <OnlyAdminsBadge/></summary>
+<summary>**Configure forgot password procedure**</summary>
 
 Set up the email server for password resets.
 
-Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} />
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, `Settings`]} />
 
 | Forgot password setting  | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -125,10 +126,8 @@ Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={fa
 </TabItem>
 </Tabs>
 
-<details>
-<summary>**Unlocking a user** <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></summary>
-
-<Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} /></>]} activeLast={false} />
+<DetailsReact summary={<><span><strong>Unlocking a user</strong></span> <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></>} style={{backgroundColor: 'rgba(74, 222, 128, 0.07)'}}>
+<Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} aria-label='Locked user' /></>]} activeLast={false} />
 
 Too many failed sign-in attempts lock a user out. System admins can unlock them via the <FontAwesomeIcon icon={faLock} /> button.
-</details>
+</DetailsReact>
