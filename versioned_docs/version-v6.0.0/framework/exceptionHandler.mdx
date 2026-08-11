@@ -22,18 +22,17 @@ import ApiPlayground from "@site/src/components/ApiPlayground";
 	tagline="Failure diagnostics" />
 
 :::note[motivation]
-Most who have worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a generic error that offers no clear information on what went wrong.
+Most who have worked with Logic Apps is familiar with the error `An action failed. No dependent actions succeeded`. This is a generic error that offers no clear context on what went wrong.
 
-Invictus provides an **Exception Handler** Framework component that retrieves the actual error message from an Azure Logic App and optionally translate this to a human readable text.
+The Invictus Framework includes an **Exception Handler** component that retrieves the actual error message from an Azure Logic App. It then translates this to a human-readable text.
 :::
 
 ## Component usage
-To centralize exception handling, create a Logic App that acts as a 'fallback handler'. This Logic App calls the Exception Handler component and returns the response. 
-All the other Logic Apps can call this fallback Logic App.
+Create a new Logic App that acts as a 'fallback handler'. This centralizes the exception handling by calling the component and returning the response.
 
 :::tip
-* Use a [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook) to call the fallback Logic App so that if anything fails in the fallback Logic App, you can resubmit this and return the response asynchronously.
-* Interact with the component in a scope block and use the **Terminate** action to return the response from the Exception Handler component to the Logic App dashboard.
+* Use a [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook) to call the fallback Logic App. If anything fails in the fallback Logic App, you can resubmit this and return the response asynchronously.
+* Call the component in a scope block. Use the **Terminate** action to return the response from the component to the Logic App dashboard.
 :::
 
 <style>{`.eh-wide{display:block}.eh-narrow{display:none}@media(max-width:640px){.eh-wide{display:none}.eh-narrow{display:block}}`}</style>
@@ -45,15 +44,15 @@ All the other Logic Apps can call this fallback Logic App.
   <ExceptionHandlerFlowMobileDiagram />
 </div>
 
-<Walkthrough>
+<Walkthrough label="Steps to set up the Exception Handler component">
 	<Collapsible number={<FontAwesomeIcon icon={faLanguage} />} title="Resolve Azure Logic App exceptions">
 
 :::info[Access Rights]
-The Exception Handler component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. Assign these to the Exception Handler component to allow the component access to the client's Logic Apps.
+The component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. Assign these to the component to allow the component access to the client's Logic Apps.
 :::
 
-The **Exception Handler** component has as single endpoint to request inspection of failed Azure Logic App workflow runs.
-By default it uses the [Regex Translator](./regextranslation.mdx) component for translating the error, but it can also use Azure AI Foundry if you set the <a href="?q=useAIExceptionHandlerInterpreter#related-bicep-template-parameters">useAIExceptionHandlerInterpreter</a> parameter to `true`.
+The component has as single endpoint to request inspection of failed Azure Logic App workflow runs.
+By default it uses the [**Regex Translator**](./regextranslation.mdx) component for translating the error. It can also use Azure AI Foundry if you set the <a href="?q=useAIExceptionHandlerInterpreter#related-bicep-template-parameters">useAIExceptionHandlerInterpreter</a> parameter to `true`.
 
 <Tabs groupId="la-type">
 <TabItem value="consumption" label="Logic App Consumption" default>
@@ -292,7 +291,7 @@ Set these translations in the `RegexTranslator` table in your Invictus storage a
 </TabItem>
 </Tabs>
 
-By using the translation capabilities of the Exception Handler function, it sends back the following response:
+By using the translation capabilities of the component, it sends back the following response:
 
 ``` json
 {
@@ -311,8 +310,7 @@ By using the translation capabilities of the Exception Handler function, it send
 <details>
 <summary>**Ignore Azure Logic App errors**</summary>
 
-By using the translation capabilities of the Exception Handler function, you can also ignore errors. 
-This can be useful for scenarios where Logic Apps generates an irrelevant error to the business while the flow ran successfully. 
+The translation capabilities also allow ignoring errors. This is useful in scenarios where Logic Apps generates an irrelevant business error while the flow ran successfully.
 
 An example: a solution with an Azure Logic App picks up a file from a network location. After publishing of the file, it deletes the file. 
 In some situations this delete action fails because another instance of the Logic App already removed this file. 
