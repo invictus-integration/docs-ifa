@@ -20,9 +20,9 @@ import ComponentFlowDiagram from "@site/src/components/Diagrams/ComponentFlowDia
 />
 
 :::note[motivation]
-When processing XML files in Logic App workflows, XSD validation is a necessary pre-processing step to catch errors beforehand. [Microsoft currently only supports XSD validation within Logic App workflows on top of **Azure Integration Accounts**](https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-enterprise-integration-schemas?tabs=consumption). This kind of resource is rather expensive and not always available within the cost boundaries of client projects.
+XSD validation is a required step when handling XML files in Logic App workflows. [Microsoft only supports XSD validation within workflows on top of **Azure Integration Accounts**](https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-enterprise-integration-schemas?tabs=consumption). This resource is expensive and not always available within project budgets.
 
-The Invictus Framework provides a **XSD Validator** component that allows you to validate XML files within your Logic App workflow by storing the XSD schemas in an Azure Blob Storage container. The interaction with the component happens via a HTTP endpoint; circumventing the need of an expensive **Azure Integration Account**.
+The Invictus Framework includes a **XSD Validator** component that validates XML files within your workflow via a HTTP endpoint. By storing XSD schemas in an Azure Blob Storage container, project teams can limit the costs.
 :::
 
 ## Component usage
@@ -46,7 +46,7 @@ The Invictus Framework provides a **XSD Validator** component that allows you to
 <Walkthrough>
 <Collapsible number={<FontAwesomeIcon icon={faCircleCheck} />} title="XSD validate user XML">
 
-The **XSD Validator** has a single endpoint available. Given a user XML and a referenced XSD schema stored in Azure Blob Storage, the endpoint responds with the validation result and any schema violations found.
+The **XSD Validator** has a single endpoint available to run validations. Passing an input content and the name of a stored schema, the component responds with the validation result. The component looks up XSD schemas in the `xsdvalidatorstore` Azure Blob Storage container.
 
 {/* vale off */}
 <ApiPlayground
@@ -119,7 +119,7 @@ The **XSD Validator** has a single endpoint available. Given a user XML and a re
 </Collapsible>
 <Collapsible number={<FontAwesomeIcon icon={faFloppyDisk} />} title="Upload XSD schemas to Azure Blob storage">
 
-Upload referenced XSD schema files to the Azure Blob Storage container `xsdvalidatorstore` (available upon installation), within the Invictus Azure Storage Account that's part of the installation.
+Upload XSD schemas to the Azure Blob Storage container `xsdvalidatorstore` (bundled with Invictus).
 
 </Collapsible>
 </Walkthrough>

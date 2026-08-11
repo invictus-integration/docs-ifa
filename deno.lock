@@ -11,12 +11,13 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@docusaurus/core@3.10.0",
-        "npm:@docusaurus/faster@3.10.0",
-        "npm:@docusaurus/module-type-aliases@3.10.0",
-        "npm:@docusaurus/preset-classic@3.10.0",
-        "npm:@docusaurus/theme-common@3.10.0",
-        "npm:@docusaurus/types@3.10.0",
+        "npm:@docusaurus/core@3.10.2",
+        "npm:@docusaurus/faster@3.10.2",
+        "npm:@docusaurus/module-type-aliases@3.10.2",
+        "npm:@docusaurus/plugin-content-docs@3.10.2",
+        "npm:@docusaurus/preset-classic@3.10.2",
+        "npm:@docusaurus/theme-common@3.10.2",
+        "npm:@docusaurus/types@3.10.2",
         "npm:@easyops-cn/docusaurus-search-local@~0.55.1",
         "npm:@fortawesome/free-brands-svg-icons@7",
         "npm:@fortawesome/free-regular-svg-icons@7",

@@ -18,13 +18,13 @@ import Admonition from '@theme/Admonition';
 
 The Dashboard home page shows the status of all your [flows](../../support/help-center-business.mdx?q=flow).
 Each flow shows how many messages are in each state:
-* <FontAwesomeIcon icon={faCircle} color="#00a2ff" /> **Active:** messages the flow is working on now.
-* <FontAwesomeIcon icon={faCircle} color="#059669" /> **Completed:** messages the flow has done with no errors.
-* <FontAwesomeIcon icon={faCircle} color="#f43f5e" /> **Error:** messages the flow has paused, held, or stopped.
+* <FontAwesomeIcon icon={faCircle} color="#00a2ff" aria-hidden='true' /> **Active:** messages the flow is working on now.
+* <FontAwesomeIcon icon={faCircle} color="#059669" aria-hidden='true' /> **Completed:** messages the flow has done with no errors.
+* <FontAwesomeIcon icon={faCircle} color="#f43f5e" aria-hidden='true' /> **Error:** messages the flow has paused, held, or stopped.
 
-<Admonition type="info" icon={<FontAwesomeIcon icon={faArrowPointer} />} title="Click on flow name or status">
-Clicking on the flow name opens the details for that flow.
-Clicking on a status opens the [search page](./02_search.mdx) for that status.
+<Admonition type="info" icon={<FontAwesomeIcon icon={faArrowPointer} />} title="Select a flow name or status">
+Selecting the flow name opens the details for that flow.
+Selecting a status opens the [search page](./02_search.mdx) for that status.
 </Admonition>
 
 ![home](/images/v2_dsb-overview.png)
@@ -54,7 +54,7 @@ The tree below shows flows <Flow label="Invoices" /> and <Flow label="Total cost
 :::tip[Construct flow detail URL with breadcrumb path]
 You can construct a flow detail URL that redirects users to the details page of the flow, but following the breadcrumb path of the flow.
 
-<FontAwesomeIcon icon={faLink} /> `https://<your-dashboard-url>/flowpath/Invoices/Customer/Inbound`
+<FontAwesomeIcon icon={faLink} aria-hidden='true' /> `https://<your-dashboard-url>/flowpath/Invoices/Customer/Inbound`
 
 Make sure that both the folder and the flow's name is unique horizontally so that the breadcrumb only points to a single flow.
 :::
