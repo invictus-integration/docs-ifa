@@ -1,0 +1,61 @@
+/* ── Two-column layout (no feedback, matches Docusaurus default) ── */
+
+.paginationNav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ifm-spacing-horizontal);
+  margin-top: 5rem;
+}
+
+/* ── Three-column layout when feedback widget is present ── */
+
+.threeCol {
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+}
+
+/* ── Prev slot — left-aligned ── */
+
+.prev {
+  justify-content: flex-start;
+}
+
+/* ── Center slot — feedback widget, no extra spacing ── */
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* ── Next slot — right-aligned ── */
+
+.next {
+  justify-content: flex-end;
+}
+
+/* ── Suppress Docusaurus default « » arrows — icons replace them ── */
+
+:global(.pagination-nav__link--prev) :global(.pagination-nav__label::before) {
+  content: none;
+}
+
+:global(.pagination-nav__link--next) :global(.pagination-nav__label::after) {
+  content: none;
+}
+
+/* ── Sublabel with icon — shared by prev and next ── */
+
+.sublabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Responsive: hide shortcut badge on small screens ── */
+
+@media (max-width: 640px) {
+  .shortcut {
+    display: none;
+  }
+}
