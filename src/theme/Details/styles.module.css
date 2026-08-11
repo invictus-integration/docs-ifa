@@ -1,0 +1,84 @@
+/**
+ * Muted, ParameterTable-style disclosure block — see index.js for why this
+ * fully replaces (rather than re-themes) the upstream alert-box styling.
+ * Colors are driven by the --inv-details-* tokens defined in custom.css so a
+ * future visual tweak (e.g. a different muted background) is a single
+ * variable change instead of a selector hunt.
+ */
+
+.details {
+  margin: 0 0 var(--ifm-spacing-vertical);
+  border: 1px solid var(--inv-details-border);
+  border-radius: 6px;
+  background-color: var(--inv-details-bg);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.details:hover {
+  border-color: var(--inv-details-border-hover);
+  background-color: var(--inv-details-bg-hover);
+}
+
+/* All of the header's padding lives here (not on .details) so the entire
+   visible header is inside <summary> — meaning clicking anywhere in it,
+   not just on the text, toggles the block. */
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal);
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  color: var(--inv-details-chevron);
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:focus-visible {
+  outline: 2px solid var(--inv-details-border-hover);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+/* Matches ParameterTable's muted disclosure row (.disclosureCount): base text
+   color dimmed via opacity, rather than full-strength body text. */
+.summaryText {
+  color: var(--ifm-font-color-base);
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+
+/* Once opened, the summary acts as a heading for visible content below
+   rather than a passive, collapsed label — restore full-strength text. */
+.details[data-collapsed='false'] .summaryText {
+  opacity: 1;
+}
+
+/* Markdown wraps summary text in a <p>; its default margin is what was
+   throwing off the chevron's vertical alignment against the text. */
+.summaryText :global(p) {
+  margin: 0;
+}
+
+.chevron {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  transition: color 0.15s ease;
+}
+
+.details:hover .chevron,
+.summary:focus-visible .chevron {
+  color: var(--inv-details-chevron-hover);
+}
+
+.content {
+  padding: 0 var(--ifm-spacing-horizontal) var(--ifm-spacing-vertical);
+}
+
+.content :global(p:last-child) {
+  margin-bottom: 0;
+}
