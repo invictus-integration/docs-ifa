@@ -6,7 +6,7 @@ pagination_next: null
 ---
 
 import React from 'react';
-import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, RowTint } from '@site/src/components/Badges';
+import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, RowTint, BadgedText } from '@site/src/components/Badges';
 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
@@ -74,10 +74,10 @@ If the Invictus resources and the VNET are on different resource groups, then yo
 
 <Step title="Download">
 
-## Save installation script to your repository <SharedNote/>
+## <BadgedText badge={<SharedNote/>}>Save installation script to your repository</BadgedText>
 The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pulls the latest Invictus resources needed to deploy the Framework.
 
-## Add variables to variable group <SharedNote/>
+## <BadgedText badge={<SharedNote/>}>Add variables to variable group</BadgedText>
 Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
 * `**{'{prefix}'}.Invictus.Installation**`
@@ -163,7 +163,7 @@ stages:
 
 <Step title="Deploy">
 
-## Create variable group <SharedNote/>
+## <BadgedText badge={<SharedNote/>}>Create variable group</BadgedText>
 Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
 :::warning[permit build service access to variable groups]

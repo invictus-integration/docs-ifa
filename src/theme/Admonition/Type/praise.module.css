@@ -1,0 +1,14 @@
+.admonition {
+  composes: iconSize from './shared.module.css';
+  --ifm-alert-background-color: #f5f3ff;
+  --ifm-alert-background-color-highlight: #ede9fe;
+  --ifm-alert-foreground-color: #4c1d95;
+  --ifm-alert-border-color: #7c3aed;
+}
+
+html[data-theme='dark'] .admonition {
+  --ifm-alert-background-color: #241b3a;
+  --ifm-alert-background-color-highlight: #2e2150;
+  --ifm-alert-foreground-color: #ddd6fe;
+  --ifm-alert-border-color: #8b5cf6;
+}
