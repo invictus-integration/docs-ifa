@@ -50,24 +50,68 @@ function useRowTintStyles() {
   }, []);
 }
 
+/**
+ * Shared plumbing behind every hover/focus tooltip in this file (Badge and
+ * SharedNote): wires up the pinned-tooltip interaction state, positions the
+ * tooltip relative to the trigger, and portals the tooltip markup into
+ * document.body with the accent color used for both the arrow and border.
+ */
+function useBadgeTooltip({ badgeRef, tooltipContent, accentColor }) {
+  const tooltipId = useId();
+
+  const { visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, onTooltipMouseEnter, onTooltipMouseLeave } = usePinnedTooltip(badgeRef);
+  const pos = useTooltipPosition(badgeRef, visible, { tooltipWidth: TOOLTIP_WIDTH });
+
+  const tooltipEl = visible && createPortal(
+    <div
+      id={tooltipId}
+      role="tooltip"
+      className={`invictus-tooltip${pinned ? ' invictus-tooltip--pinned' : ''}`}
+      data-below={pos.below ? 'true' : 'false'}
+      onMouseEnter={onTooltipMouseEnter}
+      onMouseLeave={onTooltipMouseLeave}
+      style={{
+        position: 'fixed',
+        top: pos.below ? pos.top : 'auto',
+        bottom: pos.below ? 'auto' : `calc(100vh - ${pos.top}px)`,
+        left: pos.left,
+        width: TOOLTIP_WIDTH,
+        '--tooltip-accent': accentColor,
+      }}
+    >
+      {tooltipContent}
+      <span className="invictus-tooltip__arrow" style={{ left: pos.arrowLeft }} />
+    </div>,
+    document.body
+  );
+
+  return { tooltipId, visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, tooltipEl };
+}
+
 export function OnlyAdminsBadge() {
   return Badge({
     title: <><FontAwesomeIcon icon={faShield} /> Admins</>,
-    tooltip: "Only available for users with a **System Admin** role."
+    tooltip: "Only available for users with a **System Admin** role.",
+    backgroundColor: '#b55d00',
+    color: 'white',
   });
 }
 
 export function OnlyOperatorsBadge() {
   return Badge({
     title: <><FontAwesomeIcon icon={faShield} /> Operators</>,
-    tooltip: "Only available for users with at least **Operator** permissions on the flow."
+    tooltip: "Only available for users with at least **Operator** permissions on the flow.",
+    backgroundColor: '#b55d00',
+    color: 'white',
   });
 }
 
 export function OnlyFolderAdminsBadge() {
   return Badge({
     title: <><FontAwesomeIcon icon={faShield} /> Admins</>,
-    tooltip: "Only available for users with a **Folder** or **System Admin** role."
+    tooltip: "Only available for users with a **Folder** or **System Admin** role.",
+    backgroundColor: '#b55d00',
+    color: 'white',
   });
 }
 
@@ -107,39 +151,21 @@ export function RowTint({ variant }) {
   return <span data-row-tint={variant} aria-hidden="true" style={{ display: 'none' }} />;
 }
 
-export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'white', style }) {
+export function Badge({ title, tooltip, backgroundColor, color, accentColor, style }) {
   useTooltipStyles();
 
   const badgeRef = useRef(null);
-  const tooltipId = useId();
+  const tooltipContent = typeof tooltip === 'string'
+    ? <ReactMarkdown remarkPlugins={[remarkGfm]}>{tooltip}</ReactMarkdown>
+    : tooltip;
 
-  const { visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, onTooltipMouseEnter, onTooltipMouseLeave } = usePinnedTooltip(badgeRef);
-  const pos = useTooltipPosition(badgeRef, visible, { tooltipWidth: TOOLTIP_WIDTH });
-
-  const tooltipEl = visible && createPortal(
-    <div
-      id={tooltipId}
-      role="tooltip"
-      className={`invictus-tooltip${pinned ? ' invictus-tooltip--pinned' : ''}`}
-      data-below={pos.below ? 'true' : 'false'}
-      onMouseEnter={onTooltipMouseEnter}
-      onMouseLeave={onTooltipMouseLeave}
-      style={{
-        position: 'fixed',
-        top: pos.below ? pos.top : 'auto',
-        bottom: pos.below ? 'auto' : `calc(100vh - ${pos.top}px)`,
-        left: pos.left,
-        width: TOOLTIP_WIDTH,
-        '--tooltip-accent': backgroundColor,
-      }}
-    >
-      {typeof tooltip === 'string'
-        ? <ReactMarkdown remarkPlugins={[remarkGfm]}>{tooltip}</ReactMarkdown>
-        : tooltip}
-      <span className="invictus-tooltip__arrow" style={{ left: pos.arrowLeft }} />
-    </div>,
-    document.body
-  );
+  // The tooltip accent drives the `<strong>` text color inside it (see
+  // tooltipStyles.js), so it needs enough contrast against the tooltip's
+  // white/dark-gray background. That's usually the same as the badge's own
+  // background, but callers with a pale/translucent background (e.g.
+  // SharedNote) should pass a separate, more readable accentColor instead.
+  const { tooltipId, visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, tooltipEl } =
+    useBadgeTooltip({ badgeRef, tooltipContent, accentColor: accentColor ?? backgroundColor });
 
   return (
     <>
@@ -169,7 +195,7 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
             cursor: 'help',
             userSelect: 'none',
             borderBottom: '1.5px dotted currentColor',
-            '--badge-accent': backgroundColor,
+            '--badge-accent': accentColor ?? backgroundColor,
             ...style,
           }}
         >
@@ -182,85 +208,22 @@ export function Badge({ title, tooltip, backgroundColor = '#b55d00', color = 'wh
   );
 }
 
-const ACCENT = 'var(--inv-badge-shared-accent)';
+const SHARED_TOOLTIP_CONTENT = (
+  <>Same for both <strong>Dashboard</strong> and <strong>Framework</strong>. Can be skipped if done already.</>
+);
+
 export function SharedNote() {
-  useTooltipStyles();
-
-  const badgeRef = useRef(null);
-  const tooltipId = useId();
-
-  const { visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, onTooltipMouseEnter, onTooltipMouseLeave } = usePinnedTooltip(badgeRef);
-  const pos = useTooltipPosition(badgeRef, visible, { tooltipWidth: TOOLTIP_WIDTH });
-
-  const tooltipEl = visible && createPortal(
-    <div
-      id={tooltipId}
-      role="tooltip"
-      className={`invictus-tooltip${pinned ? ' invictus-tooltip--pinned' : ''}`}
-      data-below={pos.below ? 'true' : 'false'}
-      onMouseEnter={onTooltipMouseEnter}
-      onMouseLeave={onTooltipMouseLeave}
-      style={{
-        position: 'fixed',
-        top: pos.below ? pos.top : 'auto',
-        bottom: pos.below ? 'auto' : `calc(100vh - ${pos.top}px)`,
-        left: pos.left,
-        width: TOOLTIP_WIDTH,
-        '--tooltip-accent': ACCENT,
-      }}
-    >
-      Same for both <strong>Dashboard</strong> and <strong>Framework</strong>. Can be skipped if done already.
-      <span className="invictus-tooltip__arrow" style={{ left: pos.arrowLeft }} />
-    </div>,
-    document.body
-  );
-
-  return (
-    <>
-      <span
-        ref={badgeRef}
-        style={{
-          position: 'relative',
-          display: 'inline-block',
-          marginLeft: '8px',
-          textTransform: 'none',
-          fontWeight: 'bold',
-        }}
-      >
-        <span
-          tabIndex={0}
-          role="button"
-          aria-pressed={pinned}
-          aria-describedby={visible ? tooltipId : undefined}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onClick={onClick}
-          className="invictus-badge"
-          style={{
-            backgroundColor: 'var(--inv-badge-shared-bg)',
-            color: 'var(--inv-badge-shared-text)',
-            padding: '2px 6px',
-            borderRadius: '4px',
-            fontSize: '0.9rem',
-            fontWeight: '600',
-            fontFamily: 'Inter',
-            cursor: 'help',
-            userSelect: 'none',
-            borderBottom: '1.5px dotted currentColor',
-            '--badge-accent': ACCENT,
-          }}
-        >
-          Shared
-        </span>
-      </span>
-
-      {tooltipEl}
-    </>
-  );
+  return Badge({
+    title: 'Shared',
+    tooltip: SHARED_TOOLTIP_CONTENT,
+    backgroundColor: 'var(--inv-badge-shared-bg)',
+    color: 'var(--inv-badge-shared-text)',
+    // The shared badge's background is a pale/translucent chip (unlike the
+    // vivid new/deprecated backgrounds), so it isn't readable as the
+    // tooltip's <strong> accent — reuse its already-tuned text color instead.
+    accentColor: 'var(--inv-badge-shared-text)',
+  });
 }
-
 
 /**
  * Wraps a heading or list-item phrase with a dotted underline and places
@@ -289,12 +252,16 @@ export function BadgedText({ children, badge, variant = 'underline' }: { childre
       const badgeElement = root.querySelector('.invictus-badge');
       if (!badgeElement) return false;
 
-      const { backgroundColor } = window.getComputedStyle(badgeElement);
-      if (!backgroundColor || backgroundColor === 'transparent' || backgroundColor === 'rgba(0, 0, 0, 0)') {
+      // Prefer --badge-accent over backgroundColor: badges with a pale or
+      // translucent chip background (e.g. SharedNote) set a separate, more
+      // readable accent for exactly this kind of decorative use.
+      const computedStyle = window.getComputedStyle(badgeElement);
+      const accent = computedStyle.getPropertyValue('--badge-accent').trim() || computedStyle.backgroundColor;
+      if (!accent || accent === 'transparent' || accent === 'rgba(0, 0, 0, 0)') {
         return false;
       }
 
-      setDecorationColor(backgroundColor);
+      setDecorationColor(accent);
       return true;
     };
 
