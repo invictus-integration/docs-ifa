@@ -93,7 +93,7 @@
   },
   {
     "question": "Can I recover a flow that I deleted from the Dashboard by accident?",
-    "answer": "Yes. The flow data is not permanently removed. In Cosmos DB, open the `FolderFlows` collection and locate the deleted flow — it will have an `-Archived` suffix on its name. Remove the suffix and set `isVisible` to `true`. If the flow was recreated in the meantime, remove that duplicate document first to avoid conflicts.",
+    "answer": "Yes. The Dashboard does not permanently remove flow definitions. In Cosmos DB, open the `FolderFlows` collection and locate the deleted flow — it will have an `-Archived` suffix on its name. Remove the suffix and set `isVisible` to `true`. If the flow was recreated in the meantime, remove that duplicate document first to avoid conflicts.",
     "version": ">= v6.0",
     "userType": "technical",
     "tags": [

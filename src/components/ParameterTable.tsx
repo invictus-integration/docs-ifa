@@ -8,6 +8,7 @@ import highlightStyles from "./highlight.module.css";
 import inputStyles from "./tableSearchInput.module.css";
 import rowStyles from "./resultRow.module.css";
 import { NewSinceBadge, DeprecatedSinceBadge } from "./Badges";
+import { typeBadgeClass } from "./typeBadge";
 
 export type Parameter = {
   name: string;
@@ -260,21 +261,6 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
     );
   };
 
-  // Maps a Bicep parameter type string to its CSS module class for the pill badge.
-  const typeBadgeClass = (type: string): string => {
-    switch (type.toLowerCase()) {
-      case "string": return rowStyles.typeBadgeString;
-      case "int":
-      case "integer": return rowStyles.typeBadgeInt;
-      case "bool":
-      case "boolean": return rowStyles.typeBadgeBool;
-      case "object": return rowStyles.typeBadgeObject;
-      case "array": return rowStyles.typeBadgeArray;
-      case "securestring": return rowStyles.typeBadgeSecureString;
-      case "secureobject": return rowStyles.typeBadgeSecureObject;
-      default: return rowStyles.typeBadgeDefault;
-    }
-  };
 
   const renderRow = (p: Parameter, depth = 0, posInSet = 1, setSize = 1) => {
     const isExpanded = expandedRows.has(p.name);
