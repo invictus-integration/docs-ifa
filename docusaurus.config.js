@@ -1,5 +1,6 @@
 const lightCodeTheme = require('./src/prism/light');
 const darkCodeTheme = require('./src/prism/dark');
+const rehypeTableScope = require('./src/remark/rehypeTableScope');
 require('dotenv').config();
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -38,6 +39,7 @@ const config = {
           sidebarCollapsible: false,
           includeCurrentVersion: process.env.CONTEXT !== 'production',
           breadcrumbs: false,
+          rehypePlugins: [rehypeTableScope],
           admonitions: {
             keywords: ['praise'],
             extendDefaults: true,
@@ -85,23 +87,7 @@ const config = {
         src: 'img/invictus-logo_negative_white.png',
         srcDark: 'img/invictus-logo_negative_white.png',
       },
-      items: [
-        {
-          type: 'docsVersionDropdown',
-
-          //// Optional
-          position: 'right',
-          // Add additional dropdown items at the beginning/end of the dropdown.
-          dropdownItemsBefore: [],
-          // Do not add the link active class when browsing docs.
-          dropdownActiveClassDisabled: true,
-          docsPluginId: 'default',
-        },
-        {
-          type: 'search',
-          position: 'right',
-        }
-      ],
+      items: [],
     },
 
     footer: {

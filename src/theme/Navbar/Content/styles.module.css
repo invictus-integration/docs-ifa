@@ -1,0 +1,28 @@
+/* Restore Infima padding fix for last right-side navbar child */
+:global(.navbar__items--right) > :last-child {
+  padding-right: 0;
+}
+
+/* ── Desktop version dropdown ──────────────────────────────────────────────── */
+.desktopVersion {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 996px) {
+  .desktopVersion {
+    display: none;
+  }
+}
+
+/* ── Mobile version badge ──────────────────────────────────────────────────── */
+/* Hidden on all breakpoints — version selection moved to the audience bar. */
+.mobileVersion {
+  display: none;
+}
+
+/* ── Toggle + search wrapper ────────────────────────────────────────────────── */
+.rightActions {
+  display: flex;
+  align-items: center;
+}

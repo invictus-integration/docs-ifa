@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from '@docusaurus/router';
 import { UserTypeProvider } from '../components/UserTypeContext';
+import { MobileNavProvider } from '../components/MobileNavContext';
 
 // ── SearchHighlighter ──────────────────────────────────────────────────────
 // Reads ?highlight=<term> from the URL after a search-result navigation,
@@ -267,9 +268,11 @@ function HashScrollHandler() {
 export default function Root({ children }) {
   return (
     <UserTypeProvider>
-      <HashScrollHandler />
-      <SearchHighlighter />
-      {children}
+      <MobileNavProvider>
+        <HashScrollHandler />
+        <SearchHighlighter />
+        {children}
+      </MobileNavProvider>
     </UserTypeProvider>
   );
 }
