@@ -17,8 +17,8 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 <ReleaseVersion version="6.4" date="July 2026">
   <Features>
     - **Simplify flow status filters into groups:** the flow status filters in the advanced search pane group statuses into broader categories instead of too detailed levels. 'Active' (= `Active`, `Resubmitted`, `Resumed` statuses). 'Error' (= `Failed`, `Resubmit Failed`, and `Resume Failed` statuses).
-    - **[Transco] missing references no longer cause failures:** scenarios with conditional actions failed due to possible missing data references during instructions. The Transco no longer fails when `scopePath` or `destination` points to unavailable locations. The component logs a warning in case that happens to help spotting configuration issues.
-    - **[Transco] fall back on default parameter values:** the component better handles optional or unavailable data. In situations where the component can't retrieve a parameter value from a path, you can fall back on a `defaultValue`.
+    - **[Transco](../framework/transcoV2.mdx) missing references no longer cause failures:** scenarios with conditional actions failed due to possible missing data references during instructions. The Transco no longer fails when `scopePath` or `destination` points to unavailable locations. The component logs a warning in case that happens to help spotting configuration issues.
+    - **[Transco](../framework/transcoV2.mdx) fall back on default parameter values:** the component better handles optional or unavailable data. In situations where the component can't retrieve a parameter value from a path, you can fall back on a `defaultValue`.
 
     - **Enhanced private network support:** deployments within a virtual network (VNET) offers private endpoints. This helps organizations to align their governance and standards in the deployment.
   </Features>
@@ -26,8 +26,8 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Upgrade to .NET 10:** the Dashboard and Framework components run on .NET 10.
   </TechChanges>
   <Fixes>
-    - **[ExceptionHandler] report error details in failed `ForEach` loops:** the component captures inner errors inside `ForEach` loops in Logic Apps workflows instead of displaying general error user messages. Users no longer have to switch to Azure to find the root cause for failures.
-    - **[PubSub] Improved recovery of deferred messages:** the component recovers more reliably messages stuck in a deferred state, caused by external intermittent platform issues.
+    - **[ExceptionHandler](../framework/exceptionHandler.mdx) report error details in failed `ForEach` loops:** the component captures inner errors inside `ForEach` loops in Logic Apps workflows instead of displaying general error user messages. Users no longer have to switch to Azure to find the root cause for failures.
+    - **[PubSub](../framework/pubsubV2.mdx) Improved recovery of deferred messages:** the component recovers more reliably messages stuck in a deferred state, caused by external intermittent platform issues.
 
       Previously, when a deferred message was automatically resubmitted, environments with multiple subscribers could receive the message more broadly than intended. The subscription filtering logic has now been improved to ensure that automatically resubmitted messages are routed only to the appropriate subscriber.
 
@@ -46,7 +46,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   </Features>
   <TechChanges>
     - **Framework SDK update:** all components run on their most recent SDK version.
-    - **Transco property naming fixed:** the Transco component now generates property names that follow the Invictus naming conventions.
+    - **[Transco](../framework/transcoV2.mdx) property naming fixed:** the Transco component now generates property names that follow the Invictus naming conventions.
     - **Application Gateway support:** Invictus works with an Application Gateway in front of the Dashboard. [Two new Bicep flags enable this](../dashboard/installation/?step=deploy&q=applicationgateway#bicep-template-parameters).
   </TechChanges>
   <Fixes>
@@ -78,9 +78,9 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   </TechChanges>
   <Fixes>
     - **Full flow path not shown:** the Dashboard now shows the full folder path when you open a flow in a sub-folder.
-    - **PubSub sets wrong workflow run ID:** the PubSub now writes the correct value to the `x-ms-workflow-run-id` header on outgoing messages.
+    - **[PubSub](../framework/pubsubV2.mdx) sets wrong workflow run ID:** the PubSub now writes the correct value to the `x-ms-workflow-run-id` header on outgoing messages.
     - **Azure Container Registry unreachable:** the install now waits for the private endpoint to be ready. It no longer creates the Azure Container Registry before the endpoint is ready.
-    - **SequenceController fixes:** the `SequenceController` has two bug fixes:
+    - **[SequenceController](../framework/sequencecontroller.mdx) fixes:** the `SequenceController` has two bug fixes:
       - a scaling issue that caused many timeout errors for `WaitForExecution`.
       - a new `retentionDays` flag stops the part from keeping state for too long.
     - **Cursor jumps when editing flow name:** the cursor no longer jumps to the end when you edit a flow name. It now stays where you left it.
@@ -90,7 +90,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
 <ReleaseVersion version="6.1" date="January 2026">
   <Features>
-    - **Transco supports `strip-space`:** `Transco` now supports the `strip-space` XSLT directive. It removes whitespace-only text nodes from the XML input before transformation.
+    - **[Transco](../framework/transcoV2.mdx) supports `strip-space`:** `Transco` now supports the `strip-space` XSLT directive. It removes whitespace-only text nodes from the XML input before transformation.
   </Features>
   <TechChanges>
     - **Bicep uses Azure Key Vault output URL:** Bicep templates now use the vault's own output URL instead of constructing a fixed value. This prevents mismatches in non-standard vault configurations.
@@ -102,8 +102,8 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Logic App run error not shown:** the Logic App detail page now always shows the error message for a failed run, even when the error originates from a child workflow.
     - **Missing Container App scaling rules:** all Container App scaling rules are now defined in Bicep and are individually configurable per component.
     - **Sign-in fails for users in large Entra ID groups:** users who belong to many Entra ID groups can now sign in. The issue occurred when the groups claim in the JWT exceeded the token size limit.
-    - **RegexTranslator supports managed identity:** the `RegexTranslator` component now authenticates using managed identity. Connection string authentication is no longer required.
-    - **PubSub messages get stuck in queue:** the PubSub Service Bus consumer now acknowledges messages correctly. Messages no longer remain locked and unprocessed in the queue.
+    - **[RegexTranslator](../framework/regextranslation.mdx) supports managed identity:** the `RegexTranslator` component now authenticates using managed identity. Connection string authentication is no longer required.
+    - **[PubSub](../framework/pubsubV2.mdx) messages get stuck in queue:** the PubSub Service Bus consumer now acknowledges messages correctly. Messages no longer remain locked and unprocessed in the queue.
   </Fixes>
 </ReleaseVersion>
 
@@ -111,7 +111,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <Features>
     - **Audit log tracks group and flow changes:** the audit page now records group sync, and folder and flow add/remove events.
     - **Workflow column shows Logic Apps Standard site name:** the Workflow name column now includes the site name for Logic Apps Standard. This lets you tell flows apart when sites share the same workflow name.
-    - **Transco returns a single column value:** `Transco` can now return a value from a single column, even when the query returns many rows. Set `columnName` in the Transco config to enable this. It's off by default.
+    - **[Transco](../framework/transcoV2.mdx) returns a single column value:** `Transco` can now return a value from a single column, even when the query returns many rows. Set `columnName` in the Transco config to enable this. It's off by default.
     - **Managed identity for all Framework components:** all Framework components now authenticate using managed identity. See the [`identityProviderApplicationId`](../framework/installation/index.mdx?q=identityProviderApplicationId) Bicep parameter for setup details.
   </Features>
   <TechChanges>
@@ -122,7 +122,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <Fixes>
     - **Flow column names ignore config casing:** column names in the Dashboard now use the casing defined in your flow config instead of always showing uppercase.
     - **Flow search ignores case:** flow search in the Dashboard now matches regardless of case.
-    - **ExceptionHandler fixes:**
+    - **[ExceptionHandler](../framework/exceptionHandler.mdx) fixes:**
       - The `nextLink` parsing works.
       - The `siteName` is optional for Consumption Logic Apps.
       - The pattern for special characters handles edge cases.

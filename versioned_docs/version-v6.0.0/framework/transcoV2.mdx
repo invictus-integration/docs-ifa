@@ -21,14 +21,13 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 />
 
 :::note[motivation]
-Integration scenarios often need to 'promote' or 'enrich' messages/data from either internal or external data sources. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
+Integration scenarios often need to 'promote' or 'enrich' messages from data sources. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
 
-Invictus provides a Transco component to promote properties from a SQL database or to transform XML content via XSLT transformations. The component can also promote values to the context of the response.
+The Invictus Framework includes a **Transco** component to promote properties from a SQL database or to transform XML content via XSLT transformations. The component can also promote values to the context of the response.
 :::
 
 ## Component usage
-The Transco component has endpoints available for XML or JSON content.
-Given a stored Transco configuration file, the component promotes values from a client's SQL database or transforms XML content via a stored XSLT file.
+The Transco component has endpoints available for XML or JSON content. Via a stored config file, it promotes values from a client's SQL database or transforms XML content via a stored XSLT file.
 
 {/* vale off */}
 <ComponentFlowDiagram
@@ -60,31 +59,6 @@ Given a stored Transco configuration file, the component promotes values from a 
   ]}
 />
 {/* vale on */}
-
-{/* <Tabs>
-<TabItem value="xml-json" label="XML/JSON">
-
-
-
-<Walkthrough>
-<Collapsible number="SQL" title="Promote client requests with client's database">
-
-The Transco component can execute SQL commands to promote properties from a SQL database table.
-The component creates the SQL query based on a stored configuration file and executes it against the client's database.
-
-You can promote the result of the SQL query back to the response. 
-
-</Collapsible>
-<Collapsible number="XSLT" title="Transform client requests via stored transformation">
-
-The Transco component can execute XSLT transformations on XML content based on a stored XSLT file (Transco supports XSLT 1.0 syntax).
-The component applies the transformation to the request content and promotes the transformed result back to the response. 
-
-</Collapsible>
-</Walkthrough>
-
-</TabItem>
-</Tabs> */}
 
 <Tabs groupId="transco-endpoints">
 <TabItem value="json-xml" label="XML/JSON">
