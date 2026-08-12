@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useEffect, useRef } from 'react';
-import './ReleaseNotes.css';
+import './styles.css';
 import Admonition from '@theme/Admonition';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faGear, faBug, faChevronDown } from '@fortawesome/free-solid-svg-icons';

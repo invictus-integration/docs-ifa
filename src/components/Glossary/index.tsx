@@ -4,10 +4,10 @@ import remarkGfm from "remark-gfm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faXmark, faFileCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useHistory } from "@docusaurus/router";
-import highlightStyles from "./highlight.module.css";
-import inputStyles from "./tableSearchInput.module.css";
-import rowStyles from "./resultRow.module.css";
-import styles from "./Glossary.module.css";
+import highlightStyles from "../highlight.module.css";
+import inputStyles from "../tableSearchInput.module.css";
+import rowStyles from "../resultRow.module.css";
+import styles from "./styles.module.css";
 
 export type GlossaryTerm = {
   term: string;

@@ -21,14 +21,13 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 />
 
 :::note[motivation]
-Integration scenarios often need to 'promote' or 'enrich' messages/data from either internal or external data sources. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
+Integration scenarios often need to 'promote' or 'enrich' messages from data sources. Codit is a long-term implementer of something called 'Transco', which was originally a Microsoft BizTalk component. Now, modern Azure Logic Apps integration benefits from this behavior.
 
-Invictus provides a Transco component to promote properties from a SQL database or to transform XML content via XSLT transformations. The component can also promote values to the context of the response.
+The Invictus Framework includes a **Transco** component to promote properties from a SQL database or to transform XML content via XSLT transformations. The component can also promote values to the context of the response.
 :::
 
 ## Component usage
-The Transco component has endpoints available for XML or JSON content.
-Given a stored Transco configuration file, the component promotes values from a client's SQL database or transforms XML content via a stored XSLT file.
+The Transco component has endpoints available for XML or JSON content. Via a stored config file, it promotes values from a client's SQL database or transforms XML content via a stored XSLT file.
 
 {/* vale off */}
 <ComponentFlowDiagram

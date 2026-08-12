@@ -3,4 +3,4 @@ snet = "snet"
 ser = "ser"
 
 [files]
-extend-exclude = ["src/components/*"]
+extend-exclude = ["src/components/*","vale.ini"]

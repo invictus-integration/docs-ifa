@@ -38,18 +38,18 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     <Tabs groupId="la" aria-label="Logic App type for enabling workflow diagnostics">
       <TabItem value="consumption" label="Consumption">
         :::warning
-        Make sure that the `Workflow runtime` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs.
+        Make sure that the `Workflow runtime` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' aria-hidden='true' /> checked**, but the `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' aria-hidden='true' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs.
         :::
 
-        > <FontAwesomeIcon icon={faLink} /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
+        > <FontAwesomeIcon icon={faLink} aria-hidden='true' /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=consumption) on how this can be configured manually.
 
       </TabItem>
       <TabItem value="standard" label="Standard">
       :::warning
-      Make sure that the `Function Application Logs` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' /> checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs with additional cost.
+      Make sure that the `Function Application Logs` diagnostic events is **<FontAwesomeIcon icon={faSquareCheck} color='#059669' aria-hidden='true' /> checked**, but the `Workflow Runtime Logs` and `AllMetrics` is **<FontAwesomeIcon icon={faSquare} color='#f43f5e' aria-hidden='true' /> unchecked**. Otherwise the app sends far too many events to the Event Hubs with additional cost.
       :::
     
-      > <FontAwesomeIcon icon={faLink} /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=standard) on how this can be configured manually.
+      > <FontAwesomeIcon icon={faLink} aria-hidden='true' /> See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/logic-apps/monitor-workflows-collect-diagnostic-data?tabs=standard) on how this can be configured manually.
     
       </TabItem>
     </Tabs>
@@ -193,15 +193,15 @@ You can resume/resubmit flows via a custom interaction HTTP endpoint instead of 
 
 **Configure flow for custom resume/resubmit**
 
-Navigate to the *Advanced Settings* section of the flow page. To enable custom resume and resubmit for a flow, toggle the switches of <ToggleInput label="Custom resubmit URL" /> and <ToggleInput label="Custom resume URL" /> respectively.
-Enter a <TextInput label="HTTPS URL" /> to set a resubmit/resume URL. The <FontAwesomeIcon icon={faCirclePlay} /> button tests whether the Dashboard can reach the URL.
+Navigate to the *Advanced Settings* section of the flow page. To enable custom resume/resubmit for a flow, toggle the switches <ToggleInput label="Custom resubmit URL" />/<ToggleInput label="Custom resume URL" /> off respectively.
+Enter a <TextInput label="HTTPS URL" /> to set a resubmit/resume URL. The <FontAwesomeIcon icon={faCirclePlay} aria-label='Test URL' /> button tests whether the Dashboard can reach the URL.
 
-You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, click the <FontAwesomeIcon icon={faAt} /> button to open the HTTP headers dialog box where you can add custom HTTP headers.
+You may need to use custom HTTP headers when making the custom resubmit/resume request. To edit the HTTP headers, select the <FontAwesomeIcon icon={faAt} aria-label='Edit HTTP headers' /> button to open the HTTP headers dialog box where you can add custom HTTP headers.
 
 **Resume/Resubmit a flow**
 * Once configured, navigate to the [search flow traces](../02_search.mdx) page by selecting the flow in the sidebar you just adapted for custom resume/resubmit.
 * Open the flow operations of the message you want to resubmit.
-* Click the <Button icon={faArrowRotateLeft} label="Resubmit" /> or <Button icon={faCirclePlay} label="Resume" /> item in the list to trigger the custom resubmit/resume URL.
+* Select the <Button icon={faArrowRotateLeft} label="Resubmit" /> or <Button icon={faCirclePlay} label="Resume" /> item in the list to trigger the custom resubmit/resume URL.
 
 The Dashboard sends a HTTP `POST` request to the <TextInput label="Custom resubmit URL" /> or <TextInput label="Custom resume URL" /> you configured, with a body containing information about the workflow run.
 
