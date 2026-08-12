@@ -147,7 +147,7 @@
   --inv-details-chevron-hover: var(--ifm-color-primary);
 
   /* Badge — semantic pill colors */
-  --inv-badge-new-bg: #059669;
+  --inv-badge-new-bg: #065F46;
   --inv-badge-new-text: #ffffff;
   --inv-badge-deprecated-bg: #b55d00;
   --inv-badge-deprecated-text: #ffffff;
@@ -235,7 +235,6 @@ html[data-theme='dark'] {
   /* Badge */
   --inv-badge-shared-bg: rgba(42, 143, 156, 0.15);
   --inv-badge-shared-text: #4fcadf;
-  --inv-badge-shared-accent: #4fcadf;
 }
 
 /* 2b. Component styles */

@@ -1,5 +1,6 @@
 const lightCodeTheme = require('./src/prism/light');
 const darkCodeTheme = require('./src/prism/dark');
+const rehypeTableScope = require('./src/remark/rehypeTableScope');
 require('dotenv').config();
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -38,6 +39,7 @@ const config = {
           sidebarCollapsible: false,
           includeCurrentVersion: process.env.CONTEXT !== 'production',
           breadcrumbs: false,
+          rehypePlugins: [rehypeTableScope],
           admonitions: {
             keywords: ['praise'],
             extendDefaults: true,
