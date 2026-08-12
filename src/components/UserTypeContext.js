@@ -13,6 +13,8 @@ function flattenItems(items) {
     for (const item of arr) {
       if (typeof item === 'string') {
         result.push(item);
+      } else if (item.type === 'doc') {
+        result.push(item.id);
       } else if (item.type === 'category') {
         if (item.link?.type === 'doc' && item.link.id) result.push(item.link.id);
         if (item.items) recurse(item.items);
@@ -89,22 +91,6 @@ export function UserTypeProvider({ children }) {
       history.replace(TECHNICAL_ROOT);
     }
   }, [location.pathname, userType]);
-
-  useEffect(() => {
-    function onKeyDown(e) {
-      const tag = e.target.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
-      if (!e.altKey || e.key.toLowerCase() !== 'u') return;
-
-      e.preventDefault();
-      const newType = userType === 'business' ? 'technical' : 'business';
-      setUserType(newType);
-      history.push(newType === 'business' ? BUSINESS_ROOT : TECHNICAL_ROOT);
-    }
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [userType, history]);
 
   return (
     <UserTypeContext.Provider value={{ userType, setUserType }}>

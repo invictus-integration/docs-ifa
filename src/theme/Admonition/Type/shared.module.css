@@ -1,0 +1,9 @@
+/*
+ * Shared with every admonition type via CSS Modules `composes`.
+ * FontAwesome icons render larger than Docusaurus's default admonition
+ * icons, so every type module needs the same size/alignment correction.
+ */
+.iconSize svg {
+  height: 1.2em;
+  vertical-align: 0;
+}
