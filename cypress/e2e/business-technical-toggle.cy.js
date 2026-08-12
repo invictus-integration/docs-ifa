@@ -1,7 +1,6 @@
 describe('Business/Technical user toggle', () => {
 
   const Audience = { BUSINESS: 'business', TECHNICAL: 'technical' };
-  const Mobile = 'Mobile';
   const Desktop = 'Desktop';
   const Devices = [
     { name: Desktop, viewport: [1280, 720] },
@@ -9,45 +8,20 @@ describe('Business/Technical user toggle', () => {
 
   before(() => {
 
+    // Desktop only: the business/technical switcher lives inside the docs
+    // sidebar (UserTypeSwitcher) and is only rendered there — on mobile it's
+    // replaced entirely by the audience bar + overlay (see the "Mobile
+    // audience bar" describe block below).
     Cypress.Commands.add('getToggle', (audience) =>
       cy.get(`[data-cy-toggle=${audience}]`));
 
-    Cypress.Commands.add('openSidebar', (deviceName, audience) => {
-      if (deviceName === Mobile) {
-        // Wait for React hydration: the toggle must be in the DOM before we can open the sidebar
-        cy.get(`[data-cy-toggle=${audience}]`).should('exist');
-        cy.get('body').then(($body) => {
-          const sidebarOpen = $body.find('.navbar-sidebar--show').length > 0;
-          const toggleVisible = $body.find(`[data-cy-toggle=${audience}]:visible`).length > 0;
-          if (!sidebarOpen && !toggleVisible) {
-            cy.scrollTo('top');
-            cy.get('[aria-label="Toggle navigation bar"]').click();
-            cy.get('.navbar-sidebar--show').should('exist');
-          }
-        });
-      }
-      cy.getToggle(audience).should('be.visible');
-    });
-
-    Cypress.Commands.add('closeSidebar', (deviceName) => {
-      if (deviceName === Mobile) {
-        cy.get('body').then(($body) => {
-          if ($body.find('.navbar-sidebar--show').length) {
-            cy.get('.navbar-sidebar__close').click({ multiple: true });
-          }
-        });
-      }
-    });
-
-    Cypress.Commands.add('assertToggleState', (deviceName, activeAudience) => {
+    Cypress.Commands.add('assertToggleState', (activeAudience) => {
       const inactive = activeAudience === Audience.BUSINESS ? Audience.TECHNICAL : Audience.BUSINESS;
-      cy.openSidebar(deviceName, activeAudience);
       cy.getToggle(activeAudience).should('have.attr', 'data-cy-toggle-active', 'true');
       cy.getToggle(inactive).should('have.attr', 'data-cy-toggle-active', 'false');
     });
 
-    Cypress.Commands.add('clickFooterLink', (deviceName, linkName) => {
-      cy.closeSidebar(deviceName);
+    Cypress.Commands.add('clickFooterLink', (linkName) => {
       cy.get(`[data-cy-footer-link=${linkName}]`).scrollIntoView().click();
     });
 
@@ -60,26 +34,22 @@ describe('Business/Technical user toggle', () => {
         cy.clearLocalStorage();
         cy.viewport(width, height);
         cy.visit('/');
-        cy.openSidebar(deviceName, Audience.BUSINESS);
-      });
-
-      afterEach(() => {
-        cy.closeSidebar(deviceName);
+        cy.getToggle(Audience.BUSINESS).should('be.visible');
       });
 
       it('defaults to business users', () => {
-        cy.assertToggleState(deviceName, Audience.BUSINESS);
+        cy.assertToggleState(Audience.BUSINESS);
       });
 
       it('switches to technical users when clicked', () => {
         cy.getToggle(Audience.TECHNICAL).click();
-        cy.assertToggleState(deviceName, Audience.TECHNICAL);
+        cy.assertToggleState(Audience.TECHNICAL);
       });
 
       it('switches back to business users when clicked again', () => {
         cy.getToggle(Audience.TECHNICAL).click();
         cy.getToggle(Audience.BUSINESS).click();
-        cy.assertToggleState(deviceName, Audience.BUSINESS);
+        cy.assertToggleState(Audience.BUSINESS);
       });
 
       it('persists selected audience in localStorage', () => {
@@ -97,14 +67,14 @@ describe('Business/Technical user toggle', () => {
 
       it('is keyboard accessible', () => {
         cy.getToggle(Audience.TECHNICAL).focus().press(Cypress.Keyboard.Keys.ENTER);
-        cy.assertToggleState(deviceName, Audience.TECHNICAL);
+        cy.assertToggleState(Audience.TECHNICAL);
       });
 
       it('switches to correct audience when navigating directly', () => {
         cy.visit('/dashboard/flows');
-        cy.assertToggleState(deviceName, Audience.BUSINESS);
+        cy.assertToggleState(Audience.BUSINESS);
         cy.visit('/dashboard/installation');
-        cy.assertToggleState(deviceName, Audience.TECHNICAL);
+        cy.assertToggleState(Audience.TECHNICAL);
       });
 
       const footerLinks = [
@@ -119,15 +89,19 @@ describe('Business/Technical user toggle', () => {
 
       footerLinks.forEach(({ linkName, audience }) => {
         it(`switches to correct audience when clicking ${linkName} footer link`, () => {
-          cy.clickFooterLink(deviceName, linkName);
-          cy.assertToggleState(deviceName, audience);
+          cy.clickFooterLink(linkName);
+          cy.assertToggleState(audience);
         });
       });
 
     });
   });
 
-  describe('Mobile-only behavior', () => {
+  describe('Mobile audience bar', () => {
+
+    const audienceBar = () => cy.get('nav[aria-label="Documentation section"]');
+    const audienceTab = (label) => audienceBar().contains('a', label);
+    const overlay = () => cy.get('#audience-overlay');
 
     beforeEach(() => {
       cy.clearLocalStorage();
@@ -135,14 +109,63 @@ describe('Business/Technical user toggle', () => {
       cy.visit('/');
     });
 
-    it('toggle is not present in the top navbar', () => {
-      cy.get('.navbar__items [data-cy-toggle]').should('not.exist');
+    it('does not render the desktop sidebar switcher', () => {
+      cy.get('[data-cy-toggle]').should('not.exist');
     });
 
-    it('shows both toggle options after opening the hamburger sidebar', () => {
-      cy.get('.navbar__toggle').click();
-      cy.get('[data-cy-toggle=business]').should('be.visible');
-      cy.get('[data-cy-toggle=technical]').should('be.visible');
+    it('shows both audience tabs, defaulting to "User guides" as active', () => {
+      audienceTab('User guides').should('have.attr', 'aria-current', 'page');
+      audienceTab('Setup & maintenance').should('not.have.attr', 'aria-current');
+    });
+
+    it('opens the overlay when tapping the active tab, and closes it when tapping again', () => {
+      overlay().should('not.be.visible');
+
+      audienceTab('User guides').click();
+      audienceTab('User guides').should('have.attr', 'aria-expanded', 'true');
+      overlay().should('be.visible');
+
+      audienceTab('User guides').click();
+      audienceTab('User guides').should('have.attr', 'aria-expanded', 'false');
+      overlay().should('not.be.visible');
+    });
+
+    it('closes the overlay on Escape', () => {
+      audienceTab('User guides').click();
+      overlay().should('be.visible');
+      cy.get('body').type('{esc}');
+      overlay().should('not.be.visible');
+    });
+
+    it('closes the overlay when tapping the backdrop', () => {
+      audienceTab('User guides').click();
+      overlay().should('be.visible');
+      cy.get('[data-cy="audience-overlay-backdrop"]').click({ force: true });
+      overlay().should('not.be.visible');
+    });
+
+    it('tapping an unvisited section seeds navigation to it and marks it active', () => {
+      // "Setup & maintenance" hasn't been cached yet on a fresh visit to '/',
+      // so opening it seeds a client-side navigation to /technical.
+      audienceTab('Setup & maintenance').click();
+      cy.location('pathname').should('eq', '/technical');
+      audienceTab('Setup & maintenance').should('have.attr', 'aria-current', 'page');
+      cy.getAllLocalStorage().then((storage) => {
+        const siteStorage = storage['http://localhost:3000'] || storage[Object.keys(storage)[0]];
+        expect(siteStorage?.['invictus-user-type']).to.equal('technical');
+      });
+    });
+
+    it('navigates to the page behind a link tapped inside the overlay', () => {
+      audienceTab('User guides').click();
+      overlay().should('be.visible');
+
+      overlay().find('a[href]').first().then(($link) => {
+        const href = $link.attr('href');
+        cy.wrap($link).click();
+        cy.location('pathname').should('eq', href);
+      });
+      overlay().should('not.be.visible');
     });
 
   });
