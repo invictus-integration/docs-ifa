@@ -1,11 +1,17 @@
 ---
 sidebar_label: Import via Data Factory
+hide_title: true
 ---
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faSquareCheck} from '@fortawesome/free-solid-svg-icons';
+import ComponentHeader from '@site/src/components/ComponentHeader';
 
-# Import flow traces via Azure Data Factory pipelines
+<ComponentHeader
+  icon="/img/icons/import-jobs.png"
+  name="Data Factory import job"
+  tagline="Import flow traces from Azure Data Factory pipelines" />
+
 For the Invictus Dashboard to know if messages went through your Azure Data Factory pipelines correctly or not, you need to configure diagnostic settings on all pipelines you want to include. These settings should stream their diagnostic traces to the Invictus Event Hubs resource:
 
 * `EventHubsNamespace`: `invictus-{env}-we-sft-evnm`

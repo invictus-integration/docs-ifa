@@ -114,25 +114,31 @@
 
 /* ── Inline cross-reference button ── */
 
-/* Wraps a bold term that matches another glossary entry */
+/* Wraps a bold term that matches another glossary entry.
+   Styled to match .theme-doc-markdown's internal links (same dotted
+   underline, color tokens, and hover behavior) for a consistent
+   "this navigates somewhere" affordance across the site. */
 .termRef {
   display: inline;
   background: none;
   border: none;
-  border-bottom: 1.5px dotted var(--ifm-color-primary);
+  border-bottom: 1.5px dotted var(--ifm-link-color);
   padding: 0;
+  padding-bottom: 0.05em;
   margin: 0;
   cursor: pointer;
   font-weight: 600;
-  color: var(--ifm-color-primary);
+  color: var(--ifm-link-color);
   font-size: inherit;
   font-family: inherit;
   line-height: inherit;
-  transition: border-bottom-style 0.1s;
+  transition: border-bottom-style 0.1s, border-bottom-color 0.1s;
 }
 
 .termRef:hover {
   border-bottom-style: solid;
+  border-bottom-color: var(--ifm-link-hover-color);
+  color: var(--ifm-link-hover-color);
 }
 
 /* ── Mobile: collapse to single-column stacked layout ── */

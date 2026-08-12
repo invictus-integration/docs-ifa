@@ -19,12 +19,11 @@ import {Walkthrough, Collapsible} from "@site/src/components/Walkthrough";
   tagline="Pattern-based translation" />
 
 :::note[motivation]
-At the time of writing, there is no built-in Logic App functionality available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component fills this missing link. It provides a HTTP-endpoint to run regular expression replacements. All available translations are available in an Azure Table Storage.
+There is no built-in Logic App action available to run regular expression replacements without using `inline code`. The Invictus **Regex Translation** Framework component fills this missing link. It provides a HTTP-endpoint to run replacements with stored translations in Azure Table Storage.
 :::
 
 ## Component usage
-The **Regex Translator** component has a single endpoint available.
-Given an user content and matched stored (Azure Table Storage, default: `RegexTranslator` table) regular expression translation, the endpoint responds with the translated content.
+The component has a single endpoint available to run translations. Passing an input content and the name of a stored translation, the component responds with the replaced content. The component looks up translations in the `RegexTranslator` table in Azure Table Storage.
 
 {/* vale off */}
 <ComponentFlowDiagram
@@ -115,13 +114,13 @@ Given an user content and matched stored (Azure Table Storage, default: `RegexTr
 
 <Collapsible number={<FontAwesomeIcon icon={faFloppyDisk} />} title="Store regular expression translations">
 
-Store available regular expression translations in the Azure Table Storage table called `RegexTranslator` (Invictus creates this table automatically). Each stored entity should have following custom properties:
+Store regular expression translations in the `RegexTranslator` Azure Table Storage table (bundled with Invictus). Each row should have these properties:
 
 [named groups]: https://learn.microsoft.com/en-us/dotnet/standard/base-types/grouping-constructs-in-regular-expressions#named-matched-subexpressions
 
 | Custom entity property name | Description                                                                                                                      |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `MatchPattern`              | The regular expression to match the incoming user `Content`. It uses [named groups] to cut certain information from the content. |
+| `MatchPattern`              | The regular expression to match the incoming input `Content`. It uses [named groups] to cut certain information from the content. |
 | `OutputPattern`             | The outgoing text, containing possible `{group-name}` occurrences to paste the subtracted information.                           |
 
 <details>

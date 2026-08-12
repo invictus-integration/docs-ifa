@@ -1,10 +1,10 @@
 const versionFilter = () => cy.get('#rn-series-filter');
-const dropdownList = () => cy.get('[role=listbox]');
+const dropdownList = () => cy.get('.rn-dropdown');
 const collapsedBlocks = () => cy.get('.rn-version-block--collapsed');
 const latestBadge = () => cy.get('.rn-latest-badge');
 const visibleHeadings = () => cy.get('h2').filter(':visible');
 
-const selectVersion = (label) => { versionFilter().click(); cy.get('[role=option]').contains(label).click(); };
+const selectVersion = (label) => { versionFilter().click(); dropdownList().find('[role=option]').contains(label).click(); };
 
 describe('Release notes', () => {
 
@@ -47,13 +47,13 @@ describe('Release notes', () => {
 
     it('lists All versions and one option per minor series', () => {
       versionFilter().click();
-      cy.get('[role=option]').should('have.length.greaterThan', 1);
-      cy.get('[role=option]').first().should('contain', 'All versions');
+      dropdownList().find('[role=option]').should('have.length.greaterThan', 1);
+      dropdownList().find('[role=option]').first().should('contain', 'All versions');
     });
 
     it('marks All versions as selected by default', () => {
       versionFilter().click();
-      cy.get('[role=option][aria-selected=true]').should('contain', 'All versions');
+      dropdownList().find('[role=option][aria-selected=true]').should('contain', 'All versions');
     });
 
     it('closes when an option is selected', () => {

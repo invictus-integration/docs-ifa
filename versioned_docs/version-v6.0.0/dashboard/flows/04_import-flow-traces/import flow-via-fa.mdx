@@ -1,11 +1,17 @@
 ---
 sidebar_label: Import via Function Apps
 title: Import flow traces via Azure Function App logs
+hide_title: true
 ---
 
 import { NewSinceBadge, BadgedText } from '@site/src/components/Badges';
+import ComponentHeader from '@site/src/components/ComponentHeader';
 
-# <BadgedText badge={<NewSinceBadge version="v6.2" />}>Import flow traces via Azure Function App logs</BadgedText>
+<ComponentHeader
+  icon="/img/icons/import-jobs.png"
+  name="Function App import job"
+  tagline="Import flow traces from Azure Function App logs" />
+
 Invictus allows developers to import flow traces via function app logs coming from Azure Function Apps. These logs translate to the startup of the Function App, but can also contain developer-custom logging. Combined, they result in an execution tree in the Dashboard that represents.
 
 ## Send diagnostic traces from Function App
