@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import styles from './Walkthrough.module.css';
+import styles from './styles.module.css';
 
 type WalkthroughProps = { children: ReactNode; label?: string };
 type StepProps = { title: string; children: ReactNode; number?: number; headingLevel?: 2 | 3 | 4 };
