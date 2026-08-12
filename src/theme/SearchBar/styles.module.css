@@ -133,8 +133,9 @@
   background: rgba(200, 130, 0, 0.95);
 }
 
-/* On mobile: hide the "Highlighted:" prefix and "Clear" text — keep icon + term only */
-@media (max-width: 640px) {
+/* On mobile/tablet (≤996px): hide the "Highlighted:" prefix and "Clear" text —
+   keep icon + term only so the chip stays compact in the narrow navbar. */
+@media (max-width: 996px) {
   .triggerHighlightPrefix {
     display: none;
   }
@@ -365,8 +366,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -1115,18 +1116,27 @@
   opacity: 1;
 }
 
-.recentRemove:hover,
+.recentRemove:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.8);
+}
+
 .recentRemove:focus-visible {
   background: rgba(0, 0, 0, 0.08);
   color: rgba(0, 0, 0, 0.8);
-  outline: none;
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
 }
 
 :global([data-theme='dark']) .recentRemove:hover,
 :global([data-theme='dark']) .recentRemove:focus-visible {
   background: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.9);
-  outline: none;
+}
+
+:global([data-theme='dark']) .recentRemove:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
 }
 
 .recentRemove svg {
@@ -1361,9 +1371,9 @@
 }
 
 /* ─────────────────────────────────────────────
-   Mobile — bottom sheet pattern (< 640px)
+   Mobile/tablet — compact trigger (≤ 996px)
    ───────────────────────────────────────────── */
-@media (max-width: 640px) {
+@media (max-width: 996px) {
 
   /* Trigger: icon only — hide text and shortcut badge */
   .triggerText,
@@ -1374,6 +1384,12 @@
   .triggerButton {
     padding: 6px 8px;
   }
+}
+
+/* ─────────────────────────────────────────────
+   Mobile — bottom sheet pattern (< 640px)
+   ───────────────────────────────────────────── */
+@media (max-width: 640px) {
 
   /* Backdrop: align to bottom, no top padding */
   .backdrop {
@@ -1440,6 +1456,37 @@
 
   to {
     transform: translateY(0);
+  }
+}
+
+/* ── Reduced motion — disable all decorative animations ── */
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+  }
+
+  .modal {
+    transform: none;
+  }
+
+  .spinner {
+    animation: none;
+    border-top-color: var(--ifm-color-primary);
+  }
+
+  .skeletonIcon,
+  .skeletonLine {
+    animation: none;
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme='dark']) .skeletonIcon,
+  :global([data-theme='dark']) .skeletonLine {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .streamingDot {
+    animation: none;
   }
 }
 

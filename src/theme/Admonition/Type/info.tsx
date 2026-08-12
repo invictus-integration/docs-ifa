@@ -1,15 +1,11 @@
-import React from 'react';
-import clsx from 'clsx';
 import Translate from '@docusaurus/Translate';
-import type { Props } from '@theme/Admonition/Type/Info';
-import AdmonitionLayout from '@theme/Admonition/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import createAdmonitionType from './createAdmonitionType';
 import styles from './info.module.css';
 
-const infimaClassName = 'alert alert--info';
-
-const defaultProps = {
+export default createAdmonitionType({
+  infimaClassName: 'alert alert--info',
   icon: <FontAwesomeIcon icon={faCircleInfo} />,
   title: (
     <Translate
@@ -18,15 +14,5 @@ const defaultProps = {
       info
     </Translate>
   ),
-};
-
-export default function AdmonitionTypeInfo(props: Props): JSX.Element {
-  return (
-    <AdmonitionLayout
-      {...defaultProps}
-      {...props}
-      className={clsx(infimaClassName, styles.admonition, props.className)}>
-      {props.children}
-    </AdmonitionLayout>
-  );
-}
+  admonitionClassName: styles.admonition,
+});

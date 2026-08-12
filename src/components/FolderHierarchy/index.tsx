@@ -7,7 +7,7 @@ import {
   faChevronUp, faEllipsis, faAnglesUp,
   faAnglesDown, faFolderPlus
 } from '@fortawesome/free-solid-svg-icons';
-import styles from './FolderHierarchy.module.css';
+import styles from './styles.module.css';
 
 export type HierarchyNode = {
   /** 'folder' renders a folder icon; 'flow' renders a flow/layer icon */
