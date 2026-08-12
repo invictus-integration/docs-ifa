@@ -6,7 +6,6 @@ pagination_next: null
 
 import {faDownload,faShield,faShuffle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Button from '@site/src/components/Button';
 
 # Migrate from v5.x to Invictus v6
 :::warning[change of endpoints]
@@ -41,8 +40,7 @@ Also, create a new client secret for this app registration (required for later u
 
 ## Deploying New Version 
 
-<Button label={<><FontAwesomeIcon icon={faDownload} /> Download latest version of 'Invictus-GetSources.ps1'</>} link="../scripts/Invictus-GetSources.ps1" />
-<br/> <br/>
+[<button className="button button--medium button--primary"><FontAwesomeIcon icon={faDownload} /> Download latest version of 'Invictus-GetSources.ps1'</button>](../scripts/Invictus-GetSources.ps1)
 
 Pipeline/Bicep parameters changes. Please follow the installation guides to see the current supported parameters:
 * [Dashboard installation guide](../dashboard/installation/index.mdx)
