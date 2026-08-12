@@ -22,15 +22,15 @@ import ApiPlayground from "@site/src/components/ApiPlayground";
 />
 
 :::note[motivation]
-Asynchronous messaging helps with decoupling publishers from consumers, as it avoids the blocking during publishing. Especially in Azure Logic Apps workflows, where we can't assume that the interaction between publisher and consumer is always synchronous.
+Asynchronous messaging avoids blocking when publishing to subscribers. Azure Logic App workflows too benefit from this.
 
-Invictus provides a solution called the **PubSub**, that allows Azure Service Bus to act as a message broker and interact in a publish/subscribe-approach via HTTP endpoints; plus having Azure Blob Storage act as a claim-check provider upon publishing messages with too big a size.
+The Invictus Framework includes a **PubSub** component that acts as a message broker. It exposes Azure Service Bus operations via HTTP endpoints. Azure Blob Storage acts as a claim-check provider for messages with a large size.
 
 <FontAwesomeIcon icon={faLink} /> See also the [Publisher-Subscriber integration pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/publisher-subscriber).
 :::
 
 ## Component usage
-Use the PubSub component in your Logic App workflows with the following interaction:
+Call the PubSub component in your Logic App workflows using this pattern:
 <style>{`.pubsub-wide{display:block}.pubsub-narrow{display:none}@media(max-width:640px){.pubsub-wide{display:none}.pubsub-narrow{display:block}}`}</style>
 
 <div className="pubsub-wide">
@@ -210,7 +210,7 @@ Use the PubSub component in your Logic App workflows with the following interact
 <Collapsible number={<FontAwesomeIcon icon={faCheckDouble} />} title="Acknowledge message" id="acknowledge-message">
 
 :::warning[internal workaround]
-Because messages can be 'acknowledged' separately from the receive location by 'subscription', the message is internally [deferred](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-deferral). This is due to restrictions in the Azure SDK which impose that the same receiver must both receive and settle message. Deferring a message doesn't have this limitation.
+Azure Service Bus doesn't allow messages to be 'acknowledged' separately from the receive location by 'subscription'. The **PubSub** component [defers](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-deferral) the message instead. This is a restriction in the Azure SDK which imposes that the same receiver must both receive and settle message. Deferring a message doesn't have this limitation.
 :::
 
 {/* vale off */}
