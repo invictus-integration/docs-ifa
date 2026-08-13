@@ -13,5 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Run readability script unit tests
+        run: node --test .github/scripts/readability.test.mjs
       - name: Check readability
         run: node .github/scripts/readability.mjs versioned_docs
