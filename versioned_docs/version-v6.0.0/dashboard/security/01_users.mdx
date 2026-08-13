@@ -18,16 +18,17 @@ import { Tab, SignInWithMicrosoftButton, TextInput, DropDownInput, Button, Toggl
 # <BadgedText badge={<OnlyAdminsBadge/>}>Manage Users in the Dashboard</BadgedText>
 <Breadcrumb paths={["Users"]} />
 
-Two user types can access the Dashboard. Invictus manages **Local** users. Your tenant manages **Microsoft Entra ID** users.
+You can sign in into the Dashboard with a **Microsoft** or a **local** user.
+The Dashboard oversees local users, your organization Microsoft Entra ID users.
 
 :::praise[recommended]
-Prefer **Entra ID** users for security.
+Prefer **Microsoft Entra ID** users for security.
 :::
 
 ![users overview](/images/v2_users1.png)
-
+  
 <Tabs groupId="user-type" queryString>
-<TabItem value="entra-id" label="Entra ID" default>
+<TabItem value="entra-id" label="Microsoft Entra ID" default>
 
 > <FontAwesomeIcon icon={faUser} /> Requires a [synced Entra ID group](../installation/01_give_ad_access.mdx#sync-your-microsoft-entra-id-groups-to-invictus).
 
@@ -130,5 +131,5 @@ Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={fa
 <DetailsReact summary={<><span><strong>Unlocking a user</strong></span> <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></>} style={{backgroundColor: 'rgba(74, 222, 128, 0.07)'}}>
 <Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} aria-label='Locked user' /></>]} activeLast={false} />
 
-Too many failed sign-in attempts lock a user out. System admins can unlock them via the <FontAwesomeIcon icon={faLock} /> button.
+Too many failed sign-in attempts lock a user out. System admins can unlock them with the <FontAwesomeIcon icon={faLock} /> button.
 </DetailsReact>
