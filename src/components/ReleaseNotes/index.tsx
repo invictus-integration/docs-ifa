@@ -147,10 +147,13 @@ function SeriesDropdown({
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
-  // When the listbox opens, move real DOM focus onto it (not just the
-  // visual state) so screen readers announce it and start tracking
-  // aria-activedescendant, then restore focus to the trigger on close.
+  const hasMountedRef = useRef(false);
   useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
     if (open) {
       setActiveIndex(selectedIndex);
       listRef.current?.focus();
