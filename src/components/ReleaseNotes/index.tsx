@@ -129,6 +129,24 @@ function SeriesDropdown({
       );
   }, []);
 
+  // Close on Escape regardless of which element inside the dropdown
+  // currently has DOM focus. Focus moves onto the listbox while it's
+  // open (see below), so relying solely on the trigger's onKeyDown
+  // would miss Escape presses once focus has shifted.
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   // When the listbox opens, move real DOM focus onto it (not just the
   // visual state) so screen readers announce it and start tracking
   // aria-activedescendant, then restore focus to the trigger on close.
