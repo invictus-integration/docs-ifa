@@ -54,7 +54,7 @@ The component requires the role `Logic App Contributor` and additionally `Websit
 The component has as single endpoint to request inspection of failed Azure Logic App workflow runs.
 By default it uses the [**Regex Translator**](./regextranslation.mdx) component for translating the error. It can also use Azure AI Foundry if you set the <a href="?q=useAIExceptionHandlerInterpreter#related-bicep-template-parameters">useAIExceptionHandlerInterpreter</a> parameter to `true`.
 
-<Tabs groupId="la-type">
+<Tabs groupId="la-type" aria-label="Logic App type for the Resolve Exception endpoint">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 {/* vale off */}
@@ -252,7 +252,7 @@ Business users might not understand this message. Use the translation capabiliti
 
 Set these translations in the `RegexTranslator` table in your Invictus storage account. Add the translations in the table as follows:
 
-<Tabs groupId="la-type">
+<Tabs groupId="la-type" aria-label="Logic App type for the RegexTranslator table format">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 | PartitionKey              | RowKey     | MatchPattern                           | OutputPattern                                           |
