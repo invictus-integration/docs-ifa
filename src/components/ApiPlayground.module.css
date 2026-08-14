@@ -45,7 +45,7 @@
 }
 
 .methodPOST {
-  background-color: #2563eb;
+  background-color: var(--ifm-color-primary-dark);
 }
 
 .methodPUT {
@@ -206,12 +206,13 @@
 
 /* Matches .badgeRequired from resultRow.module.css */
 .requiredBadge {
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 3px;
   color: #fff;
-  background-color: var(--ifm-color-danger);
+  background-color: #881337;
 }
 
 /* Scales any slotted badge (e.g. NewSinceBadge) to match the required badge size.
