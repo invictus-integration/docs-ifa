@@ -8,15 +8,15 @@ import {faTrashCan,faPen,faCirclePlus,faFlag} from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function RemoveIcon() {
-    return <FontAwesomeIcon icon={faTrashCan} color="#f43f5e" />
+    return <FontAwesomeIcon icon={faTrashCan} color="#f43f5e" aria-hidden="true" />
 }
 
 export function EditIcon() {
-    return <FontAwesomeIcon icon={faPen} color="#00a2ff" />
+    return <FontAwesomeIcon icon={faPen} color="#00a2ff" aria-hidden="true" />
 }
 
 export function AddIcon() {
-    return <FontAwesomeIcon icon={faCirclePlus} color="#059669" />
+    return <FontAwesomeIcon icon={faCirclePlus} color="#059669" aria-hidden="true" />
 }
 
 # Migrate from v4.x to Invictus v5
@@ -264,7 +264,7 @@ Use the [migration tool from Codit's Integration Practice](https://github.com/Co
 <details id="migrate-matrix">
 <summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
 
-The new Transco now includes the Matrix capabilities, only authentication and endpoints requires changing.
+The new Transco now includes the Matrix capabilities. Only authentication and endpoints require changing.
 
 ```diff
 "Extract_Message_Context": {

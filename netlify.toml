@@ -33,3 +33,8 @@ ID = "0e0ef928-92aa-41b4-9d53-a2ee648644d3"
 [[edge_functions]]
   path     = "/api/ask-ai"
   function = "ask-ai"
+
+# Route /api/feedback to the feedback edge function
+[[edge_functions]]
+  path     = "/api/feedback"
+  function = "feedback"

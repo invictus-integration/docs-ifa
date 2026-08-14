@@ -1,10 +1,17 @@
 ---
 sidebar_label: Import via HTTP
+title: Import flow traces via HTTP
+hide_title: true
 ---
 
-import {OnlyFolderAdminsBadge, BadgedText} from '@site/src/components/Badges'
+import {OnlyFolderAdminsBadge, BadgedText} from '@site/src/components/Badges';
+import ComponentHeader from '@site/src/components/ComponentHeader';
 
-# Import flow traces programmatically via HTTP
+<ComponentHeader
+  icon="/img/icons/import-jobs.png"
+  name="HTTP import job"
+  tagline="Import flow traces directly via HTTP" />
+
 Invictus allows developers to programmatically import flow traces via a HTTP endpoint. You can locate this resource by the following name format:
 
 * `https://inv-{env}-we-sft-httpreceiver.*.northeurope.azurecontainerapps.io`
