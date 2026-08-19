@@ -6,7 +6,9 @@ const INV_H = 64;
 const RX = 6;
 const ACCENT_W = 8;
 
-export default function PubSubFlowMobile() {
+type PubSubFlowMobileProps = { describedById?: string };
+
+export default function PubSubFlowMobile({ describedById }: PubSubFlowMobileProps) {
   return (
     <div style={{ maxWidth: 380, margin: "2rem auto" }}>
       <svg
@@ -15,6 +17,7 @@ export default function PubSubFlowMobile() {
         viewBox="0 0 249 519"
         role="img"
         aria-label="PubSub message flow diagram for mobile layout"
+        aria-describedby={describedById}
       >
         <defs>
           <marker id="arr-PubSubMobile" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
