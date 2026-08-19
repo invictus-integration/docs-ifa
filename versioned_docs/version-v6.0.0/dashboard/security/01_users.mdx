@@ -16,7 +16,7 @@ import Breadcrumb from '@site/src/components/Breadcrumb';
 import { Tab, SignInWithMicrosoftButton, TextInput, DropDownInput, Button, ToggleInput, NumberInput } from '@site/src/components/InputControls';
 
 # <BadgedText badge={<OnlyAdminsBadge/>}>Manage Users in the Dashboard</BadgedText>
-<Breadcrumb paths={["Users"]} />
+<Breadcrumb paths={["Users"]} summary="From the Dashboard's main navigation, focus on the **Users** tab" />
 
 Two user types can access the Dashboard. Invictus manages **Local** users. Your tenant manages **Microsoft Entra ID** users.
 
@@ -68,7 +68,7 @@ Entra ID users have no direct role. They get their role from their group.
 
 To use forgot password, create an Entra ID app. Add the [`Mail.Send` permission](../installation/01_give_ad_access.mdx). OAuth 2.0 uses it to send emails.
 
-Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, "Settings"]} /> to add the backup email address for 'Forgot password' emails.
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, "Settings"]} summary="From the Dashboard's main navigation, focus on your **profile** name, then select **Settings** from the pop-up menu" /> to add the backup email address for 'Forgot password' emails.
 
 :::warning
 The Dashboard may use any email in the tenant as the sender.
@@ -84,7 +84,7 @@ The Dashboard manages local users. You can assign roles and delete them at any t
 <details>
 <summary>**Add a local user**</summary>
 
-Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} aria-label='Users' /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} /> 
+Go to <Breadcrumb items={[<><FontAwesomeIcon icon={faUser} aria-label='Users' /> Users</>, <><Button icon={faPlus} label="Add a new user" /></>]} summary="From the Dashboard's main navigation, focus on the **Users** tab, then focus on the **Add a new user** button" /> 
 * Fill in the <TextInput label="Username" />, <TextInput label="Email" /> and <TextInput label="Password" /> fields.
 * Assign a [<DropDownInput label="Role" />](./03_roles.mdx) to set flow access.
 
@@ -112,7 +112,7 @@ Select the <FontAwesomeIcon icon={faPencil} aria-label='Edit user role' /> icon 
 
 Set up the email server for password resets.
 
-Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, `Settings`]} />
+Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} aria-label='Profile settings' /></>, `Settings`]} summary="From the Dashboard's main navigation, focus on your **profile** name, then select **Settings** from the pop-up menu" />
 
 | Forgot password setting  | Description                                                                                                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -128,7 +128,7 @@ Go to <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={fa
 </Tabs>
 
 <DetailsReact summary={<><span><strong>Unlocking a user</strong></span> <OnlyAdminsBadge/><NewSinceBadge version="v6.3" /></>} style={{backgroundColor: 'rgba(74, 222, 128, 0.07)'}}>
-<Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} aria-label='Locked user' /></>]} activeLast={false} />
+<Breadcrumb items={[`Users`, <><i>a user</i>&nbsp;&nbsp;<FontAwesomeIcon icon={faLock} aria-label='Locked user' /></>]} summary="From the Dashboard's main navigation, focus on the **Users** tab, select a user, then focus on the locked-user icon to unlock them" />
 
 Too many failed sign-in attempts lock a user out. System admins can unlock them via the <FontAwesomeIcon icon={faLock} /> button.
 </DetailsReact>

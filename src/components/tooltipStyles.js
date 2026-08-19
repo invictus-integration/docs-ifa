@@ -108,6 +108,21 @@ html[data-theme='dark'] .invictus-tooltip a {
   from { opacity: 0; transform: translateY(5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* Visually-hidden but screen-reader-accessible content. Used to keep a
+   tooltip's description permanently available via aria-describedby,
+   independent of whether the visual tooltip is currently shown. */
+.invictus-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 `;
 
 export function useTooltipStyles() {
