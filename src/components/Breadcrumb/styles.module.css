@@ -11,6 +11,12 @@
   font-size: 13px;
   font-family: system-ui, sans-serif;
   line-height: 1;
+  cursor: help;
+}
+
+.nav:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
 }
 
 [data-theme='dark'] .nav {
@@ -28,15 +34,16 @@
   object-fit: contain;
 }
 
-.list {
-  display: contents;
-  list-style: none;
-  margin: 0;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
-}
-
-.listItem {
-  display: contents;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .separator {
