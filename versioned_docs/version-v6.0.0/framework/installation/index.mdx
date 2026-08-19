@@ -196,6 +196,10 @@ The identity running the Bicep deployment (the service principal used by your Az
 
 </details>
 
+:::warning[Large request consumption]
+Processing large requests can quickly consume the container app's available RAM. Size your container app's <a href="./?q=memoryResources#bicep-template-parameters">`memoryResources`</a> allocation according to the largest request payloads your installation needs to handle.
+:::
+
 ### Mandatory Parameters
 
 [publish and download build artifacts]: https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml
