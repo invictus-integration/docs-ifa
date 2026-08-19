@@ -1,0 +1,50 @@
+name: ✨ Feature request
+description: Suggest a new feature or improvement to the Invictus product.
+type: Feature
+projects: ["invictus-integration/6"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your contribution to the Invictus product.
+
+        > [!WARNING]
+        > This issue is public. Don't include secrets, connection strings, access tokens, or customer/tenant-identifying data in your description or screenshots.
+  - type: checkboxes
+    id: existing-issue-check
+    attributes:
+      label: Is there an existing issue or request for this?
+      options:
+        - label: I searched existing issues and didn't find a duplicate.
+          required: true
+  - type: dropdown
+    id: invictus-version
+    attributes:
+      label: Version
+      description: Which version of the product are you running? This dropdown mirrors the versions in the release notes.
+      options:
+        - Other / not sure
+        - "6.4.x"
+        - "6.3.x"
+        - "6.2.x"
+        - "6.1.x"
+        - "6.0.x"
+      default: 0
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Is your request related to a problem? Please describe.
+      placeholder: A clear and concise description of what the problem is. Ex. I can't find flows by their custom properties.
+    validations:
+      required: true
+  - type: upload
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Attach any screenshots that help illustrate the request.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      placeholder: Add the link to the pages or any other context related to the request here.

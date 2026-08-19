@@ -1,11 +1,21 @@
+---
+title: "Dashboard homepage: Overview of flow statuses"
+hide_title: true
+---
+
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import FolderHierarchy from '@site/src/components/FolderHierarchy';
+import ComponentHeader from '@site/src/components/ComponentHeader';
 import { Folder, Flow } from '@site/src/components/InputControls';
 import {faCircle,faArrowPointer, faWarning, faLink} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Admonition from '@theme/Admonition';
 
-# Dashboard homepage overview of flow statuses
+<ComponentHeader
+  icon="/img/icons/dashboard-ui.png"
+  name="Dashboard application"
+  tagline="Integration monitoring & management" />
+
 The Dashboard home page shows the status of all your [flows](../../support/help-center-business.mdx?q=flow).
 Each flow shows how many messages are in each state:
 * <FontAwesomeIcon icon={faCircle} color="#00a2ff" aria-hidden='true' /> **Active:** messages the flow is working on now.
