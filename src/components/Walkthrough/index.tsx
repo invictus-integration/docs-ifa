@@ -1,4 +1,5 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import styles from './styles.module.css';
 
 type WalkthroughProps = { children: ReactNode; label?: string };
@@ -39,6 +40,22 @@ export function Step({ title, children, number, headingLevel = 2 }: StepProps) {
 export function Collapsible({ title, children, number, id, open: initialOpen = false }: TaskProps) {
   const [open, setOpen] = useState(initialOpen);
   const contentId = `walkthrough-task-${number}-content`;
+  const brokenLinks = useBrokenLinks();
+
+  // Register this id with Docusaurus so fragment links (#publish-single-message)
+  // aren't reported as broken anchors — Docusaurus only tracks ids registered
+  // through this hook (e.g. by its own Heading component), not arbitrary DOM ids.
+  brokenLinks.collectAnchor(id);
+
+  useEffect(() => {
+    if (!id || typeof window === 'undefined') return;
+    const openIfTargeted = () => {
+      if (window.location.hash === `#${id}`) setOpen(true);
+    };
+    openIfTargeted();
+    window.addEventListener('hashchange', openIfTargeted);
+    return () => window.removeEventListener('hashchange', openIfTargeted);
+  }, [id]);
 
   return (
     <li id={id} className={`${styles.walkthroughTaskItem}${open ? ` ${styles.walkthroughTaskOpen}` : ''}`}>

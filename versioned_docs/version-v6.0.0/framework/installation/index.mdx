@@ -7,10 +7,8 @@ pagination_next: null
 
 import React from 'react';
 import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, RowTint, BadgedText } from '@site/src/components/Badges';
-
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
-
 import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 
 # Installing Invictus Framework
@@ -26,7 +24,7 @@ We use Multiple Revision mode in our Container App deployments, which means that
 :::
 
 <details>
-<summary>**Include VNET support <SharedNote/>**</summary>
+<summary>**Include VNET support** <SharedNote/></summary>
 
 Invictus includes network infrastructure to run resources within an Azure Virtual Network (VNET). Add these required resources to your environment before you deploy Invictus for Azure:
 
@@ -74,10 +72,15 @@ If the Invictus resources and the VNET are on different resource groups, then yo
 
 <Step title="Download">
 
-## <BadgedText badge={<SharedNote/>}>Save installation script to your repository</BadgedText>
-The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pulls the latest Invictus resources needed to deploy the Framework.
+<details>
+<summary><strong>Add installation script to your repository</strong> <SharedNote/></summary>
 
-## <BadgedText badge={<SharedNote/>}>Add variables to variable group</BadgedText>
+The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pulls the latest Invictus resources needed to deploy the Framework.
+</details>
+
+<details>
+<summary>**Add installation variables to variable group** <SharedNote/></summary>
+
 Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
 
 * `**{'{prefix}'}.Invictus.Installation**`
@@ -86,6 +89,7 @@ Invictus installation requires secrets for authentication. **Codit Software** pr
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
   * `Infra.Environment.ACRPassword`: value provided by Codit Software
+</details>
 
 {/* vale Microsoft.HeadingAcronyms = NO */}
 ## YAML Pipeline
@@ -163,12 +167,15 @@ stages:
 
 <Step title="Deploy">
 
-## <BadgedText badge={<SharedNote/>}>Create variable group</BadgedText>
+<details>
+<summary>**Create environment variable groups** <SharedNote /></summary>
+
 Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
 :::warning[permit build service access to variable groups]
 Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml) has **Administrator** access to these variable groups (<u>Pipelines</u> > <u>Library</u> > <u>Security</u>)
 :::
+</details>
 
 ## Use `Deploy.ps1` script for deployment
 The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and is the central point of contact for deploying Invictus products.
