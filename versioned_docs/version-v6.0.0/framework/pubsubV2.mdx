@@ -30,10 +30,8 @@ The Invictus Framework includes a **PubSub** component that acts as a message br
 :::
 
 ## Component usage
-Call the PubSub component in your Logic App workflows using this pattern:
-
 <p id="pubsub-usage-desc">
-  The <strong>Publisher</strong> Logic App receives a message and calls the PubSub component's [Publish](#publish-single-message) HTTP endpoint. Azure Blob Storage acts as a location to offload large message bodies. The <strong>Subscriber</strong> Logic App calls the [Subscribe](#subscribe-for-messages) HTTP endpoint to receive the messages. It calls the [Acknowledge](#acknowledge-message) HTTP endpoint to complete the message processing. The PubSub component uses Azure Service Bus as its messaging layer. 
+  Create a <strong>Publisher</strong> Logic App that receives a message and calls the PubSub component's [Publish](#publish-single-message) HTTP endpoint. Azure Blob Storage acts as a location to offload large message bodies. Create a <strong>Subscriber</strong> Logic App that calls the [Subscribe](#subscribe-for-messages) HTTP endpoint to receive the messages. It calls the [Acknowledge](#acknowledge-message) HTTP endpoint to complete the message processing. The PubSub component uses Azure Service Bus as its messaging layer. 
 </p>
 <style>{`.pubsub-wide{display:block}.pubsub-narrow{display:none}@media(max-width:640px){.pubsub-wide{display:none}.pubsub-narrow{display:block}}`}</style>
 
