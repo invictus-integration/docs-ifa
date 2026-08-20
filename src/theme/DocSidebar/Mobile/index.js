@@ -1,34 +1,25 @@
 import React, { useEffect } from 'react';
 import { NavbarSecondaryMenuFiller } from '@docusaurus/theme-common';
-import { useDocsSidebar } from '@docusaurus/plugin-content-docs/client';
 import { useMobileNav } from '../../../components/MobileNavContext';
 
-// Populates MobileNavContext so the overlay in Navbar/Layout can render sidebar
-// items for either section without needing to navigate first.
-function DocSidebarMobileSecondaryMenu({ sidebar, path, sidebarName }) {
-  const { setSidebarForType } = useMobileNav();
+// Populates MobileNavContext with the CURRENT page's real sidebar, so the
+// audience overlay in Navbar/Layout (rendered outside the doc page's
+// DocsSidebarProvider tree) can display it.
+function DocSidebarMobileSecondaryMenu({ sidebar, path }) {
+  const { setSidebar } = useMobileNav();
 
   useEffect(() => {
-    // Use the sidebar's explicit name (from DocsSidebarProvider in DocPage context)
-    // as the ground truth for which section this sidebar belongs to.
-    // This avoids all URL-path parsing and race conditions.
-    const type = sidebarName === 'technical_users' ? 'technical' : 'business';
-    setSidebarForType(type, { items: sidebar, path });
-  }, [sidebar, path, sidebarName, setSidebarForType]);
+    setSidebar({ items: sidebar, path });
+  }, [sidebar, path, setSidebar]);
 
   return null;
 }
 
 function DocSidebarMobile(props) {
-  // useDocsSidebar() works here because DocSidebarMobile is rendered inside
-  // DocPage which wraps children with DocsSidebarProvider.
-  const docsSidebar = useDocsSidebar();
-  const extendedProps = { ...props, sidebarName: docsSidebar?.name ?? '' };
-
   return (
     <NavbarSecondaryMenuFiller
       component={DocSidebarMobileSecondaryMenu}
-      props={extendedProps}
+      props={props}
     />
   );
 }
