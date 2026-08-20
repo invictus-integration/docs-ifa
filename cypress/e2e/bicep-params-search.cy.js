@@ -29,13 +29,13 @@ describe('Bicep parameter search', () => {
 
           cy.get('[data-cy=search-results] tbody tr').then(($rows) => {
             const directMatches = $rows.filter((_, row) =>
-              Cypress.$(row).find('td:nth-child(1)').text().toLowerCase().includes(term)
+              Cypress.$(row).find('[data-cy=param-name]').text().toLowerCase().includes(term)
             );
 
             expect(directMatches.length).to.be.greaterThan(0);
 
             directMatches.each((_, row) => {
-              const $mark = Cypress.$(row).find('td:nth-child(1) mark');
+              const $mark = Cypress.$(row).find('[data-cy=param-name] mark');
               expect($mark.length).to.be.greaterThan(0);
               expect($mark.text().toLowerCase()).to.contain(term);
             });
