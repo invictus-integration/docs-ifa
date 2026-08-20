@@ -21,7 +21,9 @@ const resolveIconScale = RESOLVE_ICON_SIZE / resolveIconVbW;
 const resolveIconTx = RES_X + (RESOLVE_BADGE_W - resolveIconVbW * resolveIconScale) / 2;
 const resolveIconTy = RES_Y + (INV_H - resolveIconVbH * resolveIconScale) / 2;
 
-export default function ExceptionHandlerFlow() {
+type ExceptionHandlerFlowProps = { describedById?: string };
+
+export default function ExceptionHandlerFlow({ describedById }: ExceptionHandlerFlowProps) {
   return (
     <div style={{ margin: "1.5rem auto" }}>
       <svg
@@ -30,6 +32,7 @@ export default function ExceptionHandlerFlow() {
         viewBox="0 0 640 380"
         role="img"
         aria-label="Exception Handler flow diagram"
+        aria-describedby={describedById}
       >
         <defs>
           {/* External arrows — teal, used for LA → EH dashed connections */}
