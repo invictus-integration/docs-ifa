@@ -14,7 +14,7 @@ export default function ComponentHeader({ icon, name, tagline }: ComponentHeader
   return (
     <div className={styles.header}>
       <div className={styles.iconBlock}>
-        <img src={icon} alt={`${name} component icon — ${tagline}`} />
+        <img src={icon} alt="" />
       </div>
       <div className={styles.meta}>
         <h1>{name}</h1>

@@ -28,7 +28,11 @@ The Invictus Framework includes an **Exception Handler** component that retrieve
 :::
 
 ## Component usage
-Create a new Logic App that acts as a 'fallback handler'. This centralizes the exception handling by calling the component and returning the response.
+{/* vale write-good.TooWordy = NO */}
+<p id="exception-handler-usage-desc">
+  Create a new Logic App that acts as a 'fallback handler'. Wrap the actions of a Logic App in a <strong>Scope</strong>. When an action inside the scope fails, the Logic App calls the Exception Handler's [Resolve](#resolve-azure-logic-app-exceptions) HTTP endpoint. The component resolves the inner error message either via the <strong>Regex Translator</strong> component or an <strong>AI Interpreter</strong>. The calling Logic App then uses a <strong>Terminate</strong> action to return this resolved response to the Logic App run history. Logic Apps can reuse the same Exception Handler Logic App.
+</p>
+{/* vale write-good.TooWordy = YES */}
 
 :::tip
 * Use a [HTTP webhook](https://learn.microsoft.com/en-us/azure/connectors/connectors-native-webhook) to call the fallback Logic App. If anything fails in the fallback Logic App, you can resubmit this and return the response asynchronously.
@@ -38,14 +42,14 @@ Create a new Logic App that acts as a 'fallback handler'. This centralizes the e
 <style>{`.eh-wide{display:block}.eh-narrow{display:none}@media(max-width:640px){.eh-wide{display:none}.eh-narrow{display:block}}`}</style>
 
 <div className="eh-wide">
-  <ExceptionHandlerFlowDiagram />
+  <ExceptionHandlerFlowDiagram describedById="exception-handler-usage-desc" />
 </div>
 <div className="eh-narrow">
-  <ExceptionHandlerFlowMobileDiagram />
+  <ExceptionHandlerFlowMobileDiagram describedById="exception-handler-usage-desc" />
 </div>
 
 <Walkthrough label="Steps to set up the Exception Handler component">
-	<Collapsible number={<FontAwesomeIcon icon={faLanguage} />} title="Resolve Azure Logic App exceptions">
+	<Collapsible number={<FontAwesomeIcon icon={faLanguage} />} title="Resolve Azure Logic App exceptions" id="resolve-azure-logic-app-exceptions">
 
 :::info[Access Rights]
 The component requires the role `Logic App Contributor` and additionally `Website Contributor` (for Logic App Standard) to operate correctly. Assign these to the component to allow the component access to the client's Logic Apps.
@@ -54,7 +58,7 @@ The component requires the role `Logic App Contributor` and additionally `Websit
 The component has as single endpoint to request inspection of failed Azure Logic App workflow runs.
 By default it uses the [**Regex Translator**](./regextranslation.mdx) component for translating the error. It can also use Azure AI Foundry if you set the <a href="?q=useAIExceptionHandlerInterpreter#related-bicep-template-parameters">useAIExceptionHandlerInterpreter</a> parameter to `true`.
 
-<Tabs groupId="la-type">
+<Tabs groupId="la-type" aria-label="Logic App type for the Resolve Exception endpoint">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 {/* vale off */}
@@ -252,7 +256,7 @@ Business users might not understand this message. Use the translation capabiliti
 
 Set these translations in the `RegexTranslator` table in your Invictus storage account. Add the translations in the table as follows:
 
-<Tabs groupId="la-type">
+<Tabs groupId="la-type" aria-label="Logic App type for the RegexTranslator table format">
 <TabItem value="consumption" label="Logic App Consumption" default>
 
 | PartitionKey              | RowKey     | MatchPattern                           | OutputPattern                                           |
