@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./ApiPlayground.module.css";
 import rowStyles from "./resultRow.module.css";
+import { SROnly } from "./InputControls";
 import { typeBadgeClass } from "./typeBadge";
 
 // Renders a markdown string while applying an existing CSS class to the
@@ -163,11 +164,11 @@ export default function ApiPlayground({
 
         {/* ── Request panel ── */}
         <section className={styles.panel} aria-label="Request details">
-          <p className={styles.panelTitle} aria-hidden="true">Request</p>
+          <p className={styles.panelTitle}>Request</p>
 
           {request !== undefined && (
             <div className={styles.section}>
-              <p className={styles.sectionLabel} aria-hidden="true">Body</p>
+              <p className={styles.sectionLabel}>Example request body</p>
               <DocusaurusCodeBlock language="json">
                 {JSON.stringify(request, null, 2)}
               </DocusaurusCodeBlock>
@@ -176,15 +177,27 @@ export default function ApiPlayground({
 
           {parameters && parameters.length > 0 && (
             <div className={styles.section}>
-              <p className={styles.sectionLabel} aria-hidden="true">{parametersTitle || "Body Parameters"}</p>
-              <ul className={styles.paramList} role="list">
+              <p className={styles.sectionLabel} id={`${uid}-params-heading`}>{parametersTitle || "Body Parameters"}</p>
+              <ul className={styles.paramList} role="list" aria-labelledby={`${uid}-params-heading`}>
                 {parameters.map((p) => (
                   <li key={p.name} className={styles.param}>
                     <div className={styles.paramMeta}>
                       <code className={styles.paramName}>{p.name}</code>
+                      {/* Connector words are inserted (not duplicated) as SR-only text
+                          between the existing visible badges, so screen readers hear one
+                          grammatical phrase — "workflowRunId, type string, required" —
+                          without relying on aria-hidden to suppress the visible badge text
+                          (which isn't consistently honored across screen reader/browser
+                          combinations for inline elements). */}
+                      <SROnly>, type</SROnly>
                       <span className={`${rowStyles.typeBadge} ${typeBadgeClass(p.type)}`}>{p.type}</span>
-                      {p.required && (
-                        <span className={styles.requiredBadge}>required</span>
+                      {p.required ? (
+                        <>
+                          <SROnly>,</SROnly>
+                          <span className={styles.requiredBadge}>required</span>
+                        </>
+                      ) : (
+                        <SROnly>, optional</SROnly>
                       )}
                       {p.badges && (
                         <span className={styles.paramBadgeSlot}>{p.badges}</span>
@@ -192,7 +205,7 @@ export default function ApiPlayground({
                     </div>
                     {typeof p.description === "string"
                       ? <MarkdownText className={styles.paramDesc}>{p.description}</MarkdownText>
-                      : <div className={styles.paramDesc}>{p.description}</div>
+                      : <p className={styles.paramDesc}>{p.description}</p>
                     }
                   </li>
                 ))}
@@ -203,7 +216,7 @@ export default function ApiPlayground({
 
         {/* ── Response panel ── */}
         <section className={styles.panel} aria-label="Response examples">
-          <p className={styles.panelTitle} aria-hidden="true">Response</p>
+          <p className={styles.panelTitle}>Response</p>
 
           {/* Status tabs — roving tabindex pattern per WAI-ARIA tabs widget */}
           <div className={styles.statusTabs} role="tablist" aria-label="Response scenarios">
@@ -252,6 +265,7 @@ export default function ApiPlayground({
                 ? <MarkdownText className={styles.responseDesc}>{selectedResponse.description}</MarkdownText>
                 : <div className={styles.responseDesc}>{selectedResponse.description}</div>
             )}
+            <p className={styles.sectionLabel}>Example response body</p>
             <DocusaurusCodeBlock language="json">
               {JSON.stringify(selectedResponse.body, null, 2)}
             </DocusaurusCodeBlock>

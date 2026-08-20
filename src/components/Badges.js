@@ -57,14 +57,19 @@ function useRowTintStyles() {
  * document.body with the accent color used for both the arrow and border.
  */
 function useBadgeTooltip({ badgeRef, tooltipContent, accentColor }) {
-  const tooltipId = useId();
+  const descriptionId = useId();
 
   const { visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, onTooltipMouseEnter, onTooltipMouseLeave } = usePinnedTooltip(badgeRef);
   const pos = useTooltipPosition(badgeRef, visible, { tooltipWidth: TOOLTIP_WIDTH });
 
+  const descriptionEl = (
+    <span id={descriptionId} className="invictus-sr-only">
+      {tooltipContent}
+    </span>
+  );
+
   const tooltipEl = visible && createPortal(
     <div
-      id={tooltipId}
       role="tooltip"
       className={`invictus-tooltip${pinned ? ' invictus-tooltip--pinned' : ''}`}
       data-below={pos.below ? 'true' : 'false'}
@@ -85,7 +90,7 @@ function useBadgeTooltip({ badgeRef, tooltipContent, accentColor }) {
     document.body
   );
 
-  return { tooltipId, visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, tooltipEl };
+  return { descriptionId, descriptionEl, visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, tooltipEl };
 }
 
 export function OnlyAdminsBadge() {
@@ -159,12 +164,7 @@ export function Badge({ title, tooltip, backgroundColor, color, accentColor, sty
     ? <ReactMarkdown remarkPlugins={[remarkGfm]}>{tooltip}</ReactMarkdown>
     : tooltip;
 
-  // The tooltip accent drives the `<strong>` text color inside it (see
-  // tooltipStyles.js), so it needs enough contrast against the tooltip's
-  // white/dark-gray background. That's usually the same as the badge's own
-  // background, but callers with a pale/translucent background (e.g.
-  // SharedNote) should pass a separate, more readable accentColor instead.
-  const { tooltipId, visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, tooltipEl } =
+  const { descriptionId, descriptionEl, visible, pinned, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, tooltipEl } =
     useBadgeTooltip({ badgeRef, tooltipContent, accentColor: accentColor ?? backgroundColor });
 
   return (
@@ -174,7 +174,7 @@ export function Badge({ title, tooltip, backgroundColor, color, accentColor, sty
         style={{ position: 'relative', display: 'inline-block', textTransform: 'none', fontWeight: 'normal', ...style }}
         role="button"
         aria-pressed={pinned}
-        aria-describedby={visible ? tooltipId : undefined}
+        aria-describedby={descriptionId}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onFocus={onFocus}
@@ -203,6 +203,7 @@ export function Badge({ title, tooltip, backgroundColor, color, accentColor, sty
         </span>
       </span >
 
+      {descriptionEl}
       {tooltipEl}
     </>
   );
