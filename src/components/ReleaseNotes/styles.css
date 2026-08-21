@@ -15,6 +15,11 @@
   line-height: 1.6;
 }
 
+[data-theme='dark'] .rn-latest-badge {
+  background: var(--ifm-color-primary-dark);
+  border: 2px solid var(--ifm-color-primary-dark);
+}
+
 .rn-admonition-feature code,
 .rn-admonition-technical code,
 .rn-admonition-fix code {
