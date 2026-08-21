@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory } from '@docusaurus/router';
 import { useUserType } from './UserTypeContext';
-import { useMobileNav } from './MobileNavContext';
 import styles from './UserTypeSwitcher.module.css';
 
 const TABS = [
@@ -11,18 +10,15 @@ const TABS = [
 
 export default function UserTypeSwitcher() {
   const { userType, setUserType } = useUserType();
-  const { sidebars } = useMobileNav();
   const history = useHistory();
 
   function handleSelect(e, tab) {
     e.preventDefault();
+    if (tab.key === userType) return;
     setUserType(tab.key);
-    // Only navigate when the target sidebar hasn't been cached yet.
-    // Once both sidebars are in the cache, switching just swaps the items
-    // in place — no page navigation.
-    if (!sidebars[tab.key]) {
-      history.push(tab.path);
-    }
+    // Always navigate for real — this guarantees the destination sidebar is
+    // always the live, current one, never a stale cached snapshot.
+    history.push(tab.path);
   }
 
   return (
