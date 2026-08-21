@@ -256,6 +256,15 @@ Processing large requests can quickly consume the container app's available RAM.
       $artifactsPath = ${{ variables['Pipeline.Workspace'] }} + '/_build/framework' 
       $scriptPath = $artifactsPath + '/Deploy.ps1'
 
+      $vnetDeployment = @{
+        enabled = $true
+        vnet = @{ name = 'my-vnet'; resourceGroupName = 'my-vnet-rg' }
+        privateEndpoints = @{ subnetName = 'snet-pe'; resourceGroupName = 'my-rg'; names = $null }
+        cae = @{ resourceGroupName = 'my-cae-infra-rg'; delegatedSubnetName = 'snet-cae' }
+        privateDnsZone = @{ dnsRecords = 'create'; subscriptionId = '<sub-id>'; resourceGroupName = 'my-dns-rg' }
+      }
+
+
       & $scriptPath `
         -artifactsPath $artifactsPath `
         -version ${{parameters.Version}} `
@@ -268,6 +277,7 @@ Processing large requests can quickly consume the container app's available RAM.
         -variableGroupName 'My.Client.Dev' `
         -identityProviderApplicationId '<app-id>' `
         -identityProviderClientSecret '<secret>' `
+        -vnetDeployment $vnetDeployment
 ```
 </details>
 
