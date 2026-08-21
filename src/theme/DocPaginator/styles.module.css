@@ -18,6 +18,7 @@
 
 .prev {
   justify-content: flex-start;
+  min-width: 0;
 }
 
 /* ── Center slot — feedback widget, no extra spacing ── */
@@ -26,12 +27,14 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
+  min-width: 0;
 }
 
 /* ── Next slot — right-aligned ── */
 
 .next {
   justify-content: flex-end;
+  min-width: 0;
 }
 
 /* ── Suppress Docusaurus default « » arrows — icons replace them ── */
@@ -50,12 +53,34 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
-/* ── Responsive: hide shortcut badge on small screens ── */
+/* ── Mobile: stack prev/next side-by-side, feedback widget on its own row ──
+   A 3-column `1fr auto 1fr` grid leaves too little room per side on small
+   screens for both the "Previous"/"Next" sublabel and the page title, which
+   causes the title to break mid-word (e.g. "Impor/t via/Logic/Apps") and the
+   sublabel to overflow its box. Stacking gives prev/next a full half-width
+   row each, and the feedback widget its own full-width row below. ── */
 
 @media (max-width: 640px) {
-  .shortcut {
-    display: none;
+  .threeCol {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'prev next'
+      'center center';
+    row-gap: var(--ifm-spacing-horizontal);
+  }
+
+  .prev {
+    grid-area: prev;
+  }
+
+  .next {
+    grid-area: next;
+  }
+
+  .center {
+    grid-area: center;
   }
 }
