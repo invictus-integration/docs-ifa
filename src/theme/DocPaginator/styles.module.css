@@ -18,6 +18,7 @@
 
 .prev {
   justify-content: flex-start;
+  min-width: 0;
 }
 
 /* ── Center slot — feedback widget, no extra spacing ── */
@@ -26,12 +27,14 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
+  min-width: 0;
 }
 
 /* ── Next slot — right-aligned ── */
 
 .next {
   justify-content: flex-end;
+  min-width: 0;
 }
 
 /* ── Suppress Docusaurus default « » arrows — icons replace them ── */
@@ -50,12 +53,4 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-}
-
-/* ── Responsive: hide shortcut badge on small screens ── */
-
-@media (max-width: 640px) {
-  .shortcut {
-    display: none;
-  }
 }
