@@ -1,57 +1,26 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-// Sidebar items (processed PropSidebar objects) are plain JSON-serializable data.
-// Persisting them in localStorage means the overlay works cross-page without a
-// seed navigation on every fresh load.
-const STORAGE_KEY = 'invictus-mobile-sidebars';
-const CACHE_VERSION = 2;
-
-function readCache() {
-  if (typeof window === 'undefined') return {};
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    // Bust stale caches from earlier buggy sessions.
-    if (parsed._v !== CACHE_VERSION) return {};
-    return parsed.data ?? {};
-  } catch {
-    return {};
-  }
-}
-
-function writeCache(sidebars) {
-  if (typeof window === 'undefined') return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ _v: CACHE_VERSION, data: sidebars }));
-  } catch { }
-}
-
-const MobileNavContext = createContext({ sidebars: {}, setSidebarForType: () => {} });
+// Bridge that carries the CURRENT page's real, live sidebar out to the
+// Navbar-level mobile audience overlay (which renders outside the doc page's
+// DocsSidebarProvider tree, so it can't call useDocsSidebar() itself).
+//
+// This only ever holds a snapshot of whatever page is genuinely being
+// rendered right now — never a persisted cache of a *different* section kept
+// around for an instant "preview" swap. That earlier design (cross-section
+// caching, persisted to localStorage) caused a real bug: switching sections
+// without navigating could show a stale sidebar left over from before a
+// content change, only fixed by a hard refresh. Keeping this in-memory only,
+// and always overwritten by the real current page, means there is nothing
+// that can go stale — switching sections now always triggers a real
+// navigation (see UserTypeSwitcher / Navbar/Layout), which is what refreshes
+// this value.
+const MobileNavContext = createContext({ sidebar: null, setSidebar: () => {} });
 
 export function MobileNavProvider({ children }) {
-  // Initialize empty to match SSR output (avoids hydration mismatch).
-  const [sidebars, setSidebars] = useState({});
-
-  // After hydration, restore both sidebars from the cache so the overlay can
-  // open immediately without a seed navigation on subsequent page loads.
-  useEffect(() => {
-    const cached = readCache();
-    if (Object.keys(cached).length > 0) {
-      setSidebars(cached);
-    }
-  }, []);
-
-  const setSidebarForType = useCallback((type, data) => {
-    setSidebars((prev) => {
-      const next = { ...prev, [type]: data };
-      writeCache(next);
-      return next;
-    });
-  }, []);
+  const [sidebar, setSidebar] = useState(null);
 
   return (
-    <MobileNavContext.Provider value={{ sidebars, setSidebarForType }}>
+    <MobileNavContext.Provider value={{ sidebar, setSidebar }}>
       {children}
     </MobileNavContext.Provider>
   );

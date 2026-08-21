@@ -56,6 +56,9 @@
             "type": "doc",
             "id": "dashboard/installation/index"
           },
+          "customProps": {
+            "ariaLabel": "Dashboard Installation"
+          },
           "items": [
             "dashboard/installation/give_ad_access",
             "dashboard/installation/give_la_access"
@@ -84,7 +87,13 @@
       "collapsed": true,
       "collapsible": true,
       "items": [
-        "framework/installation/index",
+        {
+          "type": "doc",
+          "id": "framework/installation/index",
+          "customProps": {
+            "ariaLabel": "Framework Installation"
+          }
+        },
         "framework/deprecated/index",
         {
           "type": "doc",
