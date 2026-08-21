@@ -1,4 +1,3 @@
-import React from 'react';
 import OriginalDocSidebarItemLink from '@theme-original/DocSidebarItem/Link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -37,6 +36,7 @@ const ICON_MAP = {
 export default function DocSidebarItemLink({ item, ...props }) {
   const iconKey = item.customProps?.icon;
   const icon = iconKey ? ICON_MAP[iconKey] : null;
+  const ariaLabel = item.customProps?.ariaLabel;
 
   const modifiedItem = icon
     ? {
@@ -61,5 +61,11 @@ export default function DocSidebarItemLink({ item, ...props }) {
     }
     : item;
 
-  return <OriginalDocSidebarItemLink item={modifiedItem} {...props} />;
+  return (
+    <OriginalDocSidebarItemLink
+      item={modifiedItem}
+      {...props}
+      {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+    />
+  );
 }
