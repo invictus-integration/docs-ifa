@@ -1141,12 +1141,6 @@
    Mobile (≤ 640px)
    ───────────────────────────────────────────── */
 @media (max-width: 640px) {
-  /* ── ParameterTable: reflow table into stacked cards ──
-     Note: a bare custom-property declaration here (with no selector) is
-     invalid CSS and was silently breaking the parser, which dropped the very
-     next rule (.tableWrapper) from the compiled stylesheet — leaving a
-     stray 400px scrollable box active on mobile instead of the intended
-     full-height card reflow. */
 
   .tableWrapper {
     border: none;
