@@ -114,16 +114,10 @@ The component processes runs in sequence after the **Wait**. Place your logic th
       description: "Transactional name of 'sequence' to group all Azure Logic App workflow runs that need to be run in sequence (same across workflow runs)."
     },
     {
-      name: "instanceId",
+      name: "counter",
       type: "string",
       required: true,
-      description: "Unique operational ID within the 'sequence' of a single Azure Logic App workflow run (unique for each workflow run)."
-    },
-    {
-      name: "timestamp",
-      type: "string",
-      required: true,
-      description: "Date time to control the order of the Azure Logic App workflows in the 'sequence'."
+      description: "The sequence number returned by the /api/GetSequenceNumber endpoint."
     },
     {
       name: "callbackUri",
@@ -134,8 +128,7 @@ The component processes runs in sequence after the **Wait**. Place your logic th
   ]}
   request={{
     sequenceName: "my-sequence",
-    instanceId: "my-instance-1",
-    timestamp: "2024-06-01T12:00:00Z",
+    counter: "1",
     callbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
   }}
   responses={[
