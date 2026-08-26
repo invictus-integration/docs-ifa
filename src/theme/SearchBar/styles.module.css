@@ -325,7 +325,7 @@
 [data-theme='dark'] .escBadge kbd {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* Ctrl+K / ⌘K badge on the trigger button */
@@ -577,6 +577,8 @@
   text-align: left;
   transition: background 0.1s, border-left-color 0.1s;
   font-family: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .result:last-child {
@@ -758,7 +760,12 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  opacity: 0.85;
+  /* Was opacity: 0.85 — that stacked on top of .resultPath's own themed
+     alpha (already dimmed per-theme), compounding to ~0.47 effective alpha
+     in dark mode and dropping this bold "kind" label to a ~4.7:1 contrast
+     ratio, right at the AA edge. A bold, uppercase label should read as
+     *more* prominent than the surrounding text, not fainter — dropped the
+     extra dimming and let it inherit .resultPath's color at full strength. */
 }
 
 .breadcrumbSeparator {
@@ -1101,7 +1108,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--ifm-color-secondary-darkest);
+  color: var(--ifm-color-secondary-dark);
 }
 
 .recentClearAll {
@@ -1614,6 +1621,9 @@
   text-align: left;
   font-family: inherit;
   transition: background 0.1s, border-left-color 0.1s;
+  /* Rendered as a real <a href> so hovering shows the destination URL. */
+  text-decoration: none;
+  color: inherit;
 }
 
 .knowledgeItem:hover,
