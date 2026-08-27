@@ -95,6 +95,28 @@ describe('SearchBar navigation (local search)', () => {
       cy.location('search').should('match', /[?&]q=.+/);
     });
 
+    it('replaying the recent (mouse click) navigates straight back to the term page, not a fresh search', () => {
+      openSearchAndType('flow');
+      cy.get('[data-cy=knowledge-term-result]').first().click();
+      cy.location('pathname').then(firstPath => {
+        cy.visit('/');
+        cy.get('[data-cy=search-trigger]').click();
+        cy.get('[data-cy=recent-result]').first().click();
+        cy.location('pathname').should('eq', firstPath);
+      });
+    });
+
+    it('replaying the recent (Enter key) navigates straight back to the term page, not a fresh search', () => {
+      openSearchAndType('flow');
+      cy.get('[data-cy=knowledge-term-result]').first().click();
+      cy.location('pathname').then(firstPath => {
+        cy.visit('/');
+        cy.get('[data-cy=search-trigger]').click();
+        cy.get('[data-cy=search-modal-input]').type('{downarrow}{enter}');
+        cy.location('pathname').should('eq', firstPath);
+      });
+    });
+
   });
 
   // ── Knowledge FAQ result navigation ──────────────────────────────────────
@@ -171,7 +193,183 @@ describe('SearchBar navigation (local search)', () => {
 
   });
 
-  // ── Keyboard navigation ──────────────────────────────────────────────────
+  // ── Legacy glossary-stub redirect ────────────────────────────────────────
+  //
+  // Older search-index generations modeled glossary terms as fake doc pages
+  // (filepath support/glossary-<audience>.mdx) that don't correspond to a
+  // real Docusaurus route. If any of these stale entries are still present
+  // in the live Azure index, clicking one must redirect to the real
+  // help-center term view instead of 404ing. This overrides the file-level
+  // Azure-failure intercept with a mocked success response so the component
+  // takes the "live Azure result" branch rather than the local fallback.
+
+  describe('legacy glossary-stub redirect', () => {
+
+    it('redirects a stale glossary-stub page result to the help center instead of 404ing', () => {
+      cy.intercept('GET', '**/indexes/*/docs*', {
+        statusCode: 200,
+        body: {
+          value: [
+            {
+              id: 'data-glossary-v6-json-support-glossary-technical-mdx-dsav',
+              title: 'DSAV',
+              filepath: 'support/glossary-technical.mdx',
+              anchor: '?q=DSAV',
+              category: 'support',
+              content: 'Stands for Domain, Service, Action, and Version.',
+              sidebar_label: 'Glossary',
+              user_type: 'technical',
+            },
+          ],
+        },
+      }).as('azureSearchGlossaryStub');
+
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=search-modal-input]').type('dsav');
+      cy.wait('@azureSearchGlossaryStub');
+
+      // Must not show the local-fallback banner — this exercises the live-Azure-result branch.
+      cy.get('[data-cy=local-fallback-hint]').should('not.exist');
+
+      cy.get('[data-cy=search-result]').contains(/dsav/i).first().click();
+
+      cy.get('[data-search-modal]').should('not.exist');
+      cy.location('pathname').should('eq', '/support/help-center-technical');
+      cy.location('search').should('eq', '?q=DSAV');
+    });
+
+    it('stores the redirected entry as a "term" recent, not a "page" recent', () => {
+      cy.intercept('GET', '**/indexes/*/docs*', {
+        statusCode: 200,
+        body: {
+          value: [
+            {
+              id: 'data-glossary-v6-json-support-glossary-technical-mdx-dsav',
+              title: 'DSAV',
+              filepath: 'support/glossary-technical.mdx',
+              anchor: '?q=DSAV',
+              category: 'support',
+              content: 'Stands for Domain, Service, Action, and Version.',
+              sidebar_label: 'Glossary',
+              user_type: 'technical',
+            },
+          ],
+        },
+      }).as('azureSearchGlossaryStub');
+
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=search-modal-input]').type('dsav');
+      cy.wait('@azureSearchGlossaryStub');
+      cy.get('[data-cy=search-result]').contains(/dsav/i).first().click();
+
+      // Re-open the modal in "recents" mode and confirm the entry is labeled a term, not a page.
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=recent-result]').first()
+        .find('[data-cy=recent-result-type]')
+        .should('contain', 'Term');
+    });
+
+  });
+
+  describe('deprecated docs are de-prioritized in search results', () => {
+
+    it('ranks a deprecated page below its current replacement even when Azure scores it higher', () => {
+      // Mirrors the real-world "transco" bug: Azure's relevance score can rank
+      // a deprecated doc above its current replacement when both share a title
+      // and the deprecated page has more legacy body text. The client must not
+      // trust raw Azure order for deprecated content.
+      cy.intercept('GET', '**/indexes/*/docs*', {
+        statusCode: 200,
+        body: {
+          value: [
+            {
+              id: 'framework-deprecated-transco-md',
+              title: 'Transco',
+              filepath: 'framework/deprecated/transco.md',
+              anchor: '',
+              category: 'framework',
+              content: 'Legacy Transco component documentation.',
+              sidebar_label: 'Transco',
+              user_type: 'both',
+            },
+            {
+              id: 'framework-transcoV2-mdx',
+              title: 'Transco',
+              filepath: 'framework/transcoV2.mdx',
+              anchor: '',
+              category: 'framework',
+              content: 'Transco component documentation.',
+              sidebar_label: 'Transco',
+              user_type: 'both',
+            },
+          ],
+        },
+      }).as('azureSearchTransco');
+
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=search-modal-input]').type('transco');
+      cy.wait('@azureSearchTransco');
+
+      cy.get('[data-cy=search-result]').first()
+        .should('contain', 'Transco')
+        .and('not.contain', 'Deprecated')
+        .click();
+
+      cy.location('pathname').should('eq', '/framework/transcoV2');
+    });
+
+    it('shows a "Deprecated" badge on results from a deprecated docs folder', () => {
+      cy.intercept('GET', '**/indexes/*/docs*', {
+        statusCode: 200,
+        body: {
+          value: [
+            {
+              id: 'framework-deprecated-transco-md',
+              title: 'Transco',
+              filepath: 'framework/deprecated/transco.md',
+              anchor: '',
+              category: 'framework',
+              content: 'Legacy Transco component documentation.',
+              sidebar_label: 'Transco',
+              user_type: 'both',
+            },
+          ],
+        },
+      }).as('azureSearchDeprecated');
+
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=search-modal-input]').type('transco');
+      cy.wait('@azureSearchDeprecated');
+
+      cy.get('[data-cy=search-result]').first().should('contain', 'Deprecated');
+    });
+
+  });
+
+  describe('recent searches — Clear all keeps focus in the modal', () => {
+
+    it('keeps focus on the search input after clicking "Clear all", so typing still works', () => {
+      // Seed a recent search first.
+      openSearchAndType('flow');
+      cy.get('[data-cy=search-result]').first().click();
+      cy.get('[data-cy=search-trigger]').click();
+      cy.get('[data-cy=recent-result]').should('have.length.greaterThan', 0);
+
+      cy.get('[data-cy=recent-clear-all]').click();
+
+      // Recents section (and the button itself) unmounts — focus must have
+      // moved to the search input, not been dropped to <body>.
+      cy.get('[data-cy=recent-result]').should('not.exist');
+      cy.focused().should('have.attr', 'data-cy', 'search-modal-input');
+
+      // And typing should immediately start a new search without needing to re-click.
+      cy.focused().type('flow');
+      cy.get('[data-cy=local-fallback-hint]', { timeout: 6000 }).should('be.visible');
+    });
+
+  });
+
+
 
   describe('keyboard navigation', () => {
 
