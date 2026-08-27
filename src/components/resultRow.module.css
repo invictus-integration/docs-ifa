@@ -17,6 +17,8 @@
   border: 1px solid var(--ifm-form-border-color);
   border-radius: 6px;
   overflow: hidden;
+  max-height: var(--ptable-max-height, 400px);
+  overflow-y: auto;
 }
 
 .table {
@@ -1139,13 +1141,12 @@
    Mobile (≤ 640px)
    ───────────────────────────────────────────── */
 @media (max-width: 640px) {
-  /* ── ParameterTable: reflow table into stacked cards ── */
-  --param-indent: 0.75rem;
 
   .tableWrapper {
     border: none;
     border-radius: 0;
     overflow: visible;
+    max-height: none;
   }
 
   .table,

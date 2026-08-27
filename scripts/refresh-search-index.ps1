@@ -11,19 +11,74 @@
     with user_type (business | technical | both | null) based on sidebar
     placement, writes knowledge.json, and pushes everything to Azure AI Search.
 
+    RECOMMENDED WORKFLOW
+    ---------------------------------------------------------------------
+    1. Regenerate locally first, with no Azure access at all:
+           ./scripts/refresh-search-index.ps1 -LocalOnly
+       This rewrites knowledge.json and src/data/search-index.json from the
+       current docs/data files. Review the diff on both files — this is
+       exactly what would be pushed, so this is your safest checkpoint.
+
+    2. Sanity-check the diff:
+       - New/changed docs should map to real, existing routes.
+       - Watch for documents whose "filepath" doesn't correspond to an
+         actual page (a past bug: glossary terms were once indexed as fake
+         pages like support/glossary-technical.mdx, which 404'd when
+         clicked from search results).
+       - Run the app locally (npm start) and spot-check search for a term
+         you changed.
+
+    3. Set Azure credentials for your DEV index (never point AZURE_SEARCH_INDEX
+       at the production index locally — see .env.example). Then push:
+           ./scripts/refresh-search-index.ps1
+       This step only ever adds or updates documents (@search.action =
+       'mergeOrUpload') and only ever adds missing schema fields — it cannot
+       delete documents or remove/alter existing schema settings, so it's
+       safe to re-run as often as you like.
+
+    4. (Occasionally) Clean up orphaned documents — docs that exist in the
+       Azure index but are no longer produced by the generator, e.g. because
+       a data source was removed or a doc was renamed/deleted. Step 3 alone
+       never removes these, so they can quietly accumulate:
+           ./scripts/refresh-search-index.ps1 -PruneOrphans
+       This pushes the current set (same as step 3), then lists every
+       orphaned document id it finds and waits for you to type the literal
+       word DELETE before removing anything. Press Enter to skip deletion
+       and leave the index untouched.
+
+    5. Once verified against your dev index, CI/CD applies the same script
+       against the production index using its own AZURE_SEARCH_INDEX secret
+       — you never need to (and shouldn't) point local credentials at prod.
+    ---------------------------------------------------------------------
+
 .EXAMPLE
     # Set credentials, then run:
     $env:AZURE_SEARCH_ENDPOINT  = 'https://<your-service>.search.windows.net'
     $env:AZURE_SEARCH_INDEX     = '<your-index>'
     $env:AZURE_SEARCH_ADMIN_KEY = '<your-admin-key>'
     ./scripts/refresh-search-index.ps1
+
+.EXAMPLE
+    # Preview + optionally delete documents that exist in the Azure index but
+    # are no longer produced by the generator (e.g. stale/renamed docs left
+    # behind by an older version of this script). Requires typed confirmation
+    # before deleting anything — never deletes silently.
+    ./scripts/refresh-search-index.ps1 -PruneOrphans
 #>
 
 [CmdletBinding()]
 param(
     # Regenerate knowledge.json and static/search-index.json without touching
     # Azure AI Search. Safe to use in local development — no credentials needed.
-    [switch]$LocalOnly
+    [switch]$LocalOnly,
+
+    # After uploading the freshly generated documents, find any documents
+    # still present in the Azure index whose id is NOT in the freshly
+    # generated set (orphans left behind by earlier script versions or
+    # removed docs), show them, and prompt for explicit confirmation before
+    # deleting them. Never deletes anything without you typing "DELETE".
+    # Ignored when combined with -LocalOnly (no Azure access in that mode).
+    [switch]$PruneOrphans
 )
 
 $ErrorActionPreference = 'Stop'
@@ -489,6 +544,70 @@ function Invoke-UploadDocuments {
 }
 
 # ---------------------------------------------------------------------------
+# Step 4 (opt-in): Prune orphaned documents
+#
+# mergeOrUpload only ever adds/updates documents — it never removes ones that
+# are no longer produced by the generator (e.g. a data source that was
+# dropped, or a doc that was deleted/renamed). Those orphans stay in the
+# index forever unless explicitly deleted. This function finds them, always
+# shows the full list first, and only deletes after you type "DELETE" —
+# there is no non-interactive/force path, by design.
+# ---------------------------------------------------------------------------
+function Invoke-PruneOrphans {
+    param([string[]]$CurrentIds)
+
+    Write-Host "`n🔎 Checking for orphaned documents (in Azure but not in the current generated set)..."
+
+    $currentIdSet = [System.Collections.Generic.HashSet[string]]::new([string[]]$CurrentIds)
+    $existingIds = [System.Collections.Generic.List[string]]::new()
+
+    # Page through every document id currently in the index via the search API
+    # ($select=id keeps each page small regardless of document size).
+    $skip = 0
+    $pageSize = 1000
+    while ($true) {
+        $body = @{ search = '*'; select = 'id'; top = $pageSize; skip = $skip }
+        $page = Invoke-AzureSearch -Path "/indexes/$Index/docs/search" -Method 'POST' -Body $body
+        $ids = [string[]]@($page.value | ForEach-Object { [string]$_.id })
+        if ($ids.Count -eq 0) { break }
+        $existingIds.AddRange($ids)
+        $skip += $pageSize
+        if ($ids.Count -lt $pageSize) { break }
+    }
+
+    $orphanIds = @($existingIds | Where-Object { -not $currentIdSet.Contains($_) })
+
+    if ($orphanIds.Count -eq 0) {
+        Write-Host "   ✅ No orphaned documents found — index already matches the generated set."
+        return
+    }
+
+    Write-Host "`n   ⚠️  Found $($orphanIds.Count) orphaned document(s) in `"$Index`" not produced by this run:"
+    $orphanIds | Select-Object -First 25 | ForEach-Object { Write-Host "      • $_" }
+    if ($orphanIds.Count -gt 25) { Write-Host "      … and $($orphanIds.Count - 25) more" }
+
+    Write-Host "`n   These will be permanently deleted from the Azure index (documents on disk/knowledge.json are untouched)."
+    $confirmation = Read-Host "   Type DELETE to remove these $($orphanIds.Count) document(s), or press Enter to skip"
+    if ($confirmation -ne 'DELETE') {
+        Write-Host "   ⏭  Skipped — no documents were deleted."
+        return
+    }
+
+    $chunks = Get-Chunks -Array $orphanIds -Size $BatchSize
+    $deleted = 0
+    foreach ($chunk in $chunks) {
+        $payload = @{
+            value = @($chunk | ForEach-Object {
+                    @{ '@search.action' = 'delete'; id = $_ }
+                })
+        }
+        $result = Invoke-AzureSearch -Path "/indexes/$Index/docs/index" -Method 'POST' -Body $payload
+        $deleted += ($result.value | Where-Object { $_.status }).Count
+    }
+    Write-Host "   🗑️  Deleted ${deleted}/$($orphanIds.Count) orphaned document(s)."
+}
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 if (-not (Test-Path $VersionsFile)) {
@@ -536,5 +655,9 @@ if ($LocalOnly) {
 
 Invoke-EnsureIndex
 Invoke-UploadDocuments -Docs $allDocs.ToArray()
+
+if ($PruneOrphans) {
+    Invoke-PruneOrphans -CurrentIds ([string[]]($allDocs | ForEach-Object { [string]$_.id }))
+}
 
 Write-Host "`n🎉 Done. Your Azure AI Search index is up to date."
