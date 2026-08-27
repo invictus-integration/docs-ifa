@@ -1,0 +1,47 @@
+name: 🌐 Documentation feedback
+description: Provide feedback on the Invictus product documentation website.
+projects: ['invictus-integration/5']
+labels: ['feedback']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve the docs.
+        > ![NOTE]
+        > This mirrors the feedback widget available on every docs page (press `?` to open it) — use this form or the widget, whichever is more convenient.
+  - type: checkboxes
+    id: existing-issue-check
+    attributes:
+      label: Is the question or feedback already covered by an existing issue or answered on the [help center](https://docs.invictus-integration.com/support/help-center-technical)?
+      options:
+        - label: I searched existing issues/questions and didn't find a duplicate or answer.
+          required: true
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Type of feedback
+      options:
+        - '👍 Helpful'
+        - '👎 Not helpful'
+        - '❓ I have a question'
+        - '🐛 Found an issue'
+        - '💡 Suggestion'
+    validations:
+      required: true
+  - type: input
+    id: page-url
+    attributes:
+      label: Page URL
+      description: The exact page this feedback is about.
+      placeholder: https://docs.invictus-integration.com/framework/...
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: Comment
+      description: |
+        What did you find useful, or what's wrong, unclear, or missing? Required for "I have a question", "Found an issue", and "Suggestion".
+      placeholder: Ex. The Dashboard installation steps skip how to authenticate with Microsoft Entra ID.
+    validations:
+      required: true
