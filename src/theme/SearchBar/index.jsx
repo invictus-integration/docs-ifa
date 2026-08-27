@@ -185,6 +185,7 @@ export default function SearchBar() {
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isKnowledgeSearching, setIsKnowledgeSearching] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   // activeIndex: 0..results.length-1 = doc results, results.length = Ask AI row
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -254,6 +255,7 @@ export default function SearchBar() {
       setResults([]);
       setTermResults([]);
       setFaqResults([]);
+      setIsKnowledgeSearching(false);
       if (!skipSearchResetRef.current) setAiActive(false);
       return;
     }
@@ -265,13 +267,21 @@ export default function SearchBar() {
 
     const controller = new AbortController();
     setIsSearching(true);
+    setIsKnowledgeSearching(true);
     setIsLocalFallback(false);
     setAiActive(false);
 
-    // Always run local knowledge search — instant, no network dependency.
+    // Always run local knowledge search — instant, no network dependency, but
+    // it does lazy-load its data via a dynamic import (localSearchKnowledge.js),
+    // so on the first search of a session it can resolve *after* the page
+    // results below. isKnowledgeSearching lets us hold off deciding between the
+    // single-/two-column layout until both are known, so the two-column layout
+    // never appears out from under an already-interactable single-column result
+    // (which would otherwise unmount the row a user is about to click).
     searchKnowledge(debouncedQuery, userType).then(({ termResults: tr, faqResults: fr }) => {
       setTermResults(tr);
       setFaqResults(fr);
+      setIsKnowledgeSearching(false);
     });
 
     const baseParams = {
@@ -548,7 +558,11 @@ export default function SearchBar() {
     );
   })();
 
-  const hasKnowledgeResults = !!query && !aiActive && (termResults.length > 0 || faqResults.length > 0);
+  // While either the page search or the local knowledge search is still in
+  // flight, hold off finalizing the single-/two-column layout choice — see
+  // the comment above the searchKnowledge() call for why this matters.
+  const resultsPending = isSearching || isKnowledgeSearching;
+  const hasKnowledgeResults = !resultsPending && !!query && !aiActive && (termResults.length > 0 || faqResults.length > 0);
 
   // Flat ordered list of all navigable items: page results → Ask AI → terms → FAQ.
   // Used to drive arrow-key navigation across both columns.
@@ -1169,7 +1183,7 @@ export default function SearchBar() {
                           Showing approximate matches for &ldquo;{debouncedQuery}&rdquo;
                         </div>
                       )}
-                      {isSearching ? (
+                      {resultsPending ? (
                         <div className={styles.skeletonList} aria-hidden="true">
                           {[88, 72, 95, 65].map((w, i) => (
                             <div key={i} className={styles.skeletonItem}>
