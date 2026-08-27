@@ -50,11 +50,15 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Application Gateway support:** Invictus works with an Application Gateway in front of the Dashboard. [Two new Bicep flags enable this](../dashboard/installation/?step=deploy&q=applicationgateway#bicep-template-parameters).
   </TechChanges>
   <Fixes>
+    - **[Transco](../framework/transcoV2.mdx) should ignore non-existing scope**: the Transco component doesn't halt anymore when the config points to a not found scope in the input. It logs a warning instead and skips the instruction.
+    - **[Transco](../framework/transcoV2.mdx) should fallback on parameter default value:** the Transco component relies on a new `defaultValue` property in the config to fallback on in case the scope path doesn't return a value.
+    - **[Transco](../framework/transcoV2.mdx) should load most recent XSLT extension DLL:** the Transco component doesn't use stale XSLT extension DLLs anymore in case a newer version is available in the Azure Blob storage folder. This prevents component restarts to load the new DLL version. 
     - **Tables missing on install:** the install again creates all required Azure Storage tables. Regression introduced in v6.2.
     - **Search filters not passed on:** all search filters carry over when you navigate from the Dashboard page to the Flows page.
     - **Flows load fail intermittently:** a race condition caused flows to fail on the first load. They now load reliably on the first attempt.
     - **Basic search ignores properties:** the basic search now returns results from message properties again.
     - **Wrong tooltip for Function App messages:** the tooltip for Azure Function messages incorrectly read 'Logic Apps'. It now reads 'Function Apps'.
+    - **Default 30 MB request size limit:** to match the Logic Apps 100 MB message size limit, all the Framework components now accept request body sizes up to 100 MB. The default limit of 30 MB was too low for some scenarios.
   </Fixes>
 </ReleaseVersion>
 {/* vale Google.WordListCase = YES */}
