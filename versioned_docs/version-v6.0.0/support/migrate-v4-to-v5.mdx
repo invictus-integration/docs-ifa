@@ -22,6 +22,10 @@ export function AddIcon() {
 # Migrate from v4.x to Invictus v5
 
 ## Preparing environment
+:::warning[Remove lingering role assignments]
+If a failed install or clean-up deleted resources from the target resource group before this deployment, Azure can leave orphaned role assignments behind. These block the Bicep deployment with a *"role assignment already exists"* error. Remove orphaned role assignments on the target resource group **before** you start.
+:::
+
 * <RemoveIcon /> Remove existing role assignments to Azure Functions. The Bicep deployments now assigns these (normally only *Monitoring Contributor* on the Flow Handler).
 
 ## Deploying new version
@@ -81,7 +85,7 @@ If you pass the `servicePlanName` or `autoscaleForPlanName` (or both) parameters
 :::
 
 :::danger[The role assignment already exists]
-If you have role assignments conflicts during deployment, remove all role assignments defined at the Invictus resource group level.
+This often means a lingering role assignment from a removed resource. If you have role assignment conflicts during deployment, remove all role assignments defined at the Invictus resource group level.
 :::
 
 ### Framework component migrations

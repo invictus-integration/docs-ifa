@@ -22,9 +22,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 :::info[obtain access <SharedNote/>]
 To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and ACR Password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
 :::
-:::warning[Container revisions]
-We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment.
-[We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
+:::warning[Important considerations <SharedNote/>]
+* **Container revisions:** the deployment uses Multiple Revision mode in its Container App deployments. This means that older revisions could clutter the Container App Environment. You can use [this clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) to remove them.
+* **Lingering role assignments:** if a failed install or clean-up deleted resources from the target resource group before this deployment, Azure can leave orphaned role assignments behind. These block the Bicep deployment with a *"role assignment already exists"* error. Remove orphaned role assignments on the target resource group **before** you start.
 :::
 
 <details>
@@ -33,29 +33,29 @@ We use Multiple Revision mode in our Container App deployments, which means that
 Invictus includes network infrastructure which allows all its resources to run within an Azure Virtual Network (VNET).
 
 ### Required deployment
-- An Azure Virtual Network
-  - Including two subnets, one for each
-    - Private Endpoints
-    - Container App Environment
-  - The subnets must have the following services enabled
-    - `Microsoft.AzureCosmosDB`
-    - `Microsoft.EventHub`
-    - `Microsoft.KeyVault`
-    - `Microsoft.ServiceBus`
-    - `Microsoft.Storage`
-  - The Container App [subnet must also have the delegation `Microsoft.App/environments`](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation)
+An Azure Virtual Network
+- Including two subnets, one for each
+  - Private Endpoints
+  - Container App Environment
+- The subnets must have the following services enabled
+  - `Microsoft.AzureCosmosDB`
+  - `Microsoft.EventHub`
+  - `Microsoft.KeyVault`
+  - `Microsoft.ServiceBus`
+  - `Microsoft.Storage`
+- The Container App [subnet must have the delegation `Microsoft.App/environments`](https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation)
         
-- Private DNS Zones ([Bicep template](../../scripts/invictusVnetDNSZones.bicep))
-  - `privatelink.azurecr.io`
-  - `privatelink.blob.core.windows.net`
-  - `privatelink.file.core.windows.net`
-  - `privatelink.mongo.cosmos.azure.com`
-  - `privatelink.queue.core.windows.net`
-  - `privatelink.servicebus.windows.net`
-  - `privatelink.table.core.windows.net`
-  - `privatelink.table.cosmos.azure.com`
-  - `privatelink.vaultcore.azure.net`
-  - `privatelink.{regionName}.azurecontainerapps.io`
+Private DNS Zones ([Bicep template](../../scripts/invictusVnetDNSZones.bicep))
+- `privatelink.azurecr.io`
+- `privatelink.blob.core.windows.net`
+- `privatelink.file.core.windows.net`
+- `privatelink.mongo.cosmos.azure.com`
+- `privatelink.queue.core.windows.net`
+- `privatelink.servicebus.windows.net`
+- `privatelink.table.core.windows.net`
+- `privatelink.table.cosmos.azure.com`
+- `privatelink.vaultcore.azure.net`
+- `privatelink.{regionName}.azurecontainerapps.io`
     
 {/* vale Microsoft.Terms = NO */}
 - To be able to deploy the app code from an Azure DevOps pipeline you require a self hosted agent running on the same VNET with the following software installed:
@@ -83,7 +83,7 @@ The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pu
 <details>
 <summary>**Add installation variables to variable group** <SharedNote/></summary>
 
-Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
+You need secrets to pull the installation sources. **Codit Software** provides these for you. Create a variable group for them:
 
 * `{'{prefix}'}.Invictus.Installation`
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
@@ -173,7 +173,7 @@ stages:
 <details>
 <summary>**Create environment variable groups** <SharedNote/></summary>
 
-Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. 
+Create a variable group (like: **{'{prefix}'}.Invictus.{'{env}'}**) for each environment. 
 The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
 :::warning[permit build service access to variable groups]
@@ -407,4 +407,3 @@ Follow these setup guides for customer-specific authentication and authorization
 
 </Step>
 </Walkthrough>
-

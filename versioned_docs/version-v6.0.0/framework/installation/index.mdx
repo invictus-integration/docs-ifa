@@ -17,10 +17,11 @@ import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 <Step title="Prerequisites">
 
 :::info[obtain access <SharedNote/>]
-To access the resources stored on Azure Storage and Azure Container Registry you have to request an SAS-token and Azure Container Registry password from [coditproducts@codit.eu](mailto:coditproducts@codit.eu).
+Request access to the Invictus Framework resources from [Codit Software](mailto:coditproducts@codit.eu).
 :::
-:::warning[Container revisions]
-We use Multiple Revision mode in our Container App deployments, which means that older revisions could clutter the Container App Environment. [We provide a clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) that should be run after logging in on the correct subscription, but can be ran in Azure DevOps Pipelines as well.
+:::warning[Important considerations <SharedNote/>]
+* **Container revisions:** the deployment uses Multiple Revision mode in its Container App deployments. This means that older revisions could clutter the Container App Environment. You can use [this clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) to remove them.
+* **Lingering role assignments:** if a failed install or clean-up deleted resources from the target resource group before this deployment, Azure can leave orphaned role assignments behind. These block the Bicep deployment with a *"role assignment already exists"* error. Remove orphaned role assignments on the target resource group **before** you start.
 :::
 
 <details>
@@ -81,7 +82,7 @@ The [`Invictus-GetSources.ps1`](../../scripts/Invictus-GetSources.ps1) script pu
 <details>
 <summary>**Add installation variables to variable group** <SharedNote/></summary>
 
-Invictus installation requires secrets for authentication. **Codit Software** provides these for you. Create a variable group for them:
+You need secrets to pull the installation sources. **Codit Software** provides these for you. Create a variable group for them:
 
 * `**{'{prefix}'}.Invictus.Installation**`
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
@@ -94,13 +95,6 @@ Invictus installation requires secrets for authentication. **Codit Software** pr
 {/* vale Microsoft.HeadingAcronyms = NO */}
 ## YAML Pipeline
 {/* vale Microsoft.HeadingAcronyms = YES */}
-Next step is to add YAML pipelines to build the Invictus for Azure Framework. Change the following example file according to your needs, for example change the trigger path:
-``` yaml
-  paths:
-    include:
-    - /src/customer.azure.invictus
-```
-
 <details>
 <summary>**Full YAML build pipeline example**</summary>
 
@@ -170,7 +164,7 @@ stages:
 <details>
 <summary>**Create environment variable groups** <SharedNote /></summary>
 
-Create a variable group (recommended: **{'{prefix}'}.Invictus.{'{env}'}**) for each the environments. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
+Create a variable group (like: **{'{prefix}'}.Invictus.{'{env}'}**) for each environment. The deployment uses this variable group and edits/adds variables based on the Bicep deployment output.
 
 :::warning[permit build service access to variable groups]
 Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml) has **Administrator** access to these variable groups (<u>Pipelines</u> > <u>Library</u> > <u>Security</u>)
@@ -178,7 +172,7 @@ Make sure the [Project Collection Build Service](https://learn.microsoft.com/en-
 </details>
 
 ## Use `Deploy.ps1` script for deployment
-The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources and is the central point of contact for deploying Invictus products.
+The `Deploy.ps1` PowerShell script is available in the downloaded Invictus sources. It acts as the central point of contact for deploying Invictus products.
 
 <details>
 <summary>**Least-privileged Azure role assignments for the deploying identity**</summary>
@@ -359,4 +353,3 @@ stages:
 
 </Step>
 </Walkthrough>
-

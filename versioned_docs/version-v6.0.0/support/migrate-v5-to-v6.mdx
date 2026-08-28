@@ -19,6 +19,9 @@ Invictus v6 no longer supports the PubSub v1, Transco v1 and Matrix v1 component
 :::
 
 ## Preparing environment
+:::warning[Remove lingering role assignments]
+If a failed install or clean-up deleted resources from the target resource group before this deployment, Azure can leave orphaned role assignments behind. These block the Bicep deployment with a *"role assignment already exists"* error. Remove orphaned role assignments on the target resource group **before** you start.
+:::
 <details>
 <summary><h3 style={{ margin:0 }}>Create a new Azure DevOps variable libraries for Invictus for Azure v6</h3></summary>
 
@@ -180,12 +183,9 @@ After migrating your Azure Logic Apps to Invictus v6, remove the following resou
 * `invictus-{prefix}-consumptionplan`
 </details>
 
-<details>
-<summary><h3 style={{ margin:0 }}>Remove lingering role assignments</h3></summary>
-
-The v6 installation results in lingering `Unknown` role assignments. You can delete them.
-</details>
-
+:::warning[Remove lingering role assignments]
+Removing the resources above (and the v6 installation itself) leaves lingering `Unknown` role assignments behind. If left in place, these can block later deployments with a *"role assignment already exists"* error.
+:::
 
 ## Common migration issues
 :::danger[pipeline error: `Operating system not supported`]
