@@ -71,8 +71,12 @@ The Dashboard uses the groups in your Microsoft Entra ID to verify whether users
 * [Add Microsoft Entra ID group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
 * [Add Microsoft Entra ID user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
 
-:::warning
 The Dashboard only syncs groups of active users (Entra ID users that already have signed in into the Dashboard).
+
+:::tip[Syncing with a large number of groups]
+A group sync on a large number of Entra ID groups might break the Dashboard sign-in process. The sign-in token has a size limit. Prevent this by removing your unrelated groups in the `Groups` MongoDB collection with the query: `db.Groups.deleteMany({GroupId: {$nin: ["groupIdToKeep"]}})`. This reduces again the number of groups and the token size.
+
+Do this after each large group sync.
 :::
 
 ## Enable only required groups
