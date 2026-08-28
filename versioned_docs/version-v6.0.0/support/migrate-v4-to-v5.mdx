@@ -4,19 +4,20 @@ pagination_prev: null
 pagination_next: null
 ---
 
-import {faTrashCan,faPen,faCirclePlus,faFlag} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faTrashCan,faPen,faCirclePlus} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DetailsLink from '@site/src/components/DetailsLink';
 
 export function RemoveIcon() {
-    return <FontAwesomeIcon icon={faTrashCan} color="#f43f5e" aria-hidden="true" />
+    return <FontAwesomeIcon icon={faTrashCan} color="#E11D48" aria-hidden="true" />
 }
 
 export function EditIcon() {
-    return <FontAwesomeIcon icon={faPen} color="#00a2ff" aria-hidden="true" />
+    return <FontAwesomeIcon icon={faPen} color="#2A8F9C" aria-hidden="true" />
 }
 
 export function AddIcon() {
-    return <FontAwesomeIcon icon={faCirclePlus} color="#059669" aria-hidden="true" />
+    return <FontAwesomeIcon icon={faCirclePlus} color="#065F46" aria-hidden="true" />
 }
 
 # Migrate from v4.x to Invictus v5
@@ -98,7 +99,9 @@ Some Framework components requires close attention when upgrading to v5.
 
 Migrating to v5 includes changes in the authentication, endpoint, and removal the metadata links.
 
-> <FontAwesomeIcon icon={faFlag} /> *The `/api/Subscribe` endpoint also needs to use a `POST` instead of a `GET` HTTP method.*
+:::danger[breaking change: Subscribe now requires POST]
+The `/api/Subscribe` endpoint now requires a **POST** instead of a **GET** request. If you miss this change, the Logic App deploys and runs without errors, but never receives any messages.
+:::
 
 <details>
 <summary>**Publish message example**</summary>
