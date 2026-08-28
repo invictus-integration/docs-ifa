@@ -199,8 +199,12 @@ function extractSections(content) {
         }
       }
 
-      // <summary> at depth 1 is always visible — redirect to primary
-      if (/<summary/.test(line) && collapsibleDepth === 1) inSummary = true;
+      // <summary> is always a disclosure label, never scored prose — this
+      // applies at any nesting depth. A nested <details> (e.g. a code sample
+      // tucked inside a larger collapsed walkthrough) is still hidden behind
+      // its own toggle, so its <summary> label must not leak into the parent
+      // collapsed section's scored text either.
+      if (/<summary/.test(line)) inSummary = true;
       if (inSummary) {
         const summaryText = summaryLineToPrimaryText(line);
         if (summaryText) primaryLines.push(summaryText);
@@ -823,6 +827,66 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
   return passed;
 }
 
+/**
+ * Corpus-level formulas (FK, FRE, Coleman-Liau, LIX, Dale-Chall) need a
+ * reasonably-sized sample to be meaningful, so analyzeText() skips them
+ * below 50 words. But content is often fragmented into many small pieces —
+ * one per <details>/<Tabs>/<Collapsible> block in an MDX file, or one per
+ * glossary term / FAQ answer in a data file — and each piece is checked
+ * independently. That lets a page (or a whole glossary) be genuinely dense
+ * while every individual chunk quietly slips under the 50-word floor and
+ * never receives a formula score at all.
+ *
+ * To close that gap, every section that fell under the floor is pooled
+ * together and re-scored as one combined sample, in addition to the normal
+ * per-section checks that already ran. This only adds the corpus-level
+ * checks (fk/fre/cl/lix/dc) — sentence-length, paragraph-density and
+ * list-length checks already run accurately per original section, so they
+ * are not repeated here.
+ */
+function checkPooledSmallSections(sections, filePath, thresholds, fileWarnings) {
+  const small = sections
+    .map(sec => ({ ...sec, plain: toPlainText(sec.text) }))
+    .filter(sec => {
+      const words = joinMultiWordFamiliarTerms(sec.plain).match(/\b[a-zA-Z'-]{2,}\b/g) ?? [];
+      return words.length > 0 && words.length < 50;
+    });
+
+  if (small.length < 2) return; // nothing to pool, or only one small section — not enough on its own
+
+  const combinedPlain = small.map(s => s.plain).join('\n\n');
+  const stats = analyzeText(combinedPlain);
+  if (!stats || stats.fk === null) return; // still not enough combined text for reliable formulas
+
+  const label = `Combined short sections (${small.map(s => s.label).join(', ')})`;
+  const startLine = small[0].startLine;
+  const startCol = small[0].startCol;
+  const enriched = { ...stats, ...thresholds };
+  const preview = longestSentencePreview(stats.sentences);
+
+  if (stats.fk > thresholds.fkMax) {
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fk', enriched, preview));
+    recordIssue(filePath, label, 'fk', startLine);
+  }
+  if (stats.fre < thresholds.freMin) {
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fre', enriched, preview));
+    recordIssue(filePath, label, 'fre', startLine);
+  }
+  if (stats.cl > thresholds.clMax) {
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'cl', enriched, preview));
+    recordIssue(filePath, label, 'cl', startLine);
+  }
+  if (stats.lix > thresholds.lixMax) {
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'lix', enriched, preview));
+    recordIssue(filePath, label, 'lix', startLine);
+  }
+  if (stats.dc !== null && thresholds.dcMax !== null && stats.dc > thresholds.dcMax) {
+    const dcPreview = dcSentencePreview(stats.sentences);
+    fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'dc', enriched, dcPreview));
+    recordIssue(filePath, label, 'dc', startLine);
+  }
+}
+
 // ── Dynamic data file checking ───────────────────────────────────────────────
 
 /**
@@ -898,12 +962,24 @@ function processDataFiles(warningsByFile, dataFilesConfig = DATA_FILES) {
     }
 
     const fileWarnings = [];
+    // Individual entries (a glossary term, an FAQ answer) are usually well
+    // under 50 words, so they'd otherwise never get a corpus-level score.
+    // Group them by audience (thresholds differ) and pool each group after
+    // the per-entry checks below, so a data file full of short-but-dense
+    // entries still gets a formula score.
+    const sectionsByAudience = {};
 
     for (const { label, text, audience, searchText } of extractItems(data)) {
       if (!text || text.trim().length < 20) continue;
       const thresholds = THRESHOLDS[audience] ?? THRESHOLDS.tech;
       const lineNum = findLineNumber(raw, searchText);
       checkSection(label, text, filePath, lineNum, 1, thresholds, fileWarnings);
+      (sectionsByAudience[audience] ??= []).push({ label, text, startLine: lineNum, startCol: 1 });
+    }
+
+    for (const [audience, sections] of Object.entries(sectionsByAudience)) {
+      const thresholds = THRESHOLDS[audience] ?? THRESHOLDS.tech;
+      checkPooledSmallSections(sections, filePath, thresholds, fileWarnings);
     }
 
     if (fileWarnings.length > 0) {
@@ -1141,12 +1217,15 @@ function runCli() {
     const relPath = relative(process.cwd(), file).replace(/\\/g, '/');
     const fileWarnings = [];
 
-    checkSection('Primary content', primary.text, relPath, primary.startLine, primary.startCol, thresholds, fileWarnings);
+    const sections = [
+      { label: 'Primary content', text: primary.text, startLine: primary.startLine, startCol: primary.startCol },
+      ...collapsed.map((c, i) => ({ label: `Collapsed section ${i + 1}`, text: c.text, startLine: c.startLine, startCol: c.startCol })),
+    ];
 
-    for (let i = 0; i < collapsed.length; i++) {
-      const { text, startLine, startCol } = collapsed[i];
-      checkSection(`Collapsed section ${i + 1}`, text, relPath, startLine, startCol, thresholds, fileWarnings);
+    for (const sec of sections) {
+      checkSection(sec.label, sec.text, relPath, sec.startLine, sec.startCol, thresholds, fileWarnings);
     }
+    checkPooledSmallSections(sections, relPath, thresholds, fileWarnings);
 
     if (fileWarnings.length > 0) {
       allPassed = false;

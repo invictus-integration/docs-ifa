@@ -1,7 +1,7 @@
 [
   {
     "term": "Flow",
-    "definition": "A named message chain — a logical grouping of related **messages** sharing a common origin. [Flows are organized in *folders*](/dashboard/flows#organizing-flows-in-folders) and defined by a name, optional mappings, and business properties.",
+    "definition": "A named message chain — a group of **messages** that share one origin. [Flows sit in *folders*](/dashboard/flows#organizing-flows-in-folders) and have a name, mappings, and properties.",
     "userType": "business"
   },
   {
@@ -11,7 +11,7 @@
   },
   {
     "term": "Flow trace",
-    "definition": "A single tracked message instance within a **flow**. It records the full lifecycle of one execution: status, timestamps, properties, and the chain of processing steps.\n\nEach flow trace can be searched and inspected in the Dashboard.",
+    "definition": "A single tracked message within a **flow**. It records the full run: status, timestamps, properties, and each step.\n\nEach flow trace can be searched and viewed in the Dashboard.",
     "userType": "business"
   },
   {
@@ -32,7 +32,7 @@
     "aliases": [
       "Framework"
     ],
-    "definition": "A set of components that supports commonly used integration patterns in Azure.",
+    "definition": "A set of building blocks for common integration patterns in Azure.",
     "userType": "business"
   },
   {
@@ -40,17 +40,17 @@
     "aliases": [
       "Dashboard"
     ],
-    "definition": "A solution that reduces the need for in-depth Azure knowledge and allows business users to focus on the status of their integrations.",
+    "definition": "A tool that lets business users track their integrations, without deep Azure knowledge.",
     "userType": "business"
   },
   {
     "term": "DSAV",
-    "definition": "Stands for **Domain**, **Service**, **Action**, and **Version** — the four business properties Invictus uses to categorize messages. In the Dashboard search you can filter by any combination of these values to find all messages of the same integration type.",
+    "definition": "Stands for **Domain**, **Service**, **Action**, and **Version** — four labels Invictus uses to group messages. In the Dashboard, you can filter by any of these to find similar messages.",
     "userType": "business"
   },
   {
     "term": "Chain ID",
-    "definition": "An identifier that groups all **flow trace** instances belonging to the same end-to-end transaction. Filtering by Chain ID in the Dashboard shows every message processed as part of that single transaction, even across multiple flows.",
+    "definition": "An ID that groups every **flow trace** in one process. In the Dashboard, use Chain ID to see every message in that process, across all flows.",
     "userType": "business"
   },
   {
@@ -60,17 +60,17 @@
   },
   {
     "term": "Resubmit",
-    "definition": "A Dashboard action that re-triggers a **flow trace** from the beginning. Resubmit restarts the first workflow in the chain, even if the original message completed successfully.\n\nSee also **Resume**, which only re-runs the failed steps rather than the whole chain.",
+    "definition": "A Dashboard action that re-runs a **flow trace** from the start. Resubmit runs the whole chain again, even if it worked the first time.\n\nSee also **Resume**, which only re-runs the failed steps, not the whole chain.",
     "userType": "business"
   },
   {
     "term": "Resume",
-    "definition": "A Dashboard action that re-runs only the failed steps of a **flow trace**, without restarting the entire chain from the beginning. Resume is only available for messages in **Error** status.\n\nSee also **Resubmit**, which always restarts from the first workflow.",
+    "definition": "A Dashboard action that re-runs only the failed steps of a **flow trace**, without starting the whole chain over. Resume only works for messages in **Error** status.\n\nSee also **Resubmit**, which always restarts from the first workflow.",
     "userType": "business"
   },
   {
     "term": "Folder",
-    "definition": "A container used to organize **flows** in the Dashboard sidebar. Folders can be nested into a hierarchy with sub-folders, giving teams a clear overview of their integration landscape.",
+    "definition": "A folder groups **flows** together in the Dashboard menu. You can nest folders to give teams a clear view of their integrations.",
     "userType": "business"
   },
   {

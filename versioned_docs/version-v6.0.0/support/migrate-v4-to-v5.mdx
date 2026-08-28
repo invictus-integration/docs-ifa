@@ -92,7 +92,7 @@ Some Framework components requires close attention when upgrading to v5.
 <summary><h4 style={{ margin: 0 }}>Migrate PubSub to v5</h4></summary>
 {/* vale Google.Headings = YES */}
 
-Migrating to v5 includes changes in the authentication, endpoint, and removal the metadata links.
+Migrating to v5 changes the authentication, endpoint, and removes the metadata links.
 
 > <FontAwesomeIcon icon={faFlag} /> *The `/api/Subscribe` endpoint also needs to use a `POST` instead of a `GET` HTTP method.*
 
@@ -227,7 +227,7 @@ The following things change:
 * Metadata links.
 
 :::info[migrate Transco configuration files]
-Use the [migration tool from Codit's Integration Practice](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-Transco--matrix-migration-tools) to migrate your existing Transco configuration files to the new format.
+Use the [migration tool from Codit's Integration Practice](https://github.com/Codit/integration-practice/tree/main/src/Tools/Invictus/Transco-Matrix-Migration#invictus-Transco--matrix-migration-tools) to update your Transco files.
 :::
 
 ```diff
@@ -259,7 +259,7 @@ Use the [migration tool from Codit's Integration Practice](https://github.com/Co
 <details id="migrate-matrix">
 <summary><h4 style={{ margin:0 }}>Migrate Matrix to Transco v5</h4></summary>
 
-The new Transco now includes the Matrix capabilities. Only authentication and endpoints require changing.
+The new Transco now includes the Matrix features. Only authentication and endpoints need updates.
 
 ```diff
 "Extract_Message_Context": {
