@@ -106,6 +106,24 @@ The script:
 ```
 > ⚠️ Use a dedicated development index name (for example `v6-docs-dev`) locally so you never overwrite the production index (`v6-docs`) by accident. CI/CD uses the production index name.
 
+## MCP server for AI agents
+The [`netlify/edge-functions/mcp.js`](./netlify/edge-functions/mcp.js) edge function exposes the same Azure AI Search index to [MCP](https://modelcontextprotocol.io/)-compatible AI agents (Copilot, Claude, custom bots, etc.) via a single read-only tool, `search_documentation`, at `/api/mcp`.
+
+It reuses `AZURE_SEARCH_ENDPOINT`, `AZURE_SEARCH_INDEX`, and `AZURE_SEARCH_ADMIN_KEY` from `.env`. If it fails or is unreachable, it doesn't affect the site, search bar, or "Ask AI" feature.
+
+Point an MCP client at `https://docs.invictus-integration.com/api/mcp` to connect. Test locally with `netlify dev` (see [Local development](#local-development)) and a JSON-RPC request, for example:
+```powershell
+$body = @{ 
+  jsonrpc = "2.0";
+  id = 1; 
+  method = "tools/call"; 
+  params = @{ 
+    name = "search_documentation"; 
+    arguments = @{ query = "your search terms" } }
+} | ConvertTo-Json -Depth 5
+Invoke-RestMethod -Uri "http://localhost:8888/api/mcp" -Method Post -ContentType "application/json" -Body $body
+```
+
 ## Continuous integration
 Every pull request runs the following checks automatically:
 
