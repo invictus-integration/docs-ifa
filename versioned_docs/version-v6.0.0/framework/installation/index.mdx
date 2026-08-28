@@ -10,6 +10,7 @@ import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, RowTint, BadgedText } 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import { Walkthrough, Step } from '@site/src/components/Walkthrough';
+import Admonition from '@theme/Admonition';
 
 # Installing Invictus Framework
 
@@ -212,7 +213,7 @@ Processing large requests can quickly consume the container app's available RAM.
 | `arcPath`           | The Azure Container App registry base path to form the source image location of the container images.         |
 | `arcUsername`       | The username credential to authenticate the Docker CLI.                                                       |
 | `arcPassword`       | The password credential to authenticate into the Docker CLI.                                                  |
-| `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.  |
+| `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name. <Admonition type="warning" title="container app character limit"> Azure Container Apps enforce a resource name limit. Keep this prefix to **3 or less characters**.</Admonition> |
 | `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                           |
 | `variableGroupName` | DevOps variable group to write the Bicep outputs to (ex. `Invictus_CosmosDb_DbName`).                         |
 {/* vale Google.WordList = YES*/}
