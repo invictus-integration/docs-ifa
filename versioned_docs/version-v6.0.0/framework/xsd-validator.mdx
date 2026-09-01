@@ -84,7 +84,7 @@ The **XSD Validator** has a single endpoint available to run validations. Passin
     {
       status: 200,
       label: "Invalid",
-      description: "The XML is parseable but violates one or more schema constraints. Each violation is listed in exceptions.",
+      description: "The XML is parseable but violates the schema constraints, or it raised a schema warning (warnings also set `isValid` to `false`). The exceptions list each violation.",
       body: {
         isValid: false,
         exceptions: [
