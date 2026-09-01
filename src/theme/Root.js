@@ -139,9 +139,14 @@ function applySearchHighlights(highlight, hash) {
 
     setTimeout(() => {
       firstMark.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
-      // Move keyboard and SR focus to the first mark.
-      // preventScroll: true because we just initiated a scroll above.
-      firstMark.focus({ preventScroll: true });
+      // Don't steal focus if the user has since focused something else (e.g.
+      // reopened the search modal) while this timer was pending — only take
+      // focus when nothing else meaningfully claimed it in the meantime.
+      const active = document.activeElement;
+      if (!active || active === document.body) {
+        // preventScroll: true because we just initiated a scroll above.
+        firstMark.focus({ preventScroll: true });
+      }
     }, 80);
 
     // Announce match count to screen readers via the live region.
