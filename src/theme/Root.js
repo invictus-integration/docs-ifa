@@ -138,10 +138,22 @@ function applySearchHighlights(highlight, hash) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     setTimeout(() => {
+      // Don't touch the page at all if the search modal has been reopened
+      // while this timer was pending — the user's focus intent is inside the
+      // modal now, not on this page's content, and grabbing focus back here
+      // would yank it out of the modal (and, indirectly, out of whatever
+      // element the modal itself just focused, e.g. its search input).
+      if (document.querySelector('[data-search-modal]')) return;
+
       firstMark.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
-      // Move keyboard and SR focus to the first mark.
-      // preventScroll: true because we just initiated a scroll above.
-      firstMark.focus({ preventScroll: true });
+      // Also don't steal focus if the user has since focused something else
+      // on the page itself — only take focus when nothing else meaningfully
+      // claimed it in the meantime.
+      const active = document.activeElement;
+      if (!active || active === document.body) {
+        // preventScroll: true because we just initiated a scroll above.
+        firstMark.focus({ preventScroll: true });
+      }
     }, 80);
 
     // Announce match count to screen readers via the live region.

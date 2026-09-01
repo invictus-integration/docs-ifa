@@ -191,6 +191,13 @@ describe('SearchBar navigation (local search)', () => {
         .should('contain', 'resourcePrefix');
     });
 
+    it('does not append the generic ?highlight= param, since the ParameterTable already filters to the matching row', () => {
+      openSearchAndType('resourcePrefix');
+      cy.get('[data-cy=search-result]').contains('resourcePrefix').first().click();
+      cy.location('search').should('not.include', 'highlight=');
+      cy.get('mark[data-search-highlight]').should('not.exist');
+    });
+
   });
 
   // ── Legacy glossary-stub redirect ────────────────────────────────────────
