@@ -1,7 +1,7 @@
 [
   {
-    "question": "Why does Entra ID sign in fail with HTTP 431 Request Header Fields Too Large error on some environments?",
-    "answer": "This issue occurs when the Entra ID sign-in process generates a large number of cookies, which can exceed the header size limit of some browsers or environments. To resolve this issue, you can try to disable the `Session Affinity`/`Cookie-based Affinity` option.",
+    "question": "Why does Entra ID sign-in fail with HTTP 431 Request Header Fields Too Large error on some environments?",
+    "answer": "This issue occurs when the Entra ID sign-in process generates a large number of cookies, which can exceed the header size limit of some browsers or environments. To resolve this issue, you can try to disable the `Session Affinity`/`Cookie-based Affinity` option.\n\n If that doesn't help, check the amount of synced groups. A large number of groups might break the Dashboard sign-in process due to the token header size limit. You can remove unrelated groups in the `Groups` MongoDB collection with the query: `db.Groups.deleteMany({GroupId: {$nin: ['groupIdToKeep']}})`. This reduces again the number of groups and the token size.",
     "version": ">= v6.3",
     "userType": "technical",
     "tags": [
