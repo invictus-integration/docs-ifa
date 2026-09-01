@@ -118,7 +118,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-dark);
   color: #fff;
   font-weight: 700;
   font-size: 0.8rem;
