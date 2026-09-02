@@ -7,12 +7,14 @@ body:
     attributes:
       value: |
         Thanks for helping us improve the docs.
-        > ![NOTE]
+
+        > [!NOTE]
         > This mirrors the feedback widget available on every docs page (press `?` to open it) — use this form or the widget, whichever is more convenient.
   - type: checkboxes
     id: existing-issue-check
     attributes:
-      label: Is the question or feedback already covered by an existing issue or answered on the [help center](https://docs.invictus-integration.com/support/help-center-technical)?
+      label: Is there an existing issue or request for this?
+      description: Is the question or feedback already covered by an existing issue or answered on the [help center](https://docs.invictus-integration.com/support/help-center-technical)?
       options:
         - label: I searched existing issues/questions and didn't find a duplicate or answer.
           required: true
