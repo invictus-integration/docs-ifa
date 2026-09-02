@@ -28,8 +28,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
   <Fixes>
     - **[ExceptionHandler](../framework/exceptionHandler.mdx) report error details in failed `ForEach` loops:** the component captures inner errors inside `ForEach` loops in Logic Apps workflows instead of displaying general error user messages. Users no longer have to switch to Azure to find the root cause for failures.
     - **[PubSub](../framework/pubsubV2.mdx) Improved recovery of deferred messages:** the component recovers more reliably messages stuck in a deferred state, caused by external intermittent platform issues.
-
-      There was a problem with the Service Bus resubmitting deferred messages. The target subscribers were receiving the message more broadly than intended. The improved subscription filtering logic ensures to route resubmitted messages to the appropriate subscriber.
+      There was a problem with the Service Bus resubmitting deferred messages. The target subscribers were receiving more message than intended. The improved subscription filtering logic ensures to route resubmitted messages to the appropriate subscriber.
 
     - **Reliable Cosmos DB during high-volume processing:** the database interactions better handles concurrent tasks. This reduces the connection errors during high activity or initial setup.
   </Fixes>
