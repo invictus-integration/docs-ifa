@@ -87,6 +87,8 @@ You need secrets to pull the installation sources. **Codit Software** provides t
 
 * `{'{prefix}'}.Invictus.Installation`
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
+  * `Invictus.Installation.StorageAccount.Container.Dashboard.Name`: `dashboard-v2`
+  * `Invictus.Installation.StorageAccount.Container.Framework.Name`: `framework`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software (if you're also deploying the Framework)
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
@@ -153,7 +155,7 @@ stages:
         arguments: >
           -StorageAccountName '$(Invictus.Installation.StorageAccount.Name)'
           -StorageSasToken '$(Invictus.Installation.StorageAccount.Dashboard.SasToken)'
-          -StorageContainerName 'dashboard-v2'
+          -StorageContainerName '$(Invictus.Installation.StorageAccount.Container.Name)'
           -SaveLocation '$(Build.ArtifactStagingDirectory)'
           -UseBeta ${{parameters.useBeta}}
           -Version ${{ parameters.version }}
