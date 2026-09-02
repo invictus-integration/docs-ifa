@@ -96,6 +96,12 @@ If workflow 1 uses a custom timestamp that happened 'earlier' than the one used 
       body: "Stop"
     },
     {
+      status: 200,
+      label: "Wait",
+      description: "Another, earlier-timestamped workflow run in the same sequence is still in progress. Poll again later.",
+      body: "Wait"
+    },
+    {
       status: 400,
       label: "Bad Sequence Request",
       description: "The request is malformed or missing required parameters.",
@@ -104,8 +110,14 @@ If workflow 1 uses a custom timestamp that happened 'earlier' than the one used 
     {
       status: 404,
       label: "Sequence Not Found",
-      description: "The sequence was not found in the backend storage.",
+      description: "A stored sequence exists for the 'sequenceName' but its content is blank or corrupt. A new sequence is not an error. It's automatically created and returns 'Start'.",
       body: "Failed to wait for execution because the sequence was not found in the backend storage."
+    },
+    {
+      status: 424,
+      label: "Callback failed",
+      description: "Custom callback endpoint responded with a non-success status code.",
+      body: "Failed to wait for execution request because the custom callback endpoint responded with a failure, please check the logs for more info"
     },
     {
       status: 500,
@@ -159,8 +171,14 @@ If workflow 1 uses a custom timestamp that happened 'earlier' than the one used 
     {
       status: 404,
       label: "Sequence Not Found",
-      description: "The sequence was not found in the backend storage.",
+      description: "The sequence was not found in the backend storage. The cause also covers internal lookup failures. The current instance ID not present in the stored sequence, or an internal failure determining the next execution request to call back.",
       body: "Failed to complete execution because the sequence was not found in the backend storage."
+    },
+    {
+      status: 409,
+      label: "Execution requests still running",
+      description: "The request references still running execution requests in the stored sequence (status 'Start'). Complete those first before completing this one.",
+      body: "Cannot complete execution of sequence because the request references one or more execution requests that are still running, please check the the logs for more information"
     },
     {
       status: 424,
