@@ -16,6 +16,9 @@
     "cy:run": "cypress run",
     "test": "start-server-and-test start http://localhost:3000 cy:run",
     "index:push": "pwsh scripts/refresh-search-index.ps1",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "issue-templates:sync-versions": "pwsh scripts/update-issue-template-versions.ps1"
   },
   "dependencies": {
@@ -52,11 +55,21 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/theme-classic": "3.10.2",
     "@docusaurus/plugin-content-docs": "3.10.2",
     "@docusaurus/types": "3.10.2",
+    "@docusaurus/tsconfig": "^3.10.2",
     "cypress": "^15.13.1",
     "dotenv": "^17.4.2",
-    "start-server-and-test": "^2.1.5"
+    "eslint": "^9.39.5",
+    "@eslint/js": "^9.39.5",
+    "eslint-plugin-cypress": "^6.4.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.8.0",
+    "start-server-and-test": "^2.1.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0"
   },
   "engines": {
     "node": ">=20.0"
