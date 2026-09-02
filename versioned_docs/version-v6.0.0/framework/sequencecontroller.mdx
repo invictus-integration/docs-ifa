@@ -63,7 +63,7 @@ The component processes runs in sequence after the **Wait**. Place your logic th
       name: "sequenceStart",
       type: "integer",
       required: false,
-      description: "Optional starting number for the sequence. If not provided, the sequence will start at 1."
+      description: "Optional starting number for the sequence. If not provided, the sequence will start at 1. Only used when initializing a new sequence. Ignored on subsequent calls for a known sequence."
     }
   ]}
   request={{
@@ -115,7 +115,7 @@ The component processes runs in sequence after the **Wait**. Place your logic th
     },
     {
       name: "counter",
-      type: "string",
+      type: "integer",
       required: true,
       description: "The sequence number returned by the /api/GetSequenceNumber endpoint."
     },
@@ -124,11 +124,17 @@ The component processes runs in sequence after the **Wait**. Place your logic th
       type: "string",
       required: true,
       description: "Should be supplied by the HTTP WebHook Azure Logic App action: `@{listCallbackUrl()}`."
+    },
+    {
+      name: "sequenceStart",
+      type: "integer",
+      required: false,
+      description: "Optional starting number for the sequence, only used to initialize the sequence if it doesn't exist yet. Always call `/api/GetSequenceNumber` first so the sequence is already initialized."
     }
   ]}
   request={{
     sequenceName: "my-sequence",
-    counter: "1",
+    counter: 1,
     callbackUri: "https://prod-00.westeurope.logic.azure.com:443/workflows/..."
   }}
   responses={[
@@ -189,15 +195,15 @@ The component processes runs in sequence after the **Wait**. Place your logic th
     {
       name: "retentionDays",
       type: "integer",
-      required: true,
-      description: "Number of days to retain the sequence information after completion.",
+      required: false,
+      description: "Optional number of days to retain completed sequence entries. Trims older completed entries from storage when this call runs. If not provided, it means no trimming and keeping completed entries indefinitely.",
       badges: <NewSinceBadge version='v6.2' style={{ fontSize: '0.875rem', fontWeight: '700' }} />
     },
     {
       name: "status",
       type: "SequenceStatus",
       required: false,
-      description: "Optional status of the current workflow run. If not provided, the default status is 'Completed'. Can be 'Completed' or 'Processing'."
+      description: "Optional status of the current workflow run. If not provided, the default status is 'Completed'. 'Completed' is the only accepted value. It rejects any other value explicitly with a 400 Bad Request."
     },
   ]}
   request={{
