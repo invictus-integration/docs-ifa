@@ -90,6 +90,12 @@ By default it uses the [**Regex Translator**](./regextranslation.mdx) component 
       type: "string",
       required: true,
       description: "The ID of the Azure resource group within the subscription where the client hosts their Logic App."
+    },
+    {
+      name: "type",
+      type: "string",
+      required: true,
+      description: "The Logic App type, must be `Consumption` for this tab. Do not provide `siteName` alongside `Consumption` — this returns a 400 Bad Request."
     }
   ]}
   request={{
@@ -183,6 +189,12 @@ By default it uses the [**Regex Translator**](./regextranslation.mdx) component 
       type: "string",
       required: true,
       description: "The ID of the Azure resource group within the subscription where the client hosts their Logic App."
+    },
+    {
+      name: "type",
+      type: "string",
+      required: true,
+      description: "The Logic App type, must be `Standard` for this tab. `siteName` is required alongside `Standard` — omitting it returns a 400 Bad Request."
     }
   ]}
   request={{
@@ -305,7 +317,8 @@ By using the translation capabilities of the component, it sends back the follow
     "errors": [
         {
             "code": "Availability",
-            "description": "Application is not reachable"
+            "description": "Application is not reachable",
+            "successfulAiTranslation": false
         }
     ]
 }
