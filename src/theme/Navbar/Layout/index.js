@@ -181,9 +181,8 @@ function OverlayColumns({ items, activePath, onClose }) {
 
 // Custom navigation overlay — renders below the secondary audience bar,
 // slides top-to-bottom, shows the current doc sidebar via MobileNavContext.
-function MobileNavOverlay({ isOpen, onClose, activeSection }) {
-  const { sidebars } = useMobileNav();
-  const sidebar = sidebars[activeSection] ?? null;
+function MobileNavOverlay({ isOpen, onClose }) {
+  const { sidebar } = useMobileNav();
   const location = useLocation();
   const scrollerRef = useRef(null);
 
@@ -343,47 +342,30 @@ function VersionBlock() {
 }
 
 
-function AudienceBlocks({ overlayOpen, activeSection, onSelect }) {
+function AudienceBlocks({ overlayOpen, onToggleOwnSection, onNavigateAway }) {
   const { userType, setUserType } = useUserType();
-  const { sidebars } = useMobileNav();
   const history = useHistory();
-  // Tracks a pending seed navigation that should run AFTER the overlay renders.
-  const [pendingSeedPath, setPendingSeedPath] = useState(null);
-
-  // Run the deferred seed navigation after the overlay has been painted.
-  // useEffect fires after the browser has committed the render, so the user
-  // sees the overlay open before the page URL changes behind it.
-  useEffect(() => {
-    if (!pendingSeedPath) return;
-    history.push(pendingSeedPath);
-    setPendingSeedPath(null);
-  }, [pendingSeedPath, history]);
 
   function handleClick(e, tab) {
     e.preventDefault();
 
-    if (tab.key === activeSection && overlayOpen) {
-      onSelect(tab.key, false, null);
+    if (tab.key === userType) {
+      // Tapping your own current section toggles the overlay to browse it.
+      onToggleOwnSection(e.currentTarget);
       return;
     }
 
-    onSelect(tab.key, true, e.currentTarget);
-
-    // First tap on a section whose sidebar hasn't been cached yet: navigate to
-    // seed MobileNavContext. setUserType runs NOW (not deferred) so the
-    // UserTypeContext redirect guard doesn't fire when we land on '/'.
-    if (!sidebars[tab.key]) {
-      setUserType(tab.key);
-      setPendingSeedPath(tab.path); // navigation deferred to after overlay renders
-    }
+    // Switching to the other section always navigates for real — no cached
+    // preview, so the destination sidebar is always guaranteed fresh.
+    onNavigateAway();
+    setUserType(tab.key);
+    history.push(tab.path);
   }
 
   return (
     <>
       {TABS.map((tab) => {
-        // While overlay is open, highlight the section being browsed.
-        // While closed, highlight the section matching the current page.
-        const isActive = overlayOpen ? tab.key === activeSection : tab.key === userType;
+        const isActive = tab.key === userType;
         return (
           <a
             key={tab.key}
@@ -413,15 +395,8 @@ function AudienceBlocks({ overlayOpen, activeSection, onSelect }) {
 }
 
 export default function NavbarLayoutWrapper(props) {
-  const { userType } = useUserType();
   const [overlayOpen, setOverlayOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState(userType);
   const triggerRef = useRef(null);
-
-  // Keep activeSection in sync with the current page when overlay is closed.
-  useEffect(() => {
-    if (!overlayOpen) setActiveSection(userType);
-  }, [userType, overlayOpen]);
 
   // Auto-close when the viewport crosses above the mobile breakpoint (e.g.
   // rotating to landscape on a tablet, or resizing a desktop window). The
@@ -522,10 +497,13 @@ export default function NavbarLayoutWrapper(props) {
     };
   }, [overlayOpen]);
 
-  function handleSelect(key, open, triggerEl) {
-    if (open && triggerEl) triggerRef.current = triggerEl;
-    setActiveSection(key);
-    setOverlayOpen(open);
+  function handleToggleOwnSection(triggerEl) {
+    triggerRef.current = triggerEl;
+    setOverlayOpen((open) => !open);
+  }
+
+  function handleNavigateAway() {
+    setOverlayOpen(false);
   }
 
   const closeOverlay = () => setOverlayOpen(false);
@@ -534,12 +512,16 @@ export default function NavbarLayoutWrapper(props) {
     <>
       <NavbarLayout {...props} />
       <nav className={styles.audienceBar} aria-label="Documentation section">
-        <AudienceBlocks overlayOpen={overlayOpen} activeSection={activeSection} onSelect={handleSelect} />
+        <AudienceBlocks
+          overlayOpen={overlayOpen}
+          onToggleOwnSection={handleToggleOwnSection}
+          onNavigateAway={handleNavigateAway}
+        />
         <ErrorCauseBoundary onError={() => null}>
           <VersionBlock />
         </ErrorCauseBoundary>
       </nav>
-      <MobileNavOverlay isOpen={overlayOpen} onClose={closeOverlay} activeSection={activeSection} />
+      <MobileNavOverlay isOpen={overlayOpen} onClose={closeOverlay} />
     </>
   );
 }

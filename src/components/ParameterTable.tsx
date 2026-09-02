@@ -87,8 +87,8 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
   useEffect(() => {
     if (showAll && !prevShowAllRef.current) {
       const firstBtn = tagGroupRef.current?.querySelector<HTMLElement>("button");
-      if (firstBtn) firstBtn.focus();
-      else searchInputRef.current?.focus();
+      if (firstBtn) firstBtn.focus({ preventScroll: true });
+      else searchInputRef.current?.focus({ preventScroll: true });
     }
     prevShowAllRef.current = showAll;
   }, [showAll]);
@@ -503,7 +503,7 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
               <div
                 data-cy="search-results"
                 className={rowStyles.tableWrapper}
-                style={{ maxHeight, overflowY: "auto" }}
+                style={{ "--ptable-max-height": maxHeight } as React.CSSProperties}
               >
                 <table
                   role="treegrid"

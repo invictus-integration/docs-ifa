@@ -18,7 +18,9 @@ const resolveIconScale = RESOLVE_ICON_SIZE / resolveIconVbW;
 const resolveIconTx = RES_X + (RESOLVE_BADGE_W - resolveIconVbW * resolveIconScale) / 2;
 const resolveIconTy = RES_Y + (INV_H - resolveIconVbH * resolveIconScale) / 2;
 
-export default function ExceptionHandlerFlowMobile() {
+type ExceptionHandlerFlowMobileProps = { describedById?: string };
+
+export default function ExceptionHandlerFlowMobile({ describedById }: ExceptionHandlerFlowMobileProps) {
   return (
     <div style={{ maxWidth: 360, margin: "1.5rem auto" }}>
       <svg
@@ -26,7 +28,8 @@ export default function ExceptionHandlerFlowMobile() {
         width="100%"
         viewBox="0 0 280 572"
         role="img"
-        aria-label="Exception Handler flow diagram"
+        aria-label="Exception Handler flow diagram for mobile layout"
+        aria-describedby={describedById}
       >
         <defs>
           <marker id="arr-EHMobile" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">

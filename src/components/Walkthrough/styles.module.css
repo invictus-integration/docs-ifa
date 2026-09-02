@@ -83,10 +83,11 @@
 :global([data-theme='dark']) .walkthroughStepCircle {
   box-shadow: 0 0 0 4px var(--ifm-background-color),
     0 0 0 6px var(--inv-tint-strong);
+  background-color: var(--ifm-color-primary-dark);
 }
 
 :global([data-theme='dark']) .walkthroughStepTitle {
-  color: var(--ifm-color-primary-light);
+  color: var(--ifm-color-primary-lightest);
 }
 
 /* ─── Task: compact, collapsible (feature walkthroughs) ───────────────────── */
@@ -117,7 +118,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-dark);
   color: #fff;
   font-weight: 700;
   font-size: 0.8rem;

@@ -6,8 +6,9 @@ hide_title: true
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import FolderHierarchy from '@site/src/components/FolderHierarchy';
 import ComponentHeader from '@site/src/components/ComponentHeader';
-import { Folder, Flow } from '@site/src/components/InputControls';
-import {faCircle,faArrowPointer, faWarning, faLink} from '@fortawesome/free-solid-svg-icons';
+import { Folder, Flow, Button } from '@site/src/components/InputControls';
+import {faCircle,faArrowPointer, faWarning, faLink, faArrowRotateLeft} from '@fortawesome/free-solid-svg-icons';
+import {faCirclePlay, faEyeSlash} from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Admonition from '@theme/Admonition';
 
@@ -28,6 +29,17 @@ Selecting a status opens the [search page](./02_search.mdx) for that status.
 </Admonition>
 
 ![home](/images/v2_dsb-overview.png)
+
+## Taking action on messages
+When a message needs attention you can act on it directly from the Dashboard. The available actions depend on how the flow type.
+
+* <FontAwesomeIcon icon={faArrowRotateLeft} aria-hidden='true' /> **Resubmit**: start the message again from the beginning, as if it just came in. Use this for a fresh attempt, even on a message that already completed.
+* <FontAwesomeIcon icon={faCirclePlay} aria-hidden='true' /> **Resume**: pick up only where the message got stuck, without repeating the steps that already worked. Only available for messages in <FontAwesomeIcon icon={faCircle} color="#f43f5e" aria-hidden='true' /> **Error** status, often the fastest way to retry.
+* <FontAwesomeIcon icon={faEyeSlash} aria-hidden='true' /> **Ignore**: mark the message as handled without re-running anything. Useful when you expected an error or you solved the problem another way.
+
+:::info[Not seeing these actions on a message?]
+Flow actions depend on how the flow receives its messages. See [Import via Azure Logic Apps](./04_import-flow-traces/import-flows-via-la.mdx) for the supported cases.
+:::
 
 ## Organizing flows in folders
 The Dashboard lets you group your flows into a folder tree.
