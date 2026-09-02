@@ -5,12 +5,21 @@ title: Customize Dashboard
 
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSlidersH, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faSlidersH, faUpRightFromSquare, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { ToggleInput, TextInput } from '@site/src/components/InputControls';
 import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 
 # Customize the Dashboard to your needs
 <Breadcrumb items={[<><em>profile name</em>&nbsp;<FontAwesomeIcon icon={faSlidersH} /></>, `Settings`]} summary="From the Dashboard's main navigation, focus on your **profile** name, then select **Settings** from the pop-up menu" />
+
+## Company branding
+You can customize the appearance of the Dashboard to reflect your company's branding by updating the Dashboard logo, both for the light/dark theme.
+
+:::info
+The Dashboard only supports JPEG, PNG, GIF, WEBP formats.
+:::
+
+Focus on the <FontAwesomeIcon icon={faUpload} aria-label="Upload" /> icon to update the Dashboard appearance. The change should take effect immediately.
 
 ## Connected Dashboard
 
