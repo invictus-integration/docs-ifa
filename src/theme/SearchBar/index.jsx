@@ -421,6 +421,13 @@ export default function SearchBar() {
   // result would.
   const GLOSSARY_STUB_RE = /^support\/glossary-(technical|business)\.mdx$/;
 
+  // Bicep-parameter results (anchor ends in #bicep-template-parameters) already
+  // pre-fill and filter the destination page's ParameterTable via their own
+  // ?q= param — the same way term/FAQ results manage their own highlighting.
+  // Appending the generic ?highlight= param on top would wrap the (already
+  // filtered-to-one-row) parameter name in <mark> for no benefit.
+  const BICEP_PARAM_ANCHOR_RE = /#bicep-template-parameters$/;
+
   // Single source of truth for a result's destination URL — used both as the
   // rendered <a href> (so hovering a result shows the real target in the
   // browser's status bar, and Ctrl/Cmd-click / "open in new tab" just work)
@@ -439,7 +446,7 @@ export default function SearchBar() {
     // matches the ?highlight= param that actually gets appended on click.
     const term = query.trim() || (result.query ?? '').trim();
     const raw = result.url ?? (filepathToUrl(result.filepath) + (result.anchor ?? ''));
-    if (!term) return raw;
+    if (!term || BICEP_PARAM_ANCHOR_RE.test(result.anchor ?? '')) return raw;
 
     const hashIdx = raw.indexOf('#');
     const base = hashIdx >= 0 ? raw.slice(0, hashIdx) : raw;

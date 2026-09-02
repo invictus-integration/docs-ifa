@@ -98,7 +98,7 @@ The component has a single endpoint available to run translations. Passing an in
     {
       status: 404,
       label: "Not Found",
-      description: "No stored regular expression translations were found.",
+      description: "The `RegexTranslator` table has no stored translations.",
       body: "Failed to translate user content via regular expression replacement, no stored translations were found."
     },
     {
@@ -138,6 +138,7 @@ Store regular expression translations in the `RegexTranslator` Azure Table Stora
 * **Many pastes**: the component pastes the subtracted information from named groups more than once.
 * **Single match**: the user `Content` can only match a single stored translation - the component picks the first match.
 * **No pastes**: the `OutputPattern` doesn't necessarily *have* to contain `{group-name}` occurrences, it can only contain text.
+* **Named groups only**: the component matches with regex's `ExplicitCapture` option enabled. It doesn't capture plain `(...)` groups in `MatchPattern`. Only `(?<group-name>...)` named groups produce a usable `{group-name}` placeholder in `OutputPattern`.
 
 
 </Collapsible>

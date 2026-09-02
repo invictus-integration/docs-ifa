@@ -10,6 +10,7 @@ import { SharedNote, NewSinceBadge, DeprecatedSinceBadge, RowTint, BadgedText } 
 import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/framework.v6.bicep.parameters.json";
 import { Walkthrough, Step } from '@site/src/components/Walkthrough';
+import Admonition from '@theme/Admonition';
 
 # Installing Invictus Framework
 
@@ -19,8 +20,9 @@ import { Walkthrough, Step } from '@site/src/components/Walkthrough';
 :::info[obtain access <SharedNote/>]
 Request access to the Invictus Framework resources from [Codit Software](mailto:coditproducts@codit.eu).
 :::
-:::warning[Container revisions]
-The deployment uses Multiple Revision mode in its Container App deployments. This means that older revisions could clutter the Container App Environment. You can use [this clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) to remove them.
+:::warning[Important considerations <SharedNote/>]
+* **Container revisions:** the deployment uses Multiple Revision mode in its Container App deployments. This means that older revisions could clutter the Container App Environment. You can use [this clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) to remove them.
+* **Lingering role assignments:** if a failed install or clean-up deleted resources from the target resource group before this deployment, Azure can leave orphaned role assignments behind. These block the Bicep deployment with a *"role assignment already exists"* error. Remove orphaned role assignments on the target resource group **before** you start.
 :::
 
 <details>
@@ -85,6 +87,8 @@ You need secrets to pull the installation sources. **Codit Software** provides t
 
 * `**{'{prefix}'}.Invictus.Installation**`
   * `Invictus.Installation.StorageAccount.Name`: `invictusreleases`
+  * `Invictus.Installation.StorageAccount.Container.Dashboard.Name`: `dashboard-v2`
+  * `Invictus.Installation.StorageAccount.Container.Framework.Name`: `framework`
   * `Invictus.Installation.StorageAccount.Dashboard.SasToken`: value provided by Codit Software (if you're also deploying the Dashboard)
   * `Invictus.Installation.StorageAccount.Framework.SasToken`: value provided by Codit Software
   * `Infra.Environment.ACRUsername`: value provided by Codit Software
@@ -143,7 +147,7 @@ stages:
         arguments: >
           -StorageAccountName '$(Invictus.Installation.StorageAccount.Name)'
           -StorageSasToken '$(Invictus.Installation.StorageAccount.Framework.SasToken)'
-          -StorageContainerName 'framework'
+          -StorageContainerName '$(Invictus.Installation.StorageAccount.Container.Framework.Name)'
           -SaveLocation '$(Build.ArtifactStagingDirectory)'
           -UseBeta ${{ parameters.useBeta }}
           -Version ${{ parameters.version }}
@@ -211,7 +215,7 @@ Processing large requests can quickly consume the container app's available RAM.
 | `arcPath`           | The Azure Container App registry base path to form the source image location of the container images.         |
 | `arcUsername`       | The username credential to authenticate the Docker CLI.                                                       |
 | `arcPassword`       | The password credential to authenticate into the Docker CLI.                                                  |
-| `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name.  |
+| `resourcePrefix`    | An abbreviation to include in all the Azure resource names that Invictus deploys, often an environment name. <Admonition type="warning" title="container app character limit"> Azure Container Apps enforce a resource name limit. Keep this prefix to **3 or less characters**.</Admonition> |
 | `resourceGroupName` | The name of the Azure resource group where the main Invictus components deploys to.                           |
 | `variableGroupName` | DevOps variable group to write the Bicep outputs to (ex. `Invictus_CosmosDb_DbName`).                         |
 {/* vale Google.WordList = YES*/}
@@ -352,4 +356,3 @@ stages:
 
 </Step>
 </Walkthrough>
-

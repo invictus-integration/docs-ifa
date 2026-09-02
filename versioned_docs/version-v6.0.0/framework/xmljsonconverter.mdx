@@ -130,7 +130,7 @@ Invictus provides a **XML/JSON Converter** component which converts XML/JSON con
     {
         status: 404,
         label: "XPath or JPath Not Found",
-        description: "The provided XPath or JPath expression did not match any node in the XML or JSON document.",
+        description: "The provided XPath or JPath expression did not match any node in the XML or JSON document. A 404 could also mean a missing/empty/invalid stored XSLT transformation config. If your XPath/JPath looks correct, double-check the config file too.",
         body: "Failed to transform the input XML to JSON because the provided XPath or JPath expression did not match any node in the XML or JSON document."
     },
     {
@@ -220,7 +220,7 @@ Invictus provides a **XML/JSON Converter** component which converts XML/JSON con
     {
         status: 404,
         label: "XPath or JPath Not Found",
-        description: "The provided XPath or JPath expression did not match any node in the XML or JSON document.",
+        description: "The provided XPath or JPath expression did not match any node in the XML or JSON document. A 404 could also mean a missing/empty/invalid stored XSLT transformation config. If your XPath/JPath looks correct, double-check the config file too.",
         body: "Failed to transform the input JSON to XML because the provided XPath or JPath expression did not match any node in the XML or JSON document."
     },
     {
