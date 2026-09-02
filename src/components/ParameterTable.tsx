@@ -309,7 +309,7 @@ export default function ParameterTable({ parameters: rawParameters, fixedTags = 
               {/* id only on depth-0 to avoid duplicate IDs when the same property name
                   appears under multiple parent objects. Depth-0 names are unique top-level
                   anchors; nested ones have no safe stable anchor to offer. */}
-              <code id={depth === 0 ? p.name : undefined} style={codeStyle}>
+              <code id={depth === 0 ? p.name : undefined} data-cy="param-name" style={codeStyle}>
                 {highlightText(p.name, search)}
               </code>
               {p.newSince && <NewSinceBadge version={p.newSince} style={{ fontSize: '0.72rem', marginLeft: '0px', padding: '4px 6px' }} />}
