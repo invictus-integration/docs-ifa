@@ -7,7 +7,8 @@ body:
     attributes:
       value: |
         Thanks for helping us improve the docs.
-        > ![NOTE]
+
+        > [!NOTE]
         > This mirrors the feedback widget available on every docs page (press `?` to open it) — use this form or the widget, whichever is more convenient.
   - type: checkboxes
     id: existing-issue-check
