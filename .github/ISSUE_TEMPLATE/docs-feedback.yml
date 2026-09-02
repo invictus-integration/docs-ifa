@@ -13,7 +13,8 @@ body:
   - type: checkboxes
     id: existing-issue-check
     attributes:
-      label: Is the question or feedback already covered by an existing issue or answered on the [help center](https://docs.invictus-integration.com/support/help-center-technical)?
+      label: Is there an existing issue or request for this?
+      description: Is the question or feedback already covered by an existing issue or answered on the [help center](https://docs.invictus-integration.com/support/help-center-technical)?
       options:
         - label: I searched existing issues/questions and didn't find a duplicate or answer.
           required: true
