@@ -43,7 +43,8 @@
     "version": "<= v5.1",
     "userType": "technical",
     "tags": [
-      "pubsub"
+      "pubsub",
+      "logic-apps"
     ]
   },
   {
@@ -61,7 +62,8 @@
     "version": ">=v5.1",
     "userType": "technical",
     "tags": [
-      "pubsub"
+      "pubsub",
+      "logic-apps"
     ]
   },
   {
@@ -70,7 +72,8 @@
     "version": "<= v5.1",
     "userType": "technical",
     "tags": [
-      "pubsub"
+      "pubsub",
+      "logic-apps"
     ]
   },
   {
@@ -79,7 +82,8 @@
     "version": "",
     "userType": "technical",
     "tags": [
-      "pubsub"
+      "pubsub",
+      "logic-apps"
     ]
   },
   {
@@ -115,7 +119,18 @@
     "version": ">= v6.0",
     "userType": "technical",
     "tags": [
-      "dashboard"
+      "dashboard",
+      "logic-apps"
+    ]
+  },
+  {
+    "question": "Why doesn't Content View work for an action inside a for-each loop?",
+    "answer": "Content View relies on the action's name to identify it. An action inside a `for-each` loop collides across iterations. Best practice is to call a child Logic App from inside the loop that performs the relevant action and logs the message content there. This gives each iteration its own line in the Dashboard (with a parent-child link) and lets you resume a single failed item in the loop, instead of the whole loop.",
+    "version": ">= v6.0",
+    "userType": "technical",
+    "tags": [
+      "dashboard",
+      "logic-apps"
     ]
   }
 ]
