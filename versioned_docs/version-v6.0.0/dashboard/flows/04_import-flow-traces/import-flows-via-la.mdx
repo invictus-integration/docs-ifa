@@ -139,8 +139,9 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
     | `x-iv-messagecontent-output-name`         | `ActionOutput`     | This is the friendly name displayed in the ClickThrough/ExecutionTree, the value can be anything you like. The value has to be a single word |
     | `x-iv-messagecontent-output-content-type` | `application/json` | This should have the same media type as the data type when opening the input link for an action                                            |
 
-    :::warning
-    The inputs and outputs content views can be set up independently or together. The only requirement is that if the `-name` is present then the `-content-type` has to be also present for the desired output.
+    :::warning[Important]
+    * You can set the inputs and outputs content views independently or together. Make sure to set both the `-name` and the `-content-type` for the desired output.
+    * You can't use message content views in a for-each loop. An action in a loop collides across iterations. Call a child Logic App within the loop instead that handles the message content views.
     :::
 
     **Errors on Azure Logic App level**
