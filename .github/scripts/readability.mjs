@@ -76,11 +76,38 @@ const THRESHOLDS = {
   tech:     { fkMax: 14, freMin: 30, clMax: 16, lixMax: 55, dcMax: null, lenMax: 25, maxLen: 40, paraMax: 6, listMax: 10 },
 };
 
+// Backstop thresholds for individual sections that fall under the 50-word
+// floor (see analyzeText()'s tooSmallForCorpusMetrics). A short, jargon-heavy
+// definition (e.g. a glossary term named after the very jargon it defines)
+// naturally scores worse than the normal thresholds even when well-written —
+// FK/FRE/CL/LIX are averages that a couple of unavoidable technical nouns can
+// skew wildly at low word counts. Measured against this repo's actual
+// business-glossary entries, legitimate (if jargon-dense) short definitions
+// top out around fk≈13, fre≈25, cl≈16, lix≈65 — nowhere near these values.
+// So rather than applying the normal thresholds per-entry (which would flag
+// perfectly fine short definitions) or skipping small entries entirely
+// (which is how a single truly awful entry could hide, diluted, inside an
+// unbounded corpus-level pool), each small entry is also checked against a
+// much higher/lower bar that only fires on content that's dramatically,
+// unambiguously worse than anything currently in the corpus — a safety net
+// against pathological entries, independent of how they happen to batch.
+const EXTREME_THRESHOLDS = {
+  business: { fkMax: 20, freMin: 10, clMax: 25, lixMax: 85 },
+  tech:     { fkMax: 28, freMin: -10, clMax: 32, lixMax: 95 },
+};
+
 function getThresholds(filePath) {
   const p = filePath.replace(/\\/g, '/');
   return TECH_FILE_PATTERNS.some(pattern => pattern.test(p))
     ? THRESHOLDS.tech
     : THRESHOLDS.business;
+}
+
+function getExtremeThresholds(filePath) {
+  const p = filePath.replace(/\\/g, '/');
+  return TECH_FILE_PATTERNS.some(pattern => pattern.test(p))
+    ? EXTREME_THRESHOLDS.tech
+    : EXTREME_THRESHOLDS.business;
 }
 
 // ── Section extraction ───────────────────────────────────────────────────────
@@ -510,12 +537,24 @@ function analyzeText(text) {
   const dcRaw = 0.1579 * percentDifficultWords + 0.0496 * avgWords
     + (percentDifficultWords > 5 ? 3.6365 : 0);
 
+  // Raw FK/FRE/CL/LIX values, computed regardless of sample size. Below 50
+  // words these aren't reliable enough to judge against the *normal*
+  // thresholds (see comment above), but they're still useful for a much
+  // coarser "is this section catastrophically dense" backstop — see
+  // EXTREME_THRESHOLDS and its use in checkSection().
+  const fkRaw  = Math.round((0.39 * avgWords + 11.8 * avgSyllables - 15.59) * 10) / 10;
+  const freRaw = Math.round((206.835 - 1.015 * avgWords - 84.6 * avgSyllables) * 10) / 10;
+  const clRaw  = Math.round((0.0588 * L - 0.296 * S - 15.8) * 10) / 10;
+  const lixRaw = Math.round((avgWords + (longWords * 100 / words.length)) * 10) / 10;
+
   return {
-    fk:              tooSmallForCorpusMetrics ? null : Math.round((0.39 * avgWords + 11.8 * avgSyllables - 15.59) * 10) / 10,
-    fre:             tooSmallForCorpusMetrics ? null : Math.round((206.835 - 1.015 * avgWords - 84.6 * avgSyllables) * 10) / 10,
-    cl:              tooSmallForCorpusMetrics ? null : Math.round((0.0588 * L - 0.296 * S - 15.8) * 10) / 10,
-    lix:             tooSmallForCorpusMetrics ? null : Math.round((avgWords + (longWords * 100 / words.length)) * 10) / 10,
+    fk:              tooSmallForCorpusMetrics ? null : fkRaw,
+    fre:             tooSmallForCorpusMetrics ? null : freRaw,
+    cl:              tooSmallForCorpusMetrics ? null : clRaw,
+    lix:             tooSmallForCorpusMetrics ? null : lixRaw,
     dc:              tooSmallForCorpusMetrics ? null : Math.round(dcRaw * 10) / 10,
+    smallSample:     tooSmallForCorpusMetrics,
+    fkRaw, freRaw, clRaw, lixRaw,
     wordCount:       words.length,
     sentenceCount:   sentences.length,
     avgWords:        Math.round(avgWords * 10) / 10,
@@ -573,6 +612,10 @@ const STATIC_SUGGESTIONS = {
   para:'Split at a natural topic boundary. Each paragraph should cover one idea. Aim for 3–5 sentences.',
   list:'Split into two lists under separate sub-headings, or trim to the most important items.',
 };
+STATIC_SUGGESTIONS.fkExtreme  = STATIC_SUGGESTIONS.fk;
+STATIC_SUGGESTIONS.freExtreme = STATIC_SUGGESTIONS.fre;
+STATIC_SUGGESTIONS.clExtreme  = STATIC_SUGGESTIONS.cl;
+STATIC_SUGGESTIONS.lixExtreme = STATIC_SUGGESTIONS.lix;
 
 
 function buildSuggestion(checkName, sentences) {
@@ -597,6 +640,14 @@ function createWarning(filePath, startLine, startCol, label, checkName, stats, p
     max: `Longest sentence is ${stats.maxSentenceWords} words (target: ≤${stats.maxLen}) — breaks reading flow`,
     para:`Paragraph has ${stats.sentenceCount} sentences (target: ≤${stats.paraMax}) — may overwhelm working memory`,
     list:`List has ${stats.sentenceCount} items (target: ≤${stats.listMax}) — long lists are harder to scan and remember`,
+    fkExtreme:  `Flesch-Kincaid grade ${stats.fkRaw} is far beyond what even short, jargon-dense entries in this repo score ` +
+                `(extreme-outlier bar: ≤${stats.fkMax}, on a ${stats.wordCount}-word sample too small for the normal check)`,
+    freExtreme: `Flesch Reading Ease ${stats.freRaw} is far below what even short, jargon-dense entries in this repo score ` +
+                `(extreme-outlier bar: ≥${stats.freMin}, on a ${stats.wordCount}-word sample too small for the normal check)`,
+    clExtreme:  `Coleman-Liau index ${stats.clRaw} is far beyond what even short, jargon-dense entries in this repo score ` +
+                `(extreme-outlier bar: ≤${stats.clMax}, on a ${stats.wordCount}-word sample too small for the normal check)`,
+    lixExtreme: `LIX score ${stats.lixRaw} is far beyond what even short, jargon-dense entries in this repo score ` +
+                `(extreme-outlier bar: ≤${stats.lixMax}, on a ${stats.wordCount}-word sample too small for the normal check)`,
   };
   const suggestion = buildSuggestion(checkName, stats.sentences);
   return { filePath, startLine, startCol, label, checkName, message: messages[checkName], preview, suggestion };
@@ -624,6 +675,10 @@ const CHECK_WHY = {
   list:'Very long lists are hard to scan and remember, even though each item is already on its own line. ' +
        'Miller\'s Law suggests working memory holds about 4 chunks of novel information — split long lists under sub-headings or trim to the essentials.',
 };
+CHECK_WHY.fkExtreme  = CHECK_WHY.fk  + ' This short section is too small for the normal check, but it scores so far beyond the normal target that it\'s flagged anyway rather than risk being diluted away inside a larger pooled sample.';
+CHECK_WHY.freExtreme = CHECK_WHY.fre + ' This short section is too small for the normal check, but it scores so far beyond the normal target that it\'s flagged anyway rather than risk being diluted away inside a larger pooled sample.';
+CHECK_WHY.clExtreme  = CHECK_WHY.cl  + ' This short section is too small for the normal check, but it scores so far beyond the normal target that it\'s flagged anyway rather than risk being diluted away inside a larger pooled sample.';
+CHECK_WHY.lixExtreme = CHECK_WHY.lix + ' This short section is too small for the normal check, but it scores so far beyond the normal target that it\'s flagged anyway rather than risk being diluted away inside a larger pooled sample.';
 
 // ── Output rendering ─────────────────────────────────────────────────────────
 
@@ -741,6 +796,44 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
     passed = false;
   }
 
+  // Extreme-outlier backstop for sections under the 50-word floor. The
+  // normal fk/fre/cl/lix checks above are skipped here (analyzeText nulls
+  // them out — see tooSmallForCorpusMetrics), because a couple of
+  // unavoidable technical nouns can skew those formulas wildly at low word
+  // counts even in perfectly fine text. But a short section that's
+  // dramatically, unambiguously worse than anything reasonable shouldn't be
+  // able to hide just by being short — e.g. when it's the only bad entry in
+  // an otherwise-easy data file, pooling it with dozens of fine entries can
+  // dilute its contribution to the pooled score into invisibility. This
+  // checks the raw (unfloored) scores against a much higher/lower bar
+  // instead, calibrated to sit well above what legitimate short content in
+  // this repo actually scores.
+  if (stats.smallSample) {
+    const extreme = getExtremeThresholds(filePath);
+    const extremeEnriched = { ...stats, ...extreme };
+
+    if (stats.fkRaw > extreme.fkMax) {
+      fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'fkExtreme', extremeEnriched, preview));
+      recordIssue(filePath, label, 'fkExtreme', startLine);
+      passed = false;
+    }
+    if (stats.freRaw < extreme.freMin) {
+      fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'freExtreme', extremeEnriched, preview));
+      recordIssue(filePath, label, 'freExtreme', startLine);
+      passed = false;
+    }
+    if (stats.clRaw > extreme.clMax) {
+      fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'clExtreme', extremeEnriched, preview));
+      recordIssue(filePath, label, 'clExtreme', startLine);
+      passed = false;
+    }
+    if (stats.lixRaw > extreme.lixMax) {
+      fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'lixExtreme', extremeEnriched, preview));
+      recordIssue(filePath, label, 'lixExtreme', startLine);
+      passed = false;
+    }
+  }
+
   if (avgWords > thresholds.lenMax) {
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'len', enriched, preview));
     recordIssue(filePath, label, 'len', startLine);
@@ -837,30 +930,71 @@ function checkSection(label, text, filePath, startLine, startCol, thresholds, fi
  * while every individual chunk quietly slips under the 50-word floor and
  * never receives a formula score at all.
  *
- * To close that gap, every section that fell under the floor is pooled
- * together and re-scored as one combined sample, in addition to the normal
- * per-section checks that already ran. This only adds the corpus-level
- * checks (fk/fre/cl/lix/dc) — sentence-length, paragraph-density and
- * list-length checks already run accurately per original section, so they
- * are not repeated here.
+ * To close that gap, every section that fell under the floor is pooled and
+ * re-scored as a combined sample, in addition to the normal per-section
+ * checks that already ran. This only adds the corpus-level checks
+ * (fk/fre/cl/lix/dc) — sentence-length, paragraph-density and list-length
+ * checks already run accurately per original section, so they are not
+ * repeated here.
+ *
+ * Pooling is done in *bounded* batches (capped by both entry count and word
+ * budget) rather than one unbounded pool across the whole file. An unbounded
+ * pool trends toward "the average entry" as the file grows — in a large
+ * glossary, one genuinely dense definition contributes a vanishing share of
+ * a 1000+ word pool and its effect on the combined score disappears, which
+ * is a real false-negative risk (confirmed empirically: a single dense
+ * definition pooled with 15+ easy ones scores as passing, even though the
+ * same sentence alone is dramatically over every threshold). Capping batch
+ * size bounds how diluted any one entry's contribution can get, and also
+ * keeps a failing batch small enough that a human reading the warning can
+ * quickly spot which entry in it is actually the problem. Genuinely small
+ * outliers that don't get caught even within a small batch are still backed
+ * up by the extreme-outlier per-entry check in checkSection().
  */
-function checkPooledSmallSections(sections, filePath, thresholds, fileWarnings) {
-  const small = sections
-    .map(sec => ({ ...sec, plain: toPlainText(sec.text) }))
-    .filter(sec => {
-      const words = joinMultiWordFamiliarTerms(sec.plain).match(/\b[a-zA-Z'-]{2,}\b/g) ?? [];
-      return words.length > 0 && words.length < 50;
-    });
+const POOL_MAX_ENTRIES = 6;
+const POOL_MAX_WORDS = 120;
 
-  if (small.length < 2) return; // nothing to pool, or only one small section — not enough on its own
+function countWords(plain) {
+  return (joinMultiWordFamiliarTerms(plain).match(/\b[a-zA-Z'-]{2,}\b/g) ?? []).length;
+}
 
-  const combinedPlain = small.map(s => s.plain).join('\n\n');
+/** Groups `small` sections into batches bounded by entry count and word budget. */
+function buildBoundedBatches(small) {
+  const batches = [];
+  let current = [];
+  let currentWords = 0;
+
+  for (const sec of small) {
+    const words = countWords(sec.plain);
+    if (current.length > 0 && (current.length >= POOL_MAX_ENTRIES || currentWords + words > POOL_MAX_WORDS)) {
+      batches.push(current);
+      current = [];
+      currentWords = 0;
+    }
+    current.push(sec);
+    currentWords += words;
+  }
+  if (current.length > 0) batches.push(current);
+
+  // A trailing batch of exactly one entry can't be scored on its own (still
+  // needs at least two entries pooled together) — fold it back into the
+  // previous batch rather than silently dropping its coverage.
+  if (batches.length > 1 && batches[batches.length - 1].length === 1) {
+    const orphan = batches.pop();
+    batches[batches.length - 1].push(...orphan);
+  }
+
+  return batches;
+}
+
+function scoreBatch(batch, filePath, thresholds, fileWarnings) {
+  const combinedPlain = batch.map(s => s.plain).join('\n\n');
   const stats = analyzeText(combinedPlain);
   if (!stats || stats.fk === null) return; // still not enough combined text for reliable formulas
 
-  const label = `Combined short sections (${small.map(s => s.label).join(', ')})`;
-  const startLine = small[0].startLine;
-  const startCol = small[0].startCol;
+  const label = `Combined short sections (${batch.map(s => s.label).join(', ')})`;
+  const startLine = batch[0].startLine;
+  const startCol = batch[0].startCol;
   const enriched = { ...stats, ...thresholds };
   const preview = longestSentencePreview(stats.sentences);
 
@@ -884,6 +1018,21 @@ function checkPooledSmallSections(sections, filePath, thresholds, fileWarnings) 
     const dcPreview = dcSentencePreview(stats.sentences);
     fileWarnings.push(createWarning(filePath, startLine, startCol, label, 'dc', enriched, dcPreview));
     recordIssue(filePath, label, 'dc', startLine);
+  }
+}
+
+function checkPooledSmallSections(sections, filePath, thresholds, fileWarnings) {
+  const small = sections
+    .map(sec => ({ ...sec, plain: toPlainText(sec.text) }))
+    .filter(sec => {
+      const words = joinMultiWordFamiliarTerms(sec.plain).match(/\b[a-zA-Z'-]{2,}\b/g) ?? [];
+      return words.length > 0 && words.length < 50;
+    });
+
+  if (small.length < 2) return; // nothing to pool, or only one small section — not enough on its own
+
+  for (const batch of buildBoundedBatches(small)) {
+    scoreBatch(batch, filePath, thresholds, fileWarnings);
   }
 }
 
@@ -962,24 +1111,27 @@ function processDataFiles(warningsByFile, dataFilesConfig = DATA_FILES) {
     }
 
     const fileWarnings = [];
-    // Individual entries (a glossary term, an FAQ answer) are usually well
-    // under 50 words, so they'd otherwise never get a corpus-level score.
-    // Group them by audience (thresholds differ) and pool each group after
-    // the per-entry checks below, so a data file full of short-but-dense
-    // entries still gets a formula score.
-    const sectionsByAudience = {};
-
+    // Unlike an MDX page (where several <details>/<Tabs> blocks are all part
+    // of the same document a reader works through top to bottom), each entry
+    // in a data file is its own independent destination — a glossary term
+    // looked up on its own, one FAQ answer, one Bicep parameter's row in a
+    // table. Nobody reads four unrelated glossary entries back-to-back as
+    // one passage. Pooling them together to manufacture a large-enough
+    // sample for FK/FRE/CL/LIX scores that "passage" instead — an artifact
+    // of how the check happens to batch entries, not anything a real reader
+    // experiences. Worse, pooling dilutes: as a data file grows, one
+    // genuinely dense entry contributes a shrinking share of the combined
+    // score and can pass even though the very same entry, judged alone,
+    // would fail badly (confirmed empirically while investigating a
+    // glossary false negative). So data-file entries are never pooled —
+    // each one is judged only on its own per-entry checks below, backed by
+    // the extreme-outlier check inside checkSection() for entries too short
+    // for the normal formula-based checks.
     for (const { label, text, audience, searchText } of extractItems(data)) {
       if (!text || text.trim().length < 20) continue;
       const thresholds = THRESHOLDS[audience] ?? THRESHOLDS.tech;
       const lineNum = findLineNumber(raw, searchText);
       checkSection(label, text, filePath, lineNum, 1, thresholds, fileWarnings);
-      (sectionsByAudience[audience] ??= []).push({ label, text, startLine: lineNum, startCol: 1 });
-    }
-
-    for (const [audience, sections] of Object.entries(sectionsByAudience)) {
-      const thresholds = THRESHOLDS[audience] ?? THRESHOLDS.tech;
-      checkPooledSmallSections(sections, filePath, thresholds, fileWarnings);
     }
 
     if (fileWarnings.length > 0) {
@@ -1265,6 +1417,7 @@ function runCli() {
 
 export {
   getThresholds,
+  getExtremeThresholds,
   extractSections,
   toPlainText,
   countSyllables,
@@ -1275,4 +1428,5 @@ export {
   checkSection,
   dcSentencePreview,
   difficultWordsInSentence,
+  buildBoundedBatches,
 };
