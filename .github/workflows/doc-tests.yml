@@ -20,7 +20,7 @@ jobs:
         run: npm install
       - name: Run Cypress tests
         run: |
-          npm run test
+          npx start-server-and-test start http://localhost:3000 "cypress run --browser chrome"
       - name: Upload Cypress screenshots
         if: failure()
         uses: actions/upload-artifact@v4
