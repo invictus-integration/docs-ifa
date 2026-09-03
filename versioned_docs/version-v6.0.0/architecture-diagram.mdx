@@ -8,11 +8,11 @@ hide_table_of_contents: true
 import ComponentCard from '@site/src/components/ComponentCard';
 
 # Invictus for Azure architecture
-An Invictus installation consists of two major parts: the **Dashboard** and the **Framework**.
+Invictus has two core parts: the **Dashboard** and the **Framework**.
 
 ## Dashboard
-The Invictus **Dashboard** provides a business user friendly UI for interacting with client integrations (commonly Azure Logic Apps), without requiring direct access to Azure.
-The Dashboard displays integrations as [flows](./support/help-center-technical.mdx?q=flow), supported by diagnostic data (here called [flow traces](./support/help-center-technical.mdx?q=flow%20trace)) loaded via Invictus' backend infrastructure.
+The Invictus **Dashboard** is a web-based tool to interact with client integrations (commonly Azure Logic Apps) on a higher level. This way of interacting doesn't require direct access to Azure resources.
+The Dashboard displays integrations as [flows](./support/help-center-technical.mdx?q=flow). It imports active messages through flows via diagnostic data ([flow traces](./support/help-center-technical.mdx?q=flow%20trace)).
 
 <Columns>
   <Column style={{marginBottom: "1.5rem"}}>
@@ -20,7 +20,7 @@ The Dashboard displays integrations as [flows](./support/help-center-technical.m
       icon="/img/icons/dashboard-ui.png"
       name="Dashboard application"
       tagline="Integration monitoring & management"
-      description="A web application for business users to monitor and manage their integrations, imported via flow traces."
+      description="A web application for business users to monitor and manage their integrations, imported via diagnostic data."
       href="./dashboard/flows"
     />
   </Column>
@@ -28,8 +28,8 @@ The Dashboard displays integrations as [flows](./support/help-center-technical.m
     <ComponentCard
       icon="/img/icons/dashboard-api.png"
       name="Dashboard gateway"
-      tagline="Interact with imported flow traces via API"
-      description="A backend API that serves the Dashboard application, providing access to imported flow traces and triggering flow operations."
+      tagline="Interact with imported flows via API"
+      description="A backend API that serves the Dashboard application, providing access to imported diagnostic data and triggering flow operations."
       href="./dashboard/installation"
       />
   </Column>
@@ -38,9 +38,9 @@ The Dashboard displays integrations as [flows](./support/help-center-technical.m
   <Column style={{marginBottom: "1.5rem"}}>
     <ComponentCard
       icon="/img/icons/import-jobs.png"
-      name="Flow trace import jobs"
-      tagline="Importing flow traces from external sources"
-      description="A set of jobs that import flow traces from external sources (Azure Logic Apps, Azure Data Factory, Azure Event Hubs) into the Dashboard system."
+      name="Import jobs"
+      tagline="Importing diagnostic data from external sources"
+      description="A set of jobs that import diagnostic data from external sources (Azure Logic Apps, Azure Data Factory, Azure Event Hubs) into the Dashboard system."
       href="./dashboard/flows/import-flow-traces"
       />
   </Column>
