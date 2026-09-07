@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -243,11 +243,26 @@ export default function SearchBar() {
   const abortRef = useRef(null);
   const triggerRef = useRef(null);
   const skipSearchResetRef = useRef(false);
+  const refocusInputAfterClearRef = useRef(false);
   const listboxId = 'search-listbox';
   const debouncedQuery = useDebounce(query, 300);
 
   // Reset mobile tab to pages on each new search so pages are always shown first
   useEffect(() => { setMobileKnowledgeTab('pages'); }, [debouncedQuery]);
+
+  // Re-focus the search input once the "Clear all" click has actually
+  // committed and removed the recents section from the DOM. Doing this in a
+  // layout effect (rather than synchronously inside the click handler)
+  // guarantees the browser has finished the unmount/reflow before we grab
+  // focus, which avoids a race in some headless CI browsers where a focus()
+  // call issued mid-render can be lost once the surrounding subtree finishes
+  // committing.
+  useLayoutEffect(() => {
+    if (refocusInputAfterClearRef.current) {
+      refocusInputAfterClearRef.current = false;
+      inputRef.current?.focus();
+    }
+  });
 
   // Search
   useEffect(() => {
@@ -256,6 +271,7 @@ export default function SearchBar() {
       setTermResults([]);
       setFaqResults([]);
       setIsKnowledgeSearching(false);
+      setIsLocalFallback(false);
       if (!skipSearchResetRef.current) setAiActive(false);
       return;
     }
@@ -887,9 +903,10 @@ export default function SearchBar() {
                         recentSearches.clear();
                         // The recents section (including this button) unmounts once
                         // the list is empty, which drops focus to <body> for keyboard
-                        // users. Move focus back to the search input so typing keeps
-                        // working immediately after clearing.
-                        inputRef.current?.focus();
+                        // users. Flag it so the layout effect above re-focuses the
+                        // search input after the unmount has actually committed,
+                        // instead of racing it with a focus() call here.
+                        refocusInputAfterClearRef.current = true;
                       }}
                     >
                       Clear all
