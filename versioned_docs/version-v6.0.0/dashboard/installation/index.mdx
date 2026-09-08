@@ -280,6 +280,14 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">Bicep
       $artifactsPath = ${{ variables['Pipeline.Workspace'] }} + '/_build/dashboard' 
       $scriptPath = $artifactsPath + '/Deploy.ps1'
 
+      $vnetDeployment = @{
+        enabled = $true
+        vnet = @{ name = 'my-vnet'; resourceGroupName = 'my-vnet-rg' }
+        privateEndpoints = @{ subnetName = 'snet-pe'; resourceGroupName = 'my-rg'; names = $null }
+        cae = @{ resourceGroupName = 'my-cae-infra-rg'; delegatedSubnetName = 'snet-cae' }
+        privateDnsZone = @{ dnsRecords = 'create'; subscriptionId = '<sub-id>'; resourceGroupName = 'my-dns-rg' }
+      }
+
       & $scriptPath `
         -artifactsPath $artifactsPath `
         -acrPath 'invictusreleases.azurecr.io' `
@@ -298,7 +306,8 @@ Carefully consider the <a href="./?tags=scaling#bicep-template-parameters">Bicep
         -identityProviderApplicationId 'c84d34ea-f169-4787-a4af-81750debda0b' `
         -identityProviderClientSecret '<pass>' `
         -isProvisionedCosmos 1 `
-        -flowDataTTLInDays 90
+        -flowDataTTLInDays 90 `
+        -vnetDeployment $vnetDeployment
 ```
 </details>
 

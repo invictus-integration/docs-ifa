@@ -16,6 +16,7 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 
 <ReleaseVersion version="6.4" date="July 2026">
   <Features>
+    - **Company branding:** you can customize the appearance of the Dashboard to reflect your company's branding by updating the Dashboard logo for both the light and dark themes.
     - **Simplify flow status filters into groups:** the flow status filters in the advanced search pane group statuses into broader categories instead of too detailed levels. 'Active' (= `Active`, `Resubmitted`, `Resumed` statuses). 'Error' (= `Failed`, `Resubmit Failed`, and `Resume Failed` statuses).
     - **[Transco](../framework/transcoV2.mdx) missing references no longer cause failures:** scenarios with conditional actions failed due to possible missing data references during instructions. The Transco no longer fails when `scopePath` or `destination` points to unavailable locations. The component logs a warning in case that happens to help spotting configuration issues.
     - **[Transco](../framework/transcoV2.mdx) fall back on default parameter values:** the component better handles optional or unavailable data. In situations where the component can't retrieve a parameter value from a path, you can fall back on a `defaultValue`.

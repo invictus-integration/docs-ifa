@@ -93,7 +93,7 @@
     "name": "serviceBusSkuName",
     "type": "string",
     "description": "The pricing tier of the Azure Service Bus, used by the Dashboard backend infrastructure.",
-    "default": "enableVnetSupport ? Premium : Standard",
+    "default": "vnetDeployment.enabled ? Premium : Standard",
     "tags": [
       "messaging"
     ]
@@ -160,7 +160,7 @@
     "name": "eventHubSkuName",
     "type": "string",
     "description": "The pricing tier of the Azure Event Hubs namespace that acts as the backend event sink system for notifications within the Dashboard backend infrastructure.",
-    "default": "enableVnetSupport ? 'Standard' : 'Basic'",
+    "default": "vnetDeployment.enabled ? Standard : Basic",
     "tags": [
       "messaging"
     ]
@@ -341,6 +341,10 @@
     "type": "string",
     "description": "The name of the Azure Container Apps infrastructure resource group ([when VNET is enabled](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env)).",
     "default": "invictus-${resourcePrefix}-cae-infra",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `cae.resourceGroupName` property of the `vnetDeployment` parameter to configure the Azure Container App environment infrastructure resource group name."
+    },
     "tags": [
       "container-apps",
       "networking",
@@ -360,6 +364,10 @@
     "name": "enableVnetSupport",
     "type": "bool",
     "description": "Feature flag to control whether the Dashboard deploys within a VNET.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `enabled` property of the `vnetDeployment` parameter to control whether the Framework deploys within a VNET."
+    },
     "default": "false",
     "tags": [
       "networking",
@@ -370,6 +378,10 @@
     "name": "vnetName",
     "type": "string",
     "description": "The name of the Azure Virtual Network (VNET) resource that forms the base for all network-related rules and subnets throughout.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `vnet.name` property of the `vnetDeployment` parameter to configure the VNET name."
+    },
     "tags": [
       "networking",
       "vnet"
@@ -379,6 +391,10 @@
     "name": "serviceBusSubnets",
     "type": "array",
     "description": "A list of subnet names to form the Azure Service Bus namespace resource, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.serviceBus` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connect to the Azure Service Bus namespace."
+    },
     "tags": [
       "networking",
       "vnet"
@@ -388,6 +404,10 @@
     "name": "eventHubSubnets",
     "type": "array",
     "description": "A list of subnet names to form the Azure Event Hubs namespace resource, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.eventHub` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Event Hubs namespace."
+    },
     "tags": [
       "networking",
       "vnet"
@@ -397,6 +417,10 @@
     "name": "storageAccountSubnets",
     "type": "array",
     "description": "A list of subnet names to form the Azure Storage Account resource, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.blob/table/queue` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Storage Account resource."
+    },
     "tags": [
       "networking",
       "vnet",
@@ -407,6 +431,10 @@
     "name": "keyVaultSubnets",
     "type": "array",
     "description": "A list of subnet names to form the Azure Key Vault resource, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.keyVault` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Key Vault resource."
+    },
     "tags": [
       "networking",
       "vnet"
@@ -416,6 +444,10 @@
     "name": "cosmosDbSubnets",
     "type": "array",
     "description": "A list of subnet names to form the Azure Cosmos DB for MongoDB resource, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.mongoDb` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resource that connects to the Azure Cosmos DB for MongoDB resource."
+    },
     "tags": [
       "networking",
       "vnet",
@@ -426,6 +458,10 @@
     "name": "containerAppEnvironmentSubnets",
     "type": "array",
     "description": "A list of subnet names to form the network rules of all the Azure Container App resources, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7 as custom subnet names are replaced by a private endpoint configuration, please use the `vnet.privateEndpointsSubnetName` and optionally the `privateEndpointNames.cae` properties of the `vnetDeployment` parameter to configure the subnet name for the Azure Private Endpoint resources that connect to the Azure Container Apps environment."
+    },
     "tags": [
       "networking",
       "vnet",
@@ -436,6 +472,10 @@
     "name": "containerAppEnvironmentSubnetName",
     "type": "string",
     "description": "The name of the subnet to form the network rules of the Azure Container App environment, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `vnet.cae.delegatedSubnetName` property of the `vnetDeployment` parameter to configure the Azure Container App environment subnet name."
+    },
     "tags": [
       "networking",
       "vnet",
@@ -551,6 +591,10 @@
     "type": "string",
     "description": "The name of the Azure Log Analytics workspace besides the main workspace that collects the main telemetry of the Azure Application Insights resource.",
     "default": "invictus-${resourcePrefix}-loganalytics",
+    "deprecatedSince": {
+      "version": "v6.3",
+      "note": "Will be removed in v7 as the import of Azure Logic Apps standard diagnostic traces happens via Azure Event Hubs."
+    },
     "tags": [
       "monitoring"
     ]
@@ -577,6 +621,10 @@
     "name": "disableStorageAccountPublicNetworkAccess",
     "type": "bool",
     "description": "Indicates whether the shared Azure Storage Account should disable public network access. If `true`, only private endpoints or VNET integration are allowed.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, as the `vnetDeployment` parameter now controls public network access."
+    },
     "default": "false",
     "tags": [
       "storage",
@@ -847,7 +895,7 @@
     "description": "The time period in which the automatically Azure Functions timer trigger [imports Azure Logic Apps diagnostic traces](/dashboard/flows/import-flow-traces/import-flows-via-la).",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, support for automatically triggering importing stops."
+      "note": "Will be removed in v7, support for automatically triggering importing stops."
     },
     "default": "0 */10 * * * *",
     "tags": [
@@ -862,7 +910,7 @@
     "default": "1000",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, support for automatically triggering importing stops."
+      "note": "Will be removed in v7, support for automatically triggering importing stops."
     },
     "tags": [
       "importing",
@@ -914,7 +962,7 @@
     "description": "The CRON expression that represents the time period in which flow trace information is archived.",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
+      "note": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
     },
     "default": "0 0 */3 * * *",
     "tags": [
@@ -929,7 +977,7 @@
     "default": "0 00 03 * * *",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, clearing happens via Azure Storage Account policies."
+      "note": "Will be removed in v7, clearing happens via Azure Storage Account policies."
     },
     "tags": [
       "storage",
@@ -943,7 +991,7 @@
     "default": "0 */15 * * * *",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
+      "note": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
     },
     "tags": [
       "storage",
@@ -957,7 +1005,7 @@
     "default": "true",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
+      "note": "Will be removed in v7, clearing happens via Cosmos DB for MongoDB TTL policies."
     },
     "tags": [
       "storage",
@@ -971,7 +1019,7 @@
     "default": "60",
     "deprecatedSince": {
       "version": "v6.2",
-      "note": "will be removed in v7, caching happens independently now."
+      "note": "Will be removed in v7, caching happens independently now."
     },
     "tags": [
       "storage",
@@ -1414,6 +1462,10 @@
     "name": "dnsZoneSubscriptionId",
     "type": "string",
     "description": "The Azure subscription ID to control the private DNS zone throughout, useful for VNET deployments.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `vnet.privateDnsZone.subscriptionId` property of the `vnetDeployment` parameter to configure the DNS zone subscription ID."
+    },
     "default": "subscription().subscriptionId",
     "tags": [
       "networking",
@@ -1424,6 +1476,10 @@
     "name": "dnsZoneResourceGroupName",
     "type": "string",
     "description": "The name of the Azure resource group where the private DNS zone deploys to.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `vnet.privateDnsZone.resourceGroupName` property of the `vnetDeployment` parameter to configure the DNS zone resource group name."
+    },
     "default": "resourceGroup().name",
     "tags": [
       "networking",
@@ -1434,6 +1490,10 @@
     "name": "vnetResourceGroupName",
     "type": "string",
     "description": "The name of the Azure resource group where the VNET network rules deploys to.",
+    "deprecatedSince": {
+      "version": "v6.4",
+      "note": "Will be removed in v7, please use the `vnet.resourceGroupName` property of the `vnetDeployment` parameter to configure the VNET resource group name."
+    },
     "default": "resourceGroup().name",
     "tags": [
       "networking",
@@ -1497,6 +1557,177 @@
     "tags": [
       "web",
       "networking"
+    ]
+  },
+  {
+    "name": "vnetDeployment",
+    "description": "The related properties to a VNET deployment.",
+    "default": "null (no VNET-support)",
+    "type": "object",
+    "newSince": "v6.4",
+    "tags": [
+      "networking",
+      "vnet"
+    ],
+    "properties": [
+      {
+        "name": "enabled",
+        "description": "Feature flag to control whether the Framework deploys within a VNET.",
+        "type": "bool",
+        "default": "false"
+      },
+      {
+        "name": "vnet",
+        "description": "The properties related to the Azure Virtual Network (VNET) resource.",
+        "type": "object",
+        "properties": [
+          {
+            "name": "name",
+            "description": "The name of the Azure Virtual Network (VNET) resource.",
+            "type": "string"
+          },
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the Azure resource group where the VNET deploys to.",
+            "type": "string"
+          },
+          {
+            "name": "privateEndpointsSubnetName",
+            "description": "The name of the subnet to form the Azure Private Endpoint resources.",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "cae",
+        "description": "The properties related to the [Azure Container App environment's VNET integration](https://learn.microsoft.com/en-us/azure/container-apps/custom-virtual-networks?tabs=workload-profiles-env).",
+        "type": "object",
+        "properties": [
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the infrastructure Azure resource group where the Azure Container App environment's VNET integration deploys to.",
+            "type": "string"
+          },
+          {
+            "name": "delegatedSubnetName",
+            "description": "The name of the delegated subnet to form the Azure Container App environment's VNET integration.",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "privateDnsZone",
+        "description": "The properties related to the [private DNS zone's VNET integration](https://learn.microsoft.com/en-us/azure/dns/private-dns-privatednszone).",
+        "type": "object",
+        "properties": [
+          {
+            "name": "dnsRecords",
+            "description": "Specifies whether to create or delegate the DNS records creation for the attached private DNS zones. Can be set to <code>create</code> or <code>delegate</code>.",
+            "default": "create"
+          },
+          {
+            "name": "subscriptionId",
+            "description": "The Azure subscription ID to control the private DNS zone.",
+            "type": "string"
+          },
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the Azure resource group where the private DNS zone deploys to.",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "privateEndpoints",
+        "description": "The properties related to the [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
+        "type": "object",
+        "properties": [
+          {
+            "name": "subnetName",
+            "description": "The name of the subnet to form the Azure Private Endpoint resources.",
+            "type": "string"
+          },
+          {
+            "name": "resourceGroupName",
+            "description": "The name of the Azure resource group where the Azure Private Endpoint resources deploy to.",
+            "default": "resourceGroup().name",
+            "type": "string"
+          },
+          {
+            "name": "names",
+            "description": "The names of the optional [Azure Private Endpoints](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview) to create for the VNET deployment.",
+            "type": "object",
+            "properties": [
+              {
+                "name": "acr",
+                "description": "The name of the Azure Private Endpoint for the Azure Container Registry resource.",
+                "default": "${resourcePrefix}-acr-pep",
+                "type": "string"
+              },
+              {
+                "name": "cae",
+                "description": "The name of the Azure Private Endpoint for the Azure Container App environment resource.",
+                "default": "inv-${resourcePrefix}-cae-pep",
+                "type": "string"
+              },
+              {
+                "name": "blob",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account blob resource.",
+                "default": "inv-${resourcePrefix}-blob-pep",
+                "type": "string"
+              },
+              {
+                "name": "file",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account file share resource.",
+                "default": "inv-${resourcePrefix}-file-pep",
+                "type": "string"
+              },
+              {
+                "name": "table",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account table resource.",
+                "default": "inv-${resourcePrefix}-table-pep",
+                "type": "string"
+              },
+              {
+                "name": "queue",
+                "description": "The name of the Azure Private Endpoint for the Azure Storage Account queue resource.",
+                "default": "inv-${resourcePrefix}-queue-pep",
+                "type": "string"
+              },
+              {
+                "name": "mongo",
+                "description": "The name of the Azure Private Endpoint for the Azure Cosmos DB for MongoDB resource.",
+                "default": "isProvisionedCosmos ? inv-${resourcePrefix}-cosmos-provisioned-pep : inv-${resourcePrefix}-cosmos-serverless-pep",
+                "type": "string"
+              },
+              {
+                "name": "eventHub",
+                "description": "The name of the Azure Private Endpoint for the Azure Event Hubs resource.",
+                "default": "inv-${resourcePrefix}-evnm-pep",
+                "type": "string"
+              },
+              {
+                "name": "serviceBus",
+                "description": "The name of the Azure Private Endpoint for the Azure Service Bus resource.",
+                "default": "inv-${resourcePrefix}-sbs-pep",
+                "type": "string"
+              },
+              {
+                "name": "keyVault",
+                "description": "The name of the Azure Private Endpoint for the Azure Key Vault resource.",
+                "default": "inv-${resourcePrefix}-keyvault-pep",
+                "type": "string"
+              },
+              {
+                "name": "cognitiveServices",
+                "description": "The name of the Azure Private Endpoint for the Azure Cognitive Services resource.",
+                "default": "inv-${resourcePrefix}-ai-foundry-pep",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }
     ]
   }
 ]
