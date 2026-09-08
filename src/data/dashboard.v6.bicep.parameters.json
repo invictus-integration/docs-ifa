@@ -1590,11 +1590,6 @@
             "name": "resourceGroupName",
             "description": "The name of the Azure resource group where the VNET deploys to.",
             "type": "string"
-          },
-          {
-            "name": "privateEndpointsSubnetName",
-            "description": "The name of the subnet to form the Azure Private Endpoint resources.",
-            "type": "string"
           }
         ]
       },
