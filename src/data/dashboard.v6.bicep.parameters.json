@@ -1619,11 +1619,32 @@
             "default": "https://${invictusDashboardWebAppName}.${ContainerAppEnvironment.outputs.defaultDomain}"
           }
         ]
+      },
+      {
+        "name": "logging",
+        "type": "object",
+        "description": "The options to configure the frontend web application logging, linked to OpenTelemetry traces in Azure Monitor.",
+        "newSince": "v6.5",
+        "properties": [
+          {
+            "name": "enabled",
+            "type": "bool",
+            "description": "The boolean flag to indicate whether the frontend web application should log browser requests and backend interactions.",
+            "default": "true"
+          },
+          {
+            "name": "level",
+            "type": "enum (debug | info | warn | error | success | silent)",
+            "description": "The level threshold to track frontend web application logs.",
+            "default": "error"
+          }
+        ]
       }
     ],
     "tags": [
       "web",
-      "networking"
+      "networking",
+      "open-telemetry"
     ]
   },
   {
