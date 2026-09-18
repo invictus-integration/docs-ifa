@@ -15,6 +15,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "start-server-and-test start http://localhost:3000 cy:run",
+    "test:readability": "node --test .github/scripts/readability.test.mjs",
     "index:push": "pwsh scripts/refresh-search-index.ps1",
     "issue-templates:sync-versions": "pwsh scripts/update-issue-template-versions.ps1"
   },
