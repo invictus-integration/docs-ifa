@@ -1,0 +1,13 @@
+extends: default
+
+rules:
+  # GitHub Actions workflows conventionally omit the `---` document marker;
+  # none of this repo's existing workflows use one.
+  document-start: disable
+  # YAML 1.1 treats bare `on`/`off` as booleans, which flags the standard
+  # GitHub Actions `on:` trigger key as a false positive.
+  truthy:
+    check-keys: false
+  # Long regex filters/URLs in comments are common in this repo's configs.
+  line-length:
+    max: 200
