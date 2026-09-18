@@ -26,6 +26,9 @@ linux
 
 [Nn]amespaces?
 
+
+Azure Monitor
+
 OAuth
 
 retriggering
