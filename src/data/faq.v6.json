@@ -134,7 +134,7 @@
     ]
   },
   {
-    "question": "Are there any limitations regarding the `commandValue` I can supply in Transco config?",
+  "question": "Why does my Transco SQL query fail when a hardcoded value contains special characters like `--`?",
     "answer": "You cannot use SQL related special characters in your hardcoded values. For example `exec usp_Example 'test--value'` will fail because it contains double hyphens which indicate a SQL comment. Instead use `exec usp_Example @TestValue` and define the hardcoded value in the parameters.",
     "version": ">= v6.0",
     "userType": "technical",
