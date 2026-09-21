@@ -132,5 +132,14 @@
       "dashboard",
       "logic-apps"
     ]
+  },
+  {
+  "question": "Why does my Transco SQL query fail when a hardcoded value contains special characters like `--`?",
+ "answer": "Avoid hardcoding raw values directly in the SQL query text. Pass them as parameters instead. Special characters in a hardcoded value can break the query text itself: `exec usp_Example 'test--value'` fails because `--` starts a SQL comment, leaving `value'` unclosed.\n\nInstead, reference a parameter in the query: `exec usp_Example @TestValue`, then add an entry to `parameters` with `\"paramName\": \"TestValue\"`, `\"valueType\": \"fixedValue\"`, and the actual value.",
+    "version": ">= v6.0",
+    "userType": "technical",
+    "tags": [
+      "transco"
+    ]
   }
 ]
