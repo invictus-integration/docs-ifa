@@ -7,6 +7,7 @@ pagination_next: null
 ---
 
 import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@site/src/components/ReleaseNotes';
+import GroupCleanupScriptContent from './_groups-cleanup-script-content.mdx';
 
 {/* vale Google.WordList = NO */}
 
@@ -15,7 +16,10 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
 <ReleaseNotes>
 
 <ReleaseVersion version="6.5" date="September 2026">
-  
+  <Features>
+    - **Manual Entra ID group management:** system admins manually add Microsoft Entra ID groups to the Dashboard instead of relying on automatic synchronization. If you upgrade from a version before v6.5, you might have leftover inactive groups in your backend storage. Remove them with the included cleanup script: <GroupCleanupScriptContent />
+
+  </Features>
 
 </ReleaseVersion>
 

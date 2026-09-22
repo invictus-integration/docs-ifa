@@ -13,6 +13,7 @@ import Breadcrumb from '@site/src/components/Breadcrumb';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faLink, faSquareCheck, faArrowRight, faChevronRight, faPlus, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons';
 import {faCirclePause, faUser} from '@fortawesome/free-regular-svg-icons';
+import GroupCleanupScriptContent from '../../support/_groups-cleanup-script-content.mdx';
 
 # <BadgedText badge={<OnlyAdminsBadge/>}>Give Invictus access to your Microsoft Entra ID</BadgedText>
 To use your Microsoft Entra ID groups as a way of authentication and flow authorization, follow these steps.
@@ -70,8 +71,9 @@ To use your Microsoft Entra ID groups as a way of authentication and flow author
 <TabItem value="v6.5" label={<><FontAwesomeIcon icon={faArrowUp} aria-hidden="true" />v6.5 and above</>}>
 
 :::warning[leftover disabled groups]
-Starting from v6.5, the 'disable group' feature is no longer available. The Dashboard makes no distinction anymore between enabled or disabled groups.
-You can still remove the groups from the backend storage by [running the appropriate cleanup script](./).
+Starting from v6.5, the **disable group feature is no longer available**. The Dashboard makes no distinction anymore between enabled or disabled groups.
+If you upgrade from a version prior to v6.5, you might have leftover disabled groups in your backend storage. Remove them with the included cleanup script:
+<GroupCleanupScriptContent />
 :::
 
 ## Add your Microsoft Entra ID groups to Invictus
