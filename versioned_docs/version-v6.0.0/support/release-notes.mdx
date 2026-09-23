@@ -28,9 +28,11 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **[PubSub](../framework/pubsubV2.mdx) Improved recovery of deferred messages:** the component recovers more reliably messages stuck in a deferred state, caused by external intermittent platform issues.
       There was a problem with the Service Bus resubmitting deferred messages. The target subscribers were receiving more messages than intended. The improved subscription filtering logic ensures to route resubmitted messages to the appropriate subscriber.
     - **Reliable Cosmos DB during high-volume processing:** the database interactions better handles concurrent tasks. This reduces the connection errors during high activity or initial setup.
-    - **[PubSub](../framework/pubsubV2.mdx) `ShouldDeleteOnReceive` flag fix:** setting this flag to true, which sets the message receive mode to `ReceiveAndDelete`, was causing an internal server error due to incorrect message settling. The flag now works as expected.
-    - **[Time Sequencer](../framework/timesequencer.mdx) and [Sequence Controller](../framework/sequencecontroller.mdx) task hub naming and managed identity authentication**: default task hub names used for both components caused unexpected behavior when both ran at the same time. Now, each component has its own task hub while authentication to the storage account leverages managed identity.
-    - **Dashboard Entra ID system admins not able to manage Users, Groups, and Audits**: Microsoft Entra ID system admins couldn't see the menu options to manage Users, Groups, and Audits. Expected behavior restored, where system admins always have access to those management options regardless of their user type.
+    - **[PubSub](../framework/pubsubV2.mdx) `ShouldDeleteOnReceive` flag fix:** activating this option caused an internal server error due to incorrect message settling with message receive mode `ReceiveAndDelete`.
+    - **[Time Sequencer](../framework/timesequencer.mdx) and [Sequence Controller](../framework/sequencecontroller.mdx):**
+      - Components shared a default task hub name, causing conflicts when run together. Each now uses its own task hub.
+      - Components incorrectly interacted with the storage account using managed identity authentication.
+    - **Dashboard: Entra ID system admins losing access to Users, Groups, and Audits.** System admins with a Microsoft Entra ID account couldn't see Users, Groups, and Audits menu options.
   </Fixes>
 </ReleaseVersion>
 
