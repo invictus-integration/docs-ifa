@@ -622,6 +622,17 @@
     ]
   },
   {
+    "name": "deferralProcessingBatchSize",
+    "type": "int",
+    "description": "The batch size for processing deferred Azure Service Bus messages by the PubSub component.",
+    "default": "10",
+    "newSince": "v6.5",
+    "tags": [
+      "comp:pubsub",
+      "messaging"
+    ]
+  },
+  {
     "name": "pubSubSubscriptionLockTimeoutInMinutes",
     "type": "int",
     "description": "The amount of time in minutes the PubSub component locks an Azure Service Bus message received on a topic subscription.",
