@@ -93,7 +93,7 @@
     {
       "id": "dashboard-installation-01_give_ad_access-mdx",
       "title": "Give access to your Microsoft Entra ID",
-      "content": "}>Give Invictus access to your Microsoft Entra ID To use your Microsoft Entra ID groups as a way of authentication and flow authorization, follow these steps. Microsoft Docs: register an app * Choose the multi-tenant account type option to let Invictus use the app registration. * Add Redirect URI's to your Invictus pages: * https://your-invictusdashboard.azurewebsites.net/login * https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad * Check the Access tokens box (why?) * Add a new client secret (copy the value for later use). * Linked Enterprise Application: * Assign Owners (more info) * Grant Admin consent (more info) Microsoft Docs: expose an API * Use the default Application ID URI (copy it). * Add a scope with Admin and users consent. * Use this name for the scope: accessasuser Microsoft Docs: configure API permissions * Microsoft Graph * : Delegated * : Delegated * : Delegated + Application * : Application * : Application * My APIs * The accessasuser scope you created earlier: Delegated * azureActiveDirectoryClientId from App Registration Overview * azureActiveDirectoryTenantId from App Registration Overview * azureActiveDirectoryClientSecret the one you copied earlier * azureActiveDirectoryAudience the default Application ID URI Sync your Microsoft Entra ID groups to Invictus The Dashboard uses the groups in your Microsoft Entra ID to verify whether users can access flows. (See flow permissions). Add Microsoft Entra ID group Add Microsoft Entra ID user The Dashboard only syncs groups of active users (Entra ID users that already have signed in into the Dashboard). A group sync on a large number of Entra ID groups might break the Dashboard sign-in process. The sign-in token has a size limit. Prevent this by removing your unrelated groups in the Groups MongoDB collection with the query: db.Groups.deleteMany({GroupId: }). This reduces again the number of groups and the token size. Do this after each large group sync. Enable only required groups your group , ]} summary=\"From the Dashboard's main navigation, focus on the Groups tab, select your desired group from the list, then focus on the pause icon to disable it\" /> For security reasons, only enable the groups that you want to use for flow permissions. 'Enabled' is the default state. Deactivate groups by selecting the icon next to the group name. Assign user role to required groups your group , ]} summary=\"From the Dashboard's main navigation, focus on the Groups tab, select your desired group from the list, then focus on the user icon to assign a role\" /> The user role permission describes what authority each member of the group has throughout the Dashboard, more info on Dashboard roles. Assign a user role by selecting the icon next to the group name and picking the desired .",
+      "content": "}>Give Invictus access to your Microsoft Entra ID To use your Microsoft Entra ID groups as a way of authentication and flow authorization, follow these steps. Microsoft Docs: register an app * Choose the multi-tenant account type option to let Invictus use the app registration. * Add Redirect URI's to your Invictus pages: * https://your-invictusdashboard.azurewebsites.net/login * https://your-invictusdashboard.azurewebsites.net/api/auth/callback/azure-ad * Check the Access tokens box (why?) * Add a new client secret (copy the value for later use). * Linked Enterprise Application: * Assign Owners (more info) * Grant Admin consent (more info) Microsoft Docs: expose an API * Use the default Application ID URI (copy it). * Add a scope with Admin and users consent. * Use this name for the scope: accessasuser Microsoft Docs: configure API permissions * Microsoft Graph * : Delegated * : Delegated * : Delegated + Application * : Application * : Application * My APIs * The accessasuser scope you created earlier: Delegated * azureActiveDirectoryClientId from App Registration Overview * azureActiveDirectoryTenantId from App Registration Overview * azureActiveDirectoryClientSecret the one you copied earlier * azureActiveDirectoryAudience the default Application ID URI v6.5 and above</>}> Starting from v6.5, the 'disable group' feature is no longer available. The Dashboard makes no distinction anymore between enabled or disabled groups. You can still remove the groups from the backend storage by running the appropriate cleanup script. Add your Microsoft Entra ID groups to Invictus Add groups</>]} summary=\"From the Dashboard's main navigation, focus on the Groups tab, then focus on the Add groups button\" /> The Dashboard uses the groups in your Microsoft Entra ID to verify whether users can access flows. (See flow permissions). Add Microsoft Entra ID group Add Microsoft Entra ID user In the 'Add groups' dialog, you can search and select your desired Microsoft Entra ID groups that you want to use to control flow access. v6.4 and below</>} default> Sync your Microsoft Entra ID groups to Invictus The Dashboard uses the groups in your Microsoft Entra ID to verify whether users can access flows. (See flow permissions). Add Microsoft Entra ID group Add Microsoft Entra ID user The Dashboard only syncs groups of active users (Entra ID users that already have signed in into the Dashboard). A group sync on a large number of Entra ID groups might break the Dashboard sign-in process. The sign-in token has a size limit. Prevent this by removing your unrelated groups in the Groups MongoDB collection with the query: db.Groups.deleteMany({GroupId: }). This reduces again the number of groups and the token size. Do this after each large group sync. Enable only required groups your group , ]} summary=\"From the Dashboard's main navigation, focus on the Groups tab, select your desired group from the list, then focus on the pause icon to disable it\" /> For security reasons, only enable the groups that you want to use for flow permissions. 'Enabled' is the default state. Deactivate groups by selecting the icon next to the group name. Assign user role to required groups your group , ]} summary=\"From the Dashboard's main navigation, focus on the Groups tab, select your desired group from the list, then focus on the user icon to assign a role\" /> The user role permission describes what authority each member of the group has throughout the Dashboard, more info on Dashboard roles. Assign a user role by selecting the icon next to the group name and picking the desired .",
       "filepath": "dashboard/installation/01_give_ad_access.mdx",
       "category": "dashboard",
       "sidebar_label": "Give access to your Microsoft Entra ID",
@@ -117,6 +117,16 @@
       "filepath": "dashboard/installation/index.mdx",
       "category": "dashboard",
       "sidebar_label": "",
+      "version": "v6.0.0",
+      "user_type": "technical"
+    },
+    {
+      "id": "dashboard-installation-observability-mdx",
+      "title": "Fine-tune observability",
+      "content": "Related Bicep parameters",
+      "filepath": "dashboard/installation/observability.mdx",
+      "category": "dashboard",
+      "sidebar_label": "Fine-tune observability",
       "version": "v6.0.0",
       "user_type": "technical"
     },
@@ -251,6 +261,16 @@
       "user_type": "technical"
     },
     {
+      "id": "framework-installation-observability-mdx",
+      "title": "Fine-tune observability",
+      "content": "Related Bicep parameters",
+      "filepath": "framework/installation/observability.mdx",
+      "category": "framework",
+      "sidebar_label": "Fine-tune observability",
+      "version": "v6.0.0",
+      "user_type": "technical"
+    },
+    {
       "id": "framework-exceptionHandler-mdx",
       "title": "Exception Handler",
       "content": "Most who have worked with Logic Apps is familiar with the error An action failed. No dependent actions succeeded. This is a generic error that offers no clear context on what went wrong. The Invictus Framework includes an Exception Handler component that retrieves the actual error message from an Azure Logic App. It then translates this to a human-readable text. Component usage Create a new Logic App that acts as a 'fallback handler'. Wrap the actions of a Logic App in a Scope . When an action inside the scope fails, the Logic App calls the Exception Handler's Resolve HTTP endpoint. The component resolves the inner error message either via the Regex Translator component or an AI Interpreter . The calling Logic App then uses a Terminate action to return this resolved response to the Logic App run history. Logic Apps can reuse the same Exception Handler Logic App. Use a HTTP webhook to call the fallback Logic App. If anything fails in the fallback Logic App, you can resubmit this and return the response asynchronously. Call the component in a scope block. Use the Terminate action to return the response from the component to the Logic App dashboard. {.eh-wide .eh-narrow @media(max-width:640px){.eh-wide .eh-narrow }} } title=\"Resolve Azure Logic App exceptions\" id=\"resolve-azure-logic-app-exceptions\"> The component requires the role Logic App Contributor and additionally Website Contributor (for Logic App Standard) to operate correctly. Assign these to the component to allow the component access to the client's Logic Apps. The component has as single endpoint to request inspection of failed Azure Logic App workflow runs. By default it uses the Regex Translator component for translating the error. It can also use Azure AI Foundry if you set the useAIExceptionHandlerInterpreter parameter to true. } title=\"Store Azure Logic App exception translations\"> The ExceptionHandler function makes use of the RegexTranslator component to translate the original error from the Logic App. A solution has an Azure Logic App that used to return the generic An action failed. No dependent actions succeeded error. By using the Exception Handler, you can improve this to the actual error which is Http request failed with status code 'HostNotFound' and status message: 'No such host is known.'.. Business users might not understand this message. Use the translation capabilities of the Exception Handler function to translate the error into a clearer message, such as Application is not reachable. Set these translations in the RegexTranslator table in your Invictus storage account. Add the translations in the table as follows: | PartitionKey | RowKey | MatchPattern | OutputPattern | | ------------------------- | ---------- | -------------------------------------- | ------------------------------------------------------- | | logicappname.actionname | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern | Translation examples | PartitionKey | RowKey | MatchPattern | OutputPattern | | ------------------------------------------------ | ------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------- | | cdt-dev-we-somelogicapp.CallHTTP | 1 | No such host is known | code(Availability)Application is not reachable | | cdt-dev-we-somelogicapp.Create | 1 | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found | | cdt-dev-we-somelogicapp.ParseJSON | 1 | Invalid JSON schema type: int | code(Data)The field is not an integer | | cdt-dev-we-somelogicapp.ExecuteStoredProcedure | 1 | Procedure or function 'upsertData' expects parameter '@Ordernumber' | code(Data)Ordernumber is not supplied but is required | | PartitionKey | RowKey | MatchPattern | OutputPattern | | ---------------------------------- | ---------- | ---------------------------------------- | --------------------------------------------------------- | | sitename.workflowname.actionname | Any RowKey | The pattern to be matched in the error | code(YourTranslationCode)The output translation pattern | Translation examples | PartitionKey | RowKey | MatchPattern | OutputPattern | | --------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------- | | cdt-dev-we-somelogicapp.ProcessMessage.CallHTTP | 1 | No such host is known | code(Availability)Application is not reachable | | cdt-dev-we-somelogicapp.ProcessMessage.Create | 2 | cannot be evaluated because array index '0' cannot be selected from empty array | code(Account)The accountid for the debtor could not be found | | cdt-dev-we-somelogicapp.ProcessMessage.ParseJSON | 3 | Invalid JSON schema type: int | code(Data)The field is not an integer | | cdt-dev-we-somelogicapp.ProcessMessage.ExecuteStoredProcedure | 4 | Procedure or function upsertData expects parameter @Ordernumber | code(Data)Ordernumber is not supplied but is required | By using the translation capabilities of the component, it sends back the following response: Ignore Azure Logic App errors The translation capabilities also allow ignoring errors. This is useful in scenarios where Logic Apps generates an irrelevant business error while the flow ran successfully. An example: a solution with an Azure Logic App picks up a file from a network location. After publishing of the file, it deletes the file. In some situations this delete action fails because another instance of the Logic App already removed this file. You can ignore this error since the message processing already happened. To achieve this you can configure the translation as follows: | PartitionKey | RowKey | MatchPattern | OutputPattern | | ------------------------------------ | ------ | ---------------------------- | ------------- | | cdt-dev-we-somelogicapp.DeleteFile | 1 | There is no file with name | ignore | This gives the following response: Related Bicep template parameters",
@@ -379,6 +399,16 @@
       "sidebar_label": "Release notes",
       "version": "v6.0.0",
       "user_type": "business"
+    },
+    {
+      "id": "_observability-content-mdx",
+      "title": "}>Fine-tune observability",
+      "content": "}>Fine-tune observability The Invictus product uses OpenTelemetry for observability. Default installations include pre-configured instrumentation, filtering, and sampling strategies. Fine-tune these options against your traffic and budget. OpenTelemetry Collector sidecar An OpenTelemetry Collector sidecar runs in an Azure Container App alongside your Invictus installation. Collecting telemetry data and exporting it to Azure Monitor. The Collector reads its configuration from the OTelCollector-Config.yml file. Stored in the inv-$ -otel-collector Azure File Share by default. The default configuration works out of the box, but it includes placeholder values worth reviewing. They live in the bounded-sampling policy, part of tail_sampling in the traces pipeline. This policy limits how many trace spans get sent to Azure Monitor. It prioritizes errors and slow requests over successful ones. } title=\"How many spans to send per second\"> maxtotalspanspersecond sets the total cap: Raise it if you're missing traces during busy periods. Lower it to reduce Azure Monitor costs. } title=\"Which error codes count as 'errors'\"> The http-4xx-5xx sub-policy decides which HTTP status codes get priority sampling: You can tighten the scope to only 5xx by changing min_value to 500. This reduces the number of sampled traces, but also reduces the number of available traces to debug 4xx errors. } title=\"How many successful traces to keep\"> The five-percent-sampling sub-policy sets the sampling rate for successful (non-error) traces: Raise sampling_percentage to keep more successful traces for analysis. Lower it to save budget for error and slow traces instead.",
+      "filepath": "_observability-content.mdx",
+      "category": "root",
+      "sidebar_label": "",
+      "version": "v6.0.0",
+      "user_type": null
     },
     {
       "id": "architecture-diagram-mdx",
@@ -1234,6 +1264,39 @@
       "version": "v6.0.0",
       "user_type": "technical",
       "anchor": "?q=useOpenAPI#bicep-template-parameters"
+    },
+    {
+      "id": "data-framework-v6-bicep-parameters-json-invictusotelcollectorname",
+      "title": "invictusOTelCollectorName",
+      "content": "The name of the Azure Container App deployed for the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). Used as the Azure File Share name for storing the Collector configuration.",
+      "filepath": "framework/installation/index.mdx",
+      "category": "framework",
+      "sidebar_label": "Bicep parameter",
+      "version": "v6.0.0",
+      "user_type": "technical",
+      "anchor": "?q=invictusOTelCollectorName#bicep-template-parameters"
+    },
+    {
+      "id": "data-framework-v6-bicep-parameters-json-invictusotelcollectorcontainerimage",
+      "title": "invictusOTelCollectorContainerImage",
+      "content": "The URL that navigates to the Azure Container App image for the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).",
+      "filepath": "framework/installation/index.mdx",
+      "category": "framework",
+      "sidebar_label": "Bicep parameter",
+      "version": "v6.0.0",
+      "user_type": "technical",
+      "anchor": "?q=invictusOTelCollectorContainerImage#bicep-template-parameters"
+    },
+    {
+      "id": "data-framework-v6-bicep-parameters-json-otelcollectorscaling",
+      "title": "oTelCollectorScaling",
+      "content": "The Azure Container App scaling options for the deployed [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).",
+      "filepath": "framework/installation/index.mdx",
+      "category": "framework",
+      "sidebar_label": "Bicep parameter",
+      "version": "v6.0.0",
+      "user_type": "technical",
+      "anchor": "?q=oTelCollectorScaling#bicep-template-parameters"
     },
     {
       "id": "data-framework-v6-bicep-parameters-json-vnetdeployment",
@@ -2576,6 +2639,39 @@
       "version": "v6.0.0",
       "user_type": "technical",
       "anchor": "?q=useOpenAPI#bicep-template-parameters"
+    },
+    {
+      "id": "data-dashboard-v6-bicep-parameters-json-invictusotelcollectorname",
+      "title": "invictusOTelCollectorName",
+      "content": "The name of the Azure Container App deployed for the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). Used as the Azure File Share name for storing the Collector configuration.",
+      "filepath": "dashboard/installation/index.mdx",
+      "category": "dashboard",
+      "sidebar_label": "Bicep parameter",
+      "version": "v6.0.0",
+      "user_type": "technical",
+      "anchor": "?q=invictusOTelCollectorName#bicep-template-parameters"
+    },
+    {
+      "id": "data-dashboard-v6-bicep-parameters-json-invictusotelcollectorcontainerimage",
+      "title": "invictusOTelCollectorContainerImage",
+      "content": "The URL that navigates to the Azure Container App image for the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).",
+      "filepath": "dashboard/installation/index.mdx",
+      "category": "dashboard",
+      "sidebar_label": "Bicep parameter",
+      "version": "v6.0.0",
+      "user_type": "technical",
+      "anchor": "?q=invictusOTelCollectorContainerImage#bicep-template-parameters"
+    },
+    {
+      "id": "data-dashboard-v6-bicep-parameters-json-otelcollectorscaling",
+      "title": "oTelCollectorScaling",
+      "content": "The Azure Container App scaling options for the deployed [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).",
+      "filepath": "dashboard/installation/index.mdx",
+      "category": "dashboard",
+      "sidebar_label": "Bicep parameter",
+      "version": "v6.0.0",
+      "user_type": "technical",
+      "anchor": "?q=oTelCollectorScaling#bicep-template-parameters"
     },
     {
       "id": "data-dashboard-v6-bicep-parameters-json-dashboard",
