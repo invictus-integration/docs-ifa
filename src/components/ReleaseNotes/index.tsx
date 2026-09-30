@@ -248,6 +248,7 @@ function SeriesDropdown({
 
         <FontAwesomeIcon
           icon={faChevronDown}
+          className="rn-animated-chevron"
           style={{
             fontSize: '0.7rem',
             opacity: 0.7,
@@ -356,6 +357,11 @@ const triggerStyle: React.CSSProperties = {
 
 const triggerFocusStyle: React.CSSProperties = {
   background: 'var(--ifm-hover-overlay)',
+  // Visible focus ring (WCAG 2.4.11/2.4.13): outline is suppressed above,
+  // so this box-shadow is the only focus indicator — it must stay even if
+  // the background tint above is removed or themed away.
+  boxShadow: '0 0 0 2px var(--ifm-color-primary)',
+  borderColor: 'var(--ifm-color-primary)',
 };
 
 const listStyle: React.CSSProperties = {
@@ -454,6 +460,7 @@ export function ReleaseVersion({ version, date, children, isLatest = false, forc
         {isCollapsible && (
           <FontAwesomeIcon
             icon={faChevronDown}
+            className="rn-animated-chevron"
             style={{ fontSize: '0.8rem', padding: '0.5rem', transition: 'transform 0.2s', transform: expanded ? 'rotate(180deg)' : 'none', color: 'var(--ifm-color-gray-500)', flexShrink: 0 }}
           />
         )}
@@ -475,6 +482,22 @@ export function TechChanges({ children }: SectionProps) {
 
 export function Fixes({ children }: SectionProps) {
   return <Admonition type="warning" className="rn-admonition-fix" icon={<FontAwesomeIcon icon={faBug} />} title="Fixes">{children}</Admonition>;
+}
+
+// ── Patch subtitle ───────────────────────────────────────────────
+
+// Groups the entries of a fix release (e.g. 6.4.1) within a Features,
+// TechChanges, or Fixes section of its minor release (e.g. 6.4). Renders
+// an <h3>, which is a safe next heading level after the <h2> version
+// title: Admonition section titles are plain text, not headings, so this
+// doesn't skip a level.
+export function PatchVersion({ version, children }: { version: string; children: ReactNode }) {
+  return (
+    <div className="rn-patch-version">
+      <h3 className="rn-patch-version__label">v{version}</h3>
+      {children}
+    </div>
+  );
 }
 
 // ── Styles ───────────────────────────────────────────────────────
@@ -540,7 +563,9 @@ const dateStyle: React.CSSProperties = {
   fontSize: '0.875rem',
   fontWeight: 400,
   fontFamily: 'var(--ifm-font-family-base)',
-  color: 'var(--ifm-color-emphasis-600)',
+  // emphasis-600 only reaches ~3.06:1 on a white background, below the
+  // 4.5:1 WCAG minimum for this text size; emphasis-700 (~5.7:1) passes.
+  color: 'var(--ifm-color-emphasis-700)',
 };
 
 const sectionsStyle: React.CSSProperties = {
