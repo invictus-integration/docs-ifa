@@ -1,0 +1,20 @@
+{/* vale alex.Ablist NO */}
+<details>
+<summary>Remove the deprecated `IsEnabled` field from Groups</summary>
+
+The included `MongoDb-Groups-CleanUp.ps1` script deletes group documents with `IsEnabled: false`, and unsets the `IsEnabled` field on the rest (keeps the groups). It requires [`mongosh`](https://www.mongodb.com/try/download/shell) on your `PATH`.
+
+Preview first, without changes:
+```powershell
+./MongoDb-Groups-CleanUp.ps1 -CosmosAccountName "<name>" -ResourceGroupName "<rg>" -WhatIf
+```
+
+After reviewing the changes, re-run with `-Force` to apply it:
+```powershell
+./MongoDb-Groups-CleanUp.ps1 -CosmosAccountName "<name>" -ResourceGroupName "<rg>" -Force
+```
+
+You can also use the `-ConnectionString` parameter directly, replacing `-CosmosAccountName`/`-ResourceGroupName` with `-ConnectionString "mongodb://..."`.
+
+</details>
+{/* vale alex.Ablist YES */}

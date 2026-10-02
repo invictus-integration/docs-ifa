@@ -536,7 +536,7 @@
     "name": "appInsightsSamplingPercentage",
     "type": "int",
     "description": "The sampling percentage for the Azure Application Insights that tracks the general telemetry of the Dashboard.",
-    "default": "1",
+    "default": "100 (was 1 in <= v6.4)",
     "tags": [
       "monitoring"
     ]
@@ -1529,6 +1529,73 @@
     ]
   },
   {
+    "name": "invictusOTelCollectorName",
+    "type": "string",
+    "description": "The name of the Azure Container App deployed for the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). Used as the Azure File Share name for storing the Collector configuration.",
+    "default": "inv-${resourcePrefix}-otel-collector",
+    "newSince": "v6.5",
+    "tags": [
+      "monitoring",
+      "container-apps",
+      "open-telemetry"
+    ]
+  },
+  {
+    "name": "invictusOTelCollectorContainerImage",
+    "type": "string",
+    "description": "The URL that navigates to the Azure Container App image for the [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).",
+    "newSince": "v6.5",
+    "tags": [
+      "monitoring",
+      "container-apps",
+      "open-telemetry"
+    ]
+  },
+  {
+    "name": "oTelCollectorScaling",
+    "type": "object",
+    "description": "The Azure Container App scaling options for the deployed [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).",
+    "newSince": "v6.5",
+    "tags": [
+      "monitoring",
+      "container-apps",
+      "scaling",
+      "open-telemetry"
+    ],
+    "properties": [
+      {
+        "name": "cpuResources",
+        "type": "string",
+        "description": "The amount of CPU resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "0.5"
+      },
+      {
+        "name": "memoryResources",
+        "type": "string",
+        "description": "The amount of memory resources to dedicate for the Azure Container App. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/containers#allocations) for the allowed values.",
+        "default": "1.0Gi"
+      },
+      {
+        "name": "scaleMinReplicas",
+        "type": "int",
+        "description": "The lowest number of replicas the Azure Container App will scale in to.",
+        "default": "0"
+      },
+      {
+        "name": "scaleMaxReplicas",
+        "type": "int",
+        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "default": "1"
+      },
+      {
+        "name": "concurrentRequests",
+        "type": "int",
+        "description": "When the number of HTTP requests exceeds this value, then another replica is added. Replicas continue to add to the pool up to the maxReplicas amount. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=container-apps-bicep) for the allowed values.",
+        "default": "100"
+      }
+    ]
+  },
+  {
     "name": "dashboard",
     "type": "object",
     "description": "The options to configure the Dashboard web application.",
@@ -1552,11 +1619,32 @@
             "default": "https://${invictusDashboardWebAppName}.${ContainerAppEnvironment.outputs.defaultDomain}"
           }
         ]
+      },
+      {
+        "name": "logging",
+        "type": "object",
+        "description": "The options to configure the frontend web application logging, linked to OpenTelemetry traces in Azure Monitor.",
+        "newSince": "v6.5",
+        "properties": [
+          {
+            "name": "enabled",
+            "type": "bool",
+            "description": "The boolean flag to indicate whether the frontend web application should log browser requests and backend interactions.",
+            "default": "true"
+          },
+          {
+            "name": "level",
+            "type": "enum (debug | info | warn | error | success | silent)",
+            "description": "The level threshold to track frontend web application logs.",
+            "default": "error"
+          }
+        ]
       }
     ],
     "tags": [
       "web",
-      "networking"
+      "networking",
+      "open-telemetry"
     ]
   },
   {

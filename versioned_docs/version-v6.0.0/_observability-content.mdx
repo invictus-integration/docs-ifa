@@ -1,0 +1,59 @@
+{/*
+  Shared content for the Observability page.
+  This partial is rendered by both:
+    - dashboard/installation/observability.mdx  (/dashboard/installation/observability)
+    - framework/installation/observability.mdx  (/framework/installation/observability)
+
+  Edit the content here once; both pages stay in sync automatically.
+  Files prefixed with "_" are ignored by Docusaurus routing, so this
+  partial does not get its own page/URL.
+*/}
+
+import { BadgedText, NewSinceBadge } from '@site/src/components/Badges';
+import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
+import { faGaugeHigh, faFire, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+# <BadgedText badge={<NewSinceBadge version="v6.5" />}>Fine-tune observability</BadgedText>
+The Invictus product uses [OpenTelemetry](https://opentelemetry.io/) for observability. Default installations include pre-configured instrumentation, filtering, and sampling strategies. Fine-tune these options against your traffic and budget.
+
+## OpenTelemetry Collector sidecar
+An [OpenTelemetry Collector sidecar](https://opentelemetry.io/docs/collector/) runs in an Azure Container App alongside your Invictus installation. Collecting telemetry data and exporting it to Azure Monitor. The Collector reads its configuration from the `OTelCollector-Config.yml` file. Stored in the `inv-${resourcePrefix}-otel-collector` Azure File Share by default.
+
+The default configuration works out of the box, but it includes placeholder values worth reviewing. They live in the `bounded-sampling` policy, part of `tail_sampling` in the `traces` pipeline. This policy limits how many trace spans get sent to Azure Monitor. It prioritizes errors and slow requests over successful ones.
+
+<Walkthrough label="Highlighted Collector options with placeholder values">
+<Collapsible number={<FontAwesomeIcon icon={faGaugeHigh} />} title="How many spans to send per second">
+
+`max_total_spans_per_second` sets the total cap:
+
+```yaml title="OTelCollector-Config.yml"
+max_total_spans_per_second: 100
+```
+
+Raise it if you're missing traces during busy periods. Lower it to reduce Azure Monitor costs.
+</Collapsible>
+
+<Collapsible number={<FontAwesomeIcon icon={faFire} />} title="Which error codes count as 'errors'">
+The `http-4xx-5xx` sub-policy decides which HTTP status codes get priority sampling:
+
+```yaml title="OTelCollector-Config.yml"
+numeric_attribute: { 
+  key: http.response.status_code, 
+  min_value: 400, 
+  max_value: 599 }
+```
+
+You can tighten the scope to only 5xx by changing `min_value` to `500`. This reduces the number of sampled traces, but also reduces the number of available traces to debug 4xx errors.
+</Collapsible>
+
+<Collapsible number={<FontAwesomeIcon icon={faCheck} />} title="How many successful traces to keep">
+The `five-percent-sampling` sub-policy sets the sampling rate for successful (non-error) traces:
+
+```yaml title="OTelCollector-Config.yml"
+probabilistic: { sampling_percentage: 5 }
+```
+
+Raise `sampling_percentage` to keep more successful traces for analysis. Lower it to save budget for error and slow traces instead.
+</Collapsible>
+</Walkthrough>
