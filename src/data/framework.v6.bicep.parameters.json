@@ -1095,7 +1095,7 @@
       {
         "name": "scaleMaxReplicas",
         "type": "int",
-        "description": "The highest number of replicas the Azure Container App will scale out to.",
+        "description": "The highest number of replicas the Azure Container App will scale out to. If the OpenTelemetry collector can't keep up with the incoming telemetry load, scale vertically (increase CPU and memory resources) instead of horizontally (adding more replicas). You risk to loose telemetry relationships with more than one replica.",
         "default": "1"
       },
       {
