@@ -18,10 +18,12 @@ import GroupCleanupScriptContent from './_groups-cleanup-script-content.mdx';
 <ReleaseVersion version="6.5" date="September 2026">
   <Features>
     - **Manual Entra ID group management:** system admins manually add Microsoft Entra ID groups to the Dashboard instead of relying on automatic synchronization. If you upgrade from a version before v6.5, you might have leftover inactive groups in your backend storage. Remove them with the included cleanup script: <GroupCleanupScriptContent />
-
+    - **Moved to OpenTelemetry:** used OpenTelemetry for tracing across both Dashboard and Framework components with a collector sidecar that samples and exports telemetry to Azure Monitor.
   </Features>
   <Fixes>
-    
+    - **Use company branding in VNET:** corrected access to backend storage to use company branding images to in virtual network (VNET) deployments.
+    - **Control [PubSub](../framework/pubsubV2.mdx) message deferral:** new Bicep parameters help control the batch size of deferred messages in the PubSub component's cleanup.
+    - **[XSD Validator](../framework/xsdValidator.mdx) XSLT output encoding:** the XSLT output defaults to UTF-8 and adheres to the specified XSLT output encoding.
   </Fixes>
 </ReleaseVersion>
 
