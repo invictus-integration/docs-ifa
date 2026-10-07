@@ -44,7 +44,7 @@ URL
 [Uu]pserts
 [Uu]nsets?
 
-Validator
+[Vv]alidator
 
 XML
 XPath
