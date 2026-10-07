@@ -353,7 +353,7 @@
     {
       "id": "support-_groups-cleanup-script-content-mdx",
       "title": "_groups-cleanup-script-content",
-      "content": "Remove the deprecated IsEnabled field from Groups The included MongoDb-Groups-CleanUp.ps1 script deletes group documents with IsEnabled: false, and unsets the IsEnabled field on the rest (keeps the groups). It requires mongosh on your PATH. Preview first, without changes: After reviewing the changes, re-run with -Force to apply it: You can also use the -ConnectionString parameter directly, replacing -CosmosAccountName/-ResourceGroupName with -ConnectionString \"mongodb://...\".",
+      "content": "Remove the deprecated IsEnabled field from Groups The included CleanUp-MongoDb-Groups.ps1 script deletes group documents with IsEnabled: false, and unsets the IsEnabled field on the rest (keeps the groups). It requires mongosh on your PATH. Preview first, without changes: After reviewing the changes, re-run with -Force to apply it: You can also use the -ConnectionString parameter directly, replacing -CosmosAccountName/-ResourceGroupName with -ConnectionString \"mongodb://...\".",
       "filepath": "support/_groups-cleanup-script-content.mdx",
       "category": "support",
       "sidebar_label": "",
