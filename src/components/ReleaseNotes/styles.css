@@ -66,6 +66,40 @@ html[data-theme='dark'] .rn-admonition-fix {
   color: var(--ifm-color-secondary-light);
 }
 
+/* Patch version subtitle: groups fix-release entries within a section */
+.rn-patch-version {
+  margin-top: 1rem;
+}
+
+.rn-patch-version:first-child {
+  margin-top: 0;
+}
+
+.rn-patch-version__label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  margin: 0 0 0.5rem;
+  padding-top: 0.75rem;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+
+  color: var(--ifm-color-emphasis-700);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.rn-patch-version:first-child .rn-patch-version__label {
+  padding-top: 0;
+  border-top: none;
+}
+
+html[data-theme='dark'] .rn-patch-version__label {
+  color: var(--ifm-color-emphasis-700);
+}
+
 .rn-dropdown {
   background-color: var(--ifm-dropdown-background-color) !important;
 }
@@ -96,4 +130,15 @@ html[data-theme='dark'] .rn-version-block--collapsed:hover {
 
 html[data-theme='dark'] .rn-version-collapsible:hover {
   background: rgba(255, 255, 255, 0.06);
+}
+
+/* Respect reduced-motion preference: disable rotation/background
+   transitions. `!important` is required to beat the inline `transition`
+   styles set on the chevron icons and dropdown trigger. */
+@media (prefers-reduced-motion: reduce) {
+  .rn-animated-chevron,
+  .rn-version-block--collapsed,
+  .rn-version-collapsible {
+    transition: none !important;
+  }
 }

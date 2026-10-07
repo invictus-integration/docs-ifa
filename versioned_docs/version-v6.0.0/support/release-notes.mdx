@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 ---
 
-import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@site/src/components/ReleaseNotes';
+import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes, PatchVersion } from '@site/src/components/ReleaseNotes';
 
 {/* vale Google.WordList = NO */}
 
@@ -32,7 +32,9 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **[Time Sequencer](../framework/timesequencer.mdx) and [Sequence Controller](../framework/sequencecontroller.mdx):**
       - Components shared a default task hub name, causing conflicts when run together. Each now uses its own task hub.
       - Components incorrectly interacted with the storage account using managed identity authentication.
-    - **Dashboard: Entra ID system admins losing access to Users, Groups, and Audits.** System admins with a Microsoft Entra ID account couldn't see Users, Groups, and Audits menu options.
+    <PatchVersion version="6.4.1">
+      - **Dashboard: Entra ID system admins losing access to Users, Groups, and Audits.** System admins with a Microsoft Entra ID account couldn't see Users, Groups, and Audits menu options.
+    </PatchVersion>
   </Fixes>
 </ReleaseVersion>
 
@@ -54,12 +56,24 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **[Transco](../framework/transcoV2.mdx) should ignore non-existing scope**: the Transco component doesn't halt anymore when the config points to a not found scope in the input. It logs a warning instead and skips the instruction.
     - **[Transco](../framework/transcoV2.mdx) should fallback on parameter default value:** the Transco component relies on a new `defaultValue` property in the config to fallback on in case the scope path doesn't return a value.
     - **[Transco](../framework/transcoV2.mdx) should load most recent XSLT extension DLL:** the Transco component doesn't use stale XSLT extension DLLs anymore in case a newer version is available in the Azure Blob storage folder. This prevents component restarts to load the new DLL version. 
-    - **Tables missing on install:** the install again creates all required Azure Storage tables. Regression introduced in v6.2.
     - **Search filters not passed on:** all search filters carry over when you navigate from the Dashboard page to the Flows page.
-    - **Flows load fail intermittently:** a race condition caused flows to fail on the first load. They now load reliably on the first attempt.
     - **Basic search ignores properties:** the basic search now returns results from message properties again.
     - **Wrong tooltip for Function App messages:** the tooltip for Azure Function messages incorrectly read 'Logic Apps'. It now reads 'Function Apps'.
     - **Default 30 MB request size limit:** to match the Logic Apps 100 MB message size limit, all the Framework components now accept request body sizes up to 100 MB. The default limit of 30 MB was too low for some scenarios.
+    <PatchVersion version="6.3.1">
+      - **Fixed default object ID:** corrected the default object ID of the Azure DevOps user installing Invictus.
+    </PatchVersion>
+    <PatchVersion version="6.3.2">
+      - **Tables missing on install:** the install again creates all required Azure Storage tables. Regression introduced in v6.2.
+      - **Correct flow ignored status in filter:** the Dashboard showed messages with an ignored status alongside other status.
+      - **Flows load fail intermittently:** a race condition caused flows to fail on the first load. They now load reliably on the first attempt.
+    </PatchVersion>
+    <PatchVersion version="6.3.3">
+      - **Correct folder audit:** the Dashboard didn't took recursive folders into account when auditing flow operations.
+    </PatchVersion>
+    <PatchVersion version="6.3.4">
+      - **Correct Bicep output:** the Key Vault name was incorrect set in the Bicep output, resulting in a mismatch during the SQL data migration. 
+    </PatchVersion>
   </Fixes>
 </ReleaseVersion>
 {/* vale Google.WordListCase = YES */}
@@ -72,14 +86,10 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
     - **Toggle for resubmit and resume buttons:** you can toggle the resubmit and resume buttons in the advanced settings pane. They're off by default.
   </Features>
   <TechChanges>
-    - **[Accident breaking] VNET renames:** these Bicep parameters have new names. This breaks installs by accident. Update your deploy file to use the new names:
-      - `containerAppEnvironmentSubnetName` → `delegatedContainerAppEnvironmentSubnetName`
-      - `disableStorageAccountPublicNetworkAccess` → `enableStorageAccountPublicNetworkAccess`
-      - `vnetResourceGroupName` → `virtualNetworkResourceGroupName`
-    - **Standard Service Bus SKU works with VNET:** Invictus no longer requires a Premium Service Bus SKU when deployed with VNET. A Standard SKU is enough. This lowers infrastructure costs for development and test environments.
-    - **Optional resource locks:** a new `useResourceLocks` Bicep flag lets teams {/* vale Google.WordList = NO */}disable{/* vale Google.WordList = YES */} Azure resource locks at install time.
-    - **Script to remove old Container App revisions:** a [new script](../../scripts/Invictus-RemoveOldRevisions.ps1) removes stale Azure Container App revisions. Run it after each install to keep your environment clean.
-    - **Private endpoint naming follows conventions:** private endpoint names now use the `pep-` prefix instead of `conn-`, aligning with Azure naming conventions for private endpoints.
+      - **Standard Service Bus SKU works with VNET:** Invictus no longer requires a Premium Service Bus SKU when deployed with VNET. A Standard SKU is enough. This lowers infrastructure costs for development and test environments.
+      - **Optional resource locks:** a new `useResourceLocks` Bicep flag lets teams {/* vale Google.WordList = NO */}disable{/* vale Google.WordList = YES */} Azure resource locks at install time.
+      - **Script to remove old Container App revisions:** a [new script](../../scripts/Invictus-RemoveOldRevisions.ps1) removes stale Azure Container App revisions. Run it after each install to keep your environment clean.
+      - **Private endpoint naming follows conventions:** private endpoint names now use the `pep-` prefix instead of `conn-`, aligning with Azure naming conventions for private endpoints.
   </TechChanges>
   <Fixes>
     - **Full flow path not shown:** the Dashboard now shows the full folder path when you open a flow in a sub-folder.
@@ -90,6 +100,28 @@ import { ReleaseNotes, ReleaseVersion, Features, TechChanges, Fixes } from '@sit
       - a new `retentionDays` flag stops the part from keeping state for too long.
     - **Cursor jumps when editing flow name:** the cursor no longer jumps to the end when you edit a flow name. It now stays where you left it.
     - **Access tokens written to logs:** the Dashboard no longer writes OAuth access tokens to the HTTP trace logs. This was a data exposure risk.
+     <PatchVersion version="6.2.1">
+      - **[Accident breaking] VNET renames:** these Bicep parameters have new names. This breaks installs by accident. Update your deploy file to use the new names:
+        - `containerAppEnvironmentSubnetName` → `delegatedContainerAppEnvironmentSubnetName`
+        - `disableStorageAccountPublicNetworkAccess` → `enableStorageAccountPublicNetworkAccess`
+        - `vnetResourceGroupName` → `virtualNetworkResourceGroupName`
+    </PatchVersion>
+    <PatchVersion version="6.2.2">
+      - **[Accident breaking] default storage account public access:** correct back to `false` default value for the `disableStorageAccountPublicNetworkAccess` Bicep parameter in template file.
+    </PatchVersion>
+    <PatchVersion version="6.2.3">
+      - **[Accident breaking] default storage account public access:** correct back to `false` default value for the `disableStorageAccountPublicNetworkAccess` Bicep parameter in parameters file.
+    </PatchVersion>
+    <PatchVersion version="6.2.4">
+      - **Incorrect error logs:** removed the unused internal 'clear workflow' background process that caused misleading error messages in the logs.
+    </PatchVersion>
+    <PatchVersion version="6.2.5">
+      - **Persist flow filter:** the Dashboard now remembers the flow filters across different pages.
+      - **Integer deployment parameter parsing:** fixed setting integer values for deployment parameters.
+    </PatchVersion>
+    <PatchVersion version="6.2.6">
+      - **Create tables on install:** the required `invictusmessagecontentview` and `messagestatuscache` Azure Storage tables now come with fresh installations.
+    </PatchVersion>
   </Fixes>
 </ReleaseVersion>
 
