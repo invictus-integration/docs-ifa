@@ -1,0 +1,19 @@
+name: Readability check
+on: [pull_request]
+
+jobs:
+  readability:
+    name: Readability
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run readability script unit tests
+        run: node --test .github/scripts/readability.test.mjs
+      - name: Check readability
+        run: node .github/scripts/readability.mjs versioned_docs
