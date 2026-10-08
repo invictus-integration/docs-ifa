@@ -13,6 +13,7 @@ import ParameterTable from "@site/src/components/ParameterTable";
 import parameters from "@site/src/data/dashboard.v6.bicep.parameters.json";
 import {faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GroupCleanupScriptContent from '../../support/_groups-cleanup-script-content.mdx';
 
 # Installing Invictus Dashboard
 
@@ -25,6 +26,7 @@ To access the resources stored on Azure Storage and Azure Container Registry you
 :::warning[Important considerations <SharedNote/>]
 * **Container revisions:** the deployment uses Multiple Revision mode in its Container App deployments. This means that older revisions could clutter the Container App Environment. You can use [this clean-up script](../../scripts/Invictus-RemoveOldRevisions.ps1) to remove them.
 * **Lingering role assignments:** if a failed install or clean-up deleted resources from the target resource group before this deployment, Azure can leave orphaned role assignments behind. These block the Bicep deployment with a *"role assignment already exists"* error. Remove orphaned role assignments on the target resource group **before** you start.
+* **Leftover disabled groups:** if you upgrade from a version prior to v6.5, you might have leftover disabled groups in your backend storage. Remove them with the included cleanup script: <GroupCleanupScriptContent />
 :::
 
 <details>

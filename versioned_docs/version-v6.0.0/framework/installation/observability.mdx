@@ -1,0 +1,14 @@
+---
+sidebar_label: Fine-tune observability
+title: Fine-tune observability
+hide_title: true
+---
+
+import ObservabilityContent from '../../_observability-content.mdx';
+import ParameterTable from '@site/src/components/ParameterTable';
+import frameworkParameters from "@site/src/data/framework.v6.bicep.parameters.json"; 
+
+<ObservabilityContent />
+
+### Related Bicep parameters
+<ParameterTable parameters={frameworkParameters} fixedTags={["open-telemetry"]} />

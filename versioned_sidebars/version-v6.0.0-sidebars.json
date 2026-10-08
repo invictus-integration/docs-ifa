@@ -61,7 +61,8 @@
           },
           "items": [
             "dashboard/installation/give_ad_access",
-            "dashboard/installation/give_la_access"
+            "dashboard/installation/give_la_access",
+            "dashboard/installation/observability"
           ]
         },
         {
@@ -88,11 +89,20 @@
       "collapsible": true,
       "items": [
         {
-          "type": "doc",
-          "id": "framework/installation/index",
+          "type": "category",
+          "label": "Installation",
+          "collapsed": true,
+          "collapsible": true,
+          "link": {
+            "type": "doc",
+            "id": "framework/installation/index"
+          },
           "customProps": {
             "ariaLabel": "Framework Installation"
-          }
+          },
+          "items": [
+            "framework/installation/observability"
+          ]
         },
         "framework/deprecated/index",
         {

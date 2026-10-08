@@ -1,15 +1,19 @@
 ---
 sidebar_label: Give access to your Microsoft Entra ID
 title: Give access to your Microsoft Entra ID
+hide_table_of_contents: true
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { Walkthrough, Collapsible } from '@site/src/components/Walkthrough';
 import { OnlyAdminsBadge, BadgedText } from '@site/src/components/Badges';
 import { DropDownInput } from '@site/src/components/InputControls';
 import Breadcrumb from '@site/src/components/Breadcrumb';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faLink, faSquareCheck, faArrowRight, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {faLink, faSquareCheck, faArrowRight, faChevronRight, faPlus, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons';
 import {faCirclePause, faUser} from '@fortawesome/free-regular-svg-icons';
+import GroupCleanupScriptContent from '../../support/_groups-cleanup-script-content.mdx';
 
 # <BadgedText badge={<OnlyAdminsBadge/>}>Give Invictus access to your Microsoft Entra ID</BadgedText>
 To use your Microsoft Entra ID groups as a way of authentication and flow authorization, follow these steps.
@@ -63,11 +67,31 @@ To use your Microsoft Entra ID groups as a way of authentication and flow author
 </Walkthrough>
 {/* vale Google.WordListCase = YES */}
 
+<Tabs groupId="version">
+<TabItem value="v6.5" label={<><FontAwesomeIcon icon={faArrowUp} aria-hidden="true" />v6.5 and above</>}>
+
+:::warning[leftover disabled groups]
+Starting from v6.5, the **disable group feature is no longer available**. The Dashboard makes no distinction anymore between enabled or disabled groups.
+If you upgrade from a version prior to v6.5, you might have leftover disabled groups in your backend storage. Remove them with the included cleanup script:
+<GroupCleanupScriptContent />
+:::
+
+## Add your Microsoft Entra ID groups to Invictus
+<Breadcrumb paths={[`Groups`, <><FontAwesomeIcon icon={faPlus} aria-label='plus icon' /> Add groups</>]} summary="From the Dashboard's main navigation, focus on the **Groups** tab, then focus on the **Add groups** button" />
+
+The Dashboard uses the groups in your Microsoft Entra ID to verify whether users can access flows. (See [flow permissions](../flows/01_add.mdx#flow-permissions)).
+* [Add Microsoft Entra ID group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
+* [Add Microsoft Entra ID user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
+
+In the 'Add groups' dialog, you can search and select your desired Microsoft Entra ID groups that you want to use to control flow access.
+
+</TabItem>
+<TabItem value="v6.4" label={<><FontAwesomeIcon icon={faArrowDown} aria-hidden="true" />v6.4 and below</>} default>
+
 ## Sync your Microsoft Entra ID groups to Invictus
 <Breadcrumb paths={[`Groups`, `Sync all groups`]} summary="From the Dashboard's main navigation, focus on the **Groups** tab, then focus on the **Sync all groups** button" />
 
 The Dashboard uses the groups in your Microsoft Entra ID to verify whether users can access flows. (See [flow permissions](../flows/01_add.mdx#flow-permissions)).
-
 * [Add Microsoft Entra ID group](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups)
 * [Add Microsoft Entra ID user](https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users)
 
@@ -84,7 +108,10 @@ Do this after each large group sync.
 
 For security reasons, only enable the groups that you want to use for [flow permissions](../flows/01_add.mdx#flow-permissions). 'Enabled' is the default state. Deactivate groups by selecting the <FontAwesomeIcon icon={faCirclePause} aria-label='pause' /> icon next to the group name.
 
-## Assign user role to required groups
+</TabItem>
+</Tabs>
+
+### Assign user role to required groups
 <Breadcrumb items={[`Groups`, <em>your group</em>, <FontAwesomeIcon icon={faUser} aria-label='user' />]} summary="From the Dashboard's main navigation, focus on the **Groups** tab, select your desired group from the list, then focus on the user icon to assign a role" />
 
 The user role permission describes what authority each member of the group has throughout the Dashboard, [more info on Dashboard roles](../security/03_roles.mdx).
