@@ -24,6 +24,7 @@ body:
       description: Which version of the product are you running? This dropdown mirrors the versions in the release notes.
       options:
         - Other / not sure
+        - "6.5.x"
         - "6.4.x"
         - "6.3.x"
         - "6.2.x"
