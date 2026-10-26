@@ -1,0 +1,9 @@
+# Ignored findings for gitleaks/betterleaks (REPOSITORY_BETTERLEAKS in MegaLinter).
+# betterleaks is backward-compatible with gitleaks and reads this file automatically
+# (default --gitleaks-ignore-path is the repo root), so no extra MegaLinter config is needed.
+#
+# Each line is a finding fingerprint: <file>:<rule id>:<line>
+# These are confirmed false positives: example GUIDs used in Azure Table Storage
+# documentation samples (RowKey/PartitionKey), not real secrets.
+versioned_docs/version-v6.0.0/framework/regextranslation.mdx:generic-api-key:80
+versioned_docs/version-v6.0.0/dashboard/flows/04_import-flow-traces/import-flows-via-la.mdx:generic-api-key:216
