@@ -120,6 +120,10 @@ Invictus is fully supported to import flows from Azure Logic Apps. It allows to 
   <Collapsible id="tracked-properties-of-workflows" title="Add tracked properties to Azure Logic App workflows">
     The flow trace importing displays the special properties `Milestone` and `EventText` by default, if present. If the `EventText` re-appears in many workflows, the flow trace importing combines all data as a single value, separated by a comma.
 
+    :::warning[property character limit]
+    The values of tracked properties have a limit of 500 characters to provide meta-data and/or context to the flow trace. It is not meant to store large amounts of data.
+    :::
+
     ![execution tree](/images/v2_events2.png)
   </Collapsible>
 
