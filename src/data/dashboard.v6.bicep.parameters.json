@@ -1812,5 +1812,36 @@
         ]
       }
     ]
+  },
+  {
+    "name": "licensing",
+    "description": "The licensing communication settings to activate add-ons within the dashboard.",
+    "type": "object",
+    "newSince": "v6.6",
+    "tags": [
+      "governance"
+    ],
+    "properties": [
+      {
+        "name": "customerId",
+        "description": "The unique identifier to associate the add-on licensing with the customer.",
+        "type": "string"
+      },
+      {
+        "name": "customerSecret",
+        "description": "The unique secret token to associate the add-on licensing with the customer.",
+        "type": "string"
+      },
+      {
+        "name": "controlCenterUrl",
+        "description": "The control center endpoint that gives out add-on licenses.",
+        "type": "string"
+      },
+      {
+        "name": "publicKey",
+        "description": "The public key to verify the integrity of the add-on licensing.",
+        "type": "string"
+      }
+    ]
   }
 ]
