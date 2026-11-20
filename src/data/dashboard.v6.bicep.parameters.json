@@ -1841,6 +1841,11 @@
         "name": "publicKey",
         "description": "The public key to verify the integrity of the add-on licensing.",
         "type": "string"
+      },
+      {
+        "name": "refreshDelayInMinutes",
+        "description": "The time period (in minutes) to refresh the add-on license token.",
+        "type": "integer"
       }
     ]
   }
