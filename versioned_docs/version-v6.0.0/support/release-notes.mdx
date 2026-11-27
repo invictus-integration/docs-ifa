@@ -26,6 +26,7 @@ import GroupCleanupScriptContent from './_groups-cleanup-script-content.mdx';
     - **Use company branding in VNET:** the Dashboard correctly accesses backend storage to use company branding images in virtual network (VNET) deployments.
     - **Control [PubSub](../framework/pubsubV2.mdx) message deferral:** new Bicep parameters help control the batch size of deferred messages in the PubSub component's cleanup.
     - **[XSD Validator](../framework/xsd-validator.mdx) XSLT output encoding:** the XSLT output defaults to UTF-8 and adheres to the specified XSLT output encoding.
+      - **[Transco](../framework/transcoV2.mdx) Only create destination node upon available SQL result:** the Transco component supports the `skipDestinationNodeCreationWhenEmpty` option to avoid creating empty destination nodes when the SQL query result is empty.
   </Fixes>
 </ReleaseVersion>
 

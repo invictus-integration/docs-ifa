@@ -267,7 +267,7 @@ The `destination` is an XPath/JPath expression that navigates within the `Conten
 For a XPath ending at an attribute (ex: `/persons/person/@name`), the component inserts the value into that attribute.
 Otherwise, the component inserts the value in the inner text of the XML node.
 
-You can also promote the SQL query result to the `Context` instead of the `Content`. In that case, set `promoteToContext=true`.
+Promote the SQL query result to the `Context` instead of the `Content` with `promoteToContext=true`.
 
 ```json
 "command": {
@@ -276,6 +276,17 @@ You can also promote the SQL query result to the `Context` instead of the `Conte
   "promoteToContext": [If true, the component saves the SQL query result at the Context with "destination" as key]
 }
 ```
+
+:::tip[Only create destination node when SQL result is available <NewSinceBadge version="v6.5.1" />]
+Promote the SQL query result only when the result is not empty and avoid creating empty destination nodes by using the `skipDestinationNodeCreationWhenEmpty` option.
+
+```json
+"command": {
+  // ...
+  "skipDestinationNodeCreationWhenEmpty": [if true, skips creation of the destination node when the SQL query result is empty]
+}
+```
+:::
 
 </Collapsible>
 </Walkthrough>
@@ -365,6 +376,7 @@ Store the assembly and dependency DLL files in the Azure Storage Account in the 
           }
         ],
         "destination": "[XPath/JPath of the results destination, or Context key if 'promoteToContext=true']",
+        "skipDestinationNodeCreationWhenEmpty": "[if true, skips creation of the destination node when the SQL query result is empty]",
         "promoteToContext": "[If true, the component saves the SQL query result to Context with 'destination' as key]",
         "cache": {
           "useCaching": "[If true, caches the SQL query result]",
